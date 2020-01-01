@@ -222,13 +222,15 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
                         let newstorefreeqtycases = 0;
 
                         if (storesalesqtypieces < salesqtypieces) {
-                            newstoresalesqtypieces = storesalesqtypieces + item.piecespercase - salesqtypieces;
-                            newstoresalesqtycases = storesalesqtycases - (1 + salesqtycases);
+                            let releasecases = Math.ceil(salesqtypieces / item.piecespercase);
+                            newstoresalesqtypieces = storesalesqtypieces + (item.piecespercase * releasecases) - salesqtypieces;
+                            newstoresalesqtycases = storesalesqtycases - ((item.piecespercase * releasecases) + salesqtycases);
                         }
 
                         if (storefreeqtypieces < freeqtypieces) {
-                            newstorefreeqtypieces = storefreeqtypieces + item.piecespercase - freeqtypieces;
-                            newstorefreeqtycases = storefreeqtycases - (1 + freeqtycases);
+                            let releasecases = Math.ceil(freeqtypieces / item.piecespercase);
+                            newstorefreeqtypieces = storefreeqtypieces + (item.piecespercase * releasecases) - freeqtypieces;
+                            newstorefreeqtycases = storefreeqtycases - ((item.piecespercase * releasecases) + freeqtycases);
                         }
 
                         Store
@@ -254,7 +256,7 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
                                         }
                                     }
                                 },
-                                { new: true }
+                                { new: true, upsert: true }
                             )
                             .exec()
                             .then(
