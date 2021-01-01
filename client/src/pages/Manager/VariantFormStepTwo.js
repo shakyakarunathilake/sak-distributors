@@ -12,6 +12,9 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 //Default Image
 import product from '../../images/product.svg';
 
+//Shared functions 
+import NumberWithCommas from '../NumberWithCommas';
+
 //SCSS Styles
 import style from './VariantFormStepTwo.module.scss';
 
@@ -272,7 +275,7 @@ export default function VariantFormStepTwo(props) {
                                 control={control}
                                 render={({ field: { value } }) => (
                                     <Typography className={style.input}>
-                                        Rs. {value}
+                                        Rs. {NumberWithCommas(value)}
                                     </Typography>
                                 )}
                             />
@@ -289,7 +292,7 @@ export default function VariantFormStepTwo(props) {
                                 control={control}
                                 render={({ field: { value } }) => (
                                     <Typography className={style.input}>
-                                        Rs. {value}
+                                        Rs. {NumberWithCommas(value)}
                                     </Typography>
                                 )}
                             />
@@ -306,7 +309,7 @@ export default function VariantFormStepTwo(props) {
                                 control={control}
                                 render={({ field: { value } }) => (
                                     <Typography className={style.input}>
-                                        Rs. {value}
+                                        Rs. {NumberWithCommas(value)}
                                     </Typography>
                                 )}
                             />
@@ -323,7 +326,7 @@ export default function VariantFormStepTwo(props) {
                                 control={control}
                                 render={({ field: { value } }) => (
                                     <Typography className={style.input}>
-                                        Rs. {value}
+                                        Rs. {NumberWithCommas(value)}
                                     </Typography>
                                 )}
                             />

@@ -32,7 +32,6 @@
         display: grid;
         grid-template-columns: min-content auto;
         grid-column-gap: 20px;
-        margin: auto;
 
         .columnA {
             display: grid;
@@ -42,6 +41,7 @@
                 border-radius: 50%;
                 color: #6d6d6d;
                 padding: 20px 10px;
+                // position: relative;
 
                 .imgWrapper {
                     height: 260px;
@@ -53,26 +53,6 @@
                         height: 260px;
                         width: 260px;
                         object-fit: contained;
-                    }
-
-                    .uploadWrapper {
-                        background-color: #c4c4c4;
-                        height: 60px;
-                        width: 260px;
-                        margin-top: -45px;
-                        position: relative;
-                        padding-top: 5px;
-                        text-align: center;
-                    }
-
-                    .label {
-                        font-size: 1.2em;
-                        font-weight: 600;
-                        color: $secondaryMain;
-                    }
-
-                    .pointer {
-                        cursor: pointer;
                     }
                 }
             }
@@ -97,6 +77,8 @@
         }
 
         .columnB {
+            margin: auto 0;
+
             .redFont {
                 color: red;
                 font-size: 0.7em;

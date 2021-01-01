@@ -111,38 +111,18 @@ export default function VariantFormStepOne(props) {
 
                     <div className={style.image}>
                         <div className={style.imgWrapper}>
-                            <img src={file ? file : product} alt="" />
-                            <div className={style.uploadWrapper}>
-                                <Controller
-                                    name={"productimage"}
-                                    control={control}
-                                    rules={{
-                                        required: { value: true, message: "Required *" }
-                                    }}
-                                    render={({ field: { onChange } }) => (
-                                        <input
-                                            disabled
-                                            type="file"
-                                            id="product-image"
-                                            className={style.input}
-                                            hidden
-                                            onChange={(e) => {
-                                                onChange(e.target.files[0]);
-                                                handleImageChange(e);
-                                            }}
-                                        />
-                                    )}
-                                />
-                                <label
-                                    className={classnames(style.label, action === 'Create' && style.pointer)}
-                                    htmlFor="product-image"
-                                >
-                                    Upload *
-                                </label>
-                            </div>
+                            <Controller
+                                render={({ field: { value } }) => (
+                                    typeof value === "string" ?
+                                        <img src={value ? `http://${value}` : product} alt="" /> :
+                                        <img src={value ? file : product} alt="" />
+                                )}
+                                name={"productimage"}
+                                control={control}
+                            />
                         </div>
-                        <div className={style.partialCircle}></div>
                     </div>
+
 
                     <div className={style.productId}>
                         <Controller
@@ -539,6 +519,7 @@ export default function VariantFormStepOne(props) {
                                     error={errors.variantaddedby ? true : false}
                                     size="small"
                                     label="Added By"
+                                    disabled={action === "Edit"}
                                 />
                             )}
                             name={"variantaddedby"}
@@ -584,6 +565,7 @@ export default function VariantFormStepOne(props) {
                                         error={errors.variantaddeddate ? true : false}
                                         size="small"
                                         label="Added Date *"
+                                        disabled={action === "Edit"}
                                     />
                                 )}
                                 name={"variantaddeddate"}

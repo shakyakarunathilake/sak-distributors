@@ -6,7 +6,6 @@
     box-sizing: border-box;
     width: 870px;
     min-height: 719px;
-    max-height: 775px;
 
     .header {
         .title {
@@ -33,7 +32,6 @@
         display: grid;
         grid-template-columns: min-content auto;
         grid-column-gap: 20px;
-        margin: auto 0;
 
         .columnA {
             display: grid;
@@ -79,6 +77,8 @@
         }
 
         .columnB {
+            margin: auto 0;
+
             .input {
                 text-align: left;
                 font-size: 1em;
