@@ -23,7 +23,7 @@ export default function ProductFormStepTwo(props) {
         control,
         backFormStep,
         onSubmit,
-        file
+        file,
     } = props;
 
     return (
@@ -62,9 +62,9 @@ export default function ProductFormStepTwo(props) {
                         <div className={style.imgWrapper}>
                             <Controller
                                 render={({ field: { value } }) => (
-                                    action === "Create" ?
+                                    typeof value === "string" ?
+                                        <img src={value ? `http://${value}` : product} alt="" /> :
                                         <img src={value ? file : product} alt="" />
-                                        : <img src={value ? `http://${value}` : product} alt="" />
                                 )}
                                 name={"productimage"}
                                 control={control}
