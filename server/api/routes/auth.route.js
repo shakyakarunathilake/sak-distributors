@@ -93,6 +93,8 @@ router.post("/signin", (req, res, next) => {
                 employeeimage: employee[0].employeeimage,
                 firsttimelogin: employee[0].firsttimelogin,
                 contactnumber: employee[0].contactnumber,
+                adminprivileges: employee[0].adminprivileges,
+                analyticprivileges: employee[0].analyticprivileges,
                 accessToken: token
             });
         })
