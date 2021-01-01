@@ -327,7 +327,7 @@ router.post("/update-by-id/:productid", uploads.single("productimage"), (req, re
                     'name': req.body.name,
                     'status': req.body.status,
                     'supplier': req.body.supplier,
-                    // 'productimage': req.body.productimage,
+                    'productimage': `localhost:8080/${req.params.productid}.jpg`,
                 }
             },
             { new: true, upsert: true }
