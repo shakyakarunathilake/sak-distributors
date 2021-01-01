@@ -78,7 +78,7 @@ export default function ProductsForm(props) {
         }
 
         if (action === 'Edit') {
-            productFormData.append('productimage', getValues('productimage'));
+            // productFormData.append('productimage', getValues('productimage'));
             productFormData.append('name', getValues('name'));
             productFormData.append('supplier', getValues('supplier'));
             productFormData.append("status", getValues('status'));

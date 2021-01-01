@@ -327,7 +327,7 @@ router.post("/update-by-id/:productid", uploads.single("productimage"), (req, re
                     'name': req.body.name,
                     'status': req.body.status,
                     'supplier': req.body.supplier,
-                    'productimage': req.body.productimage,
+                    // 'productimage': req.body.productimage,
                 }
             },
             { new: true, upsert: true }
@@ -386,8 +386,6 @@ router.post("/update-by-id/:productid/:variantid", uploads.single("productimage"
             { "productid": req.params.productid, "variants.variantid": req.params.variantid },
             {
                 '$set': {
-                    'productid': req.body.productid,
-                    'status': req.body.productstatus,
                     'variants.$.type': req.body.type,
                     'variants.$.piecespercase': req.body.piecespercase,
                     'variants.$.bulkprice': req.body.bulkprice,
@@ -395,8 +393,6 @@ router.post("/update-by-id/:productid/:variantid", uploads.single("productimage"
                     'variants.$.price': req.body.price,
                     'variants.$.offercaption': req.body.offercaption,
                     'variants.$.status': req.body.variantstatus,
-                    'variants.$.variantaddeddate': req.body.variantaddeddate,
-                    'variants.$.variantaddedby': req.body.variantaddedby
                 }
             },
             { upsert: true }
