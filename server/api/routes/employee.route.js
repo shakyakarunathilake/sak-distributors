@@ -249,8 +249,36 @@ router.get("/:employeeid", (req, res, next) => {
 //Update employee data by Employee ID
 router.post("/update-by-id/:employeeid", uploads.single('employeeimage'), (req, res, next) => {
 
+    const dob = new Date(req.body.dob).toISOString().split('T')[0];
+    const hireddate = new Date(req.body.hireddate).toISOString().split('T')[0];
+
     Employee
-        .findOneAndUpdate({ employeeid: req.params.employeeid }, req.body, { new: true })
+        .findOneAndUpdate(
+            { employeeid: req.params.employeeid },
+            {
+                '$set': {
+                    'employeeid': req.body.employeeid,
+                    'employeeimage': `localhost:8080/${req.body.employeeid}.jpg`,
+                    'analyticprivileges': req.body.analyticprivileges,
+                    'fullname': req.body.fullname,
+                    'title': req.body.title,
+                    'firstname': req.body.firstname,
+                    'lastname': req.body.lastname,
+                    'email': req.body.email,
+                    'dob': dob,
+                    'hireddate': hireddate,
+                    'hiredby': req.body.hiredby,
+                    'address': req.body.address,
+                    'nic': req.body.nic,
+                    'gender': req.body.gender,
+                    'contactnumber': req.body.contactnumber,
+                    'designation': req.body.designation,
+                    'civilstatus': req.body.civilstatus,
+                    'employeestatus': req.body.employeestatus,
+                }
+            },
+            { new: true }
+        )
         .exec()
         .then(doc => {
             res.status(200).json({
