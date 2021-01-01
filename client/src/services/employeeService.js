@@ -49,7 +49,7 @@ export const getRouteOptions = () => ([
     { id: "rt003", title: "Rambukkana - Parape" },
     { id: "rt004", title: "Rambukkana - Mawanella" },
     { id: "rt005", title: "Rambukkana - Mawathagama" },
-    { id: "rt006", title: "Rambukkana - Hatharaliyadda" },
+    // { id: "rt006", title: "Rambukkana - Hatharaliyadda" },
 ])
 
 export const getSupplierOptions = () => ([
