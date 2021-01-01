@@ -60,8 +60,6 @@ router.get("/get-next-regno", (req, res, next) => {
 //Create an employee
 router.post("/create-employee", uploads.single('employeeimage'), (req, res, next) => {
 
-    console.log(req.body);
-
     const dob = new Date(req.body.dob).toISOString().split('T')[0];
     const hireddate = new Date(req.body.hireddate).toISOString().split('T')[0];
 
@@ -74,6 +72,9 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
         } else {
             firstpassword = nic.substring(8, 12) + "-" + dob;
         }
+
+        console.log("****FIRST PASSWORD****")
+        console.log(firstpassword)
 
         bcrypt.hash(firstpassword, 10, (err, hash) => {
             if (err) {
@@ -125,7 +126,7 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
                             type: 'error',
                             alert: `Something went wrong. Could not add employee`,
                         });
-                        console.log("Error: ", err)
+                        console.log(err)
                     })
             };
         });
@@ -168,7 +169,7 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
                     type: 'error',
                     alert: `Something went wrong. Could not add employee`,
                 });
-                console.log("Error: ", err)
+                console.log(err)
             })
     }
 });
@@ -190,8 +191,6 @@ router.get("/get-all-employees-table-data", (req, res, next) => {
                 "status": x.employeestatus,
                 "hireddate": x.hireddate,
             }))
-
-            console.log("TBODY: ", tbody);
 
             res.status(200).json({
                 message: "Handeling GET requests to /get-all-employees-table-data",
@@ -249,7 +248,6 @@ router.get("/:employeeid", (req, res, next) => {
 
 //Update employee data by Employee ID
 router.post("/update-by-id/:employeeid", uploads.single('employeeimage'), (req, res, next) => {
-    console.log("UPDATE: ", req.body);
 
     Employee
         .findOneAndUpdate({ employeeid: req.params.employeeid }, req.body, { new: true })
