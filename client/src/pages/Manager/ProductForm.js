@@ -67,13 +67,22 @@ export default function ProductsForm(props) {
 
         const productFormData = new formData();
 
-        productFormData.append('productid', getValues('productid'));
-        productFormData.append('productimage', getValues('productimage'));
-        productFormData.append('name', getValues('name'));
-        productFormData.append('supplier', getValues('supplier'));
-        productFormData.append('addeddate', getValues('addeddate'));
-        productFormData.append("addedby", getValues('addedby'));
-        productFormData.append("status", getValues('status'));
+        if (action === 'Create') {
+            productFormData.append('productid', getValues('productid'));
+            productFormData.append('productimage', getValues('productimage'));
+            productFormData.append('name', getValues('name'));
+            productFormData.append('supplier', getValues('supplier'));
+            productFormData.append('addeddate', getValues('addeddate'));
+            productFormData.append("addedby", getValues('addedby'));
+            productFormData.append("status", getValues('status'));
+        }
+
+        if (action === 'Edit') {
+            productFormData.append('productimage', getValues('productimage'));
+            productFormData.append('name', getValues('name'));
+            productFormData.append('supplier', getValues('supplier'));
+            productFormData.append("status", getValues('status'));
+        }
 
         addOrEdit(productFormData, getValues('productid'));
     };

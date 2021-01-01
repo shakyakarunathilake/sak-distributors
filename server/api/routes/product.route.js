@@ -328,13 +328,40 @@ router.post("/update-by-id/:productid", uploads.single("productimage"), (req, re
                     'status': req.body.status,
                     'supplier': req.body.supplier,
                     'productimage': req.body.productimage,
-                    'addeddate': req.body.addeddate,
-                    'addedby': req.body.addedby,
                 }
             },
-            { upsert: true }
+            { new: true, upsert: true }
         )
         .exec()
+        .then(doc => {
+
+            Store
+                .findOneAndUpdate(
+                    { "productid": doc.productid },
+                    {
+                        '$set': {
+                            'name': doc.name,
+                        }
+                    },
+                    { new: true, upsert: true }
+                )
+                .exec()
+                .then(() =>
+                    console.log("********  STORE UPDATED  ********")
+                )
+                .catch(error => {
+
+                    console.log("******** ERROR WHILE UPDATING THE STORE  ********")
+                    console.log(error)
+
+                    res.status(200).json({
+                        type: 'error',
+                        alert: `Something went wrong. Could not update store`
+                    });
+                });
+
+            return doc;
+        })
         .then(doc =>
             res.status(200).json({
                 message: "Handling POST requests to /products/update-by-id/:productid, PRODUCT UPDATED",
