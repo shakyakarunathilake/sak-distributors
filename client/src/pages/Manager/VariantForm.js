@@ -30,7 +30,7 @@ export default function VariantForm(props) {
         (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
         (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
 
-    const { handleSubmit, formState: { errors, isValid }, control, watch, reset, setValue, getValues, trigger } = useForm({
+    const { handleSubmit, formState: { errors, isValid }, control, watch, clearErrors, reset, setValue, getValues, trigger } = useForm({
         mode: "all",
         defaultValues: {
             productid: productRecords ? productRecords.productid : '',
@@ -83,6 +83,7 @@ export default function VariantForm(props) {
             setValue("addedby", option.addedby);
             setValue("variantid", option.variantid);
             setValue("productstatus", option.status);
+            clearErrors();
         }
     }
 
@@ -100,18 +101,31 @@ export default function VariantForm(props) {
 
         const productFormData = new formData();
 
-        productFormData.append('productid', getValues('productid'));
-        productFormData.append("variantid", getValues('variantid'));
-        productFormData.append('type', getValues('type'));
-        productFormData.append("offercaption", getValues('offercaption'));
-        productFormData.append("piecespercase", getValues('piecespercase'));
-        productFormData.append("bulkprice", getValues('bulkprice'));
-        productFormData.append("purchaseprice", getValues('purchaseprice'));
-        productFormData.append("sellingprice", getValues('sellingprice'));
-        productFormData.append("mrp", getValues('mrp'));
-        productFormData.append("variantaddedby", getValues('variantaddedby'));
-        productFormData.append("variantaddeddate", getValues('variantaddeddate'));
-        productFormData.append("variantstatus", getValues('variantstatus'));
+        if (action === 'Create') {
+            productFormData.append('productid', getValues('productid'));
+            productFormData.append("variantid", getValues('variantid'));
+            productFormData.append('type', getValues('type'));
+            productFormData.append("offercaption", getValues('offercaption'));
+            productFormData.append("piecespercase", getValues('piecespercase'));
+            productFormData.append("bulkprice", getValues('bulkprice'));
+            productFormData.append("purchaseprice", getValues('purchaseprice'));
+            productFormData.append("sellingprice", getValues('sellingprice'));
+            productFormData.append("mrp", getValues('mrp'));
+            productFormData.append("variantaddedby", getValues('variantaddedby'));
+            productFormData.append("variantaddeddate", getValues('variantaddeddate'));
+            productFormData.append("variantstatus", getValues('variantstatus'));
+        }
+
+        if (action === 'Edit') {
+            productFormData.append('type', getValues('type'));
+            productFormData.append("offercaption", getValues('offercaption'));
+            productFormData.append("piecespercase", getValues('piecespercase'));
+            productFormData.append("bulkprice", getValues('bulkprice'));
+            productFormData.append("purchaseprice", getValues('purchaseprice'));
+            productFormData.append("sellingprice", getValues('sellingprice'));
+            productFormData.append("mrp", getValues('mrp'));
+            productFormData.append("variantstatus", getValues('variantstatus'));
+        }
 
         addVariant(productFormData, getValues('productid'), getValues('variantid'));
     };
