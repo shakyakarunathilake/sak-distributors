@@ -139,21 +139,29 @@ export default function Page(props) {
     );
 
     return (
+
         <div className={style.container}>
+
             <Drawer
                 anchor={'left'}
                 classes={{ paper: classes.paper }}
                 onClose={toggleDrawer(false)}
                 open={state}
             >
+
                 <div className={classes.userInfo}>
+
                     <Avatar alt={firstname} className={classes.avatar} src={`http://${employeeimage}`} />
                     <div className={classes.designation}>{designation}</div>
                     <div className={classes.name}>{firstname} {lastname}</div>
                     <div className={classes.email}>{email}</div>
+
                 </div>
+
                 {list()}
+
                 <div className={classes.drawerFooter}>
+
                     <div
                         className={classes.footerDiv}
                         onClick={() => { window.location.replace("http://localhost:3000/change-password") }}
@@ -163,6 +171,7 @@ export default function Page(props) {
                         </div>
                         Change Password
                     </div>
+
                     <div
                         className={classes.footerDiv}
                         onClick={() => { window.location.replace("http://localhost:3000/") }}
@@ -172,9 +181,13 @@ export default function Page(props) {
                         </div>
                         Log Out
                     </div>
+
                 </div>
+
             </Drawer>
+
             <div className={style.pageHeader}>
+
                 <div className={style.iconDiv}>
                     <Tooltip title="Menu" arrow>
                         <MenuIcon
@@ -183,21 +196,27 @@ export default function Page(props) {
                         />
                     </Tooltip>
                 </div>
+
                 <div className={style.title}>
                     {props.title}
                 </div>
+
                 <div className={style.iconDiv}>
                     <Tooltip title="Notifications" arrow>
                         <NotificationsNoneIcon className={style.icon} />
                     </Tooltip>
                 </div>
+
                 <div className={style.avatarDiv}>
                     <Avatar alt={firstname} className={style.avatar} src={`http://${employeeimage}`} />
                 </div>
+
             </div>
+
             <div className={style.pageContent}>
                 {props.children}
             </div>
+
         </div>
     );
 }
