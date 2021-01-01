@@ -31,7 +31,14 @@ router.put("/change-password/", (req, res, next) => {
                             console.log(err);
                         } else {
                             Employee
-                                .findOneAndUpdate({ employeeid: req.body.employeeid }, { password: hash, firsttimelogin: req.body.firsttimelogin }, { new: true })
+                                .findOneAndUpdate(
+                                    { employeeid: req.body.employeeid },
+                                    {
+                                        password: hash, firsttimelogin:
+                                            req.body.firsttimelogin
+                                    },
+                                    { new: true }
+                                )
                                 .exec()
                                 .then(doc => {
 
