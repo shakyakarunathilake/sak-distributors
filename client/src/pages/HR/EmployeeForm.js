@@ -21,7 +21,6 @@ export default function EmployeesForm(props) {
 
     const [file, setFile] = useState("");
     const [formStep, setFormStep] = useState(0);
-    const [limitedAccess, setLimitedAccess] = useState(false);
 
     const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
     const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
@@ -33,12 +32,13 @@ export default function EmployeesForm(props) {
         (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
         (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
 
-    const { handleSubmit, formState: { errors, isValid }, control, reset, setValue, trigger, getValues, clearErrors } = useForm({
+    const { handleSubmit, formState: { errors, isValid }, control, reset, setValue, trigger, getValues, watch } = useForm({
         mode: "all",
         defaultValues: {
             employeeimage: employeeRecords ? employeeRecords.employeeimage : '',
             employeeid: employeeRecords ? employeeRecords.employeeid : nextEmpId,
             analyticprivileges: employeeRecords ? employeeRecords.analyticprivileges : false,
+            adminprivileges: employeeRecords ? employeeRecords.adminprivileges : false,
             fullname: employeeRecords ? employeeRecords.fullname : '',
             title: employeeRecords ? employeeRecords.title : '',
             firstname: employeeRecords ? employeeRecords.firstname : '',
@@ -77,12 +77,9 @@ export default function EmployeesForm(props) {
 
     const handleDesignationChange = e => {
         if ((e === "Driver") || (e === "Product Handler") || (e === "Warehouse Worker")) {
-            setLimitedAccess(true);
             setValue("employeestatus", "Limited Access");
-            clearErrors("employeestatus");
         }
         else {
-            setLimitedAccess(false);
             setValue("employeestatus", "");
         }
     }
@@ -90,7 +87,6 @@ export default function EmployeesForm(props) {
     const resetForm = () => {
         reset();
         setFile("");
-        setLimitedAccess("");
     }
 
     const handleImageChange = e => {
@@ -103,8 +99,8 @@ export default function EmployeesForm(props) {
 
         employeeFormData.append('employeeid', getValues('employeeid'));
         employeeFormData.append('employeeimage', getValues('employeeimage'));
-        employeeFormData.append('analyticprivileges', getValues('analyticprivileges') ? getValues('analyticprivileges') : false);
-        employeeFormData.append('adminprivileges', false);
+        employeeFormData.append('analyticprivileges', getValues('analyticprivileges'));
+        employeeFormData.append('adminprivileges', getValues('adminprivileges'));
         employeeFormData.append('fullname', getValues('fullname'));
         employeeFormData.append('title', getValues('title'));
         employeeFormData.append('firstname', getValues('firstname'));
@@ -139,7 +135,7 @@ export default function EmployeesForm(props) {
                         control={control}
                         file={file}
                         completeFormStep={completeFormStep}
-                        limitedAccess={limitedAccess}
+                        watch={watch}
                         resetForm={resetForm}
                         action={action}
                         setOpenPopup={setOpenPopup}

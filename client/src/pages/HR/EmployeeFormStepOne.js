@@ -31,7 +31,7 @@ export default function EmployeeFormStepOne(props) {
         control,
         file,
         completeFormStep,
-        limitedAccess,
+        watch,
         resetForm,
         action,
         setOpenPopup,
@@ -134,7 +134,8 @@ export default function EmployeeFormStepOne(props) {
 
                     </div>
 
-                    {limitedAccess ? '' :
+                    {
+                        watch('employeestatus') !== "Limited Access" &&
 
                         <div className={style.analyticsPrivileges}>
 
@@ -168,6 +169,7 @@ export default function EmployeeFormStepOne(props) {
 
                         </div>
                     }
+
                 </div>
 
                 <div className={style.columnB}>
@@ -282,7 +284,7 @@ export default function EmployeeFormStepOne(props) {
                                 name={"nic"}
                                 rules={{
                                     required: { value: true, message: "Required *" },
-                                    pattern: { value:  /^([0-9]{9}[x|X|v|V]|[0-9]{12})$/, message: "Invalid" }
+                                    pattern: { value: /^([0-9]{9}[x|X|v|V]|[0-9]{12})$/, message: "Invalid" }
                                 }}
                             />
                         </div>

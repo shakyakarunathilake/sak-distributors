@@ -222,11 +222,28 @@ export default function EmployeeFormStepTwo(props) {
 
                     <div className={style.row}>
                         <div className={style.boldText}>
-                            Admin Privileges
+                            Analytics Privileges
                         </div>
                         <div className={style.employeeData}>
                             <Controller
                                 name={"analyticprivileges"}
+                                control={control}
+                                render={({ field: { value } }) => (
+                                    <Typography className={style.input}>
+                                        {value ? "Given" : "Not Given"}
+                                    </Typography>
+                                )}
+                            />
+                        </div>
+                    </div>
+
+                    <div className={style.row}>
+                        <div className={style.boldText}>
+                            Admin Privileges
+                        </div>
+                        <div className={style.employeeData}>
+                            <Controller
+                                name={"adminprivileges"}
                                 control={control}
                                 render={({ field: { value } }) => (
                                     <Typography className={style.input}>
