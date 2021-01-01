@@ -93,12 +93,28 @@ export default function ChangePassword() {
                     "currentpassword": values.currentpassword,
                     "newpassword": values.newpassword,
                     "firsttimelogin": false
-                }, {
-                    headers: {
-                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                },
+                    {
+                        headers: {
+                            'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                        }
                     }
-                })
+                )
                 .then(res => {
+
+                    function update(value) {
+
+                        let prevData = JSON.parse(sessionStorage.getItem('Auth'));
+
+                        Object.keys(value).forEach(function (val, key) {
+                            prevData[val] = value[val];
+                        })
+
+                        sessionStorage.setItem('Auth', JSON.stringify(prevData));
+                    }
+
+                    update({ firsttimelogin: false })
+
                     setAlert(res.data.message);
                     setType(res.data.type);
                     handleAlert();
@@ -107,11 +123,8 @@ export default function ChangePassword() {
                     console.log(err);
                 });
             ;
-            reset({
-                currentpassword: '',
-                newpassword: '',
-                confirmpassword: '',
-            });
+
+            reset();
         }
     }
 
