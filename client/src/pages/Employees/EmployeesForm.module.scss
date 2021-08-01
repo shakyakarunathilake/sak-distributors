@@ -1,0 +1,94 @@
+@import "../../styles/variables";
+
+.container {
+    padding: 20px;
+    width: 1000px;
+
+    .header {
+        font-size: 1.8em;
+        font-weight: 600;
+        margin: 10px 10px 20px 10px;
+    }
+
+    .body {
+        .form {
+            display: grid;
+            grid-template-rows: auto min-content;
+
+            .rowA {
+                display: grid;
+                grid-template-columns: auto min-content;
+                grid-column-gap: 20px;
+                .columnA {
+                    .row {
+                        padding: 10px;
+                    }
+
+                    .gridrow {
+                        display: grid;
+                        grid-template-columns: calc(50% - 10px) calc(50% - 10px);
+                        grid-column-gap: 20px;
+                        padding: 10px;
+                    }
+                }
+
+                .columnB {
+
+                    .image {
+                        border-radius: 50%;
+                        color: $secondaryMain;
+                        padding: 10px;
+
+                        img {
+                            height: 260px;
+                            width: 260px;
+                            object-fit: contained;
+                            z-index: 0;
+                        }
+
+                        .partialCircle {
+                            width: 260px;
+                            height: 260px;
+                            background: #c4c4c4;
+                            border-radius: 50%;
+                            position: absolute;
+                            top: 99.5px;
+                            clip: rect(210px, 260px, 260px, 0);
+                            z-index: 5;
+                        }
+
+                        .partialCircle:after {
+                            position: relative;
+                            text-align: center;
+                            margin-top: 215px;
+                            display: block;
+                            color: $secondaryFontColor;
+                            font-size: 1.2em;
+                            font-weight: 600;
+                            content: "Upload";
+                        }
+                    }
+
+                    .employeeId {
+                        color: $secondaryFontColor;
+                        font-size: 1em;
+                        text-align: center;
+                    }
+                }
+            }
+
+            .rowB {
+                padding: 10px;
+                text-align: right;
+
+                Button {
+                    font-size: 1em;
+                    margin-right: 20px;
+                    margin-top: 20px;
+                    height: 45px;
+                    width: 210px;
+                }
+            }
+        }
+    }
+}

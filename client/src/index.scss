@@ -1,0 +1,16 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+body {
+  font-family: "Poppins";
+  font-size: 15px;
+  margin: 0;
+  padding: 0;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// @font-face {
+//   font-family: "Poppins";
+//   src: local("Poppins"), url("./shared/fonts/Poppins/Poppins-Regular.ttf") format("truetype");
+// }

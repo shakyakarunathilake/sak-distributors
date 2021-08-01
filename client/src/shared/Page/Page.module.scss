@@ -1,0 +1,21 @@
+@import "../../styles/variables";
+
+.container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    display: grid;
+    grid-template-columns: min-content auto;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    background: $layoutColor;
+
+    .pageContent {
+        background: #ffffff;
+        padding-left: 0px;
+        overflow: auto;
+    }
+}
