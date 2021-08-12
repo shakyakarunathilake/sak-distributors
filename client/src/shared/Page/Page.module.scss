@@ -7,15 +7,43 @@
     right: 0;
     left: 0;
     display: grid;
-    grid-template-columns: min-content auto;
+    grid-template-rows: min-content auto;
     overflow: hidden;
     height: 100vh;
     width: 100vw;
     background: $layoutColor;
 
-    .pageContent {
-        background: #ffffff;
-        padding-left: 0px;
-        overflow: auto;
+    .drawer {
+        background-color: $primaryDark;
+        width: 250px;
+    }
+
+    .pageHeader {
+        border-bottom: 1px solid $borderColor;
+        box-sizing: border-box;
+        display: grid;
+        grid-template-columns: min-content auto min-content;
+        width: 100vw;
+        padding: 20px;
+
+        .iconDiv {
+            display: flex;
+            align-items: center;
+
+            .icon {
+                font-size: 2em;
+            }
+        }
+
+        .title {
+            font-size: 1.8em;
+            font-weight: 600;
+            padding-left: 25px;
+        }
+
+        .avatar {
+            height: 45px;
+            width: 45px;
+        }
     }
 }
