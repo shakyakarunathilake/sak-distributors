@@ -8,9 +8,7 @@ import Page from '../shared/page/page.js'
 const theme = createTheme({
   palette: {
     primary: {
-      light: '#829CD0',
-      main: '#20368F',
-      dark: '#000B4F'
+      main: '#000B4F'
     },
     secondary: {
       main: '#6D6D6D',
