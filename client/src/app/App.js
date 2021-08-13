@@ -3,7 +3,7 @@ import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 //Development Stage
-import Page from '../shared/page/page.js'
+import Page from '../shared/Page/Page.js'
 
 const theme = createTheme({
   palette: {

@@ -4,9 +4,6 @@ import React, { useState } from 'react';
 //Development Stage Imports
 import Photo from './Photo.jpg';
 
-//Images
-import Logo from '../../images/Logo.svg';
-
 //Material UI 
 import Avatar from '@material-ui/core/Avatar';
 import Drawer from '@material-ui/core/Drawer';
@@ -23,8 +20,7 @@ import PeopleIcon from '@material-ui/icons/People';
 import StorageIcon from '@material-ui/icons/Storage';
 
 //SCSS Styles
-import style from './page.module.scss';
-import shadows from '@material-ui/core/styles/shadows';
+import style from './Page.module.scss';
 
 const useStyles = makeStyles(theme => ({
     paper: {
