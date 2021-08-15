@@ -26,6 +26,14 @@ const useStyles = makeStyles(theme => ({
     paper: {
         background: "#323232",
     },
+    avatar: {
+        height: 50,
+        width: 50,
+        margin: "30px auto",
+    },
+    userName: {
+        color: "#6d6d6d" 
+    },    
     list: {
         border: 0,
         color: "white",
@@ -109,6 +117,12 @@ function Page(props) {
                 onClose={toggleDrawer(false)}
                 open={state}
             >
+                <div className={classes.userInfo}>
+                    <Avatar alt="Khione" className={classes.avatar} src={Photo} />
+                    <span className={classes.userName}>Shakya Karunathilake</span> 
+                    <br/>
+                    <span className={classes.userEmail}>karunathilakeshakya@gmail.com</span> 
+                </div>
                 {list()}
             </Drawer>
             <div className={style.pageHeader}>
@@ -123,7 +137,7 @@ function Page(props) {
                     Page Header
                 </div>
                 <div>
-                    <Avatar alt="Khione" className={style.avatar} src={Photo} />
+
                 </div>
             </div>
             <div className="pageContent">
