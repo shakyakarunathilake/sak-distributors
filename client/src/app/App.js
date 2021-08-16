@@ -4,11 +4,11 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 //Development Stage
 import Page from '../shared/Page/Page.js';
-import EmployeesForm from '../component/EmployeesPage/EmployeesForm/EmployeesForm';
+import EmployeesForm from '../pages/EmployeesPage/EmployeesForm/EmployeesForm';
 
 //Pages
-import Login from '../component/LoginPage/Login';
-import Employees from '../component/EmployeesPage/Employees';
+import Login from '../pages/LoginPage/Login';
+import Employees from '../pages/EmployeesPage/Employees';
 
 const theme = createTheme({
   palette: {
