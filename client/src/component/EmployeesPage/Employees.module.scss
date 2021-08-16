@@ -1,0 +1,21 @@
+@import "../../styles/variables";
+
+.container {
+    .actionTab {
+        text-align: right;
+
+        .button {
+            color: $inverseFontColor;
+            font-size: 1em;
+            margin: 15px;
+        }
+
+        .red {
+            background: $warningColor;
+        }
+
+        .icon {
+            margin-right: 10px;
+        }
+    }
+}
