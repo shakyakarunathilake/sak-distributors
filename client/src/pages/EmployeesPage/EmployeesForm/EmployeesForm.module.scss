@@ -1,0 +1,19 @@
+@import "../../../styles/variables";
+
+.container {
+    padding: 20px;
+    width: 700px;
+
+    .header {
+        font-size: 1.8em;
+        font-weight: 600;
+        margin: 10px 10px 20px 10px;
+    }
+
+    .body {
+        .form {
+            display: grid;
+            grid-template-rows: auto min-content;
+        }
+    }
+}

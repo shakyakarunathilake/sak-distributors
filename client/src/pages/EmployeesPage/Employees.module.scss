@@ -2,11 +2,13 @@
 
 .container {
     .actionTab {
+        box-sizing: border-box;
+        padding-right: 10px;
         text-align: right;
 
         .button {
             color: $inverseFontColor;
-            font-size: 1em;
+            font-size: 0.8em;
             margin: 15px;
         }
 
