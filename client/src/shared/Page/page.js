@@ -27,28 +27,37 @@ const useStyles = makeStyles(theme => ({
         background: "#2B6684",
     },
     avatar: {
-        height: 50,
-        width: 50,
-        margin: "30px auto",
+        height: 70,
+        width: 70,
+        margin: "30px auto 10px auto",
     },
     userInfo: {
-        color: "#6d6d6d",
-        paddingBottom: 30,
+        color: "white",
+        fontSize: 13,
+        paddingBottom: 15,
         textAlign: "center",
+    },
+    name: {
+        letterSpacing: 1,
+    },
+    email: {
+        fontSize: 12,
     },
     list: {
         border: 0,
         color: "white",
+        narginTop: 10,
         width: 300,
     },
     listItem: {
         borderRadius: "18px",
+        fontSize: 16,
         margin: "15px 10px",
         width: 280,
 
         '&:hover': {
             background: "#7DADC6",
-            fontSize: 16,
+            fontSize: 17,
             transitionDuration: "0.3s",
         },
     },
@@ -114,15 +123,14 @@ function Page(props) {
         <div className={style.container}>
             <Drawer
                 anchor={'left'}
-                background = "primary"
                 classes={{ paper: classes.paper }}
                 onClose={toggleDrawer(false)}
                 open={state}
             >
                 <div className={classes.userInfo}>
                     <Avatar alt="Khione" className={classes.avatar} src={Photo} />
-                    <div>Shakya Karunathilake</div>
-                    <div>karunathilakeshakya@gmail.com</div>
+                    <div className={classes.name}>Shakya Karunathilake</div>
+                    <div className={classes.email}>karunathilakeshakya@gmail.com</div>
                 </div>
                 {list()}
             </Drawer>
