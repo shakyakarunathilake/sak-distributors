@@ -1,5 +1,6 @@
 //React 
 import React, { useState } from 'react';
+import classnames from 'classnames';
 
 //Development Stage Imports
 import Photo from './Photo.jpg';
@@ -17,6 +18,7 @@ import BusinessIcon from '@material-ui/icons/Business';
 import MenuIcon from '@material-ui/icons/Menu';
 import PersonIcon from '@material-ui/icons/Person';
 import PeopleIcon from '@material-ui/icons/People';
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import StorageIcon from '@material-ui/icons/Storage';
 
 //SCSS Styles
@@ -67,7 +69,7 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
-function Page(props) {
+export default function Page(props) {
 
     const classes = useStyles();
     const [state, setState] = useState();
@@ -142,11 +144,12 @@ function Page(props) {
                     />
                 </div>
                 <div className={style.title}>
-                    {/* {props.title} */}
-                    Page Header
+                    {props.title}
                 </div>
-                <div>
-
+                <div className={style.iconDiv}>
+                    <PowerSettingsNewIcon
+                        className={classnames(style.icon, style.redIcon)}
+                    />
                 </div>
             </div>
             <div className="pageContent">
@@ -156,4 +159,3 @@ function Page(props) {
     );
 }
 
-export default Page;
