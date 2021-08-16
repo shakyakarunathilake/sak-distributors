@@ -4,6 +4,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 //Development Stage
 import Page from '../shared/Page/Page.js';
+import EmployeesForm from '../component/EmployeesPage/EmployeesForm/EmployeesForm';
 
 //Pages
 import Login from '../component/LoginPage/Login';
@@ -35,7 +36,7 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: '"Poppins", sans-serif',
-    fontSize: 12
+    fontSize: 10
   },
 });
 
@@ -48,6 +49,8 @@ function App() {
             <Route exact path='/page' component={Page} />
             {/* <Route exact path='/login' component={Login} /> */}
             <Route exact path='/employees' component={Employees} />
+            <Route exact path='/employees-form' component={EmployeesForm} />
+
           </Switch>
         </BrowserRouter>
       }
