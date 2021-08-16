@@ -6,7 +6,8 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Page from '../shared/Page/Page.js';
 
 //Pages
-import Login from '../pages/LoginPage/Login';
+import Login from '../component/LoginPage/Login';
+import Employees from '../component/EmployeesPage/Employees';
 
 const theme = createTheme({
   palette: {
@@ -46,6 +47,7 @@ function App() {
           <Switch>
             <Route exact path='/page' component={Page} />
             {/* <Route exact path='/login' component={Login} /> */}
+            <Route exact path='/employees' component={Employees} />
           </Switch>
         </BrowserRouter>
       }
