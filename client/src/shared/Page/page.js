@@ -24,21 +24,22 @@ import style from './Page.module.scss';
 
 const useStyles = makeStyles(theme => ({
     paper: {
-        background: "#323232",
+        background: "#2B6684",
     },
     avatar: {
         height: 50,
         width: 50,
         margin: "30px auto",
     },
-    userName: {
-        color: "#6d6d6d" 
-    },    
+    userInfo: {
+        color: "#6d6d6d",
+        paddingBottom: 30,
+        textAlign: "center",
+    },
     list: {
         border: 0,
         color: "white",
         width: 300,
-        paddingTop: "60px",
     },
     listItem: {
         borderRadius: "18px",
@@ -46,7 +47,7 @@ const useStyles = makeStyles(theme => ({
         width: 280,
 
         '&:hover': {
-            background: "#20368f",
+            background: "#7DADC6",
             fontSize: 16,
             transitionDuration: "0.3s",
         },
@@ -113,15 +114,15 @@ function Page(props) {
         <div className={style.container}>
             <Drawer
                 anchor={'left'}
+                background = "primary"
                 classes={{ paper: classes.paper }}
                 onClose={toggleDrawer(false)}
                 open={state}
             >
                 <div className={classes.userInfo}>
                     <Avatar alt="Khione" className={classes.avatar} src={Photo} />
-                    <span className={classes.userName}>Shakya Karunathilake</span> 
-                    <br/>
-                    <span className={classes.userEmail}>karunathilakeshakya@gmail.com</span> 
+                    <div>Shakya Karunathilake</div>
+                    <div>karunathilakeshakya@gmail.com</div>
                 </div>
                 {list()}
             </Drawer>
