@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 //Development Stage
 import * as employeeservice from "../../../services/employeeService";
 
 //Shared Components
-import { useForm, Form } from '../../../components/useForm';
+import { useForm } from '../../../components/useForm';
 import TextField from '../../../shared/TextField/TextField';
 import Select from '../../../shared/Select/Select';
+import DatePicker from '../../../shared/DatePicker/DatePicker';
 
 //Material UI Components
 import Button from '@material-ui/core/Button';
@@ -22,7 +23,7 @@ const initialFieldValues = {
     fullname: String,
     callingname: String,
     email: String,
-    dob: new Date(),
+    dob: Date,
     age: Number,
     address: String,
     nic: String,
@@ -36,9 +37,42 @@ const initialFieldValues = {
 
 export default function EmployeesForm() {
 
+    const validate = () => {
+        let temp = {}
+        temp.fullname = values.fullname ? "" : "This field is required";
+        // temp.callingname = values.callingname ? "" : "This field is required";
+        // temp.email = values.email ? "" : "This field is required"
+        // temp.email = (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g).test(values.email) ? "" : "Email is not valid";
+        // temp.dob = values.dob === Date ? "" : "This field is required";
+        // temp.address = values.address ? "" : "This field is required";
+        // temp.nic = values.nic ? "" : "This field is required";
+        // temp.gender = values.gender ? "" : "This field is required";
+        // temp.mobilenumber = values.mobilenumber ? "" : "This field is required";
+        // temp.mobilenumber = values.mobilenumber.length > 10 ? "" : "Mobile number is not valid";
+        // temp.telephonenumber = values.telephonenumber.length > 10 ? "" : "Telephone number is not valid";
+        // temp.designation = values.designation ? "" : "This field is required";
+        // temp.civilstatus = values.civilstatus ? "" : "This field is required";
+        // temp.employeestatus = values.employeestatus ? "" : "This field is required";
+
+        setErrors({
+            ...temp
+        })
+
+        return Object.values(temp).every(x => x == "");
+
+    }
+
+    const handleSubmit = e => {
+        e.preventDefault()
+
+        if (validate())
+            window.alert('testing...')
+    }
+
     const {
+        errors,
         values,
-        setValues,
+        setErrors,
         handleInputChange
     } = useForm(initialFieldValues);
 
@@ -53,7 +87,7 @@ export default function EmployeesForm() {
             <div className={style.body}>
                 <form
                     className={style.form}
-                    // onSubmit={handleSubmit}
+                    onSubmit={handleSubmit}
                 >
                     <div className={style.rowA}>
                         <div className={style.columnA}>
@@ -67,20 +101,7 @@ export default function EmployeesForm() {
                                     onChange={handleInputChange}
                                     placeholder="Ex: Abesinghe Mudiyanselage Shakya Madara Karunathilake"
                                     value={values?.fullname}
-                                    variant="outlined"
-                                />
-                            </div>
-                            
-                            <div className={style.row}>
-                                <TextField
-                                    //error={checkError("email")}
-                                    fullWidth
-                                    //helperText={getError("email")}
-                                    label="Email"
-                                    onChange={handleInputChange}
-                                    placeholder="Ex: karunathilakeshakya@gmail.com"
-                                    value={values?.email}
-                                    variant="outlined"
+
                                 />
                             </div>
 
@@ -94,7 +115,6 @@ export default function EmployeesForm() {
                                         onChange={handleInputChange}
                                         placeholder="Ex: Shakya"
                                         value={values?.callingname}
-                                        variant="outlined"
                                     />
                                 </div>
                                 <div className={style.column}>
@@ -106,25 +126,19 @@ export default function EmployeesForm() {
                                         onChange={handleInputChange}
                                         placeholder="Ex: 199950910239"
                                         value={values?.nic}
-                                        variant="outlined"
                                     />
                                 </div>
                             </div>
 
                             <div className={style.gridrow}>
                                 <div className={style.column}>
-                                    <TextField
+                                    <DatePicker
                                         //error={checkError("dob")}
                                         fullWidth
                                         //helperText={getError("dob")}
                                         label="Date of Birth"
                                         onChange={handleInputChange}
-                                        type="date"
                                         value={values?.dob}
-                                        variant="outlined"
-                                        InputLabelProps={{
-                                            shrink: true,
-                                        }}
                                     />
                                 </div>
                                 <div className={style.column}>
@@ -132,51 +146,10 @@ export default function EmployeesForm() {
                                         fullWidth
                                         label="Age"
                                         onChange={handleInputChange}
-                                        placeholder="22"
+                                        placeholder="Autogenerated"
                                         value={values?.age}
-                                        variant="outlined"
                                     />
                                 </div>
-                            </div>
-
-                            <div className={style.gridrow}>
-                                <div className={style.column}>
-                                    <TextField
-                                        //error={checkError("mobilenumber")}
-                                        fullWidth
-                                        //helperText={getError("mobilenumber")}
-                                        label="Mobile Number"
-                                        onChange={handleInputChange}
-                                        placeholder="Ex: 071 2686790"
-                                        value={values?.mobilenumber}
-                                        variant="outlined"
-                                    />
-                                </div>
-                                <div className={style.column}>
-                                    <TextField
-                                        //error={checkError("telephonenumber")}
-                                        fullWidth
-                                        //helperText={getError("telephonenumber")}
-                                        label="Telephone Number"
-                                        onChange={handleInputChange}
-                                        placeholder="Ex: 035 2266327"
-                                        value={values?.telephonenumber}
-                                        variant="outlined"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className={style.row}>
-                                <TextField
-                                    //error={checkError("address")}
-                                    fullWidth
-                                    //helperText={getError("address")}
-                                    label="Address"
-                                    onChange={handleInputChange}
-                                    placeholder="Ex: Weekadawatta, Kansalagamuwa, Rambukkana"
-                                    value={values?.address}
-                                    variant="outlined"
-                                />
                             </div>
 
                             <div className={style.gridrow}>
@@ -225,6 +198,56 @@ export default function EmployeesForm() {
                                 </div>
                             </div>
 
+                            <div className={style.gridrow}>
+                                <div className={style.column}>
+                                    <TextField
+                                        //error={checkError("mobilenumber")}
+                                        fullWidth
+                                        //helperText={getError("mobilenumber")}
+                                        label="Mobile Number"
+                                        onChange={handleInputChange}
+                                        placeholder="Ex: 071 2686790"
+                                        value={values?.mobilenumber}
+                                    />
+                                </div>
+                                <div className={style.column}>
+                                    <TextField
+                                        //error={checkError("telephonenumber")}
+                                        fullWidth
+                                        //helperText={getError("telephonenumber")}
+                                        label="Telephone Number"
+                                        onChange={handleInputChange}
+                                        placeholder="Ex: 035 2266327"
+                                        value={values?.telephonenumber}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className={style.row}>
+                                <TextField
+                                    //error={checkError("address")}
+                                    fullWidth
+                                    //helperText={getError("address")}
+                                    label="Address"
+                                    onChange={handleInputChange}
+                                    placeholder="Ex: Weekadawatta, Kansalagamuwa, Rambukkana"
+                                    value={values?.address}
+                                />
+                            </div>
+
+                            <div className={style.row}>
+                                <TextField
+                                    //error={checkError("email")}
+                                    fullWidth
+                                    //helperText={getError("email")}
+                                    label="Email"
+                                    onChange={handleInputChange}
+                                    placeholder="Ex: karunathilakeshakya@gmail.com"
+                                    value={values?.email}
+
+                                />
+                            </div>
+
                         </div>
 
                         <div className={style.columnB}>
@@ -240,8 +263,16 @@ export default function EmployeesForm() {
 
                     <div className={style.rowB}>
                         <Button
-                            color="primary"
-                            // onClick={handleSubmit}
+                            className={style.cancelBtn}
+                            size="medium"
+                            variant="contained"
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            className={style.submitBtn}
+                            onClick={handleSubmit}
+                            size="medium"
                             variant="contained"
                         >
                             Submit
@@ -250,6 +281,6 @@ export default function EmployeesForm() {
                 </form>
             </div>
 
-        </div>
+        </div >
     );
 };

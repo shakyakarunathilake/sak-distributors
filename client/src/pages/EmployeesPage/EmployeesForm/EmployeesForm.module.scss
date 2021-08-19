@@ -33,7 +33,6 @@
                 }
 
                 .columnB {
-
                     .image {
                         border-radius: 50%;
                         color: #6d6d6d;
@@ -85,6 +84,19 @@
                     margin-top: 20px;
                     height: 45px;
                     width: 210px;
+                }
+
+                .cancelBtn {
+                    color: #acacac;
+                    &:hover {
+                        background-color: $warningColor;
+                        color: $inverseFontColor;
+                    }
+                }
+
+                .submitBtn {
+                    background-color: $primaryMain;
+                    color: $inverseFontColor;
                 }
             }
         }

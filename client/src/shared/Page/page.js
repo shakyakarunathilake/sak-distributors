@@ -24,9 +24,9 @@ import StorageIcon from '@material-ui/icons/Storage';
 //SCSS Styles
 import style from './Page.module.scss';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
     paper: {
-        background: "#2B6684",
+        background: "#20369F",
     },
     avatar: {
         height: 70,
@@ -44,6 +44,8 @@ const useStyles = makeStyles(theme => ({
     },
     email: {
         fontSize: 12,
+        letterSpacing: 0.2,
+
     },
     list: {
         border: 0,
@@ -58,7 +60,7 @@ const useStyles = makeStyles(theme => ({
         width: 280,
 
         '&:hover': {
-            background: "#7DADC6",
+            background: "#2A40A3",
             fontSize: 17,
             transitionDuration: "0.3s",
         },
@@ -67,7 +69,7 @@ const useStyles = makeStyles(theme => ({
         marginRight: "15px"
     }
 
-}));
+});
 
 export default function Page(props) {
 

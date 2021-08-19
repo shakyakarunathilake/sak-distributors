@@ -24,14 +24,15 @@
         .iconDiv {
             display: flex;
             align-items: center;
-
             .icon {
                 font-size: 2em;
             }
+        }
 
-            // .redIcon {
-            //     color: $warningColor;
-            // }
+        .redIcon {
+            &:hover {
+                color: $warningColor;
+            }
         }
 
         .title {

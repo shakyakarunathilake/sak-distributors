@@ -3,20 +3,23 @@ import { FormControl, InputLabel, MenuItem, Select as MuiSelect } from '@materia
 
 export default function Select(props) {
 
-    const { error, helperText, label, options, onChange, value } = props;
+    const {
+        // error, helperText,
+        label, name, options, onChange, value } = props;
 
     return (
         <FormControl
             fullWidth
             variant="outlined"
-            error={error}
+        // error={error}
         >
             <InputLabel>{label}</InputLabel>
             <MuiSelect
-                renderValue={() => `${helperText}`}
+                // renderValue={() => `${helperText}`}
                 label={label}
                 onChange={onChange}
                 value={value}
+                name={name}
 
             >
                 {
