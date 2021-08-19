@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import classnames from 'classnames';
 
 //Material UI Components
@@ -23,6 +23,7 @@ export default function Employees() {
                 <div className={style.actionTab}>
                     <Button
                         className={classnames(style.red, style.button)}
+                        size="medium"
                         variant="contained">
                         <DeleteIcon className={style.icon} />
                         Delete
@@ -30,6 +31,7 @@ export default function Employees() {
                     <Button
                         className={style.button}
                         color="primary"
+                        size="medium"
                         variant="contained">
                         <AddCircleIcon className={style.icon} />
                         Add New Employee
