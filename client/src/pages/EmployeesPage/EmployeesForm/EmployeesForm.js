@@ -4,7 +4,7 @@ import React from 'react';
 import * as employeeservice from "../../../services/employeeService";
 
 //Shared Components
-import { useForm } from '../../../components/useForm';
+import useForm from '../../../components/useForm';
 import TextField from '../../../shared/TextField/TextField';
 import Select from '../../../shared/Select/Select';
 import DatePicker from '../../../shared/DatePicker/DatePicker';
@@ -28,8 +28,8 @@ const initialFieldValues = {
     address: '',
     nic: '',
     gender: 'male',
-    mobilenumber: '',
-    telephonenumber: '',
+    mobilenumber: Number,
+    telephonenumber: Number,
     designation: '',
     civilstatus: '',
     employeestatus: '',
@@ -101,7 +101,6 @@ export default function EmployeesForm() {
                                     onChange={handleInputChange}
                                     placeholder="Ex: Abesinghe Mudiyanselage Shakya Madara Karunathilake"
                                     value={values?.fullname}
-
                                 />
                             </div>
 
