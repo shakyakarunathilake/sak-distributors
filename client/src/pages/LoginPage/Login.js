@@ -74,13 +74,11 @@ export default function Login() {
                             onChange={handleInputChange}
                             value={values?.username}
                             variant="outlined"
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <AccountCircle />
-                                    </InputAdornment>
-                                ),
-                            }}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                <AccountCircle />
+                            </InputAdornment>
+                            }
                         />
                     </div>
                     <div className={style.textfield}>
@@ -91,20 +89,17 @@ export default function Login() {
                             type={values.showPassword ? 'text' : 'password'}
                             value={values?.password}
                             variant="outlined"
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            color="inherit"
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
-                                            edge="end"
-                                        >
-                                            {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                ),
-                            }}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        onClick={handleClickShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                        edge="end"
+                                    >
+                                        {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                                    </IconButton>
+                                </InputAdornment>
+                            }
                         />
                     </div>
                     <div className={style.div}>
