@@ -7,19 +7,28 @@ import Page from '../shared/Page/Page.js';
 import EmployeesForm from '../pages/EmployeesPage/EmployeesForm/EmployeesForm';
 
 //Pages
-// import Login from '../pages/LoginPage/Login';
+import Login from '../pages/LoginPage/Login';
 import Employees from '../pages/EmployeesPage/Employees';
 
 const theme = createTheme({
   palette: {
-    primary: {
-      main: '#20369f'
+    primaryDark2: {
+      main: '#25333B'
     },
-    secondary: {
-      main: '#000b4f'
+    primaryDark1: {
+      main: '#132E3B'
+    },
+    primary: {
+      main: '#2B6684'
+    },
+    primaryLight1: {
+      main: '#3D91BA'
+    },
+    primaryLight2: {
+      main: '#7DADC6'
     },
     warning: {
-      main: '#f50021',
+      main: '#f44336',
     },
     success: {
       main: '#4caf50',
