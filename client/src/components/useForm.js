@@ -1,12 +1,23 @@
 import { useState } from 'react';
 
-export function useForm(initialFieldValues) {
+export default function useForm(initialFieldValues) {
 
     const [values, setValues] = useState(initialFieldValues);
     const [errors, setErrors] = useState({});
 
+    const handleClickShowPassword = () => {
+        setValues({
+            ...values,
+            showPassword: !values.showPassword
+        });
+    };
+
+    const handleMouseDownPassword = e => {
+        e.preventDefault();
+    };
+
     const handleInputChange = e => {
-        const { name, value } = e.target;
+        const { name, value } = e.currentTarget;
         setValues({
             ...values,
             [name]: value
@@ -20,7 +31,9 @@ export function useForm(initialFieldValues) {
         values,
         setErrors,
         setValues,
-        handleInputChange
+        handleInputChange,
+        handleClickShowPassword,
+        handleMouseDownPassword
     );
 };
 

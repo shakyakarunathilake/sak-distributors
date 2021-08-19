@@ -7,7 +7,7 @@ import Page from '../shared/Page/Page.js';
 import EmployeesForm from '../pages/EmployeesPage/EmployeesForm/EmployeesForm';
 
 //Pages
-// import Login from '../pages/LoginPage/Login';
+import Login from '../pages/LoginPage/Login';
 import Employees from '../pages/EmployeesPage/Employees';
 
 const theme = createTheme({
@@ -47,7 +47,7 @@ function App() {
         <BrowserRouter>
           <Switch>
             <Route exact path='/page' component={Page} />
-            {/* <Route exact path='/login' component={Login} /> */}
+            <Route exact path='/login' component={Login} />
             <Route exact path='/employees' component={Employees} />
             <Route exact path='/employees-form' component={EmployeesForm} />
 

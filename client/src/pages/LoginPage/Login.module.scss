@@ -1,0 +1,65 @@
+@import "../../styles/variables";
+
+.container {
+    display: grid;
+    height: 100vh;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+    background: $primaryLight;
+    background-image: url("background.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+
+    .login {
+        display: grid;
+        grid-template-rows: auto min-content;
+        background: #ffffff;
+        border-radius: 10px;
+        justify-content: center;
+        height: 600px;
+        width: 500px;
+
+        .top {
+            display: grid;
+            grid-template-rows: min-content min-content min-content min-content min-content;
+
+            .logo {
+                margin: 50px auto 20px auto;
+            }
+
+            .heading {
+                font-size: 1.2em;
+                font-weight: 600;
+                margin: 30px 6px 10px 7px;
+            }
+
+            .textfield {
+                margin: 10px auto;
+
+                .field {
+                    width: 300px;
+                }
+            }
+
+            .div {
+                margin: 30px auto;
+
+                .button {
+                    color: $inverseFontColor;
+                    font-size: 1.2em;
+                    height: 40px;
+                    width: 150px;
+                }
+            }
+        }
+        .copyright {
+            color: $secondaryFontColor;
+            font-size: 0.8em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    }
+}
