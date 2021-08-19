@@ -19,20 +19,20 @@ import user from '../../../images/user.svg';
 import style from './EmployeesForm.module.scss';
 
 const initialFieldValues = {
-    employeeid: Number,
-    fullname: String,
-    callingname: String,
-    email: String,
-    dob: Date,
-    age: Number,
-    address: String,
-    nic: String,
-    gender: String,
-    mobilenumber: Number,
-    telephonenumber: Number,
-    designation: String,
-    civilstatus: String,
-    employeestatus: String,
+    employeeid: 0,
+    fullname: '',
+    callingname: '',
+    email: '',
+    dob: new Date(),
+    age: 0,
+    address: '',
+    nic: '',
+    gender: 'male',
+    mobilenumber: '',
+    telephonenumber: '',
+    designation: '',
+    civilstatus: '',
+    employeestatus: '',
 };
 
 export default function EmployeesForm() {
