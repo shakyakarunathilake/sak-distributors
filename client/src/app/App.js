@@ -27,7 +27,7 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: '"Poppins", sans-serif',
-    fontSize: 10
+    fontSize: 12
   },
 });
 
