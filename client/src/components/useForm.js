@@ -3,7 +3,8 @@ import { useState } from 'react';
 export default function useForm(initialFieldValues) {
 
     const [values, setValues] = useState(initialFieldValues);
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState();
+    //useState({}) was like this
 
     const handleClickShowPassword = () => {
         setValues({
@@ -17,16 +18,14 @@ export default function useForm(initialFieldValues) {
     };
 
     const handleInputChange = e => {
-        const { name, value } = e.currentTarget;
+        const { name, value } = e.target;
         setValues({
             ...values,
             [name]: value
         });
-        // if (validateOnChange)
-        //     validate({ [name]: value })
-    };
+    }
 
-    return (
+    return ({
         errors,
         values,
         setErrors,
@@ -34,13 +33,5 @@ export default function useForm(initialFieldValues) {
         handleInputChange,
         handleClickShowPassword,
         handleMouseDownPassword
-    );
+    })
 };
-
-// export function Form(props) {
-//     return (
-//         <form>
-//             {props.children}
-//         </form>
-//     )
-// };

@@ -5,13 +5,12 @@ import * as employeeservice from "../../../services/employeeService";
 
 //Shared Components
 import useForm from '../../../components/useForm';
-// import TextField from '../../../shared/TextField/TextField';
+import TextField from '../../../shared/TextField/TextField';
 import Select from '../../../shared/Select/Select';
 import DatePicker from '../../../shared/DatePicker/DatePicker';
 
 //Material UI Components
 import Button from '@material-ui/core/Button';
-import { TextField } from '@material-ui/core';
 
 //Images and SVGS
 import user from '../../../images/user.svg';
