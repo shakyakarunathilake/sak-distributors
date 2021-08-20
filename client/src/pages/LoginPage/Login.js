@@ -12,9 +12,6 @@ import logo from '../../images/logo.svg';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import { InputAdornment } from '@material-ui/core';
-// import OutlinedInput from '@material-ui/core/OutlinedInput';
-// import InputLabel from '@material-ui/core/InputLabel';
-// import FormControl from '@material-ui/core/FormControl';
 
 //Material UI Icons
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -105,7 +102,7 @@ export default function Login() {
                                             onMouseDown={handleMouseDownPassword}
                                             edge="end"
                                         >
-                                            {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                                            {/* {values.showPassword ? <Visibility /> : <VisibilityOff />} */}
                                         </IconButton>
                                     </InputAdornment>
                                 ),
