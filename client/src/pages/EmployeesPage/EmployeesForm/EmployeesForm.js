@@ -51,7 +51,7 @@ export default function EmployeesForm() {
 
         if ('email' in fieldValues) {
             temp.email = fieldValues.email ? "" : "This field is required";
-            temp.email = (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g).test(fieldValues.email) ? "" : "Email is not valid";
+            temp.email = (/^[\w-]+@([\w-]+\.)+[\w-]{2,4}$/g).test(fieldValues.email) ? "" : "Email is not valid";
         }
 
         if ('dob' in fieldValues) {
@@ -97,8 +97,8 @@ export default function EmployeesForm() {
             ...temp
         })
 
-        if (fieldValues == values) {
-            return Object.values(temp).every(x => x == "");
+        if (fieldValues === values) {
+            return Object.values(temp).every(x => x === "");
         }
 
     }
@@ -114,7 +114,6 @@ export default function EmployeesForm() {
         errors,
         values,
         setErrors,
-        setValues,
         resetForm,
         handleInputChange
     } = useForm(initialFieldValues, true, validate);
