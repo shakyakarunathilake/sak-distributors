@@ -18,7 +18,8 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
-// import axios from 'axios'
+//Connecting to Backend
+// import axios from 'axios';
 
 export default function Login() {
 
@@ -31,9 +32,17 @@ export default function Login() {
     //         .post("http://localhost:8080/users/signin", {
     //             "username": values.username,
     //             "password": values.password
-    //         })
+    //         }, 
+    //         // {
+    //         //     headers: {
+    //         //         authorisation: JSON.parse(localStorage.getItem("Auth")).accesstoken
+    //         //     }
+    //         // }
+    //         )
     //         .then(response => {
-    //             console.log(response.data)
+    //             console.log(response.data);
+    //             localStorage.setItem("Auth", JSON.stringify(response.data));
+    //             console.log(JSON.parse(localStorage.getItem("Auth")));
     //         })
     //         .catch(error => {
     //             console.log(error)
@@ -71,9 +80,8 @@ export default function Login() {
                         <TextField
                             className={style.field}
                             label="Username"
-                            name="username"
                             onChange={handleInputChange}
-                            value={values?.username}
+                            value={values.username}
                             variant="outlined"
                             InputProps={{
                                 endAdornment: (
@@ -88,10 +96,9 @@ export default function Login() {
                         <TextField
                             className={style.field}
                             label="Password"
-                            name="password"
                             onChange={handleInputChange}
                             type={values.showPassword ? 'text' : 'password'}
-                            value={values?.password}
+                            value={values.password}
                             variant="outlined"
                             InputProps={{
                                 endAdornment: (
@@ -102,7 +109,7 @@ export default function Login() {
                                             onMouseDown={handleMouseDownPassword}
                                             edge="end"
                                         >
-                                            {/* {values.showPassword ? <Visibility /> : <VisibilityOff />} */}
+                                            {values.showPassword ? <Visibility /> : <VisibilityOff />}
                                         </IconButton>
                                     </InputAdornment>
                                 ),
@@ -110,6 +117,9 @@ export default function Login() {
                         />
                     </div>
                     <div className={style.div}>
+                        <div className={style.forgotPassword}>
+                            <a href="">Forgot Password?</a>
+                        </div>
                         <Button
                             className={style.button}
                             color="primary"
