@@ -3,13 +3,16 @@ const app = express();
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
-
-const employeesRoutes = require("./api/routes/employees.route");
+//Routes
+const userRoutes = require("./api/routes/user.route")
+const employeeRoutes = require("./api/routes/employee.route")
 
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cors({ origin: "*" }));
 
 //DB Connection
 mongoose.connect("mongodb://localhost:27017/sak_distributors", { useNewUrlParser: true, useUnifiedTopology: true });
@@ -21,7 +24,7 @@ db.once('open', () => {
 });
 
 
-//error handling
+//Error Handling
 app.use((error, req, res, next) => {
     res.status(error.status || 500).json({
         message: "Server Error"
@@ -30,6 +33,7 @@ app.use((error, req, res, next) => {
 
 app.use(express.static("uploads"));
 
-app.use("/employees", employeesRoutes);
+app.use("/users", userRoutes);
+app.use("/employees", employeeRoutes);
 
 module.exports = app;
