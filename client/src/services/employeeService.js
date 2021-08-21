@@ -7,7 +7,12 @@ export const getCivilStatusOptions = () => ([
 ])
 
 export const getDesignationOptions = () => ([
-    { id: "d01", title: "Clerk" },
+    { id: "d01", title: "Sales Manager" },
+    { id: "d02", title: "Purchase Manager" },
+    { id: "d03", title: "Account Clerk" },
+    { id: "d04", title: "Sales Representative" },
+    { id: "d05", title: "Driver" },
+    { id: "d06", title: "Sales Helper" },
 ])
 
 export const getGenderOptions = () => ([
@@ -19,4 +24,17 @@ export const getGenderOptions = () => ([
 export const getEmployeeStatusOptions = () => ([
     { id: "es01", title: "Active" },
     { id: "es02", title: "Inactive" },
+])
+
+export const getRoleOptions = () => ([
+    { id: "r01", title: "Admin" },
+    { id: "r02", title: "Owner" },
+    { id: "r03", title: "Purchase Manager" },
+    { id: "r04", title: "Sales Manager" },
+    { id: "r05", title: "Sales Representative" },
+])
+
+export const getCustomerOptions = () => ([
+    { id: "c01", title: "Registered Customer" },
+    { id: "c02", title: "One Time Customer" },
 ])
