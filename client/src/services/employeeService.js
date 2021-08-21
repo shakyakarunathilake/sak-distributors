@@ -29,10 +29,8 @@ export const getEmployeeStatusOptions = () => ([
 
 export const getRoleOptions = () => ([
     { id: "r01", title: "Admin" },
-    { id: "r02", title: "Owner" },
-    { id: "r03", title: "Purchase Manager" },
-    { id: "r04", title: "Sales Manager" },
-    { id: "r05", title: "Sales Representative" },
+    { id: "r02", title: "Clerk" },
+    { id: "r03", title: "Sales Representative" },
 ])
 
 export const getCustomerOptions = () => ([
