@@ -1,10 +1,9 @@
 import { useState } from 'react';
 
-export default function useForm(initialFieldValues) {
+export default function useForm(initialFieldValues, validateOnChange = false, validate) {
 
     const [values, setValues] = useState(initialFieldValues);
-    const [errors, setErrors] = useState();
-    //useState({}) was like this
+    const [errors, setErrors] = useState({});
 
     const handleClickShowPassword = () => {
         setValues({
@@ -19,10 +18,20 @@ export default function useForm(initialFieldValues) {
 
     const handleInputChange = e => {
         const { name, value } = e.target;
+
         setValues({
             ...values,
             [name]: value
         });
+        
+        if (validateOnChange) {
+            validate({ [name]: value })
+        }
+    }
+
+    const resetForm = e => {
+        setValues(initialFieldValues);
+        setErrors({});
     }
 
     return ({
@@ -30,6 +39,7 @@ export default function useForm(initialFieldValues) {
         values,
         setErrors,
         setValues,
+        resetForm,
         handleInputChange,
         handleClickShowPassword,
         handleMouseDownPassword
