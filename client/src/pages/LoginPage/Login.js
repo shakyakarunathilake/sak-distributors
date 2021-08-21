@@ -19,35 +19,35 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 //Connecting to Backend
-// import axios from 'axios';
+import axios from 'axios';
 
 export default function Login() {
 
-    // const postData = () => {
-    //     console.log({
-    //         "username": values.username,
-    //         "password": values.password
-    //     });
-    //     axios
-    //         .post("http://localhost:8080/users/signin", {
-    //             "username": values.username,
-    //             "password": values.password
-    //         }, 
-    //         // {
-    //         //     headers: {
-    //         //         authorisation: JSON.parse(localStorage.getItem("Auth")).accesstoken
-    //         //     }
-    //         // }
-    //         )
-    //         .then(response => {
-    //             console.log(response.data);
-    //             localStorage.setItem("Auth", JSON.stringify(response.data));
-    //             console.log(JSON.parse(localStorage.getItem("Auth")));
-    //         })
-    //         .catch(error => {
-    //             console.log(error)
-    //         })
-    // }
+    const postData = () => {
+        // console.log({
+        //     "username": values.username,
+        //     "password": values.password
+        // });
+        axios
+            .post("http://localhost:8080/users/signin", {
+                "username": values.username,
+                "password": values.password
+            },
+                // {
+                //     headers: {
+                //         authorisation: JSON.parse(localStorage.getItem("Auth")).accesstoken
+                //     }
+                // }
+            )
+            .then(res => {
+                // console.log(res.data);
+                localStorage.setItem("Auth", JSON.stringify(res.data));
+                // console.log(JSON.parse(localStorage.getItem("Auth")));
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
 
     const initialFieldValues = {
         username: '',
@@ -56,10 +56,7 @@ export default function Login() {
     }
 
     const {
-        // errors,
-        // setErrors,
         values,
-        // setValues,
         handleInputChange,
         handleClickShowPassword,
         handleMouseDownPassword
@@ -82,6 +79,7 @@ export default function Login() {
                             label="Username"
                             onChange={handleInputChange}
                             value={values.username}
+                            name="username"
                             variant="outlined"
                             InputProps={{
                                 endAdornment: (
@@ -96,6 +94,7 @@ export default function Login() {
                         <TextField
                             className={style.field}
                             label="Password"
+                            name="password"
                             onChange={handleInputChange}
                             type={values.showPassword ? 'text' : 'password'}
                             value={values.password}
@@ -123,7 +122,7 @@ export default function Login() {
                         <Button
                             className={style.button}
                             color="primary"
-                            // onClick={postData}
+                            onClick={postData}
                             variant="contained">
                             Submit
                         </Button>
