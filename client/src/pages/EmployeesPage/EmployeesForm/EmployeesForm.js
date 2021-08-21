@@ -23,13 +23,13 @@ const initialFieldValues = {
     fullname: '',
     callingname: '',
     email: '',
-    dob: new Date(),
-    age: 0,
+    dob: '',
+    age: Number,
     address: '',
     nic: '',
-    gender: 'male',
-    mobilenumber: Number,
-    telephonenumber: Number,
+    gender: '',
+    phonenumber: Number,
+    role: '',
     designation: '',
     civilstatus: '',
     employeestatus: '',
@@ -37,28 +37,69 @@ const initialFieldValues = {
 
 export default function EmployeesForm() {
 
-    const validate = () => {
-        let temp = {}
-        temp.fullname = values.fullname ? "" : "This field is required";
-        // temp.callingname = values.callingname ? "" : "This field is required";
-        // temp.email = values.email ? "" : "This field is required"
-        // temp.email = (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g).test(values.email) ? "" : "Email is not valid";
-        // temp.dob = values.dob === Date ? "" : "This field is required";
-        // temp.address = values.address ? "" : "This field is required";
-        // temp.nic = values.nic ? "" : "This field is required";
-        // temp.gender = values.gender ? "" : "This field is required";
-        // temp.mobilenumber = values.mobilenumber ? "" : "This field is required";
-        // temp.mobilenumber = values.mobilenumber.length > 10 ? "" : "Mobile number is not valid";
-        // temp.telephonenumber = values.telephonenumber.length > 10 ? "" : "Telephone number is not valid";
-        // temp.designation = values.designation ? "" : "This field is required";
-        // temp.civilstatus = values.civilstatus ? "" : "This field is required";
-        // temp.employeestatus = values.employeestatus ? "" : "This field is required";
+    const validate = (fieldValues = values) => {
+
+        let temp = { ...errors }
+
+        if ('fullname' in fieldValues) {
+            temp.fullname = fieldValues.fullname ? "" : "This field is required";
+        }
+
+        if ('caliingname' in fieldValues) {
+            temp.callingname = fieldValues.callingname ? "" : "This field is required";
+        }
+
+        if ('email' in fieldValues) {
+            temp.email = fieldValues.email ? "" : "This field is required";
+            temp.email = (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g).test(fieldValues.email) ? "" : "Email is not valid";
+        }
+
+        if ('dob' in fieldValues) {
+            temp.dob = fieldValues.dob ? "" : "This field is required";
+        }
+
+        if ('address' in fieldValues) {
+            temp.address = fieldValues.address ? "" : "This field is required";
+        }
+
+        if ('nic' in fieldValues) {
+            temp.nic = fieldValues.nic ? "" : "This field is required";
+            temp.nic = fieldValues.nic.length > 11 ? "" : "NIC is not valid";
+        }
+
+        if ('gender' in fieldValues) {
+            temp.gender = fieldValues.gender ? "" : "This field is required";
+        }
+
+        if ('phonenumber' in fieldValues) {
+            temp.phonenumber = fieldValues.phonenumber ? "" : "This field is required";
+            temp.phonenumber = fieldValues.phonenumber.length > 9 ? "" : "Phone number is not valid";
+        }
+
+        if ('role' in fieldValues) {
+            temp.role = fieldValues.role ? "" : "Role is not valid";
+
+        }
+
+        if ('designation' in fieldValues) {
+            temp.designation = fieldValues.designation ? "" : "This field is required";
+        }
+
+        if ('civilstatus' in fieldValues) {
+            temp.civilstatus = fieldValues.civilstatus ? "" : "This field is required";
+        }
+
+        if ('employeestatus' in fieldValues) {
+            temp.employeestatus = fieldValues.employeestatus ? "" : "This field is required";
+        }
 
         setErrors({
             ...temp
         })
 
-        return Object.values(temp).every(x => x === "");
+        if (fieldValues == values) {
+            return Object.values(temp).every(x => x == "");
+        }
 
     }
 
@@ -73,8 +114,10 @@ export default function EmployeesForm() {
         errors,
         values,
         setErrors,
+        setValues,
+        resetForm,
         handleInputChange
-    } = useForm(initialFieldValues);
+    } = useForm(initialFieldValues, true, validate);
 
 
     return (
@@ -94,11 +137,8 @@ export default function EmployeesForm() {
 
                             <div className={style.row}>
                                 <TextField
-                                    variant="outlined"
-                                    //error={checkError("fullname")}
-                                    fullWidth
-                                    //helperText={getError("fullname")}
-                                    label="Full Name"
+                                    error={errors.fullname}
+                                    label="Full Name (Required)"
                                     onChange={handleInputChange}
                                     placeholder="Ex: Abesinghe Mudiyanselage Shakya Madara Karunathilake"
                                     value={values?.fullname}
@@ -109,11 +149,8 @@ export default function EmployeesForm() {
                             <div className={style.gridrow}>
                                 <div className={style.column}>
                                     <TextField
-                                        variant="outlined"
-                                        //error={checkError("callingname")}
-                                        fullWidth
-                                        //helperText={getError("callingname")}
-                                        label="Calling Name"
+                                        error={errors.callingname}
+                                        label="Calling Name (Required)"
                                         onChange={handleInputChange}
                                         placeholder="Ex: Shakya"
                                         value={values?.callingname}
@@ -122,11 +159,8 @@ export default function EmployeesForm() {
                                 </div>
                                 <div className={style.column}>
                                     <TextField
-                                        variant="outlined"
-                                        //error={checkError("nic")}
-                                        fullWidth
-                                        //helperText={getError("nic")}
-                                        label="NIC"
+                                        error={errors.nic}
+                                        label="NIC (Required)"
                                         onChange={handleInputChange}
                                         placeholder="Ex: 199950910239"
                                         value={values?.nic}
@@ -138,10 +172,8 @@ export default function EmployeesForm() {
                             <div className={style.gridrow}>
                                 <div className={style.column}>
                                     <DatePicker
-                                        //error={checkError("dob")}
-                                        fullWidth
-                                        //helperText={getError("dob")}
-                                        label="Date of Birth"
+                                        error={errors.dob}
+                                        label="Date of Birth (Required)"
                                         onChange={handleInputChange}
                                         value={values?.dob}
                                         name="dob"
@@ -149,11 +181,9 @@ export default function EmployeesForm() {
                                 </div>
                                 <div className={style.column}>
                                     <TextField
-                                        variant="outlined"
-                                        fullWidth
                                         label="Age (Autogenerated)"
                                         onChange={handleInputChange}
-                                        disabled
+                                        disabled={true}
                                         value={values?.age}
                                         name="age"
                                     />
@@ -163,10 +193,9 @@ export default function EmployeesForm() {
                             <div className={style.gridrow}>
                                 <div className={style.column}>
                                     <Select
-                                        //error={checkError("designation")}
-                                        //helperText={getError("designation")}
-                                        label="Designation"
-                                        //onChange={handleSelectChange("designation")}
+                                        error={errors.designation}
+                                        label="Designation (Required)"
+                                        onChange={handleInputChange}
                                         options={employeeservice.getDesignationOptions()}
                                         value={values?.designation}
                                         name="designation"
@@ -174,10 +203,9 @@ export default function EmployeesForm() {
                                 </div>
                                 <div className={style.column}>
                                     <Select
-                                        //error={checkError("employeestatus")}
-                                        //helperText={getError("employeestatus")}
-                                        label="Employee Status"
-                                        //onChange={handleSelectChange("employeestatus")}
+                                        error={errors.employeestatus}
+                                        label="Employee Status (Required)"
+                                        onChange={handleInputChange}
                                         options={employeeservice.getEmployeeStatusOptions()}
                                         value={values?.employeestatus}
                                         name="employeestatus"
@@ -188,10 +216,9 @@ export default function EmployeesForm() {
                             <div className={style.gridrow}>
                                 <div className={style.column}>
                                     <Select
-                                        //error={checkError("gender")}
-                                        //helperText={getError("gender")}
-                                        label="Gender"
-                                        //onChange={handleSelectChange("gender")}
+                                        error={errors.gender}
+                                        label="Gender (Required)"
+                                        onChange={handleInputChange}
                                         options={employeeservice.getGenderOptions()}
                                         value={values?.gender}
                                         name="gender"
@@ -199,10 +226,9 @@ export default function EmployeesForm() {
                                 </div>
                                 <div className={style.column}>
                                     <Select
-                                        //error={checkError("civilstatus")}
-                                        //helperText={getError("civilstatus")}
-                                        label="Civil Status"
-                                        //onChange={handleSelectChange("civilstatus")}
+                                        error={errors.civilstatus}
+                                        label="Civil Status (Required)"
+                                        onChange={handleInputChange}
                                         options={employeeservice.getCivilStatusOptions()}
                                         value={values?.civilstatus}
                                         name="civilstatus"
@@ -212,40 +238,31 @@ export default function EmployeesForm() {
 
                             <div className={style.gridrow}>
                                 <div className={style.column}>
-                                    <TextField
-                                        variant="outlined"
-                                        //error={checkError("mobilenumber")}
-                                        fullWidth
-                                        //helperText={getError("mobilenumber")}
-                                        label="Mobile Number"
+                                    <Select
+                                        error={errors.role}
+                                        label="Role (Required)"
                                         onChange={handleInputChange}
-                                        placeholder="Ex: 071 2686790"
-                                        value={values?.mobilenumber}
-                                        name="mobilenumber"
+                                        options={employeeservice.getRoleOptions()}
+                                        value={values?.role}
+                                        name="role"
                                     />
                                 </div>
                                 <div className={style.column}>
                                     <TextField
-                                        variant="outlined"
-                                        //error={checkError("telephonenumber")}
-                                        fullWidth
-                                        //helperText={getError("telephonenumber")}
-                                        label="Telephone Number"
+                                        error={errors.phonenumber}
+                                        label="Phone Number (Required)"
                                         onChange={handleInputChange}
-                                        placeholder="Ex: 035 2266327"
-                                        value={values?.telephonenumber}
-                                        name="telephonenumber"
+                                        placeholder="Ex: 071 2686790"
+                                        value={values?.phonenumber}
+                                        name="phonenumber"
                                     />
                                 </div>
                             </div>
 
                             <div className={style.row}>
                                 <TextField
-                                    variant="outlined"
-                                    //error={checkError("address")}
-                                    fullWidth
-                                    //helperText={getError("address")}
-                                    label="Address"
+                                    error={errors.address}
+                                    label="Address (Required)"
                                     onChange={handleInputChange}
                                     placeholder="Ex: Weekadawatta, Kansalagamuwa, Rambukkana"
                                     value={values?.address}
@@ -255,11 +272,8 @@ export default function EmployeesForm() {
 
                             <div className={style.row}>
                                 <TextField
-                                    variant="outlined"
-                                    //error={checkError("email")}
-                                    fullWidth
-                                    //helperText={getError("email")}
-                                    label="Email"
+                                    error={errors.email}
+                                    label="Email (Required)"
                                     onChange={handleInputChange}
                                     placeholder="Ex: karunathilakeshakya@gmail.com"
                                     value={values?.email}
@@ -287,6 +301,14 @@ export default function EmployeesForm() {
                             variant="contained"
                         >
                             Cancel
+                        </Button>
+                        <Button
+                            className={style.resetBtn}
+                            onClick={resetForm}
+                            size="medium"
+                            variant="contained"
+                        >
+                            Reset
                         </Button>
                         <Button
                             className={style.submitBtn}
