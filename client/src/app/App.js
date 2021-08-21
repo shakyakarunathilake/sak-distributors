@@ -38,7 +38,7 @@ function App() {
         <BrowserRouter>
           <Switch>
             <Route exact path='/page' component={Page} />
-            <Route exact path='/login' component={Login} />
+            <Route exact path='/' component={Login} />
             <Route exact path='/employees' component={Employees} />
             <Route exact path='/employees-form' component={EmployeesForm} />
 
