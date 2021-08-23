@@ -5,10 +5,12 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 //Development Stage
 import Page from '../shared/Page/Page.js';
 import EmployeesForm from '../pages/EmployeesPage/EmployeesForm/EmployeesForm';
+import CustomersForm from '../pages/CustomersPage/CustomersForm/CustomersForm';
 
 //Pages
 import Login from '../pages/LoginPage/Login';
 import Employees from '../pages/EmployeesPage/Employees';
+import Customers from '../pages/CustomersPage/Customers';
 
 const theme = createTheme({
   palette: {
@@ -41,6 +43,8 @@ function App() {
             <Route exact path='/' component={Login} />
             <Route exact path='/employees' component={Employees} />
             <Route exact path='/employees-form' component={EmployeesForm} />
+            <Route exact path='/customers' component={Customers} />
+            <Route exact path='/customers-form' component={CustomersForm} />
 
           </Switch>
         </BrowserRouter>

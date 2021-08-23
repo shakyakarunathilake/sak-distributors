@@ -2,12 +2,14 @@
 
 .container {
     padding: 20px;
-    width: 1000px;
+    width: 950px;
+    box-sizing: border-box;
 
     .header {
         font-size: 1.8em;
         font-weight: 600;
         margin: 10px 10px 20px 10px;
+        align-items: center;
     }
 
     .body {
@@ -15,28 +17,19 @@
             display: grid;
             grid-template-rows: auto min-content;
 
-            .rowA {
+            .formFields {
                 display: grid;
-                grid-template-columns: auto min-content;
+                grid-template-columns: min-content auto;
                 grid-column-gap: 20px;
+
                 .columnA {
-                    .row {
-                        padding: 10px;
-                    }
+                    display: grid;
+                    grid-template-rows: min-content min-content auto;
 
-                    .gridrow {
-                        display: grid;
-                        grid-template-columns: calc(50% - 10px) calc(50% - 10px);
-                        grid-column-gap: 20px;
-                        padding: 10px;
-                    }
-                }
-
-                .columnB {
                     .image {
                         border-radius: 50%;
                         color: #6d6d6d;
-                        padding: 10px;
+                        padding: 55px 10px 10px 10px;
 
                         img {
                             height: 260px;
@@ -51,7 +44,7 @@
                             background: #c4c4c4;
                             border-radius: 50%;
                             position: absolute;
-                            top: 105px;
+                            top: 150px;
                             clip: rect(210px, 260px, 260px, 0);
                             z-index: 5;
                         }
@@ -72,37 +65,59 @@
                         text-align: center;
                     }
                 }
-            }
 
-            .rowB {
-                padding: 10px 0;
-                text-align: right;
-
-                Button {
-                    font-size: 1em;
-                    margin-right: 20px;
-                    margin-top: 20px;
-                    height: 45px;
-                    width: 210px;
-                }
-
-                .cancelBtn {
-                    color: #acacac;
-                    &:hover {
-                        background-color: $warningColor;
-                        color: $inverseFontColor;
+                .columnB {
+                    .redFont {
+                        color: red;
+                        font-size: 0.7em;
                     }
-                }
 
-                .resetBtn {
-                    background-color: $secondaryMain;
-                    color: $inverseFontColor;
-                }
+                    .row {
+                        padding: 10px;
+                    }
 
-                .submitBtn {
-                    background-color: $primaryMain;
-                    color: $inverseFontColor;
-                    margin-right: 0px;
+                    .rowminicolumns {
+                        display: grid;
+                        grid-template-columns: auto auto auto;
+                        grid-column-gap: 20px;
+                        padding: 10px;
+                    }
+
+                    .gridrow {
+                        display: grid;
+                        grid-template-columns: calc(50% - 10px) calc(50% - 10px);
+                        grid-column-gap: 20px;
+                        padding: 10px;
+                    }
+
+                    .buttonRow {
+                        display: grid;
+                        grid-template-columns: auto min-content;
+                        grid-column-gap: 30px;
+                        padding: 20px 10px 10px 10px;
+                        text-align: right;
+
+                        Button {
+                            font-size: 1em;
+                            margin: 10px 0;
+                            height: 45px;
+                            width: 190px;
+                        }
+
+                        .resetBtnDiv {
+                            .resetBtn {
+                                border-color: $primaryMain;
+                                color: $primaryMain;
+                            }
+                        }
+
+                        .submitBtnDiv {
+                            .submitBtn {
+                                background-color: $primaryMain;
+                                color: $inverseFontColor;
+                            }
+                        }
+                    }
                 }
             }
         }

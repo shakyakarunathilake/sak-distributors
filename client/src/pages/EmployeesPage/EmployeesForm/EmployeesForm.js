@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import classnames from 'classnames';
 
 //Development Stage
 import * as employeeservice from "../../../services/employeeService";
@@ -22,8 +23,9 @@ import style from './EmployeesForm.module.scss';
 const initialFieldValues = {
     employeeid: '',
     //employeeimage: '',
-    fullname: '',
-    callingname: '',
+    efullname: '',
+    etitle: '',
+    ecallingname: '',
     email: '',
     dob: '',
     hireddate: '',
@@ -42,13 +44,20 @@ export default function EmployeesForm() {
     const validate = (fieldValues = values) => {
 
         let temp = { ...errors }
-
-        if ('fullname' in fieldValues) {
-            temp.fullname = fieldValues.fullname ? "" : "This field is required";
+        if ('employeeid' in fieldValues) {
+            temp.employeeid = fieldValues.employeeid ? "" : "This field is required";
         }
 
-        if ('caliingname' in fieldValues) {
-            temp.callingname = fieldValues.callingname ? "" : "This field is required";
+        if ('efullname' in fieldValues) {
+            temp.efullname = fieldValues.efullname ? "" : "This field is required";
+        }
+
+        if ('ecallingname' in fieldValues) {
+            temp.ecallingname = fieldValues.ecallingname ? "" : "This field is required";
+        }
+
+        if ('etitle' in fieldValues) {
+            temp.etitle = fieldValues.etitle ? "" : "This field is required";
         }
 
         if ('email' in fieldValues) {
@@ -70,7 +79,7 @@ export default function EmployeesForm() {
 
         if ('nic' in fieldValues) {
             temp.nic = fieldValues.nic ? "" : "This field is required";
-            temp.nic = fieldValues.nic.length > 11 ? "" : "NIC is not valid";
+            temp.nic = fieldValues.nic.length > 9 ? "" : "NIC is not valid";
         }
 
         if ('gender' in fieldValues) {
@@ -117,8 +126,9 @@ export default function EmployeesForm() {
                 .post("http://localhost:8080/employees/create-employee", {
                     "employeeid": values.employeeid,
                     //employeeimage: '',
-                    "fullname": values.fullname,
-                    "callingname": values.callingname,
+                    "etitle": values.etitle,
+                    "efullname": values.efullname,
+                    "ecallingname": values.ecallingname,
                     "email": values.email,
                     "dob": values.dob,
                     "hireddate": values.hireddate,
@@ -161,35 +171,73 @@ export default function EmployeesForm() {
                     className={style.form}
                     onSubmit={handleSubmit}
                 >
-                    <div className={style.rowA}>
+                    <div className={style.formFields}>
+
                         <div className={style.columnA}>
+
+                            <div className={style.image}>
+                                <img src={user} alt="" />
+                                <div className={style.partialCircle}></div>
+                            </div>
+
+                            <div className={style.employeeId}>
+                                {/* For Development Stage
+                                <TextField
+                                    error={errors.employeeid}
+                                    label="Employee ID *"
+                                    onChange={handleInputChange}
+                                    placeholder="Ex: E00001"
+                                    value={values?.employeeid}
+                                    name="employeeid"
+                                /> 
+                                */}
+                                ID: E00016
+                            </div>
+
+                        </div>
+
+                        <div className={style.columnB}>
+
+                            <div className={classnames(style.row, style.redFont)}>
+                                The fields with "*" are required
+                            </div>
 
                             <div className={style.row}>
                                 <TextField
-                                    error={errors.fullname}
-                                    label="Full Name (Required)"
+                                    error={errors.efullname}
+                                    label="Full Name *"
                                     onChange={handleInputChange}
                                     placeholder="Ex: Abesinghe Mudiyanselage Shakya Madara Karunathilake"
-                                    value={values?.fullname}
-                                    name="fullname"
+                                    value={values?.efullname}
+                                    name="efullname"
                                 />
                             </div>
 
-                            <div className={style.gridrow}>
-                                <div className={style.column}>
-                                    <TextField
-                                        error={errors.callingname}
-                                        label="Calling Name (Required)"
+                            <div className={style.rowminicolumns}>
+                                <div>
+                                    <Select
+                                        error={errors.etitle}
+                                        label="Title *"
                                         onChange={handleInputChange}
-                                        placeholder="Ex: Shakya"
-                                        value={values?.callingname}
-                                        name="callingname"
+                                        options={employeeservice.getTitleOptions()}
+                                        value={values?.etitle}
+                                        name="etitle"
                                     />
                                 </div>
-                                <div className={style.column}>
+                                <div>
+                                    <TextField
+                                        error={errors.ecallingname}
+                                        label="Calling Name *"
+                                        onChange={handleInputChange}
+                                        placeholder="Ex: Shakya"
+                                        value={values?.ecallingname}
+                                        name="ecallingname"
+                                    />
+                                </div>
+                                <div>
                                     <TextField
                                         error={errors.nic}
-                                        label="NIC (Required)"
+                                        label="NIC *"
                                         onChange={handleInputChange}
                                         placeholder="Ex: 199950910239"
                                         value={values?.nic}
@@ -199,19 +247,19 @@ export default function EmployeesForm() {
                             </div>
 
                             <div className={style.gridrow}>
-                                <div className={style.column}>
+                                <div>
                                     <DatePicker
                                         error={errors.dob}
-                                        label="Date of Birth (Required)"
+                                        label="Date of Birth *"
                                         onChange={handleInputChange}
                                         value={values?.dob}
                                         name="dob"
                                     />
                                 </div>
-                                <div className={style.column}>
+                                <div>
                                     <TextField
                                         error={errors.phonenumber}
-                                        label="Phone Number (Required)"
+                                        label="Phone Number *"
                                         onChange={handleInputChange}
                                         placeholder="Ex: 071 2686790"
                                         value={values?.phonenumber}
@@ -224,7 +272,7 @@ export default function EmployeesForm() {
                             <div className={style.row}>
                                 <TextField
                                     error={errors.address}
-                                    label="Address (Required)"
+                                    label="Address *"
                                     onChange={handleInputChange}
                                     placeholder="Ex: Weekadawatta, Kansalagamuwa, Rambukkana"
                                     value={values?.address}
@@ -235,7 +283,7 @@ export default function EmployeesForm() {
                             <div className={style.row}>
                                 <TextField
                                     error={errors.email}
-                                    label="Email (Required)"
+                                    label="Email *"
                                     onChange={handleInputChange}
                                     placeholder="Ex: karunathilakeshakya@gmail.com"
                                     value={values?.email}
@@ -244,20 +292,20 @@ export default function EmployeesForm() {
                             </div>
 
                             <div className={style.gridrow}>
-                                <div className={style.column}>
+                                <div>
                                     <Select
                                         error={errors.gender}
-                                        label="Gender (Required)"
+                                        label="Gender *"
                                         onChange={handleInputChange}
                                         options={employeeservice.getGenderOptions()}
                                         value={values?.gender}
                                         name="gender"
                                     />
                                 </div>
-                                <div className={style.column}>
+                                <div>
                                     <Select
                                         error={errors.civilstatus}
-                                        label="Civil Status (Required)"
+                                        label="Civil Status *"
                                         onChange={handleInputChange}
                                         options={employeeservice.getCivilStatusOptions()}
                                         value={values?.civilstatus}
@@ -268,20 +316,20 @@ export default function EmployeesForm() {
                             </div>
 
                             <div className={style.gridrow}>
-                                <div className={style.column}>
+                                <div>
                                     <Select
                                         error={errors.designation}
-                                        label="Designation (Required)"
+                                        label="Designation *"
                                         onChange={handleInputChange}
                                         options={employeeservice.getDesignationOptions()}
                                         value={values?.designation}
                                         name="designation"
                                     />
                                 </div>
-                                <div className={style.column}>
+                                <div>
                                     <Select
                                         error={errors.role}
-                                        label="Role (Required)"
+                                        label="Role *"
                                         onChange={handleInputChange}
                                         options={employeeservice.getRoleOptions()}
                                         value={values?.role}
@@ -292,65 +340,52 @@ export default function EmployeesForm() {
                             </div>
 
                             <div className={style.gridrow}>
-                                <div className={style.column}>
+                                <div>
                                     <Select
                                         error={errors.employeestatus}
-                                        label="Employee Status (Required)"
+                                        label="Employee Status *"
                                         onChange={handleInputChange}
                                         options={employeeservice.getEmployeeStatusOptions()}
                                         value={values?.employeestatus}
                                         name="employeestatus"
                                     />
                                 </div>
-                                <div className={style.column}>
+                                <div>
                                     <DatePicker
                                         error={errors.hireddate}
-                                        label="Hired Date (Required)"
+                                        label="Hired Date *"
                                         onChange={handleInputChange}
                                         value={values?.hireddate}
                                         name="hireddate"
                                     />
                                 </div>
-
                             </div>
 
+                            <div className={style.buttonRow}>
+                                <div className={style.resetBtnDiv}>
+                                    <Button
+                                        className={style.resetBtn}
+                                        onClick={resetForm}
+                                        size="medium"
+                                        variant="outlined"
+                                    >
+                                        Reset
+                                    </Button>
+                                </div>
+                                <div className={style.submitBtnDiv}>
+                                    <Button
+                                        className={style.submitBtn}
+                                        onClick={handleSubmit}
+                                        size="medium"
+                                        variant="contained"
+                                    >
+                                        Submit
+                                    </Button>
+                                </div>
+                            </div>
                         </div>
 
-                        <div className={style.columnB}>
-                            <div className={style.image}>
-                                <img src={user} alt="" />
-                                <div className={style.partialCircle}></div>
-                            </div>
-                            <div className={style.employeeId}>
-                                ID: 21868221
-                            </div>
-                        </div>
-                    </div>
 
-                    <div className={style.rowB}>
-                        <Button
-                            className={style.cancelBtn}
-                            size="medium"
-                            variant="contained"
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            className={style.resetBtn}
-                            onClick={resetForm}
-                            size="medium"
-                            variant="contained"
-                        >
-                            Reset
-                        </Button>
-                        <Button
-                            className={style.submitBtn}
-                            onClick={handleSubmit}
-                            size="medium"
-                            variant="contained"
-                        >
-                            Submit
-                        </Button>
                     </div>
                 </form>
             </div>

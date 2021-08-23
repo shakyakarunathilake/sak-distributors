@@ -2,10 +2,11 @@ const mongoose = require("mongoose");
 
 const employeeSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    employeeid: { type: String, required: false },
+    employeeid: { type: String, required: true },
     //employeeimage: { type: String, required: false },
-    fullname: { type: String, required: true },
-    callingname: { type: String, required: true },
+    efullname: { type: String, required: true },
+    etitle: { type: String, required: true },
+    ecallingname: { type: String, required: true },
     email: { type: String, requied: true },
     dob: { type: Date, required: true },
     hireddate: { type: Date, required: true },

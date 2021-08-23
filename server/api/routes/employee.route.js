@@ -17,10 +17,21 @@ const storage = multer.diskStorage({
 const uploads = multer({ storage: storage });
 
 router.get("/", (req, res, next) => {
-    res.status(200).json({
-        message: "Handling GET requests to /employees",
-        info: "This is information about SAK Distributors' Employees"
-    });
+
+    Employee
+        .find({}, function (err, result) {
+            if (err) {
+                res.status(500).json({
+                    message: err
+                });
+            }
+            else {
+                res.status(200).json({
+                    message: "Handling GET requests to /employees/",
+                    info: result
+                });
+            };
+        });
 });
 
 router.post("/create-employee", uploads.single('photo'), (req, res, next) => {
@@ -29,8 +40,9 @@ router.post("/create-employee", uploads.single('photo'), (req, res, next) => {
         _id: new mongoose.Types.ObjectId(),
         employeeid: req.body.employeeid,
         // employeeimage: `localhost:8080/${req.body.employeeid}.jpg`,
-        fullname: req.body.fullname,
-        callingname: req.body.callingname,
+        efullname: req.body.efullname,
+        etitle: req.body.etitle,
+        ecallingname: req.body.ecallingname,
         email: req.body.email,
         dob: req.body.dob,
         hireddate: req.body.hireddate,
