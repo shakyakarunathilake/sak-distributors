@@ -50,9 +50,20 @@
 
     .actionRow {
         box-sizing: border-box;
-        text-align: right;
+        display: grid;
+        grid-template-columns: auto max-content;
+
+        .search {
+            width: 250px;
+            margin: 20px 20px;
+
+            .searchtextfield {
+                height: 20px;
+            }
+        }
 
         .button {
+            height: 53.28px;
             color: $inverseFontColor;
             font-size: 0.95em;
             margin: 20px 25px;

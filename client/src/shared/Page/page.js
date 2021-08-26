@@ -1,9 +1,11 @@
 //React 
 import React, { useState } from 'react';
-import classnames from 'classnames';
 
 //Development Stage Imports
 import Photo from './Photo.jpg';
+
+//Shared Components
+import TextField from '../TextField/TextField';
 
 //Material UI 
 import Avatar from '@material-ui/core/Avatar';
@@ -12,6 +14,7 @@ import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import { makeStyles } from '@material-ui/core/styles';
+import { InputAdornment } from '@material-ui/core';
 
 //Material UI Icons
 import AssignmentIcon from '@material-ui/icons/Assignment';
@@ -20,9 +23,9 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import MenuIcon from '@material-ui/icons/Menu';
 import PersonIcon from '@material-ui/icons/Person';
 import PeopleIcon from '@material-ui/icons/People';
-import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import StorageIcon from '@material-ui/icons/Storage';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
+import SearchIcon from '@material-ui/icons/Search';
 
 //SCSS Styles
 import style from './Page.module.scss';
@@ -188,6 +191,19 @@ export default function Page(props) {
                 </div>
             </div>
             <div className={style.actionRow}>
+                <div className={style.search}>
+                    <TextField
+                        className={style.searchtextfield}
+                        placeholder="Search"
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <SearchIcon />
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                </div>
                 <Button
                     className={style.button}
                     color="primary"
