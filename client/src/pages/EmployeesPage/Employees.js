@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import classnames from 'classnames';
 
 //Material UI Components
@@ -11,10 +11,11 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
 //Material UI Icons
-
+import EditIcon from '@material-ui/icons/Edit';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 
 //Shared Components
-import useTable from '../../components/useTable';
+// import useTable from '../../components/useTable';
 import Page from '../../shared/Page/Page';
 
 //SCSS Styles
@@ -28,7 +29,6 @@ export default function Employees() {
         .get("http://localhost:8080/employees/get-all-employees")
         .then(res => {
             localStorage.setItem("AllEmployeeData", JSON.stringify(res.data));
-            console.log(res.data);
         })
         .catch(error => {
             console.log(error)
@@ -36,7 +36,8 @@ export default function Employees() {
 
     // const { TblContainer } = useTable(JSON.parse(localStorage.getItem("AllEmployeeData")));
 
-    const AllEmployeeDate = JSON.parse(localStorage.getItem("AllEmployeeData"));
+    const AllEmployeeData = JSON.parse(localStorage.getItem("AllEmployeeData"));
+    const { thead, tbody } = AllEmployeeData;
 
     return (
         <Page
@@ -46,25 +47,23 @@ export default function Employees() {
             <div className={style.container}>
                 <TableContainer component={Paper}>
                     <Table className={style.table}>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Dessert (100g serving)</TableCell>
-                                <TableCell align="right">Calories</TableCell>
-                                <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                                <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                                <TableCell align="right">Protein&nbsp;(g)</TableCell>
+                        <TableHead className={style.tablehead}>
+                            <TableRow className={style.tableheadrow}>
+                                {thead.map((x, i) => (
+                                    <TableCell align="center" className={style.tablecell} key={i}>{x}</TableCell>
+                                ))}
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {rows.map((AllEmployeeData) => (
-                                <TableRow key={row.name}>
-                                    <TableCell component="th" scope="row">
-                                        {row.name}
+                            {tbody.map((x, i) => (
+                                <TableRow className={classnames({ [style.greytablerow]: i % 2 === 1 })} key={i}>
+                                    {x.map((y, i) => (
+                                        <TableCell align="right" key={i}>{y}</TableCell>
+                                    ))}
+                                    <TableCell align="right" className={style.grid}>
+                                        <VisibilityIcon className={style.visibilityIcon} />
+                                        <EditIcon className={style.editIcon} />
                                     </TableCell>
-                                    <TableCell align="right">{row.calories}</TableCell>
-                                    <TableCell align="right">{row.fat}</TableCell>
-                                    <TableCell align="right">{row.carbs}</TableCell>
-                                    <TableCell align="right">{row.protein}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
