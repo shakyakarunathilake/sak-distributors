@@ -4,8 +4,8 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 //Development Stage
 import Page from '../shared/Page/Page.js';
-import EmployeesForm from '../pages/EmployeesPage/EmployeesForm/EmployeesForm';
-import CustomersForm from '../pages/CustomersPage/CustomersForm/CustomersForm';
+import EmployeesForm from '../pages/EmployeesPage/EmployeesForm';
+import CustomersForm from '../pages/CustomersPage/CustomersForm';
 
 //Pages
 import Login from '../pages/LoginPage/Login';
