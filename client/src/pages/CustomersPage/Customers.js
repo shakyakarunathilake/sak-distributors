@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import classnames from 'classnames';
+import React from 'react';
 
 //Shared Components
 import useTable from '../../components/useTable';

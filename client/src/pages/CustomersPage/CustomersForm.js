@@ -14,9 +14,6 @@ import DatePicker from '../../shared/DatePicker/DatePicker';
 //Material UI Components
 import Button from '@material-ui/core/Button';
 
-//Images and SVGS
-import user from '../../images/user.svg';
-
 //SCSS Style
 import style from './CustomersForm.module.scss';
 
