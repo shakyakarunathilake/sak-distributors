@@ -1,23 +1,4 @@
 @import "../../styles/variables";
 
 .container {
-    .actionRow {
-        box-sizing: border-box;
-        padding-right: 10px;
-        text-align: right;
-
-        .button {
-            color: $inverseFontColor;
-            font-size: 0.95em;
-            margin: 20px 15px;
-        }
-
-        .red {
-            background: $warningColor;
-        }
-
-        .icon {
-            margin-right: 10px;
-        }
-    }
 }

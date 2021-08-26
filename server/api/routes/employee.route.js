@@ -16,33 +16,23 @@ const storage = multer.diskStorage({
 
 const uploads = multer({ storage: storage });
 
+//Checks whether the endpoint works
 router.get("/", (req, res, next) => {
-
-    Employee
-        .find({}, function (err, result) {
-            if (err) {
-                res.status(500).json({
-                    message: err
-                });
-            }
-            else {
-                res.status(200).json({
-                    message: "Handling GET requests to /employees/",
-                    info: result
-                });
-            };
-        });
+    res.status(200).json({
+        message: "Handeling GET requests to /employees"
+    });
 });
 
+//Create an employee
 router.post("/create-employee", uploads.single('photo'), (req, res, next) => {
 
     const employee = new Employee({
         _id: new mongoose.Types.ObjectId(),
         employeeid: req.body.employeeid,
         // employeeimage: `localhost:8080/${req.body.employeeid}.jpg`,
-        efullname: req.body.efullname,
-        etitle: req.body.etitle,
-        ecallingname: req.body.ecallingname,
+        fullname: req.body.fullname,
+        title: req.body.title,
+        callingname: req.body.callingname,
         email: req.body.email,
         dob: req.body.dob,
         hireddate: req.body.hireddate,
@@ -69,6 +59,30 @@ router.post("/create-employee", uploads.single('photo'), (req, res, next) => {
         })
 });
 
+//Get all employee data
+router.get("/get-all-employees", (req, res, next) => {
+
+    Employee
+        .find()
+        .exec()
+        .then(doc => {
+            console.log("All Employee Data", doc.map(x =>
+                [x.fullname, x.dob]
+            ))
+            const thead = ["Emp. ID", "Full Name", "Title"]
+            const tbody = doc.map(x =>
+                [x.fullname, x.dob]
+            )
+            res.status(200).json({ thead: thead, tbody: tbody, doc: doc })
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).json({ "Error": err })
+        })
+});
+
+
+//Get employee data by Employee ID
 router.get("/:employeeId", (req, res, next) => {
     const id = req.params.employeeId;
 

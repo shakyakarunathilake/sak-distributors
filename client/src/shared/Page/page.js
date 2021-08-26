@@ -7,6 +7,7 @@ import Photo from './Photo.jpg';
 
 //Material UI 
 import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -15,11 +16,13 @@ import { makeStyles } from '@material-ui/core/styles';
 //Material UI Icons
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import BusinessIcon from '@material-ui/icons/Business';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import MenuIcon from '@material-ui/icons/Menu';
 import PersonIcon from '@material-ui/icons/Person';
 import PeopleIcon from '@material-ui/icons/People';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import StorageIcon from '@material-ui/icons/Storage';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 
 //SCSS Styles
 import style from './Page.module.scss';
@@ -50,7 +53,7 @@ const useStyles = makeStyles({
     list: {
         border: 0,
         color: "white",
-        narginTop: 10,
+        marginTop: 10,
         width: 300,
     },
     listItem: {
@@ -67,7 +70,31 @@ const useStyles = makeStyles({
     },
     listIcon: {
         marginRight: "15px"
-    }
+    },
+    drawerFooter: {
+        bottom: "0",
+        position: "absolute",
+    },
+
+    logOutDiv: {
+        display: "flex",
+        boxSizing: "border-box",
+        borderRadius: "18px",
+        color: "white",
+        fontSize: 16,
+        margin: "15px 10px",
+        width: 280,
+        padding: "8px 16px",
+
+        '&:hover': {
+            background: "#2A40A3",
+            fontSize: 17,
+            transitionDuration: "0.3s",
+        },
+    },
+    logOutIcon: {
+        marginRight: "15px",
+    },
 
 });
 
@@ -137,6 +164,14 @@ export default function Page(props) {
                     <div className={classes.email}>karunathilakeshakya@gmail.com</div>
                 </div>
                 {list()}
+                <div className={classes.drawerFooter}>
+                    <div className={classes.logOutDiv}>
+                        <div className={classes.logOutIconDiv}>
+                            <ExitToAppIcon className={classes.logOutIcon} />
+                        </div>
+                        Log Out
+                    </div>
+                </div>
             </Drawer>
             <div className={style.pageHeader}>
                 <div className={style.iconDiv}>
@@ -148,11 +183,19 @@ export default function Page(props) {
                 <div className={style.title}>
                     {props.title}
                 </div>
-                <div className={style.iconDiv}>
-                    <PowerSettingsNewIcon
-                        className={classnames(style.icon, style.redIcon)}
-                    />
+                <div className={style.avatarDiv}>
+                    <Avatar alt="Khione" className={style.avatar} src={Photo} />
                 </div>
+            </div>
+            <div className={style.actionRow}>
+                <Button
+                    className={style.button}
+                    color="primary"
+                    size="medium"
+                    variant="contained">
+                    <AddCircleIcon className={style.icon} />
+                    Add New {props.buttonText}
+                </Button>
             </div>
             <div className="pageContent">
                 {props.children}

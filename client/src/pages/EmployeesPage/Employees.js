@@ -2,11 +2,16 @@ import React, { useState } from 'react';
 import classnames from 'classnames';
 
 //Material UI Components
-import Button from '@material-ui/core/Button';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 
 //Material UI Icons
-import DeleteIcon from '@material-ui/icons/Delete';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+
 
 //Shared Components
 import useTable from '../../components/useTable';
@@ -20,42 +25,51 @@ import axios from 'axios';
 
 export default function Employees() {
     axios
-        .get("http://localhost:8080/employees/")
+        .get("http://localhost:8080/employees/get-all-employees")
         .then(res => {
+            localStorage.setItem("AllEmployeeData", JSON.stringify(res.data));
             console.log(res.data);
         })
         .catch(error => {
             console.log(error)
         });
 
-    const { TblContainer } = useTable();
-    
+    // const { TblContainer } = useTable(JSON.parse(localStorage.getItem("AllEmployeeData")));
+
+    const AllEmployeeDate = JSON.parse(localStorage.getItem("AllEmployeeData"));
+
     return (
         <Page
             title="Employees"
+            buttonText="Employee"
         >
             <div className={style.container}>
-                <div className={style.actionRow}>
-                    <Button
-                        className={classnames(style.red, style.button)}
-                        size="medium"
-                        variant="contained">
-                        <DeleteIcon className={style.icon} />
-                        Delete
-                    </Button>
-                    <Button
-                        className={style.button}
-                        color="primary"
-                        size="medium"
-                        variant="contained">
-                        <AddCircleIcon className={style.icon} />
-                        Add New Employee
-                    </Button>
-                </div>
-                <div className={style.tableRow}>
-                    <TblContainer>
-                    </TblContainer>
-                </div>
+                <TableContainer component={Paper}>
+                    <Table className={style.table}>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Dessert (100g serving)</TableCell>
+                                <TableCell align="right">Calories</TableCell>
+                                <TableCell align="right">Fat&nbsp;(g)</TableCell>
+                                <TableCell align="right">Carbs&nbsp;(g)</TableCell>
+                                <TableCell align="right">Protein&nbsp;(g)</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {rows.map((AllEmployeeData) => (
+                                <TableRow key={row.name}>
+                                    <TableCell component="th" scope="row">
+                                        {row.name}
+                                    </TableCell>
+                                    <TableCell align="right">{row.calories}</TableCell>
+                                    <TableCell align="right">{row.fat}</TableCell>
+                                    <TableCell align="right">{row.carbs}</TableCell>
+                                    <TableCell align="right">{row.protein}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
             </div>
         </Page>
     );
