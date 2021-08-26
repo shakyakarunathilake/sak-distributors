@@ -1,4 +1,37 @@
 @import "../../styles/variables";
 
 .container {
+    padding: 10px 10px 0 20px;
+    overflow: auto;
+    height: calc(100vh - 250px);
+
+    .table {
+        .tablehead {
+            .tableheadrow {
+                background-color: $primaryMain;
+                font-size: 1.3em;
+                .tablecell {
+                    color: $inverseFontColor;
+                }
+            }
+        }
+        .greytablerow {
+            background-color: $secondaryLight;
+        }
+
+        .grid {
+            white-space: nowrap;
+            .visibilityIcon {
+                margin-right: 15px;
+                &:hover {
+                    color: $infoColor;
+                }
+            }
+            .editIcon {
+                &:hover {
+                    color: $warningColor;
+                }
+            }
+        }
+    }
 }
