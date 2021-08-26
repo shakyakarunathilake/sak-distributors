@@ -80,7 +80,6 @@ export default function Login() {
                             onChange={handleInputChange}
                             value={values.username}
                             name="username"
-                            variant="outlined"
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
@@ -98,7 +97,6 @@ export default function Login() {
                             onChange={handleInputChange}
                             type={values.showPassword ? 'text' : 'password'}
                             value={values.password}
-                            variant="outlined"
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
