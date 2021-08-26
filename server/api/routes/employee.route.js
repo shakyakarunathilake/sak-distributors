@@ -39,8 +39,8 @@ router.post("/create-employee", uploads.single('photo'), (req, res, next) => {
         address: req.body.address,
         nic: req.body.nic,
         gender: req.body.gender,
-        phonenumber: req.body.phonenumber,
-        role: req.body.role,
+        telephonenumber: req.body.telephonenumber,
+        mobilenumber: req.body.mobilenumber,
         designation: req.body.designation,
         civilstatus: req.body.civilstatus,
         employeestatus: req.body.employeestatus
@@ -66,14 +66,43 @@ router.get("/get-all-employees", (req, res, next) => {
         .find()
         .exec()
         .then(doc => {
-            console.log("All Employee Data", doc.map(x =>
-                [x.fullname, x.dob]
-            ))
-            const thead = ["Emp. ID", "Full Name", "Title"]
-            const tbody = doc.map(x =>
-                [x.fullname, x.dob]
-            )
-            res.status(200).json({ thead: thead, tbody: tbody, doc: doc })
+            const thead = [
+                "Emp. ID",
+                "Full Name",
+                "Title",
+                "Calling Name",
+                "Hired Date",
+                "Designation",
+                "Status",
+                "NIC",
+                "Address",
+                "Telephone Number",
+                "Mobile Number",
+                "Email",
+                "DOB",
+                "Gender",
+                "Civil Status",
+                "Action"
+            ]
+
+            const tbody = doc.map(x => [
+                x.employeeid,
+                x.fullname,
+                x.title,
+                x.callingname,
+                x.hireddate,
+                x.designation,
+                x.employeestatus,
+                x.nic,
+                x.address,
+                x.telephonenumber,
+                x.mobilenumber,
+                x.email,
+                x.dob,
+                x.gender,
+                x.civilstatus,
+            ])
+            res.status(200).json({ thead: thead, tbody: tbody, })
         })
         .catch(err => {
             console.log(err)

@@ -13,8 +13,8 @@ const employeeSchema = mongoose.Schema({
     address: { type: String, required: true },
     nic: { type: String, required: true },
     gender: { type: String, required: true },
-    phonenumber: { type: Number, required: true },
-    role: { type: String, required: true },
+    telephonenumber: { type: Number, required: false },
+    mobilenumber: { type: Number, required: true },
     designation: { type: String, required: true },
     civilstatus: { type: String, required: true },
     employeestatus: { type: String, required: true }

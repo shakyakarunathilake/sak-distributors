@@ -32,8 +32,8 @@ const initialFieldValues = {
     address: '',
     nic: '',
     gender: '',
-    phonenumber: Number,
-    role: '',
+    mobilenumber: Number,
+    teletelephonenumber: Number,
     designation: '',
     civilstatus: '',
     employeestatus: '',
@@ -86,14 +86,13 @@ export default function EmployeesForm() {
             temp.gender = fieldValues.gender ? "" : "This field is required";
         }
 
-        if ('phonenumber' in fieldValues) {
-            temp.phonenumber = fieldValues.phonenumber ? "" : "This field is required";
-            temp.phonenumber = fieldValues.phonenumber.length > 9 ? "" : "Phone number is not valid";
+        if ('telephonenumber' in fieldValues) {
+            temp.telephonenumber = fieldValues.telephonenumber.length > 9 ? "" : "Telephone number is not valid";
         }
 
-        if ('role' in fieldValues) {
-            temp.role = fieldValues.role ? "" : "Role is not valid";
-
+        if ('mobilenumber' in fieldValues) {
+            temp.mobilenumber = fieldValues.mobilenumber ? "" : "This field is required";
+            temp.mobilenumber = fieldValues.mobilenumber.length > 9 ? "" : "Mobile number is not valid";
         }
 
         if ('designation' in fieldValues) {
@@ -135,8 +134,8 @@ export default function EmployeesForm() {
                     "address": values.address,
                     "nic": values.nic,
                     "gender": values.gender,
-                    "phonenumber": values.phonenumber,
-                    "role": values.role,
+                    "telephonenumber": values.telephonenumber,
+                    "mobilenumber": values.mobilenumber,
                     "designation": values.designation,
                     "civilstatus": values.civilstatus,
                     "employeestatus": values.employeestatus,
@@ -257,17 +256,66 @@ export default function EmployeesForm() {
                                     />
                                 </div>
                                 <div>
-                                    <TextField
-                                        error={errors.phonenumber}
-                                        label="Phone Number *"
+                                    <Select
+                                        error={errors.gender}
+                                        label="Gender *"
                                         onChange={handleInputChange}
-                                        placeholder="Ex: 071 2686790"
-                                        value={values?.phonenumber}
-                                        name="phonenumber"
+                                        options={employeeservice.getGenderOptions()}
+                                        value={values?.gender}
+                                        name="gender"
                                     />
                                 </div>
 
                             </div>
+
+                            <div className={style.gridrow}>
+                                <div>
+                                    <Select
+                                        error={errors.civilstatus}
+                                        label="Civil Status *"
+                                        onChange={handleInputChange}
+                                        options={employeeservice.getCivilStatusOptions()}
+                                        value={values?.civilstatus}
+                                        name="civilstatus"
+                                    />
+                                </div>
+                                <div>
+                                    <Select
+                                        error={errors.designation}
+                                        label="Designation *"
+                                        onChange={handleInputChange}
+                                        options={employeeservice.getDesignationOptions()}
+                                        value={values?.designation}
+                                        name="designation"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className={style.gridrow}>
+                                <div>
+                                    <TextField
+
+                                        error={errors.telephonenumber}
+                                        label="Telephone Number"
+                                        onChange={handleInputChange}
+                                        placeholder="Ex: 035 2266327"
+                                        value={values?.telephonenumber}
+                                        name="telephonenumber"
+                                    />
+                                </div>
+                                <div>
+                                    <TextField
+                                        error={errors.mobilenumber}
+                                        label="Mobile Number *"
+                                        onChange={handleInputChange}
+                                        placeholder="Ex: 071 2686790"
+                                        value={values?.mobilenumber}
+                                        name="mobilenumber"
+                                    />
+                                </div>
+                            </div>
+
+
 
                             <div className={style.row}>
                                 <TextField
@@ -291,53 +339,6 @@ export default function EmployeesForm() {
                                 />
                             </div>
 
-                            <div className={style.gridrow}>
-                                <div>
-                                    <Select
-                                        error={errors.gender}
-                                        label="Gender *"
-                                        onChange={handleInputChange}
-                                        options={employeeservice.getGenderOptions()}
-                                        value={values?.gender}
-                                        name="gender"
-                                    />
-                                </div>
-                                <div>
-                                    <Select
-                                        error={errors.civilstatus}
-                                        label="Civil Status *"
-                                        onChange={handleInputChange}
-                                        options={employeeservice.getCivilStatusOptions()}
-                                        value={values?.civilstatus}
-                                        name="civilstatus"
-                                    />
-                                </div>
-
-                            </div>
-
-                            <div className={style.gridrow}>
-                                <div>
-                                    <Select
-                                        error={errors.designation}
-                                        label="Designation *"
-                                        onChange={handleInputChange}
-                                        options={employeeservice.getDesignationOptions()}
-                                        value={values?.designation}
-                                        name="designation"
-                                    />
-                                </div>
-                                <div>
-                                    <Select
-                                        error={errors.role}
-                                        label="Role *"
-                                        onChange={handleInputChange}
-                                        options={employeeservice.getRoleOptions()}
-                                        value={values?.role}
-                                        name="role"
-                                    />
-                                </div>
-
-                            </div>
 
                             <div className={style.gridrow}>
                                 <div>

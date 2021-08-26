@@ -33,12 +33,12 @@ export const getEmployeeStatusOptions = () => ([
     { id: "es02", title: "Inactive" },
 ])
 
-export const getRoleOptions = () => ([
-    { id: "r01", title: "Admin" },
-    { id: "r02", title: "Clerk" },
-    { id: "r03", title: "Sales Representative" },
-    { id: "r04", title: "Worker" },
-])
+// export const getRoleOptions = () => ([
+//     { id: "r01", title: "Admin" },
+//     { id: "r02", title: "Clerk" },
+//     { id: "r03", title: "Sales Representative" },
+//     { id: "r04", title: "Worker" },
+// ])
 
 export const getCustomerOptions = () => ([
     { id: "c01", title: "Registered Customer" },
