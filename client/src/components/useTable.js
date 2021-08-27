@@ -30,8 +30,8 @@ export default function useTable(thead, tbody) {
                             <MuiTableCell
                                 align="center"
                                 className={classnames(
-                                    { [style.sticky]: i === 0 },
-                                    { [style.sticky]: i === 1 },
+                                    { [style.columnonesticky]: i === 0 },
+                                    { [style.columntwosticky]: i === 1 },
                                     style.tablecell
                                 )}
                                 key={i}
@@ -53,8 +53,8 @@ export default function useTable(thead, tbody) {
                             {x.map((y, i) => (
                                 <MuiTableCell
                                     className={classnames(
-                                        { [style.sticky]: i === 0 },
-                                        { [style.sticky]: i === 1 }
+                                        { [style.columnonesticky]: i === 0 },
+                                        { [style.columntwosticky]: i === 1 }
                                     )}
                                     align="right"
                                     key={i}

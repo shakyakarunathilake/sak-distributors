@@ -21,9 +21,17 @@
             }
         }
 
-        .sticky {
+        .columnonesticky {
             position: sticky;
             left: 0;
+            z-index: 1000;
+        }
+
+        .columntwosticky{
+            position: sticky;
+            left: 76px;
+            z-index: 1000;
+
         }
 
         .greytablerow {
