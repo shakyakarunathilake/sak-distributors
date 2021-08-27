@@ -49,6 +49,7 @@
     }
 
     .actionRow {
+        width: 100vw;
         box-sizing: border-box;
         display: grid;
         grid-template-columns: auto max-content;
