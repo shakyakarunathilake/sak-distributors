@@ -1,21 +1,20 @@
-import React from 'react';
-import classnames from 'classnames';
+import React, { useState } from 'react';
 
-//Material UI Components
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+// //Material UI Components
+// import Table from '@material-ui/core/Table';
+// import TableBody from '@material-ui/core/TableBody';
+// import TableCell from '@material-ui/core/TableCell';
+// import TableContainer from '@material-ui/core/TableContainer';
+// import TableHead from '@material-ui/core/TableHead';
+// import TableRow from '@material-ui/core/TableRow';
+// import Paper from '@material-ui/core/Paper';
 
-//Material UI Icons
-import EditIcon from '@material-ui/icons/Edit';
-import VisibilityIcon from '@material-ui/icons/Visibility';
+// //Material UI Icons
+// import EditIcon from '@material-ui/icons/Edit';
+// import VisibilityIcon from '@material-ui/icons/Visibility';
 
 //Shared Components
-// import useTable from '../../components/useTable';
+import useTable from '../../components/useTable';
 import Page from '../../shared/Page/Page';
 
 //SCSS Styles
@@ -33,11 +32,19 @@ export default function Employees() {
         .catch(error => {
             console.log(error)
         });
+    ;
 
-    // const { TblContainer } = useTable(JSON.parse(localStorage.getItem("AllEmployeeData")));
-
+    //Getting Data From Local Storage
     const AllEmployeeData = JSON.parse(localStorage.getItem("AllEmployeeData"));
+    
+    //Deconstructing into thead and tbody
     const { thead, tbody } = AllEmployeeData;
+
+    //Setting the tbody as records in useState
+    const [records, setRecords] = useState(tbody);
+
+    //Passing and Importing data to useTable
+    const { TableContainer } = useTable(thead, tbody);
 
     return (
         <Page
@@ -45,30 +52,7 @@ export default function Employees() {
             buttonText="Employee"
         >
             <div className={style.container}>
-                <TableContainer component={Paper}>
-                    <Table className={style.table}>
-                        <TableHead className={style.tablehead}>
-                            <TableRow className={style.tableheadrow}>
-                                {thead.map((x, i) => (
-                                    <TableCell align="center" className={style.tablecell} key={i}>{x}</TableCell>
-                                ))}
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {tbody.map((x, i) => (
-                                <TableRow className={classnames({ [style.greytablerow]: i % 2 === 1 })} key={i}>
-                                    {x.map((y, i) => (
-                                        <TableCell align="right" key={i}>{y}</TableCell>
-                                    ))}
-                                    <TableCell align="right" className={style.grid}>
-                                        <VisibilityIcon className={style.visibilityIcon} />
-                                        <EditIcon className={style.editIcon} />
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                <TableContainer/>
             </div>
         </Page>
     );
