@@ -1,10 +1,7 @@
 @import "../../styles/variables";
 
 .container {
-    padding: 10px 10px 0 20px;
-    overflow-x: auto;
-    overflow-y: auto;
-    width: 100vw;
-    // white-space: nowrap;
-    // height: calc(100vh - 250px);
+    width: calc(100vw - 40px);
+    height: calc(100vh - 250px);
+    box-sizing: border-box;
 }
