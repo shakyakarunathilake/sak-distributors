@@ -4,8 +4,9 @@
     overflow-x: auto;
     overflow-y: auto;
     height: min-content;
-    width: 1024px;
     white-space: nowrap;
+    margin: 10px 20px;
+    box-sizing: border-box;
 
     .table {
         .tablehead {
@@ -19,22 +20,32 @@
                 }
             }
         }
+
+        .sticky {
+            position: sticky;
+            left: 0;
+        }
+
         .greytablerow {
             background-color: $secondaryLight;
         }
 
-        .grid {
-            white-space: nowrap;
-            .visibilityIcon {
-                margin-right: 15px;
-                &:hover {
-                    color: $infoColor;
-                }
+        .tablerow {
+            &:hover {
+                background-color: #949494;
             }
-            .editIcon {
-                margin-right: 16px;
-                &:hover {
-                    color: $warningColor;
+            .grid {
+                white-space: nowrap;
+                .visibilityIcon {
+                    margin-right: 15px;
+                    &:hover {
+                        color: $infoColor;
+                    }
+                }
+                .editIcon {
+                    &:hover {
+                        color: $warningColor;
+                    }
                 }
             }
         }

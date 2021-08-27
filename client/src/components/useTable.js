@@ -27,7 +27,15 @@ export default function useTable(thead, tbody) {
                 <MuiTableHead className={style.tablehead}>
                     <MuiTableRow className={style.tableheadrow}>
                         {thead.map((x, i) => (
-                            <MuiTableCell align="center" className={style.tablecell} key={i}>
+                            <MuiTableCell
+                                align="center"
+                                className={classnames(
+                                    { [style.sticky]: i === 0 },
+                                    { [style.sticky]: i === 1 },
+                                    style.tablecell
+                                )}
+                                key={i}
+                            >
                                 {x}
                             </MuiTableCell>
                         ))}
@@ -35,9 +43,22 @@ export default function useTable(thead, tbody) {
                 </MuiTableHead>
                 <MuiTableBody>
                     {tbody.map((x, i) => (
-                        <MuiTableRow className={classnames({ [style.greytablerow]: i % 2 === 1 })} key={i}>
+                        <MuiTableRow
+                            className={classnames(
+                                { [style.greytablerow]: i % 2 === 1 },
+                                style.tablerow
+                            )}
+                            key={i}
+                        >
                             {x.map((y, i) => (
-                                <MuiTableCell align="right" key={i}>
+                                <MuiTableCell
+                                    className={classnames(
+                                        { [style.sticky]: i === 0 },
+                                        { [style.sticky]: i === 1 }
+                                    )}
+                                    align="right"
+                                    key={i}
+                                >
                                     {y}
                                 </MuiTableCell>
                             ))}
