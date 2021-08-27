@@ -213,7 +213,7 @@ export default function Page(props) {
                     Add New {props.buttonText}
                 </Button>
             </div>
-            <div className="pageContent">
+            <div className={style.pagecontent}>
                 {props.children}
             </div>
         </div>
