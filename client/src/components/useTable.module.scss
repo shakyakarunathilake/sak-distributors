@@ -1,0 +1,42 @@
+@import "../styles/variables";
+
+.tablecontainer {
+    overflow-x: auto;
+    overflow-y: auto;
+    height: min-content;
+    width: 1024px;
+    white-space: nowrap;
+
+    .table {
+        .tablehead {
+            position: sticky;
+            top: 0;
+            .tableheadrow {
+                background-color: $primaryMain;
+                font-size: 1.3em;
+                .tablecell {
+                    color: $inverseFontColor;
+                }
+            }
+        }
+        .greytablerow {
+            background-color: $secondaryLight;
+        }
+
+        .grid {
+            white-space: nowrap;
+            .visibilityIcon {
+                margin-right: 15px;
+                &:hover {
+                    color: $infoColor;
+                }
+            }
+            .editIcon {
+                margin-right: 16px;
+                &:hover {
+                    color: $warningColor;
+                }
+            }
+        }
+    }
+}
