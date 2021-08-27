@@ -33,7 +33,7 @@ const initialFieldValues = {
     nic: '',
     gender: '',
     mobilenumber: Number,
-    teletelephonenumber: Number,
+    telephonenumber: Number,
     designation: '',
     civilstatus: '',
     employeestatus: '',
@@ -87,6 +87,7 @@ export default function EmployeesForm() {
         }
 
         if ('telephonenumber' in fieldValues) {
+            temp.telephonenumber = fieldValues.telephonenumber ? "" : "This field is required";
             temp.telephonenumber = fieldValues.telephonenumber.length > 9 ? "" : "Telephone number is not valid";
         }
 
@@ -294,7 +295,6 @@ export default function EmployeesForm() {
                             <div className={style.gridrow}>
                                 <div>
                                     <TextField
-
                                         error={errors.telephonenumber}
                                         label="Telephone Number"
                                         onChange={handleInputChange}
