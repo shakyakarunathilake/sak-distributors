@@ -32,6 +32,7 @@ export default function useTable(thead, tbody) {
                                 className={classnames(
                                     { [style.columnonesticky]: i === 0 },
                                     { [style.columntwosticky]: i === 1 },
+                                    { [style.columnlaststicky]: i === thead.length - 1 },
                                     style.tablecell
                                 )}
                                 key={i}
@@ -41,7 +42,7 @@ export default function useTable(thead, tbody) {
                         ))}
                     </MuiTableRow>
                 </MuiTableHead>
-                <MuiTableBody>
+                <MuiTableBody className={style.tablebody}>
                     {tbody.map((x, i) => (
                         <MuiTableRow
                             className={classnames(
@@ -54,7 +55,7 @@ export default function useTable(thead, tbody) {
                                 <MuiTableCell
                                     className={classnames(
                                         { [style.columnonesticky]: i === 0 },
-                                        { [style.columntwosticky]: i === 1 }
+                                        { [style.columntwosticky]: i === 1 },
                                     )}
                                     align="right"
                                     key={i}
@@ -62,7 +63,10 @@ export default function useTable(thead, tbody) {
                                     {y}
                                 </MuiTableCell>
                             ))}
-                            <MuiTableCell align="center" className={style.grid}>
+                            <MuiTableCell
+                                align="center"
+                                className={classnames(style.grid, style.columnlaststicky)}
+                            >
                                 <VisibilityIcon className={style.visibilityIcon} />
                                 <EditIcon className={style.editIcon} />
                             </MuiTableCell>

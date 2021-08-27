@@ -24,35 +24,39 @@
         .columnonesticky {
             position: sticky;
             left: 0;
-            z-index: 1000;
         }
 
-        .columntwosticky{
+        .columntwosticky {
             position: sticky;
             left: 76px;
-            z-index: 1000;
+        }
 
+        .columnlaststicky {
+            position: sticky;
+            right: 0px;
         }
 
         .greytablerow {
             background-color: $secondaryLight;
         }
 
-        .tablerow {
-            &:hover {
-                background-color: #949494;
-            }
-            .grid {
-                white-space: nowrap;
-                .visibilityIcon {
-                    margin-right: 15px;
-                    &:hover {
-                        color: $infoColor;
-                    }
+        .tablebody {
+            .tablerow {
+                &:hover {
+                    background-color: #949494;
                 }
-                .editIcon {
-                    &:hover {
-                        color: $warningColor;
+                .grid {
+                    white-space: nowrap;
+                    .visibilityIcon {
+                        margin-right: 15px;
+                        &:hover {
+                            color: $infoColor;
+                        }
+                    }
+                    .editIcon {
+                        &:hover {
+                            color: $warningColor;
+                        }
                     }
                 }
             }
