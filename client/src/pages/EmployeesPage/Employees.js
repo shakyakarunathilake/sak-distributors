@@ -1,18 +1,5 @@
 import React, { useState } from 'react';
 
-// //Material UI Components
-// import Table from '@material-ui/core/Table';
-// import TableBody from '@material-ui/core/TableBody';
-// import TableCell from '@material-ui/core/TableCell';
-// import TableContainer from '@material-ui/core/TableContainer';
-// import TableHead from '@material-ui/core/TableHead';
-// import TableRow from '@material-ui/core/TableRow';
-// import Paper from '@material-ui/core/Paper';
-
-// //Material UI Icons
-// import EditIcon from '@material-ui/icons/Edit';
-// import VisibilityIcon from '@material-ui/icons/Visibility';
-
 //Shared Components
 import useTable from '../../components/useTable';
 import Page from '../../shared/Page/Page';
@@ -34,9 +21,11 @@ export default function Employees() {
         });
     ;
 
+    console.log(JSON.parse(localStorage.getItem("AllEmployeeData")));
+
     //Getting Data From Local Storage
     const AllEmployeeData = JSON.parse(localStorage.getItem("AllEmployeeData"));
-    
+
     //Deconstructing into thead and tbody
     const { thead, tbody } = AllEmployeeData;
 
@@ -52,7 +41,7 @@ export default function Employees() {
             buttonText="Employee"
         >
             <div className={style.container}>
-                <TableContainer/>
+                <TableContainer />
             </div>
         </Page>
     );
