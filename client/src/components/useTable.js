@@ -47,7 +47,7 @@ export default function useTable(thead, tbody) {
                         <MuiTableRow
                             className={classnames(
                                 { [style.greytablerow]: i % 2 === 1 },
-                                style.tablerow
+                                { [style.whitetablerow]: i % 2 === 0 },
                             )}
                             key={i}
                         >
@@ -57,7 +57,9 @@ export default function useTable(thead, tbody) {
                                         { [style.columnonesticky]: i === 0 },
                                         { [style.columntwosticky]: i === 1 },
                                     )}
-                                    align="right"
+                                    align={classnames(
+                                        { "right": i != 1 && i != 0 }
+                                    )}
                                     key={i}
                                 >
                                     {y}
@@ -65,7 +67,7 @@ export default function useTable(thead, tbody) {
                             ))}
                             <MuiTableCell
                                 align="center"
-                                className={classnames(style.grid, style.columnlaststicky)}
+                                className={style.columnlaststicky}
                             >
                                 <VisibilityIcon className={style.visibilityIcon} />
                                 <EditIcon className={style.editIcon} />

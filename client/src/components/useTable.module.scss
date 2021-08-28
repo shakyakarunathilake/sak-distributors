@@ -7,59 +7,62 @@
     white-space: nowrap;
     margin: 10px 20px;
     box-sizing: border-box;
+}
 
-    .table {
-        .tablehead {
-            position: sticky;
-            top: 0;
-            .tableheadrow {
-                background-color: $primaryMain;
-                font-size: 1.3em;
-                .tablecell {
-                    color: $inverseFontColor;
-                }
-            }
-        }
+.tablehead {
+    position: sticky;
+    top: 0;
+}
 
-        .columnonesticky {
-            position: sticky;
-            left: 0;
-        }
+.tableheadrow {
+    background-color: $primaryMain;
+    font-size: 1.3em;
+    .tablecell {
+        color: $inverseFontColor;
+    }
+}
 
-        .columntwosticky {
-            position: sticky;
-            left: 76px;
-        }
+.greytablerow {
+    background-color: $secondaryLight;
+}
 
-        .columnlaststicky {
-            position: sticky;
-            right: 0px;
-        }
+.whitetablerow {
+    background-color: white;
+    &:hover {
+        background-color: #949494;
+    }
+}
 
-        .greytablerow {
-            background-color: $secondaryLight;
-        }
+.columnonesticky {
+    position: sticky;
+    left: 0;
+    background-color: inherit;
+}
 
-        .tablebody {
-            .tablerow {
-                &:hover {
-                    background-color: #949494;
-                }
-                .grid {
-                    white-space: nowrap;
-                    .visibilityIcon {
-                        margin-right: 15px;
-                        &:hover {
-                            color: $infoColor;
-                        }
-                    }
-                    .editIcon {
-                        &:hover {
-                            color: $warningColor;
-                        }
-                    }
-                }
-            }
-        }
+.columntwosticky {
+    position: sticky;
+    left: 76px;
+    background-color: inherit;
+
+}
+
+.columnlaststicky {
+    position: sticky;
+    right: 0px;
+    white-space: nowrap;
+    background-color: inherit;
+    box-shadow: -10px 0px 10px 1px #aaaaaa;
+}
+
+.visibilityIcon {
+    margin-right: 15px;
+    &:hover {
+        color: $infoColor;
+    }
+}
+
+.editIcon {
+    &:hover {
+        color: $warningColor;
     }
 }
