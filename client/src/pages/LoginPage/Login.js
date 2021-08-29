@@ -115,7 +115,7 @@ export default function Login() {
                     </div>
                     <div className={style.div}>
                         <div className={style.forgotPassword}>
-                            <a href="">Forgot Password?</a>
+                            <a href="https://www.google.com/">Forgot Password?</a>
                         </div>
                         <Button
                             className={style.button}
