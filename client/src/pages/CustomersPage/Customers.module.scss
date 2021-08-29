@@ -1,5 +1,94 @@
 @import "../../styles/variables";
 
-.container {
+.tablecontainer {
+    width: calc(100vw - 40px);
+    height: calc(100vh - 250px);
+    box-sizing: border-box;
+}
 
+.actionRow {
+    width: 100vw;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: auto max-content;
+
+    .search {
+        width: 250px;
+        margin: 20px 20px;
+
+        .searchtextfield {
+            height: 20px;
+        }
+    }
+
+    .button {
+        height: 53.28px;
+        color: $inverseFontColor;
+        font-size: 0.95em;
+        margin: 20px 25px;
+        &:hover {
+            margin: 20px 30px;
+            transform: scale(1.1);
+        }
+    }
+
+    .icon {
+        margin-right: 10px;
+    }
+}
+
+.tableheadrow {
+    background-color: $primaryMain;
+    font-size: 1.3em;
+    .tablecell {
+        color: $inverseFontColor;
+    }
+    .tableheadfontstyles {
+        font-style: bold;
+        color: white;
+    }
+}
+
+.greytablerow {
+    background-color: $secondaryLight;
+}
+
+.whitetablerow {
+    background-color: white;
+    &:hover {
+        background-color: #949494;
+    }
+}
+
+.columnonesticky {
+    position: sticky;
+    left: 0;
+    background-color: inherit;
+}
+
+.columntwosticky {
+    position: sticky;
+    left: 82.8px;
+    background-color: inherit;
+}
+
+.columnlaststicky {
+    position: sticky;
+    right: 0px;
+    white-space: nowrap;
+    background-color: inherit;
+    // box-shadow: -10px 0px 10px 1px #aaaaaa;
+}
+
+.visibilityIcon {
+    margin-right: 15px;
+    &:hover {
+        color: $infoColor;
+    }
+}
+
+.editIcon {
+    &:hover {
+        color: $warningColor;
+    }
 }
