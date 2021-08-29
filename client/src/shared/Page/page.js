@@ -4,17 +4,12 @@ import React, { useState } from 'react';
 //Development Stage Imports
 import Photo from './Photo.jpg';
 
-//Shared Components
-import TextField from '../TextField/TextField';
-
 //Material UI 
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import { makeStyles } from '@material-ui/core/styles';
-import { InputAdornment } from '@material-ui/core';
 
 //Material UI Icons
 import AssignmentIcon from '@material-ui/icons/Assignment';
@@ -24,8 +19,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import PersonIcon from '@material-ui/icons/Person';
 import PeopleIcon from '@material-ui/icons/People';
 import StorageIcon from '@material-ui/icons/Storage';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import SearchIcon from '@material-ui/icons/Search';
 
 //SCSS Styles
 import style from './Page.module.scss';
@@ -189,29 +182,6 @@ export default function Page(props) {
                 <div className={style.avatarDiv}>
                     <Avatar alt="Khione" className={style.avatar} src={Photo} />
                 </div>
-            </div>
-            <div className={style.actionRow}>
-                <div className={style.search}>
-                    <TextField
-                        className={style.searchtextfield}
-                        placeholder="Search"
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <SearchIcon />
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                </div>
-                <Button
-                    className={style.button}
-                    color="primary"
-                    size="medium"
-                    variant="contained">
-                    <AddCircleIcon className={style.icon} />
-                    Add New {props.buttonText}
-                </Button>
             </div>
             <div className={style.pagecontent}>
                 {props.children}
