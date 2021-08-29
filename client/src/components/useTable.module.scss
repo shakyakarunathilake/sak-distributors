@@ -4,7 +4,7 @@
     overflow-x: auto;
     overflow-y: auto;
     height: min-content;
-    white-space: nowrap;
+    white-space: nowrap; //To get rid of the scroll and inline text
     margin: 10px 20px;
     box-sizing: border-box;
 }
@@ -12,57 +12,4 @@
 .tablehead {
     position: sticky;
     top: 0;
-}
-
-.tableheadrow {
-    background-color: $primaryMain;
-    font-size: 1.3em;
-    .tablecell {
-        color: $inverseFontColor;
-    }
-}
-
-.greytablerow {
-    background-color: $secondaryLight;
-}
-
-.whitetablerow {
-    background-color: white;
-    &:hover {
-        background-color: #949494;
-    }
-}
-
-.columnonesticky {
-    position: sticky;
-    left: 0;
-    background-color: inherit;
-}
-
-.columntwosticky {
-    position: sticky;
-    left: 76px;
-    background-color: inherit;
-
-}
-
-.columnlaststicky {
-    position: sticky;
-    right: 0px;
-    white-space: nowrap;
-    background-color: inherit;
-    box-shadow: -10px 0px 10px 1px #aaaaaa;
-}
-
-.visibilityIcon {
-    margin-right: 15px;
-    &:hover {
-        color: $infoColor;
-    }
-}
-
-.editIcon {
-    &:hover {
-        color: $warningColor;
-    }
 }
