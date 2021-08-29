@@ -38,7 +38,7 @@
 
             .threecolumns {
                 display: grid;
-                grid-template-columns: calc(33% - 10px) calc(33% - 10px) calc(33% - 10px);
+                grid-template-columns: calc(20% - 10px) calc(20% - 10px) calc(60% - 20px);
                 grid-column-gap: 20px;
             }
 

@@ -19,16 +19,18 @@ import style from './CustomersForm.module.scss';
 
 const initialFieldValues = {
     customerid: '',
-    ctitle: '',
-    cfirstname: '',
-    clastname: '',
+    fullname: '',
+    title: '',
+    firstname: '',
+    lastname: '',
     brn: '',
     storename: '',
     route: '',
     addeddate: '',
-    phonenumber: Number,
-    mobilenumber: Number,
-    address: '',
+    storecontactnumber: Number,
+    customercontactnumber: Number,
+    billingaddress: '',
+    shippingaddress: '',
     email: '',
 };
 
@@ -41,21 +43,26 @@ export default function CustomersForm() {
             temp.customerid = fieldValues.customerid ? "" : "This field is required";
         }
 
-        if ('ctitle' in fieldValues) {
-            temp.ctitle = fieldValues.ctitle ? "" : "This field is required";
+
+        if ('fullname' in fieldValues) {
+            temp.fullname = fieldValues.fullname ? "" : "This field is required";
         }
 
-        if ('cfirstname' in fieldValues) {
-            temp.cfirstname = fieldValues.cfirstname ? "" : "This field is required";
+        if ('title' in fieldValues) {
+            temp.title = fieldValues.title ? "" : "This field is required";
         }
 
-        if ('clastname' in fieldValues) {
-            temp.clastname = fieldValues.clastname ? "" : "This field is required";
+        if ('firstname' in fieldValues) {
+            temp.firstname = fieldValues.firstname ? "" : "This field is required";
+        }
+
+        if ('lastname' in fieldValues) {
+            temp.lastname = fieldValues.lastname ? "" : "This field is required";
         }
 
         if ('brn' in fieldValues) {
             temp.brn = fieldValues.brn ? "" : "This field is required";
-            temp.brn = fieldValues.brn.length > 9 ? "" : "BRN is not valid";
+            temp.brn = fieldValues.brn.length > 6 ? "" : "BRN is not valid";
         }
 
         if ('route' in fieldValues) {
@@ -70,19 +77,24 @@ export default function CustomersForm() {
             temp.addeddate = fieldValues.addeddate ? "" : "This field is required";
         }
 
-        if ('phonenumber' in fieldValues) {
-            temp.phonenumber = fieldValues.phonenumber ? "" : "This field is required";
-            temp.phonenumber = fieldValues.phonenumber.length > 9 ? "" : "Phone number is not valid";
+        if ('storecontactnumber' in fieldValues) {
+            temp.storecontactnumber = fieldValues.storecontactnumber ? "" : "This field is required";
+            temp.storecontactnumber = fieldValues.storecontactnumber.length > 9 ? "" : "Store contact number is not valid";
         }
 
-        if ('mobilenumber' in fieldValues) {
-            temp.mobilenumber = fieldValues.mobilenumber ? "" : "This field is required";
-            temp.mobilenumber = fieldValues.mobilenumber.length > 9 ? "" : "Mobile number is not valid";
+        if ('customercontactnumber' in fieldValues) {
+            temp.customercontactnumber = fieldValues.customercontactnumber ? "" : "This field is required";
+            temp.customercontactnumber = fieldValues.customercontactnumber.length > 9 ? "" : "Customer contact number is not valid";
         }
 
-        if ('address' in fieldValues) {
-            temp.address = fieldValues.address ? "" : "This field is required";
+        if ('shippingaddress' in fieldValues) {
+            temp.shippingaddress = fieldValues.shippingaddress ? "" : "This field is required";
         }
+
+        if ('billingaddress' in fieldValues) {
+            temp.billingaddress = fieldValues.billingaddress ? "" : "This field is required";
+        }
+
 
         if ('email' in fieldValues) {
             temp.email = fieldValues.email ? "" : "This field is required";
@@ -106,16 +118,18 @@ export default function CustomersForm() {
             axios
                 .post("http://localhost:8080/customers/create-customer", {
                     "customerid": values.customerid,
-                    "ctitle": values.ctitle,
-                    "cfirstname": values.cfirstname,
-                    "clastname": values.clastname,
+                    "fullname": values.fullname,
+                    "title": values.title,
+                    "firstname": values.firstname,
+                    "lastname": values.lastname,
                     "brn": values.brn,
                     "storename": values.storename,
                     "route": values.route,
                     "addeddate": values.addeddate,
-                    "phonenumber": values.phonenumber,
-                    "mobilenumber": values.mobilenumber,
-                    "address": values.address,
+                    "storecontactnumber": values.storecontactnumber,
+                    "customercontactnumber": values.customercontactnumber,
+                    "shippingaddress": values.shippingaddress,
+                    "billingaddress": values.billingaddress,
                     "email": values.email,
                 })
                 .then(res => {
@@ -154,25 +168,28 @@ export default function CustomersForm() {
                     <div className={classnames(style.row, style.threecolumns)}>
                         <TextField
                             name="customerid"
-                            label="C000234 (Autogenerated)"
-                            value={values?.brn}
-                            disabled={true}
+                            label="Customer ID"
+                            value={values?.customerid}
+                            onChange={handleInputChange}
+                            placeholder="Ex: C000234"
+                            error={errors.customerid}
+                        // disabled={true}
                         />
                         <TextField
                             name="brn"
-                            label="BR Number *"
+                            label="BRN*"
                             value={values?.brn}
                             onChange={handleInputChange}
                             placeholder="Ex: 3069002"
-                            errors={errors.ebrn}
+                            error={errors.brn}
                         />
                         <TextField
                             name="storename"
                             label="Name of the Store *"
                             value={values?.storename}
                             onChange={handleInputChange}
-                            placeholder="Ex: Champika Supermarket"
-                            errors={errors.estorename}
+                            placeholder="Ex: Champika Super Center & Pharmacy"
+                            error={errors.storename}
                         />
 
                     </div>
@@ -193,64 +210,83 @@ export default function CustomersForm() {
                             name="addeddate"
                         />
                     </div>
+                    <div className={style.row}>
+                        <TextField
+                            error={errors.fullname}
+                            label="Customer Full Name *"
+                            onChange={handleInputChange}
+                            placeholder="Ex: Adikari Deepal Lasitha Abeynayaka"
+                            value={values?.fullname}
+                            name="fullname"
+                        />
+                    </div>
                     <div className={style.gridrow}>
                         <div>
                             <Select
-                                error={errors.ctitle}
+                                error={errors.title}
                                 label="Title *"
                                 onChange={handleInputChange}
                                 options={employeeservice.getTitleOptions()}
-                                value={values?.ctitle}
-                                name="ctitle"
+                                value={values?.title}
+                                name="title"
                             />
                         </div>
 
                         <div className={style.twocolumns}>
                             <TextField
-                                name="cfirstname"
-                                label="First Name *"
-                                value={values?.cfirstname}
+                                name="firstname"
+                                label="Customer First Name *"
+                                value={values?.firstname}
                                 onChange={handleInputChange}
-                                placeholder="Ex: Hashan"
-                                errors={errors.cfirstname}
+                                placeholder="Ex: Lasitha"
+                                error={errors.firstname}
                             />
                             <TextField
-                                name="clastname"
-                                label="Last Name *"
-                                value={values?.clastname}
+                                name="lastname"
+                                label="Customer Last Name *"
+                                value={values?.lastname}
                                 onChange={handleInputChange}
-                                placeholder="Ex: Karunathilake"
-                                errors={errors.clastname}
+                                placeholder="Ex: Abeynayaka"
+                                error={errors.lastname}
                             />
                         </div>
                     </div>
                     <div className={classnames(style.row, style.twocolumns)}>
                         <TextField
-                            error={errors.phonenumber}
-                            label="Phone Number *"
+                            error={errors.storecontactnumber}
+                            label="Store Contact Number *"
                             onChange={handleInputChange}
-                            placeholder="Ex: 035 2266327"
-                            value={values?.phonenumber}
-                            name="phonenumber"
+                            placeholder="Ex: 035 4727772"
+                            value={values?.storecontactnumber}
+                            name="storecontactnumber"
                         />
                         <TextField
-                            error={errors.mobilenumber}
-                            label="Mobile Number *"
+                            error={errors.customercontactnumber}
+                            label="Customer Contact Number "
                             onChange={handleInputChange}
                             placeholder="Ex: 071 2686790"
-                            value={values?.mobilenumber}
-                            name="mobilenumber"
+                            value={values?.customercontactnumber}
+                            name="customercontactnumber"
                         />
                     </div>
-
                     <div className={style.row}>
                         <TextField
-                            error={errors.address}
-                            label="Address *"
+                            error={errors.billingaddress}
+                            label="Billing Address *"
                             onChange={handleInputChange}
-                            placeholder="Ex: Weekadawatta, Kansalagamuwa, Rambukkana"
-                            value={values?.address}
-                            name="address"
+                            placeholder="Ex: Rambukkana-Katupitiya Rd, Rambukkana"
+                            value={values?.billingaddress}
+                            name="billingaddress"
+                        />
+                    </div>
+                    <div className={style.row}>
+                        <TextField
+                            error={errors.shippingaddress}
+                            label="Shipping Address *"
+                            onChange={handleInputChange}
+                            placeholder="Ex: Rambukkana-Katupitiya Rd, Rambukkana"
+                            value={values?.shippingaddress}
+                            name="shippingaddress"
                         />
                     </div>
 
