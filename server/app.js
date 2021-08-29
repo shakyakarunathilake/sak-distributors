@@ -6,8 +6,9 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 //Routes
-const userRoutes = require("./api/routes/user.route")
-const employeeRoutes = require("./api/routes/employee.route")
+const userRoutes = require("./api/routes/user.route");
+const employeeRoutes = require("./api/routes/employee.route");
+const customerRoutes = require("./api/routes/customer.route");
 
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -35,5 +36,6 @@ app.use(express.static("uploads"));
 
 app.use("/users", userRoutes);
 app.use("/employees", employeeRoutes);
+app.use("/customers", customerRoutes);
 
 module.exports = app;
