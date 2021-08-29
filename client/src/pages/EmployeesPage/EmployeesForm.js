@@ -25,15 +25,15 @@ const initialFieldValues = {
     //employeeimage: '',
     fullname: '',
     title: '',
-    callingname: '',
+    firstname: '',
+    lastname: '',
     email: '',
     dob: '',
     hireddate: '',
     address: '',
     nic: '',
     gender: '',
-    mobilenumber: Number,
-    telephonenumber: Number,
+    contactnumber: Number,
     designation: '',
     civilstatus: '',
     employeestatus: '',
@@ -52,12 +52,16 @@ export default function EmployeesForm() {
             temp.fullname = fieldValues.fullname ? "" : "This field is required";
         }
 
-        if ('callingname' in fieldValues) {
-            temp.callingname = fieldValues.callingname ? "" : "This field is required";
+        if ('firstname' in fieldValues) {
+            temp.firstname = fieldValues.firstname ? "" : "This field is required";
+        }
+
+        if ('lastname' in fieldValues) {
+            temp.lastname = fieldValues.lastname ? "" : "This field is required";
         }
 
         if ('title' in fieldValues) {
-            temp.etitle = fieldValues.title ? "" : "This field is required";
+            temp.title = fieldValues.title ? "" : "This field is required";
         }
 
         if ('email' in fieldValues) {
@@ -86,14 +90,9 @@ export default function EmployeesForm() {
             temp.gender = fieldValues.gender ? "" : "This field is required";
         }
 
-        if ('telephonenumber' in fieldValues) {
-            temp.telephonenumber = fieldValues.telephonenumber ? "" : "This field is required";
-            temp.telephonenumber = fieldValues.telephonenumber.length > 9 ? "" : "Telephone number is not valid";
-        }
-
-        if ('mobilenumber' in fieldValues) {
-            temp.mobilenumber = fieldValues.mobilenumber ? "" : "This field is required";
-            temp.mobilenumber = fieldValues.mobilenumber.length > 9 ? "" : "Mobile number is not valid";
+        if ('contactnumber' in fieldValues) {
+            temp.contactnumber = fieldValues.contactnumber ? "" : "This field is required";
+            temp.contactnumber = fieldValues.contactnumber.length > 9 ? "" : "Contact number is not valid";
         }
 
         if ('designation' in fieldValues) {
@@ -128,15 +127,15 @@ export default function EmployeesForm() {
                     //employeeimage: '',
                     "title": values.title,
                     "fullname": values.fullname,
-                    "callingname": values.callingname,
+                    "firstname": values.firstname,
+                    "lastname": values.lastname,
                     "email": values.email,
                     "dob": values.dob,
                     "hireddate": values.hireddate,
                     "address": values.address,
                     "nic": values.nic,
                     "gender": values.gender,
-                    "telephonenumber": values.telephonenumber,
-                    "mobilenumber": values.mobilenumber,
+                    "contactnumber": values.contactnumber,
                     "designation": values.designation,
                     "civilstatus": values.civilstatus,
                     "employeestatus": values.employeestatus,
@@ -181,7 +180,7 @@ export default function EmployeesForm() {
                             </div>
 
                             <div className={style.employeeId}>
-                                {/* For Development Stage
+                                {/* For Development Stage */}
                                 <TextField
                                     error={errors.employeeid}
                                     label="Employee ID *"
@@ -189,9 +188,9 @@ export default function EmployeesForm() {
                                     placeholder="Ex: E00001"
                                     value={values?.employeeid}
                                     name="employeeid"
-                                /> 
-                                */}
-                                ID: E00016
+                                />
+
+                                {/* ID: E00016 */}
                             </div>
 
                         </div>
@@ -226,14 +225,27 @@ export default function EmployeesForm() {
                                 </div>
                                 <div>
                                     <TextField
-                                        error={errors.callingname}
-                                        label="Calling Name *"
+                                        error={errors.firstname}
+                                        label="First Name *"
                                         onChange={handleInputChange}
                                         placeholder="Ex: Shakya"
-                                        value={values?.callingname}
-                                        name="callingname"
+                                        value={values?.firstname}
+                                        name="firstname"
                                     />
                                 </div>
+                                <div>
+                                    <TextField
+                                        error={errors.lastname}
+                                        label="Last Name *"
+                                        onChange={handleInputChange}
+                                        placeholder="Ex: Last Name"
+                                        value={values?.lastname}
+                                        name="lastname"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className={style.gridrow}>
                                 <div>
                                     <TextField
                                         error={errors.nic}
@@ -244,9 +256,6 @@ export default function EmployeesForm() {
                                         name="nic"
                                     />
                                 </div>
-                            </div>
-
-                            <div className={style.gridrow}>
                                 <div>
                                     <DatePicker
                                         error={errors.dob}
@@ -256,6 +265,10 @@ export default function EmployeesForm() {
                                         name="dob"
                                     />
                                 </div>
+
+                            </div>
+
+                            <div className={style.gridrow}>
                                 <div>
                                     <Select
                                         error={errors.gender}
@@ -267,9 +280,6 @@ export default function EmployeesForm() {
                                     />
                                 </div>
 
-                            </div>
-
-                            <div className={style.gridrow}>
                                 <div>
                                     <Select
                                         error={errors.civilstatus}
@@ -280,6 +290,10 @@ export default function EmployeesForm() {
                                         name="civilstatus"
                                     />
                                 </div>
+
+                            </div>
+
+                            <div className={style.gridrow}>
                                 <div>
                                     <Select
                                         error={errors.designation}
@@ -290,27 +304,15 @@ export default function EmployeesForm() {
                                         name="designation"
                                     />
                                 </div>
-                            </div>
 
-                            <div className={style.gridrow}>
                                 <div>
                                     <TextField
-                                        error={errors.telephonenumber}
-                                        label="Telephone Number"
-                                        onChange={handleInputChange}
-                                        placeholder="Ex: 035 2266327"
-                                        value={values?.telephonenumber}
-                                        name="telephonenumber"
-                                    />
-                                </div>
-                                <div>
-                                    <TextField
-                                        error={errors.mobilenumber}
-                                        label="Mobile Number *"
+                                        error={errors.contactnumber}
+                                        label="Contact Number *"
                                         onChange={handleInputChange}
                                         placeholder="Ex: 071 2686790"
-                                        value={values?.mobilenumber}
-                                        name="mobilenumber"
+                                        value={values?.contactnumber}
+                                        name="contactnumber"
                                     />
                                 </div>
                             </div>
