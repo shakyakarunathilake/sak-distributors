@@ -32,15 +32,15 @@ router.post("/create-employee", uploads.single('photo'), (req, res, next) => {
         // employeeimage: `localhost:8080/${req.body.employeeid}.jpg`,
         fullname: req.body.fullname,
         title: req.body.title,
-        callingname: req.body.callingname,
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
         email: req.body.email,
         dob: req.body.dob,
         hireddate: req.body.hireddate,
         address: req.body.address,
         nic: req.body.nic,
         gender: req.body.gender,
-        telephonenumber: req.body.telephonenumber,
-        mobilenumber: req.body.mobilenumber,
+        contactnumber: req.body.contactnumber,
         designation: req.body.designation,
         civilstatus: req.body.civilstatus,
         employeestatus: req.body.employeestatus
@@ -67,47 +67,32 @@ router.get("/get-all-employees", (req, res, next) => {
         .exec()
         .then(doc => {
             const thead = [
-                "Emp. ID",
-                "Full Name",
-                "Title",
-                "Calling Name",
-                "Hired Date",
-                "Designation",
-                "Status",
-                "NIC",
-                "Address",
-                "Telephone Number",
-                "Mobile Number",
-                "Email",
-                "DOB",
-                "Gender",
-                "Civil Status",
-                "Action"
+                { id: "employeeid", label: "Emp. ID" },
+                { id: "fullname", label: "Full Name" },
+                { id: "title", label: "Title" },
+                { id: "firstname", label: "First Name" },
+                { id: "lastname", label: "Last Name" },
+                { id: "employeestatus", label: "Employee Status" },
+                { id: "designation", label: "Designation" },
+                { id: "hireddate", label: "Hired Date" },
+                { id: "nic", label: "NIC" },
+                { id: "contactnumber", label: "Contact Number" },
+                { id: "email", label: "Email" },
+                { id: "address", label: "Address" },
+                { id: "dob", label: "DOB" },
+                { id: "gender", label: "Gender" },
+                { id: "civilstatus", label: "Civil Status" }
             ]
 
-            const tbody = doc.map(x => [
-                x.employeeid,
-                x.fullname,
-                x.title,
-                x.callingname,
-                x.hireddate,
-                x.designation,
-                x.employeestatus,
-                x.nic,
-                x.address,
-                x.telephonenumber,
-                x.mobilenumber,
-                x.email,
-                x.dob,
-                x.gender,
-                x.civilstatus,
-            ])
-            res.status(200).json({ thead: thead, tbody: tbody, })
+            res.status(200).json({
+                thead: thead,
+                tbody: doc
+            });
         })
         .catch(err => {
-            console.log(err)
-            res.status(500).json({ "Error": err })
-        })
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        });
 });
 
 
@@ -119,13 +104,13 @@ router.get("/:employeeId", (req, res, next) => {
         .findById(id)
         .exec()
         .then(doc => {
-            console.log(doc)
-            res.status(200).json(doc)
+            console.log(doc);
+            res.status(200).json(doc);
         })
         .catch(err => {
-            console.log(err)
-            res.status(500).json({ "Error": err })
-        })
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        });
 });
 
 module.exports = router;
