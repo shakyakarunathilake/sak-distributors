@@ -13,3 +13,41 @@
     position: sticky;
     top: 0;
 }
+
+.tableheadrow {
+    background-color: $primaryMain;
+    font-size: 1.3em;
+    .tablecell {
+        color: $inverseFontColor;
+        .tablesortlabel {
+            background-color: $primaryMain;
+            color: white;
+        }
+    }
+    .tableheadfontstyles {
+        font-style: bold;
+        color: white;
+    }
+}
+
+.columnonesticky {
+    position: sticky;
+    left: 0;
+    background-color: inherit;
+    z-index: 1000;
+}
+
+.columntwosticky {
+    position: sticky;
+    left: 98.38px;
+    background-color: inherit;
+    z-index: 1000;
+}
+
+.columnlaststicky {
+    position: sticky;
+    right: 0px;
+    white-space: nowrap;
+    background-color: inherit;
+    // box-shadow: -10px 0px 10px 1px #aaaaaa;
+}
