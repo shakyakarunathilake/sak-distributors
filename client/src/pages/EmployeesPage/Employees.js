@@ -8,7 +8,7 @@ import TextField from '../../shared/TextField/TextField';
 
 //Material UI 
 import Button from '@material-ui/core/Button';
-import { Table, TableBody, TableRow, TableCell, TableSortLabel } from '@material-ui/core';
+import { TableContainer, Paper, Table, TableHead, TableBody, TableRow, TableCell, TableSortLabel } from '@material-ui/core';
 import { InputAdornment } from '@material-ui/core';
 
 
@@ -48,9 +48,9 @@ export default function Employees() {
 
     //Passing and Importing data to useTable
     const {
-        TableContainer,
-        TableHead,
         TablePagination,
+        TableHead,
+        // handleSortRequest,
         recordsAfterPagingAndSorting
     } = useTable(thead, records);
 
@@ -81,10 +81,11 @@ export default function Employees() {
                     Add New Employee
                 </Button>
             </div>
-            <div className={style.tablecontainer}>
-                <TableContainer>
+            <div className={style.pagecontent}>
+                <TableContainer className={style.tablecontainer} component={Paper} >
                     <Table>
-                        <TableHead>
+                        <TableHead />
+                        {/* <TableHead className={style.tablehead}>
                             <TableRow className={style.tableheadrow}>
                                 {
                                     thead.map((x, i) => (
@@ -98,7 +99,9 @@ export default function Employees() {
                                             key={x.id}
                                         >
                                             <TableSortLabel
+                                                direction={orderBy === x.id ? order : "asc"}
                                                 className={style.tablesortlabel}
+                                                onClick={() => { handleSortRequest(x.id) }}
                                             >
                                                 {x.label}
                                             </TableSortLabel>
@@ -112,7 +115,7 @@ export default function Employees() {
                                     Action
                                 </TableCell>
                             </TableRow>
-                        </TableHead>
+                        </TableHead> */}
                         <TableBody className={style.tablebody}>
                             {
                                 recordsAfterPagingAndSorting().map((x, i) => (
@@ -126,8 +129,8 @@ export default function Employees() {
                                         <TableCell className={style.columnonesticky}> {x.employeeid} </TableCell>
                                         <TableCell className={style.columntwosticky}> {x.fullname} </TableCell>
                                         <TableCell> {x.title} </TableCell>
-                                        <TableCell> {x.firstname} </TableCell>
-                                        <TableCell> {x.lastname} </TableCell>
+                                        {/* <TableCell> {x.firstname} </TableCell>
+                                        <TableCell> {x.lastname} </TableCell> */}
                                         <TableCell> {x.employeestatus} </TableCell>
                                         <TableCell> {x.designation} </TableCell>
                                         <TableCell> {x.hireddate} </TableCell>

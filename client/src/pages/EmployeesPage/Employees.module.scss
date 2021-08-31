@@ -1,6 +1,6 @@
 @import "../../styles/variables";
 
-.tablecontainer {
+.pagecontent {
     width: calc(100vw - 40px);
     height: calc(100vh - 250px);
     box-sizing: border-box;
@@ -27,14 +27,27 @@
         font-size: 0.95em;
         margin: 20px 25px;
         &:hover {
-            margin: 20px 30px;
-            transform: scale(1.1);
+            
         }
     }
 
     .icon {
         margin-right: 10px;
     }
+}
+
+.tablecontainer {
+    overflow-x: auto;
+    overflow-y: auto;
+    height: min-content;
+    white-space: nowrap; //To get rid of the scroll and inline text
+    margin: 10px 20px;
+    box-sizing: border-box;
+}
+
+.tablehead {
+    position: sticky;
+    top: 0;
 }
 
 .tableheadrow {
@@ -71,12 +84,14 @@
     position: sticky;
     left: 0;
     background-color: inherit;
+    z-index: 1000;
 }
 
 .columntwosticky {
     position: sticky;
     left: 101.8px;
     background-color: inherit;
+    z-index: 1000;
 }
 
 .columnlaststicky {
