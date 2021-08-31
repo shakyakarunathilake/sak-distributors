@@ -119,7 +119,7 @@ export default function EmployeesForm() {
 
     const handleSubmit = e => {
         e.preventDefault()
-
+        console.log(values);
         if (validate()) {
             axios
                 .post("http://localhost:8080/employees/create-employee", {
