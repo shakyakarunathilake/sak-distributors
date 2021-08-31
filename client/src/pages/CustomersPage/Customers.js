@@ -8,7 +8,7 @@ import TextField from '../../shared/TextField/TextField';
 
 //Material UI 
 import Button from '@material-ui/core/Button';
-import { Table, TableBody, TableRow, TableCell } from '@material-ui/core';
+import { TableContainer, Paper, Table, TableBody, TableRow, TableCell } from '@material-ui/core';
 import { InputAdornment } from '@material-ui/core';
 
 
@@ -45,7 +45,6 @@ export default function Customers() {
 
     //Passing and Importing data to useTable
     const {
-        TableContainer,
         TableHead,
         TablePagination,
         recordsAfterPagingAndSorting
@@ -78,10 +77,11 @@ export default function Customers() {
                     Add New Customer
                 </Button>
             </div>
-            <div className={style.tablecontainer}>
-                <TableContainer>
+            <div className={style.pagecontent}>
+                <TableContainer className={style.tablecontainer} component={Paper} >
                     <Table>
-                        <TableHead>
+                        <TableHead />
+                        {/* <TableHead>
                             <TableRow className={style.tableheadrow}>
                                 {
                                     thead.map((x, i) => (
@@ -105,7 +105,7 @@ export default function Customers() {
                                     Action
                                 </TableCell>
                             </TableRow>
-                        </TableHead>
+                        </TableHead> */}
                         <TableBody className={style.tablebody}>
                             {
                                 recordsAfterPagingAndSorting().map((x, i) => (
