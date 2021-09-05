@@ -1,115 +1,56 @@
-import React, { useState } from 'react';
-import classnames from 'classnames';
+import React, { useState, useEffect } from 'react';
+
+//Material UI Styling
+import { makeStyles } from '@material-ui/core/styles';
 
 //Material UI Components
-import {
-    TablePagination as MuiTablePagination,
-    TableHead as MuiTableHead,
-    TableRow,
-    TableCell,
-    TableSortLabel,
-    makeStyles,
-    withTheme
-} from '@material-ui/core';
+import { Pagination } from '@material-ui/lab';
 
-//SCSS Styles
-import style from './useTable.module.scss';
-
-const useStyles = makeStyles(theme => ({
-    root: {
-        '& .MuiTableSortLabel-root': {
-            color: 'white'
-        },
-        '& .MuiTableSortLabel-active': {
-            color: 'white'
-        },
+const useStyles = makeStyles((theme) => ({
+    pagination: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+        margin: '20px 10px'
     }
-}))
+}));
 
-export default function useTable(thead, records) {
+export default function useTable(records) {
 
     const classes = useStyles();
 
-    const pages = [5, 10, 25, 50];
+    //States for Pagination
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(pages[page]);
-    const [order, setOrder] = useState();
-    const [orderBy, setOrderBy] = useState();
 
-    const TableHead = props => {
-        const handleSortRequest = cellid => {
-            const isAsc = orderBy === cellid && order === "asc";
-            setOrder(isAsc ? 'desc' : 'asc');
-            setOrderBy(cellid)
-        }
+    //Pagination Count
+    const rowsPerPage = Math.floor((window.innerHeight - 323.45) / 57.56)
+    const paginationCount = Math.ceil(records.length / rowsPerPage);
 
-        return (
-            <MuiTableHead className={style.tablehead}>
-                <TableRow className={style.tableheadrow}>
-                    {
-                        thead.map((x, i) => (
-                            <TableCell
-                                align="center"
-                                className={classnames(
-                                    { [style.columnonesticky]: i === 0 },
-                                    { [style.columntwosticky]: i === 1 },
-                                    { [classes.root]: i === 1 },
-                                    style.tablecell
-                                )}
-                                key={x.id}
-                            >
-                                <TableSortLabel
-                                    active={orderBy === x.id}
-                                    direction={orderBy === x.id ? order : "asc"}
-                                    className={style.tablesortlabel}
-                                    onClick={() => { handleSortRequest(x.id) }}
-                                >
-                                    {x.label}
-                                </TableSortLabel>
-                            </TableCell>
-                        ))
-                    }
-                    <TableCell
-                        align="center"
-                        className={classnames(style.columnlaststicky, style.tableheadfontstyles)}
-                    >
-                        Action
-                    </TableCell>
-                </TableRow>
-            </MuiTableHead>
-        )
-    }
 
     const handleChangePage = (event, newPage) => {
-        setPage(newPage);
+        // console.log("newPage: ", newPage)
+        setPage(newPage - 1);
     }
 
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
-
+    const recordsAfterPaging = () => {
+        return records.slice(page * rowsPerPage, (page + 1) * rowsPerPage)
     }
 
     const TablePagination = () => (
-        <MuiTablePagination
-            component="div"
-            page={page}
-            rowsPerPageOptions={pages}
-            rowsPerPage={rowsPerPage}
-            count={records.length}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
+        <Pagination
+            page={page + 1}
+            count={paginationCount}
+            onChange={handleChangePage}
+            color="primary"
+            size="small"
+            className={classes.pagination}
+            disabled={paginationCount === 1 ? true : false}
         />
     )
 
-    const recordsAfterPagingAndSorting = () => {
-        return records.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
-    }
 
     return {
-        TableHead,
-        // handleSortRequest,
         TablePagination,
-        recordsAfterPagingAndSorting,
+        recordsAfterPaging,
     }
+
 }
