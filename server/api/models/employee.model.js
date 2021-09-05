@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const employeeSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     employeeid: { type: String, required: true },
-    //employeeimage: { type: String, required: false },
+    // employeeimage: { type: String, required: false },
     fullname: { type: String, required: true },
     title: { type: String, required: true },
     firstname: { type: String, required: true },
