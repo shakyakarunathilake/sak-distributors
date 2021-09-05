@@ -2,22 +2,22 @@ const mongoose = require("mongoose");
 
 const employeeSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    employeeid: { type: String, required: true },
-    // employeeimage: { type: String, required: false },
-    fullname: { type: String, required: true },
-    title: { type: String, required: true },
-    firstname: { type: String, required: true },
-    lastname: { type: String, required: true },
-    email: { type: String, requied: true },
-    dob: { type: Date, required: true },
-    hireddate: { type: Date, required: true },
-    address: { type: String, required: true },
-    nic: { type: String, required: true },
-    gender: { type: String, required: true },
-    contactnumber: { type: Number, required: true },
-    designation: { type: String, required: true },
-    civilstatus: { type: String, required: true },
-    employeestatus: { type: String, required: true }
+    employeeid: { type: String, required: false },
+    employeeimage: { type: String, required: false },
+    fullname: { type: String, required: false },
+    title: { type: String, required: false },
+    firstname: { type: String, required: false },
+    lastname: { type: String, required: false },
+    email: { type: String, requied: false },
+    dob: { type: Date, required: false },
+    hireddate: { type: Date, required: false },
+    address: { type: String, required: false },
+    nic: { type: String, required: false },
+    gender: { type: String, required: false },
+    contactnumber: { type: Number, required: false },
+    designation: { type: String, required: false },
+    civilstatus: { type: String, required: false },
+    employeestatus: { type: String, required: false }
 })
 
 module.exports = mongoose.model('Employee', employeeSchema);

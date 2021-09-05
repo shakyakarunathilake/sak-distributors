@@ -77,27 +77,10 @@ export default function Employees() {
     }
 
     const addOrEdit = (employee, resetForm) => {
+        
         if (action === "Add") {
             axios
-                .post("http://localhost:8080/employees/create-employee", {
-                    // employeeFormData})
-                    "employeeid": employee.employeeid,
-                    //employeeimage: '',
-                    "title": employee.title,
-                    "fullname": employee.fullname,
-                    "firstname": employee.firstname,
-                    "lastname": employee.lastname,
-                    "email": employee.email,
-                    "dob": employee.dob,
-                    "hireddate": employee.hireddate,
-                    "address": employee.address,
-                    "nic": employee.nic,
-                    "gender": employee.gender,
-                    "contactnumber": employee.contactnumber,
-                    "designation": employee.designation,
-                    "civilstatus": employee.civilstatus,
-                    "employeestatus": employee.employeestatus,
-                })
+                .post("http://localhost:8080/employees/create-employee", employee)
                 .then(res => {
                     console.log(res.data);
                 })
@@ -105,9 +88,10 @@ export default function Employees() {
                     console.log(err);
                 })
         }
+
         if (action === "Edit") {
             axios
-                .put("http://localhost:8080/employees/update-by-id/`${employee.employeeid}`", employee)
+                .patch(`http://localhost:8080/employees/update-by-id/${employee.employeeid}`, employee)
                 .then(res => {
                     console.log(res.data);
                 })
@@ -115,6 +99,7 @@ export default function Employees() {
                     console.log(err);
                 })
         }
+        
         resetForm()
         // setRecordForEdit(null)
         setOpenPopup(false);
@@ -224,7 +209,7 @@ export default function Employees() {
                                                 <EditIcon
                                                     className={style.editIcon}
                                                     onClick={
-                                                        () => { 
+                                                        () => {
                                                             setOpenPopup(true);
                                                             setAction("Edit");
                                                             const employee = getEmployee(row[0].label);

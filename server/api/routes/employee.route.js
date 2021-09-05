@@ -24,12 +24,12 @@ router.get("/", (req, res, next) => {
 });
 
 //Create an employee
-router.post("/create-employee", uploads.single('photo'), (req, res, next) => {
+router.post("/create-employee", uploads.single('employeeimage'), (req, res, next) => {
 
     const employee = new Employee({
         _id: new mongoose.Types.ObjectId(),
         employeeid: req.body.employeeid,
-        // employeeimage: `localhost:8080/${req.body.employeeid}.jpg`,
+        employeeimage: `localhost:8080/${req.body.employeeid}.jpg`,
         fullname: req.body.fullname,
         title: req.body.title,
         firstname: req.body.firstname,
