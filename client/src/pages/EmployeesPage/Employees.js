@@ -1,4 +1,4 @@
-import React, { useState , useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import classnames from 'classnames';
 
 //Shared Components
@@ -59,53 +59,53 @@ export default function Employees() {
         recordsAfterPaging,
     } = useTable(records);
 
-    const [recordForEdit, setRecordForEdit] = useState(null)
+    // const [recordForEdit, setRecordForEdit] = useState(null)
     const [openPopup, setOpenPopup] = useState(false);
 
-    const addOrEdit = (employee, resetForm) => {
-        if (employee.employeeid == 0) {
-            axios
-                .post("http://localhost:8080/employees/create-employee", {
-                    // employeeFormData})
-                    "employeeid": employee.employeeid,
-                    //employeeimage: '',
-                    "title": employee.title,
-                    "fullname": employee.fullname,
-                    "firstname": employee.firstname,
-                    "lastname": employee.lastname,
-                    "email": employee.email,
-                    "dob": employee.dob,
-                    "hireddate": employee.hireddate,
-                    "address": employee.address,
-                    "nic": employee.nic,
-                    "gender": employee.gender,
-                    "contactnumber": employee.contactnumber,
-                    "designation": employee.designation,
-                    "civilstatus": employee.civilstatus,
-                    "employeestatus": employee.employeestatus,
-                })
-                .then(res => {
-                    console.log(res.data);
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-        }
-        else {
-            axios
-                .put("http://localhost:8080/employees/update-by-id/:employeeId", employee)
-                .then(res => {
-                    console.log(res.data);
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-        }
-        resetForm()
-        setRecordForEdit(null)
-        setOpenPopup(false)
-        setRecords(AllEmployeeData)
-    }
+    // const addOrEdit = (employee, resetForm) => {
+    //     if (employee.employeeid == 0) {
+    //         axios
+    //             .post("http://localhost:8080/employees/create-employee", {
+    //                 // employeeFormData})
+    //                 "employeeid": employee.employeeid,
+    //                 //employeeimage: '',
+    //                 "title": employee.title,
+    //                 "fullname": employee.fullname,
+    //                 "firstname": employee.firstname,
+    //                 "lastname": employee.lastname,
+    //                 "email": employee.email,
+    //                 "dob": employee.dob,
+    //                 "hireddate": employee.hireddate,
+    //                 "address": employee.address,
+    //                 "nic": employee.nic,
+    //                 "gender": employee.gender,
+    //                 "contactnumber": employee.contactnumber,
+    //                 "designation": employee.designation,
+    //                 "civilstatus": employee.civilstatus,
+    //                 "employeestatus": employee.employeestatus,
+    //             })
+    //             .then(res => {
+    //                 console.log(res.data);
+    //             })
+    //             .catch(err => {
+    //                 console.log(err);
+    //             })
+    //     }
+    //     else {
+    //         axios
+    //             .put("http://localhost:8080/employees/update-by-id/:employeeId", employee)
+    //             .then(res => {
+    //                 console.log(res.data);
+    //             })
+    //             .catch(err => {
+    //                 console.log(err);
+    //             })
+    //     }
+    //     resetForm()
+    //     setRecordForEdit(null)
+    //     setOpenPopup(false)
+    //     setRecords(tbody);
+    // }
 
 
     return (
@@ -201,8 +201,12 @@ export default function Employees() {
                                                 align="center"
                                                 className={style.actioncolumn}
                                             >
-                                                <VisibilityIcon className={style.visibilityIcon} />
-                                                <EditIcon className={style.editIcon} />
+                                                <VisibilityIcon
+                                                    className={style.visibilityIcon}
+                                                />
+                                                <EditIcon
+                                                    className={style.editIcon}
+                                                />
                                             </TableCell>
                                         </TableRow>
 
@@ -220,8 +224,9 @@ export default function Employees() {
                     setOpenPopup={setOpenPopup}
                 >
                     <EmployeesForm
-                        recordForEdit={recordForEdit}
-                        addOrEdit={addOrEdit}
+                        // recordForEdit={recordForEdit}
+                        // addOrEdit={addOrEdit}
+                        setOpenPopup={setOpenPopup}
                     />
                 </Popup>
             </div>
