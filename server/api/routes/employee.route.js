@@ -117,11 +117,11 @@ router.get("/get-all-employees", (req, res, next) => {
 });
 
 //Get employee data by Employee ID
-router.get("/:employeeId", (req, res, next) => {
-    const id = req.params.employeeId;
+router.get("/:employeeid", (req, res, next) => {
+    const id = req.params.employeeid;
 
     Employee
-        .findById(id)
+        .findOne({employeeid: id})
         .exec()
         .then(doc => {
             console.log(doc);
@@ -134,8 +134,8 @@ router.get("/:employeeId", (req, res, next) => {
 });
 
 //Update employee data by Employee ID
-router.put("/update-by-id/:employeeId", (req, res, next) => {
-    const id = req.params.employeeId;
+router.put("/update-by-id/:employeeid", (req, res, next) => {
+    const id = req.params.employeeid;
     const update = req.body;
 
     Employee

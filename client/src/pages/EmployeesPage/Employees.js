@@ -59,53 +59,67 @@ export default function Employees() {
         recordsAfterPaging,
     } = useTable(records);
 
-    // const [recordForEdit, setRecordForEdit] = useState(null)
-    const [openPopup, setOpenPopup] = useState(false);
+    // const [recordForEdit, setRecordForEdit] = useState(null);
 
-    // const addOrEdit = (employee, resetForm) => {
-    //     if (employee.employeeid == 0) {
-    //         axios
-    //             .post("http://localhost:8080/employees/create-employee", {
-    //                 // employeeFormData})
-    //                 "employeeid": employee.employeeid,
-    //                 //employeeimage: '',
-    //                 "title": employee.title,
-    //                 "fullname": employee.fullname,
-    //                 "firstname": employee.firstname,
-    //                 "lastname": employee.lastname,
-    //                 "email": employee.email,
-    //                 "dob": employee.dob,
-    //                 "hireddate": employee.hireddate,
-    //                 "address": employee.address,
-    //                 "nic": employee.nic,
-    //                 "gender": employee.gender,
-    //                 "contactnumber": employee.contactnumber,
-    //                 "designation": employee.designation,
-    //                 "civilstatus": employee.civilstatus,
-    //                 "employeestatus": employee.employeestatus,
-    //             })
-    //             .then(res => {
-    //                 console.log(res.data);
-    //             })
-    //             .catch(err => {
-    //                 console.log(err);
-    //             })
-    //     }
-    //     else {
-    //         axios
-    //             .put("http://localhost:8080/employees/update-by-id/:employeeId", employee)
-    //             .then(res => {
-    //                 console.log(res.data);
-    //             })
-    //             .catch(err => {
-    //                 console.log(err);
-    //             })
-    //     }
-    //     resetForm()
-    //     setRecordForEdit(null)
-    //     setOpenPopup(false)
-    //     setRecords(tbody);
-    // }
+    const [openPopup, setOpenPopup] = useState(false);
+    const [action, setAction] = useState(null);
+    const [employee, setEmployee] = useState(null);
+
+    const getEmployee = employeeid => {
+        axios
+            .get(`http://localhost:8080/employees/${employeeid}`)
+            .then(res => {
+                console.log(res.data);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+
+    const addOrEdit = (employee, resetForm) => {
+        if (action === "Add") {
+            axios
+                .post("http://localhost:8080/employees/create-employee", {
+                    // employeeFormData})
+                    "employeeid": employee.employeeid,
+                    //employeeimage: '',
+                    "title": employee.title,
+                    "fullname": employee.fullname,
+                    "firstname": employee.firstname,
+                    "lastname": employee.lastname,
+                    "email": employee.email,
+                    "dob": employee.dob,
+                    "hireddate": employee.hireddate,
+                    "address": employee.address,
+                    "nic": employee.nic,
+                    "gender": employee.gender,
+                    "contactnumber": employee.contactnumber,
+                    "designation": employee.designation,
+                    "civilstatus": employee.civilstatus,
+                    "employeestatus": employee.employeestatus,
+                })
+                .then(res => {
+                    console.log(res.data);
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        }
+        if (action === "Edit") {
+            axios
+                .put("http://localhost:8080/employees/update-by-id/`${employee.employeeid}`", employee)
+                .then(res => {
+                    console.log(res.data);
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        }
+        resetForm()
+        // setRecordForEdit(null)
+        setOpenPopup(false);
+        setRecords(tbody);
+    }
 
 
     return (
@@ -135,7 +149,10 @@ export default function Employees() {
                         size="medium"
                         variant="contained"
                         onClick={
-                            () => setOpenPopup(true)
+                            () => {
+                                setOpenPopup(true);
+                                setAction("Add");
+                            }
                         }
                     >
                         <AddCircleIcon className={style.icon} />
@@ -206,6 +223,15 @@ export default function Employees() {
                                                 />
                                                 <EditIcon
                                                     className={style.editIcon}
+                                                    onClick={
+                                                        () => { 
+                                                            setOpenPopup(true);
+                                                            setAction("Edit");
+                                                            const employee = getEmployee(row[0].label);
+                                                            setEmployee(employee);
+                                                        }
+                                                    }
+
                                                 />
                                             </TableCell>
                                         </TableRow>
@@ -225,8 +251,8 @@ export default function Employees() {
                 >
                     <EmployeesForm
                         // recordForEdit={recordForEdit}
-                        // addOrEdit={addOrEdit}
-                        setOpenPopup={setOpenPopup}
+                        addOrEdit={addOrEdit}
+                        employee={employee}
                     />
                 </Popup>
             </div>

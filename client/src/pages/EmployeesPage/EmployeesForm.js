@@ -43,9 +43,10 @@ const initialFieldValues = {
 export default function EmployeesForm(props) {
 
     const {
-        // addOrEdit,
+        employee,
+        addOrEdit,
         // recordForEdit,
-        setOpenPopup
+        // setOpenPopup
     } = props;
 
     const validate = (fieldValues = values) => {
@@ -131,7 +132,7 @@ export default function EmployeesForm(props) {
         console.log(values); //Development Stage
 
         if (validate()) {
-            // addOrEdit(values, resetForm);
+            addOrEdit(values, resetForm);
 
             // const employeeFormData = new formData();
             // employeeFormData.append('employeeid', values.employeeid);
@@ -153,44 +154,44 @@ export default function EmployeesForm(props) {
 
             // console.log(employeeFormData);
 
-            axios
-                .post("http://localhost:8080/employees/create-employee", {
-                    // employeeFormData})
-                    "employeeid": values.employeeid,
-                    //employeeimage: '',
-                    "title": values.title,
-                    "fullname": values.fullname,
-                    "firstname": values.firstname,
-                    "lastname": values.lastname,
-                    "email": values.email,
-                    "dob": values.dob,
-                    "hireddate": values.hireddate,
-                    "address": values.address,
-                    "nic": values.nic,
-                    "gender": values.gender,
-                    "contactnumber": values.contactnumber,
-                    "designation": values.designation,
-                    "civilstatus": values.civilstatus,
-                    "employeestatus": values.employeestatus,
-                })
-                .then(res => {
-                    console.log(res.data);
-                })
-                .catch(err => {
-                    console.log(err);
-                })
+            // axios
+            //     .post("http://localhost:8080/employees/create-employee", {
+            //         // employeeFormData})
+            //         "employeeid": values.employeeid,
+            //         //employeeimage: '',
+            //         "title": values.title,
+            //         "fullname": values.fullname,
+            //         "firstname": values.firstname,
+            //         "lastname": values.lastname,
+            //         "email": values.email,
+            //         "dob": values.dob,
+            //         "hireddate": values.hireddate,
+            //         "address": values.address,
+            //         "nic": values.nic,
+            //         "gender": values.gender,
+            //         "contactnumber": values.contactnumber,
+            //         "designation": values.designation,
+            //         "civilstatus": values.civilstatus,
+            //         "employeestatus": values.employeestatus,
+            //     })
+            //     .then(res => {
+            //         console.log(res.data);
+            //     })
+            //     .catch(err => {
+            //         console.log(err);
+            //     })
 
-            resetForm();
-            setOpenPopup(false);
+            // resetForm();
+            // setOpenPopup(false);
         }
     }
 
-    // useEffect(() => {
-    //     if (recordForEdit != null)
-    //         setValues({
-    //             ...recordForEdit
-    //         })
-    // }, [recordForEdit])
+    useEffect(() => {
+        if (employee != null)
+            setValues({
+                ...employee
+            })
+    }, [employee])
 
     const {
         errors,
