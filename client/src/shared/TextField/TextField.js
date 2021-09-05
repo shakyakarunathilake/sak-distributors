@@ -1,9 +1,12 @@
 import React from 'react';
 import { TextField as MuiTextField } from '@material-ui/core';
+import classnames from 'classnames';
 
 export default function Input(props) {
 
     const { name, label, value, onChange, placeholder, InputProps, disabled, error = null, type } = props;
+
+    // const windowHeight = window.innerHeight;
 
     return (
         <MuiTextField
@@ -17,6 +20,7 @@ export default function Input(props) {
             InputProps={InputProps}
             disabled={disabled}
             type={type}
+            // size={classnames(windowHeight < 900 ? "small" : "normal")}
             {...(error && { error: true, helperText: error })}
         />
     );

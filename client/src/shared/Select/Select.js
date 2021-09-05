@@ -1,15 +1,19 @@
 import React from 'react';
+import classnames from 'classnames';
 import { FormControl, FormHelperText, InputLabel, MenuItem, Select as MuiSelect } from '@material-ui/core';
 
 export default function Select(props) {
 
     const { label, name, options, onChange, value, error=null } = props;
 
+    // const windowHeight = window.innerHeight;
+
     return (
         <FormControl
             fullWidth
             variant="outlined"
             {...(error && { error: true })}
+            // size={classnames(windowHeight < 900 ? "small" : "normal")}
         >
             <InputLabel>{label}</InputLabel>
             <MuiSelect
