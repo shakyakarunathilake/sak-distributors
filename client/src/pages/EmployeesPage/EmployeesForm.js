@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
 import classnames from 'classnames';
+import formData from 'form-data';
 
 //Development Stage
 import * as employeeservice from "../../services/employeeService";
@@ -22,7 +23,7 @@ import style from './EmployeesForm.module.scss';
 
 const initialFieldValues = {
     employeeid: '',
-    //employeeimage: '',
+    // employeeimage: '',
     fullname: '',
     title: '',
     firstname: '',
@@ -39,11 +40,14 @@ const initialFieldValues = {
     employeestatus: '',
 };
 
-export default function EmployeesForm() {
+export default function EmployeesForm(props) {
+
+    const { addOrEdit, recordForEdit } = props;
 
     const validate = (fieldValues = values) => {
 
         let temp = { ...errors }
+
         if ('employeeid' in fieldValues) {
             temp.employeeid = fieldValues.employeeid ? "" : "This field is required";
         }
@@ -119,51 +123,83 @@ export default function EmployeesForm() {
 
     const handleSubmit = e => {
         e.preventDefault()
-        console.log(values);
+
+        console.log(values); //Development Stage
+
         if (validate()) {
-            axios
-                .post("http://localhost:8080/employees/create-employee", {
-                    "employeeid": values.employeeid,
-                    //employeeimage: '',
-                    "title": values.title,
-                    "fullname": values.fullname,
-                    "firstname": values.firstname,
-                    "lastname": values.lastname,
-                    "email": values.email,
-                    "dob": values.dob,
-                    "hireddate": values.hireddate,
-                    "address": values.address,
-                    "nic": values.nic,
-                    "gender": values.gender,
-                    "contactnumber": values.contactnumber,
-                    "designation": values.designation,
-                    "civilstatus": values.civilstatus,
-                    "employeestatus": values.employeestatus,
-                })
-                .then(res => {
-                    console.log(res.data);
-                })
-                .catch(err => {
-                    console.log(err);
-                })
+            addOrEdit(values, resetForm);
+
+            // const employeeFormData = new formData();
+            // employeeFormData.append('employeeid', values.employeeid);
+            // // employeeFormData.append('employeeimage', values.employeeimage);
+            // employeeFormData.append('title', values.title);
+            // employeeFormData.append('fullname', values.fullname);
+            // employeeFormData.append('firstname', values.firstname);
+            // employeeFormData.append('lastname', values.lastname);
+            // employeeFormData.append('email', values.email);
+            // employeeFormData.append('dob', values.dob);
+            // employeeFormData.append('hireddate', values.hireddate);
+            // employeeFormData.append("address", values.address);
+            // employeeFormData.append("nic", values.nic);
+            // employeeFormData.append("gender", values.gender);
+            // employeeFormData.append("contactnumber", values.contactnumber);
+            // employeeFormData.append("designation", values.designation);
+            // employeeFormData.append("civilstatus", values.civilstatus);
+            // employeeFormData.append("employeestatus", values.employeestatus);
+
+            // console.log(employeeFormData);
+
+            // axios
+            //     .post("http://localhost:8080/employees/create-employee", {
+            //         // employeeFormData})
+            //         "employeeid": values.employeeid,
+            //         //employeeimage: '',
+            //         "title": values.title,
+            //         "fullname": values.fullname,
+            //         "firstname": values.firstname,
+            //         "lastname": values.lastname,
+            //         "email": values.email,
+            //         "dob": values.dob,
+            //         "hireddate": values.hireddate,
+            //         "address": values.address,
+            //         "nic": values.nic,
+            //         "gender": values.gender,
+            //         "contactnumber": values.contactnumber,
+            //         "designation": values.designation,
+            //         "civilstatus": values.civilstatus,
+            //         "employeestatus": values.employeestatus,
+            //     })
+            //     .then(res => {
+            //         console.log(res.data);
+            //     })
+            //     .catch(err => {
+            //         console.log(err);
+            //     })
         }
     }
+
+    useEffect(() => {
+        if (recordForEdit != null)
+            setValues({
+                ...recordForEdit
+            })
+    }, [recordForEdit])
 
     const {
         errors,
         values,
+        setValues,
         setErrors,
         resetForm,
         handleInputChange
     } = useForm(initialFieldValues, true, validate);
 
-
     return (
         <div className={style.container}>
 
-            <div className={style.header}>
+            {/* <div className={style.header}>
                 New Employee
-            </div>
+            </div> */}
 
             <div className={style.body}>
                 <form
@@ -175,8 +211,13 @@ export default function EmployeesForm() {
                         <div className={style.columnA}>
 
                             <div className={style.image}>
-                                <img src={user} alt="" />
-                                <div className={style.partialCircle}></div>
+                                <div className={style.imgWrapper}>
+                                    <img src={user} alt="" />
+                                    <div className={style.uploadWrapper}>
+                                        Upload
+                                    </div>
+                                </div>
+                                {/* <div className={style.partialCircle}></div> */}
                             </div>
 
                             <div className={style.employeeId}>
@@ -197,7 +238,7 @@ export default function EmployeesForm() {
 
                         <div className={style.columnB}>
 
-                            <div className={classnames(style.row, style.redFont)}>
+                            <div className={style.redFont}>
                                 The fields with "*" are required
                             </div>
 
@@ -369,7 +410,6 @@ export default function EmployeesForm() {
                                     <Button
                                         className={style.resetBtn}
                                         onClick={resetForm}
-                                        size="medium"
                                         variant="outlined"
                                     >
                                         Reset
@@ -379,7 +419,6 @@ export default function EmployeesForm() {
                                     <Button
                                         className={style.submitBtn}
                                         onClick={handleSubmit}
-                                        size="medium"
                                         variant="contained"
                                     >
                                         Submit
