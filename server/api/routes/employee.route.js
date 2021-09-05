@@ -68,25 +68,46 @@ router.get("/get-all-employees", (req, res, next) => {
         .then(doc => {
             const thead = [
                 { id: "employeeid", label: "Emp. ID" },
-                { id: "fullname", label: "Full Name" },
+                // { id: "fullname", label: "Full Name" },
                 { id: "title", label: "Title" },
+                { id: "name", label: "Name" },
                 // { id: "firstname", label: "First Name" },
                 // { id: "lastname", label: "Last Name" },
-                { id: "employeestatus", label: "Employee Status" },
+                // { id: "nic", label: "NIC" },
                 { id: "designation", label: "Designation" },
+                { id: "employeestatus", label: "Status" },
                 { id: "hireddate", label: "Hired Date" },
-                { id: "nic", label: "NIC" },
-                { id: "contactnumber", label: "Contact Number" },
-                { id: "email", label: "Email" },
-                { id: "address", label: "Address" },
-                { id: "dob", label: "DOB" },
-                { id: "gender", label: "Gender" },
-                { id: "civilstatus", label: "Civil Status" }
+                // { id: "contactnumber", label: "Contact Number" },
+                // { id: "email", label: "Email" },
+                // { id: "address", label: "Address" },
+                // { id: "dob", label: "DOB" },
+                // { id: "gender", label: "Gender" },
+                // { id: "civilstatus", label: "Civil Status" }
             ]
+
+            const tbody = doc.map(x => [
+                { id: "employeeid", label: x.employeeid },
+                // { id: "fullname", label: x.fullname },
+                { id: "title", label: x.title },
+                { id: "name", label: x.firstname + " " + x.lastname },
+                // { id: "firstname", label: x.firstname },
+                // { id: "lastname", label: x.lastname },
+                //  { id: "nic", label: x.nic },
+                { id: "designation", label: x.designation },
+                { id: "employeestatus", label: x.employeestatus },
+                { id: "hireddate", label: x.hireddate },
+                // { id: "contactnumber", label: x.contactnumber },
+                // { id: "email", label: x.email },
+                // { id: "address", label: x.address },
+                // { id: "dob", label: x.dob },
+                // { id: "gender", label: x.gender },
+                // { id: "civilstatus", label: x.civilstatus }
+            ])
 
             res.status(200).json({
                 thead: thead,
-                tbody: doc
+                tbody: tbody,
+
             });
         })
         .catch(err => {
@@ -95,13 +116,30 @@ router.get("/get-all-employees", (req, res, next) => {
         });
 });
 
-
 //Get employee data by Employee ID
 router.get("/:employeeId", (req, res, next) => {
     const id = req.params.employeeId;
 
     Employee
         .findById(id)
+        .exec()
+        .then(doc => {
+            console.log(doc);
+            res.status(200).json(doc);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        });
+});
+
+//Update employee data by Employee ID
+router.put("/update-by-id/:employeeId", (req, res, next) => {
+    const id = req.params.employeeId;
+    const update = req.body;
+
+    Employee
+        .findOneAndUpdate({ employeeid: id }, update, { new: true })
         .exec()
         .then(doc => {
             console.log(doc);
