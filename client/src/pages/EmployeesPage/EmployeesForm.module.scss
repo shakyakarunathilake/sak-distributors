@@ -3,12 +3,13 @@
 .container {
     width: 900px;
     box-sizing: border-box;
+    grid-template-columns: min-content auto;
 }
 
-// .header {
-//     font-size: 1.8em;
-//     font-weight: 600;
-// }
+.header {
+    font-size: 1.8em;
+    font-weight: 600;
+}
 
 .body {
     .form {

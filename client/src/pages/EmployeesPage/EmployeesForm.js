@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import classnames from 'classnames';
 import formData from 'form-data';
 
 //Development Stage
@@ -43,10 +41,9 @@ const initialFieldValues = {
 export default function EmployeesForm(props) {
 
     const {
-        employee,
+        title,
         addOrEdit,
-        // recordForEdit,
-        // setOpenPopup
+        recordForEdit
     } = props;
 
     //Handle Image Upload
@@ -142,10 +139,11 @@ export default function EmployeesForm(props) {
     const handleSubmit = e => {
         e.preventDefault()
 
-        console.log(values); //Development Stage
+        //Development Stage
+        console.log(values);
 
         if (validate()) {
-            
+
             const employeeFormData = new formData();
             employeeFormData.append('employeeid', values.employeeid);
             employeeFormData.append('title', values.title);
@@ -162,49 +160,22 @@ export default function EmployeesForm(props) {
             employeeFormData.append("designation", values.designation);
             employeeFormData.append("civilstatus", values.civilstatus);
             employeeFormData.append("employeestatus", values.employeestatus);
-            employeeFormData.append('employeeimage', file);
-            
-            console.log(employeeFormData);
-            addOrEdit(employeeFormData, resetForm);
-            
-            // axios
-            //     .post("http://localhost:8080/employees/create-employee", {
-            //         // employeeFormData})
-            //         "employeeid": values.employeeid,
-            //         //employeeimage: '',
-            //         "title": values.title,
-            //         "fullname": values.fullname,
-            //         "firstname": values.firstname,
-            //         "lastname": values.lastname,
-            //         "email": values.email,
-            //         "dob": values.dob,
-            //         "hireddate": values.hireddate,
-            //         "address": values.address,
-            //         "nic": values.nic,
-            //         "gender": values.gender,
-            //         "contactnumber": values.contactnumber,
-            //         "designation": values.designation,
-            //         "civilstatus": values.civilstatus,
-            //         "employeestatus": values.employeestatus,
-            //     })
-            //     .then(res => {
-            //         console.log(res.data);
-            //     })
-            //     .catch(err => {
-            //         console.log(err);
-            //     })
+            // employeeFormData.append('employeeimage', file);
 
-            // resetForm();
-            // setOpenPopup(false);
+            //Development Stage
+            console.log(employeeFormData);
+
+            addOrEdit(employeeFormData, resetForm);
         }
     }
 
     useEffect(() => {
-        if (employee != null)
+        if (recordForEdit != null) {
             setValues({
-                ...employee
+                ...recordForEdit
             })
-    }, [employee])
+        }
+    }, [recordForEdit]);
 
     const {
         errors,
@@ -218,9 +189,9 @@ export default function EmployeesForm(props) {
     return (
         <div className={style.container}>
 
-            {/* <div className={style.header}>
-                New Employee
-            </div> */}
+            <div className={style.header}>
+                {title}
+            </div>
 
             <div className={style.body}>
                 <form
@@ -232,15 +203,15 @@ export default function EmployeesForm(props) {
                         <div className={style.columnA}>
 
                             <div className={style.image}>
-                                {/* <div className={style.imgWrapper}>
+                                <div className={style.imgWrapper}>
                                     <img src={user} alt="" />
                                     <div className={style.uploadWrapper}>
                                         Upload
                                     </div>
-                                </div> */}
-                                {/* <div className={style.partialCircle}></div> */}
-                                <input type="file" onChange={handleChange} />
-                                <img src={file} alt="" />
+                                </div>
+                                <div className={style.partialCircle}></div>
+                                {/* <input type="file" onChange={handleChange} />
+                                <img src={file} alt="" /> */}
                             </div>
 
                             <div className={style.employeeId}>
