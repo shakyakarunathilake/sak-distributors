@@ -9,8 +9,11 @@ import CustomersForm from '../pages/CustomersPage/CustomersForm';
 
 //Pages
 import Login from '../pages/LoginPage/Login';
+import Dashboard from '../pages/Dashboard/Dashboard';
 import Employees from '../pages/EmployeesPage/Employees';
 import Customers from '../pages/CustomersPage/Customers';
+import Orders from '../pages/OrdersPage/Orders';
+import Suppliers from '../pages/SuppliersPage/Suppliers';
 
 const theme = createTheme({
   palette: {
@@ -41,11 +44,13 @@ function App() {
           <Switch>
             <Route exact path='/page' component={Page} />
             <Route exact path='/' component={Login} />
+            <Route exact path='/dashboard' component={Dashboard} />
             <Route exact path='/employees' component={Employees} />
-            <Route exact path='/employees-form' component={EmployeesForm} />
+            <Route exact path='/employees-form' component={EmployeesForm} /> {/* Developement Stage */}
             <Route exact path='/customers' component={Customers} />
-            <Route exact path='/customers-form' component={CustomersForm} />
-
+            <Route exact path='/customers-form' component={CustomersForm} /> {/* Developement Stage */}
+            <Route exact path='/suppliers' component={Suppliers} />
+            <Route exact path='/orders' component={Orders} />
           </Switch>
         </BrowserRouter>
       }

@@ -19,34 +19,35 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 //Connecting to Backend
-import axios from 'axios';
+// import axios from 'axios';
 
 export default function Login() {
 
     const postData = () => {
+        window.location.replace("http://localhost:3000/dashboard");
         // console.log({
         //     "username": values.username,
         //     "password": values.password
         // });
-        axios
-            .post("http://localhost:8080/users/signin", {
-                "username": values.username,
-                "password": values.password
-            },
-                // {
-                //     headers: {
-                //         authorisation: JSON.parse(localStorage.getItem("Auth")).accesstoken
-                //     }
-                // }
-            )
-            .then(res => {
-                // console.log(res.data);
-                localStorage.setItem("Auth", JSON.stringify(res.data));
-                // console.log(JSON.parse(localStorage.getItem("Auth")));
-            })
-            .catch(error => {
-                console.log(error)
-            })
+        // axios
+        //     .post("http://localhost:8080/users/signin", {
+        //         "username": values.username,
+        //         "password": values.password
+        //     },
+        //         // {
+        //         //     headers: {
+        //         //         authorisation: JSON.parse(localStorage.getItem("Auth")).accesstoken
+        //         //     }
+        //         // }
+        //     )
+        //     .then(res => {
+        //         // console.log(res.data);
+        //         localStorage.setItem("Auth", JSON.stringify(res.data));
+        //         // console.log(JSON.parse(localStorage.getItem("Auth")));
+        //     })
+        //     .catch(error => {
+        //         console.log(error)
+        //     })
     }
 
     const initialFieldValues = {

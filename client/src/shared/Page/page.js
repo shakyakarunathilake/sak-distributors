@@ -18,8 +18,8 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import MenuIcon from '@material-ui/icons/Menu';
 import PersonIcon from '@material-ui/icons/Person';
 import PeopleIcon from '@material-ui/icons/People';
-import StorageIcon from '@material-ui/icons/Storage';
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
+import DashboardIcon from '@material-ui/icons/Dashboard';
 
 //SCSS Styles
 import style from './Page.module.scss';
@@ -38,6 +38,10 @@ const useStyles = makeStyles({
         fontSize: 13,
         paddingBottom: 15,
         textAlign: "center",
+    },
+    role: {
+        fontSize: 14,
+        letterSpacing: 1,
     },
     name: {
         letterSpacing: 1,
@@ -114,34 +118,44 @@ export default function Page(props) {
         <div onClick={toggleDrawer(false)} className={classes.list}>
             <List>
                 <ListItem
+                    button
                     className={classes.listItem}
-                    button>
+                    onClick={() => { window.location.replace("http://localhost:3000/dashboard") }}
+                >
+                    <DashboardIcon className={classes.listIcon} />
+                    Dashboard
+                </ListItem>
+                <ListItem
+                    button
+                    className={classes.listItem}
+                    onClick={() => { window.location.replace("http://localhost:3000/employees") }}
+                >
                     <PeopleIcon className={classes.listIcon} />
                     Employees
                 </ListItem>
                 <ListItem
+                    button
                     className={classes.listItem}
-                    button>
+                    onClick={() => { window.location.replace("http://localhost:3000/customers") }}
+                >
                     <PersonIcon className={classes.listIcon} />
                     Customers
                 </ListItem>
                 <ListItem
+                    button
                     className={classes.listItem}
-                    button>
+                    onClick={() => { window.location.replace("http://localhost:3000/suppliers") }}
+                >
                     <BusinessIcon className={classes.listIcon} />
                     Suppliers
                 </ListItem>
                 <ListItem
+                    button
                     className={classes.listItem}
-                    button>
+                    onClick={() => { window.location.replace("http://localhost:3000/orders") }}
+                >
                     <AssignmentIcon className={classes.listIcon} />
                     Orders
-                </ListItem>
-                <ListItem
-                    className={classes.listItem}
-                    button>
-                    <StorageIcon className={classes.listIcon} />
-                    Products
                 </ListItem>
             </List>
         </div>
@@ -157,6 +171,7 @@ export default function Page(props) {
             >
                 <div className={classes.userInfo}>
                     <Avatar alt="Khione" className={classes.avatar} src={Photo} />
+                    <div className={classes.role}>Admin</div>
                     <div className={classes.name}>Shakya Karunathilake</div>
                     <div className={classes.email}>karunathilakeshakya@gmail.com</div>
                 </div>
