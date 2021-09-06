@@ -1,7 +1,7 @@
 import React from 'react';
 
 //Material UI Components
-import { Dialog, DialogTitle, Typography, DialogContent } from '@material-ui/core';
+import { Dialog, DialogContent } from '@material-ui/core';
 
 //Material UI Icons
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
@@ -16,13 +16,13 @@ const useStyles = makeStyles({
         right: "11px",
         color: "red"
     },
-    title: {
-        padding: "8px 24px 0 26px",
-    },
-    titleStyle: {
-        fontSize: "1.6em",
-        fontWeight: "600"
-    },
+    // title: {
+    //     padding: "8px 24px 0 26px",
+    // },
+    // titleStyle: {
+    //     fontSize: "1.6em",
+    //     fontWeight: "600"
+    // },
     content: {
         "&:first-child": {
             paddingTop: "12px"
@@ -32,7 +32,7 @@ const useStyles = makeStyles({
 
 export default function PopUp(props) {
 
-    const { title, children, openPopup, setOpenPopup } = props;
+    const { children, openPopup, setOpenPopup } = props;
     const classes = useStyles();
 
     return (
@@ -41,11 +41,11 @@ export default function PopUp(props) {
                 className={classes.close}
                 onClick={() => setOpenPopup(false)}
             />
-            <DialogTitle className={classes.title}>
+            {/* <DialogTitle className={classes.title}>
                 <Typography className={classes.titleStyle}>
                     {title}
                 </Typography>
-            </DialogTitle>
+            </DialogTitle> */}
             <DialogContent className={classes.content}>
                 {children}
             </DialogContent>
