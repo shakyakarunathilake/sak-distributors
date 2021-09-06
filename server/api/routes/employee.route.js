@@ -23,8 +23,42 @@ router.get("/", (req, res, next) => {
     });
 });
 
+//Get Next Registration Number
+router.get("/get-next-regno", (req, res, next) => {
+
+    function pad(num, size) {
+        while (num.length < size) num = "0" + num;
+        return "E" + num;
+    }
+
+    Employee
+        .find({}, { employeeid: 1, _id: 0 })
+        .exec()
+        .then(doc => {
+            const employeeidarray = doc.map(x => {
+                return parseInt(x.employeeid.slice(1))
+            })
+
+            const nextemployeeid = pad(String(Math.max(...employeeidarray) + 1), 5);
+
+            res.status(200).json({
+                message: "Handeling GET requests to /get-next-regno",
+                doc: nextemployeeid
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        })
+
+})
+
+
 //Create an employee
 router.post("/create-employee", uploads.single('employeeimage'), (req, res, next) => {
+
+    const dob = new Date(req.body.dob);
+    const hireddate = new Date(req.body.hireddate);
 
     const employee = new Employee({
         _id: new mongoose.Types.ObjectId(),
@@ -35,8 +69,8 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
         firstname: req.body.firstname,
         lastname: req.body.lastname,
         email: req.body.email,
-        dob: req.body.dob,
-        hireddate: req.body.hireddate,
+        dob: dob.toISOString().split('T')[0],
+        hireddate: hireddate.toISOString().split('T')[0],
         address: req.body.address,
         nic: req.body.nic,
         gender: req.body.gender,
@@ -121,7 +155,7 @@ router.get("/:employeeid", (req, res, next) => {
     const id = req.params.employeeid;
 
     Employee
-        .findOne({employeeid: id})
+        .findOne({ employeeid: id })
         .exec()
         .then(doc => {
             console.log(doc);
