@@ -19,6 +19,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import PersonIcon from '@material-ui/icons/Person';
 import PeopleIcon from '@material-ui/icons/People';
 import StorageIcon from '@material-ui/icons/Storage';
+import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 
 //SCSS Styles
 import style from './Page.module.scss';
@@ -178,6 +179,9 @@ export default function Page(props) {
                 </div>
                 <div className={style.title}>
                     {props.title}
+                </div>
+                <div className={style.iconDiv}>
+                    <NotificationsNoneIcon className={style.icon} />
                 </div>
                 <div className={style.avatarDiv}>
                     <Avatar alt="Khione" className={style.avatar} src={Photo} />
