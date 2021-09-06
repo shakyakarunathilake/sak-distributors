@@ -34,7 +34,7 @@
 .pagecontent {
     width: 100vw;
     // height: calc(100vh - 250px);
-    height: calc(100vh - 265.89px);
+    height: calc(100vh - 199.28px);
     box-sizing: border-box;
     padding: 0px 20px;
 }
@@ -42,7 +42,7 @@
 .tablecontainer {
     overflow-x: auto;
     overflow-y: auto;
-    height: min-content;
+    height: inherit;
     white-space: nowrap; //To get rid of the scroll and inline text
     box-sizing: border-box;
 }
@@ -122,8 +122,6 @@
 // }
 
 .actioncolumn {
-    position: sticky;
-    right: 0px;
     white-space: nowrap;
     background-color: inherit;
     // box-shadow: -10px 0px 10px 1px #aaaaaa;

@@ -5,8 +5,6 @@ import classnames from 'classnames';
 import Page from '../../shared/Page/Page';
 import Popup from '../../shared/Popup/Popup';
 import TextField from '../../shared/TextField/TextField';
-import useTable from '../../components/useTable';
-// import useTableSearch from '../../components/useTableSearch';
 
 //Material UI 
 import Button from '@material-ui/core/Button';
@@ -46,66 +44,33 @@ export default function Employees() {
 
     //Getting Data From Local Storage
     const AllEmployeeData = JSON.parse(localStorage.getItem("AllEmployeeData"));
-
-    //Deconstructing into thead and tbody
     const { thead, tbody } = AllEmployeeData;
 
-    //Setting the tbody as records in useState
     const [records, setRecords] = useState(tbody);
-
-    //Passing and Importing data to useTable
-    const {
-        TablePagination,
-        recordsAfterPaging,
-    } = useTable(records);
-
-    // const [recordForEdit, setRecordForEdit] = useState(null);
-
+    const [recordForEdit, setRecordForEdit] = useState(null);
     const [openPopup, setOpenPopup] = useState(false);
-    const [action, setAction] = useState(null);
-    const [employee, setEmployee] = useState(null);
 
-    const getEmployee = employeeid => {
+    const addOrEdit = (employee, resetForm) => {
+
         axios
-            .get(`http://localhost:8080/employees/${employeeid}`)
+            .post("http://localhost:8080/employees/create-employee", employee)
             .then(res => {
                 console.log(res.data);
             })
             .catch(err => {
                 console.log(err);
-            })
-    }
+            });
+        ;
 
-    const addOrEdit = (employee, resetForm) => {
-        
-        if (action === "Add") {
-            axios
-                .post("http://localhost:8080/employees/create-employee", employee)
-                .then(res => {
-                    console.log(res.data);
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-        }
-
-        if (action === "Edit") {
-            axios
-                .patch(`http://localhost:8080/employees/update-by-id/${employee.employeeid}`, employee)
-                .then(res => {
-                    console.log(res.data);
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-        }
-        
-        resetForm()
-        // setRecordForEdit(null)
+        resetForm();
         setOpenPopup(false);
         setRecords(tbody);
     }
 
+    const openInPopup = item => {
+        setRecordForEdit(item);
+        setOpenPopup(true);
+    }
 
     return (
         <Page
@@ -136,7 +101,6 @@ export default function Employees() {
                         onClick={
                             () => {
                                 setOpenPopup(true);
-                                setAction("Add");
                             }
                         }
                     >
@@ -154,12 +118,6 @@ export default function Employees() {
                                         thead.map((x, i) => (
                                             <TableCell
                                                 align="left"
-                                                // className={classnames(
-                                                //     { [style.columnone]: i === 0 },
-                                                //     { [style.columntwo]: i === 1 },
-                                                //     { [style.columnthree]: i === 2 },
-                                                //     style.tablecell
-                                                // )}
                                                 className={style.tablecell}
                                                 key={x.id}
                                             >
@@ -177,7 +135,7 @@ export default function Employees() {
                             </TableHead>
                             <TableBody className={style.tablebody}>
                                 {
-                                    recordsAfterPaging().map((row, i) => (
+                                    records.map((row, i) => (
                                         <TableRow
                                             className={classnames(
                                                 { [style.greytablerow]: i % 2 === 1 },
@@ -187,14 +145,7 @@ export default function Employees() {
                                         >
                                             {
                                                 row.map((cell, i) => (
-                                                    <TableCell
-                                                        // className={classnames(
-                                                        //     { [style.columnone]: i === 0 },
-                                                        //     { [style.columntwo]: i === 1 },
-                                                        //     { [style.columnthree]: i === 2 },
-                                                        // )}
-                                                        key={cell.id}
-                                                    >
+                                                    <TableCell key={cell.id} >
                                                         {cell.label}
                                                     </TableCell>
                                                 ))
@@ -208,15 +159,9 @@ export default function Employees() {
                                                 />
                                                 <EditIcon
                                                     className={style.editIcon}
-                                                    onClick={
-                                                        () => {
-                                                            setOpenPopup(true);
-                                                            setAction("Edit");
-                                                            const employee = getEmployee(row[0].label);
-                                                            setEmployee(employee);
-                                                        }
-                                                    }
-
+                                                    onClick={() => {
+                                                        openInPopup(row[0].label);
+                                                    }}
                                                 />
                                             </TableCell>
                                         </TableRow>
@@ -226,18 +171,16 @@ export default function Employees() {
                             </TableBody>
                         </Table>
                     </TableContainer>
-                    <TablePagination />
                 </div >
 
                 <Popup
-                    title='New Employee'
                     openPopup={openPopup}
                     setOpenPopup={setOpenPopup}
                 >
                     <EmployeesForm
-                        // recordForEdit={recordForEdit}
+                        title='New Employee'
                         addOrEdit={addOrEdit}
-                        employee={employee}
+                        recordForEdit={recordForEdit}
                     />
                 </Popup>
             </div>
