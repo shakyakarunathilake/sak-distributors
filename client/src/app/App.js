@@ -7,6 +7,7 @@ import './App.scss';
 import Page from '../shared/Page/Page.js';
 
 import Login from '../pages/LoginPage/Login';
+import ForgotPassword from '../pages/ForgotPassword/ForgotPassword';
 import Dashboard from '../pages/Distributor/Dashboard';
 import ChangePassword from '../pages/Distributor/ChangePassword';
 
@@ -66,6 +67,7 @@ function App() {
           <Switch>
             <Route exact path='/page' component={Page} />
             <Route exact path='/login' component={Login} />
+            <Route exact path='/forgot-password' component={ForgotPassword} />
             <Route exact path='/dashboard' component={Dashboard} />
             <Route exact path='/change-password' component={ChangePassword} />
             <Route exact path='/sales-report' component={SalesReport} />
