@@ -1,19 +1,41 @@
-import './App.scss';
+import React from 'react';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import './App.scss';
 
 //Development Stage
 import Page from '../shared/Page/Page.js';
-import EmployeesForm from '../pages/EmployeesPage/EmployeesForm';
-import CustomersForm from '../pages/CustomersPage/CustomersForm';
 
-//Pages
 import Login from '../pages/LoginPage/Login';
-import Dashboard from '../pages/Dashboard/Dashboard';
-import Employees from '../pages/EmployeesPage/Employees';
-import Customers from '../pages/CustomersPage/Customers';
-import Orders from '../pages/OrdersPage/Orders';
-import Suppliers from '../pages/SuppliersPage/Suppliers';
+import Dashboard from '../pages/Distributor/Dashboard';
+import ChangePassword from '../pages/Distributor/ChangePassword';
+
+//Distributor
+import SalesReport from '../pages/Distributor/SalesReport';
+import SalesRepresentativeAnalytics from '../pages/Distributor/SalesRepresentativeAnalytics';
+
+//HR
+import ManageAdmin from '../pages/HR/ManageAdmin';
+import ManageEmployee from '../pages/HR/ManageEmployee';
+
+//Manager
+import ManageCustomer from '../pages/Manager/ManageCustomer';
+import ManageProduct from '../pages/Manager/ManageProduct';
+import ManageSupplier from '../pages/Manager/ManageSupplier';
+import OrderHistory from '../pages/Manager/OrderHistory';
+
+//Purchasing Manager
+import ManagePOQuotation from '../pages/PurchasingManager/ManagePOQuotation';
+import ManageSales from '../pages/PurchasingManager/ManageSales';
+import SalesTrendAnalytics from '../pages/PurchasingManager/SalesTrendAnalytics';
+import SupplierPayment from '../pages/PurchasingManager/SupplierPayment';
+
+//Sales Representative
+import PersonalOrderHistory from '../pages/SalesRepresentative/PersonalOrderHistory';
+import SalesAndInvoicing from '../pages/SalesRepresentative/SalesAndInvoicing';
+
+//Store Keeper
+import GRNGIN from '../pages/StoreKeeper/GRNGIN';
 
 const theme = createTheme({
   palette: {
@@ -43,14 +65,24 @@ function App() {
         <BrowserRouter>
           <Switch>
             <Route exact path='/page' component={Page} />
-            <Route exact path='/' component={Login} />
+            <Route exact path='/login' component={Login} />
             <Route exact path='/dashboard' component={Dashboard} />
-            <Route exact path='/employees' component={Employees} />
-            <Route exact path='/employees-form' component={EmployeesForm} /> {/* Developement Stage */}
-            <Route exact path='/customers' component={Customers} />
-            <Route exact path='/customers-form' component={CustomersForm} /> {/* Developement Stage */}
-            <Route exact path='/suppliers' component={Suppliers} />
-            <Route exact path='/orders' component={Orders} />
+            <Route exact path='/change-password' component={ChangePassword} />
+            <Route exact path='/sales-report' component={SalesReport} />
+            <Route exact path='/sales-representative-analytics' component={SalesRepresentativeAnalytics} />
+            <Route exact path='/manage-admin' component={ManageAdmin} />
+            <Route exact path='/manage-employee' component={ManageEmployee} />
+            <Route exact path='/manage-customer' component={ManageCustomer} />
+            <Route exact path='/manage-product' component={ManageProduct} />
+            <Route exact path='/manage-supplier' component={ManageSupplier} />
+            <Route exact path='/order-history' component={OrderHistory} />
+            <Route exact path='/manage-po-quotation' component={ManagePOQuotation} />
+            <Route exact path='/manage-sales' component={ManageSales} />
+            <Route exact path='/sales-trend-analytics' component={SalesTrendAnalytics} />
+            <Route exact path='/supplier-payment' component={SupplierPayment} />
+            <Route exact path='/personal-order-history' component={PersonalOrderHistory} />
+            <Route exact path='/sales-and-invoicing' component={SalesAndInvoicing} />
+            <Route exact path='/grn-gin' component={GRNGIN} />
           </Switch>
         </BrowserRouter>
       }

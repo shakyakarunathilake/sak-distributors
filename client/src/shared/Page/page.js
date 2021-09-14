@@ -20,6 +20,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import PeopleIcon from '@material-ui/icons/People';
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 import DashboardIcon from '@material-ui/icons/Dashboard';
+import LockIcon from '@material-ui/icons/Lock';
 
 //SCSS Styles
 import style from './Page.module.scss';
@@ -48,8 +49,8 @@ const useStyles = makeStyles({
     },
     email: {
         fontSize: 12,
-        letterSpacing: 0.2,
-
+        letterSpacing: 0.8,
+        marginTop: '3px',
     },
     list: {
         border: 0,
@@ -75,15 +76,16 @@ const useStyles = makeStyles({
     drawerFooter: {
         bottom: "0",
         position: "absolute",
+        borderTop: '0.1px solid #c2c2c2'
     },
 
-    logOutDiv: {
+    footerDiv: {
         display: "flex",
         boxSizing: "border-box",
         borderRadius: "18px",
         color: "white",
         fontSize: 16,
-        margin: "15px 10px",
+        margin: "8px 10px",
         width: 280,
         padding: "8px 16px",
 
@@ -93,7 +95,7 @@ const useStyles = makeStyles({
             transitionDuration: "0.3s",
         },
     },
-    logOutIcon: {
+    footerIcon: {
         marginRight: "15px",
     },
 
@@ -128,34 +130,34 @@ export default function Page(props) {
                 <ListItem
                     button
                     className={classes.listItem}
-                    onClick={() => { window.location.replace("http://localhost:3000/employees") }}
+                    onClick={() => { window.location.replace("http://localhost:3000/manage-employee") }}
                 >
                     <PeopleIcon className={classes.listIcon} />
-                    Employees
+                    Manage Employees
                 </ListItem>
                 <ListItem
                     button
                     className={classes.listItem}
-                    onClick={() => { window.location.replace("http://localhost:3000/customers") }}
+                    onClick={() => { window.location.replace("http://localhost:3000/manage-customer") }}
                 >
                     <PersonIcon className={classes.listIcon} />
-                    Customers
+                    Manage Customers
                 </ListItem>
                 <ListItem
                     button
                     className={classes.listItem}
-                    onClick={() => { window.location.replace("http://localhost:3000/suppliers") }}
+                    onClick={() => { window.location.replace("http://localhost:3000/manage-supplier") }}
                 >
                     <BusinessIcon className={classes.listIcon} />
-                    Suppliers
+                    Manage Suppliers
                 </ListItem>
                 <ListItem
                     button
                     className={classes.listItem}
-                    onClick={() => { window.location.replace("http://localhost:3000/orders") }}
+                    onClick={() => { window.location.replace("http://localhost:3000/order-history") }}
                 >
                     <AssignmentIcon className={classes.listIcon} />
-                    Orders
+                    Order History
                 </ListItem>
             </List>
         </div>
@@ -177,9 +179,21 @@ export default function Page(props) {
                 </div>
                 {list()}
                 <div className={classes.drawerFooter}>
-                    <div className={classes.logOutDiv}>
-                        <div className={classes.logOutIconDiv}>
-                            <ExitToAppIcon className={classes.logOutIcon} />
+                    <div
+                        className={classes.footerDiv}
+                        onClick={() => { window.location.replace("http://localhost:3000/change-password") }}
+                    >
+                        <div className={classes.footerIconDiv}>
+                            <LockIcon className={classes.footerIcon} />
+                        </div>
+                        Change Password
+                    </div>
+                    <div
+                        className={classes.footerDiv}
+                        onClick={() => { window.location.replace("https://www.google.com/") }}
+                    >
+                        <div className={classes.footerIconDiv}>
+                            <ExitToAppIcon className={classes.footerIcon} />
                         </div>
                         Log Out
                     </div>
