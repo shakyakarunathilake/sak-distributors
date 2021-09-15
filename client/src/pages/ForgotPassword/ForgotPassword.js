@@ -13,7 +13,6 @@ import Button from '@material-ui/core/Button';
 import { InputAdornment } from '@material-ui/core';
 
 //Material UI Icons
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import EmailIcon from '@material-ui/icons/Email';
 
 //Connecting to Backend
@@ -26,7 +25,6 @@ export default function Login() {
     }
 
     const initialFieldValues = {
-        username: '',
         email: '',
     }
 
@@ -46,21 +44,17 @@ export default function Login() {
                     <div className={style.heading}>
                         <span>Forgot Password</span>
                     </div>
-                    <div className={style.textfield}>
-                        <TextField
-                            className={style.field}
-                            label="Username"
-                            onChange={handleInputChange}
-                            value={values.username}
-                            name="username"
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <AccountCircle />
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
+                    <div className={style.description}>
+                        <p>
+                            Enter the email address you used when you joined
+                            and we’ll send you instructions to reset your password.
+                            
+                            <br />
+                            <br />
+                            
+                            For security reasons, we do NOT store your password. 
+                            So rest assured that we will never send your password via email.
+                        </p>
                     </div>
                     <div className={style.textfield}>
                         <TextField
@@ -81,19 +75,13 @@ export default function Login() {
                     <div className={style.div}>
                         <div>
                             <Button
-                                className={style.submitbutton}
+                                className={style.button}
                                 color="primary"
                                 onClick={postData}
                                 variant="contained">
-                                Submit
+                                Send Reset Instruction
                             </Button>
                         </div>
-                        {/* <div
-                            className={style.cancelbutton}
-                            onClick={() => { window.location.replace("http://localhost:3000/login") }}
-                        >
-                            Back
-                        </div> */}
                     </div>
                 </div>
                 <div className={style.copyright}>
