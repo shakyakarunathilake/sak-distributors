@@ -8,35 +8,44 @@ import Page from '../shared/Page/Page.js';
 
 import Login from '../pages/LoginPage/Login';
 import ForgotPassword from '../pages/ForgotPassword/ForgotPassword';
-import Dashboard from '../pages/Distributor/Dashboard';
 import ChangePassword from '../pages/Distributor/ChangePassword';
+import SalesRepresentativeAnalytics from '../pages/SalesRepresentativeAnalytics/SalesRepresentativeAnalytics';
+import SalesReport from '../pages/SalesReport/SalesReport';
 
 //Distributor
-import SalesReport from '../pages/Distributor/SalesReport';
-import SalesRepresentativeAnalytics from '../pages/Distributor/SalesRepresentativeAnalytics';
+import DistributorDashboard from '../pages/Distributor/Dashboard';
 
 //HR
+import HRDashboard from '../pages/HR/Dashboard';
 import ManageAdmin from '../pages/HR/ManageAdmin';
 import ManageEmployee from '../pages/HR/ManageEmployee';
 
 //Manager
+import ManagerDashboard from '../pages/Manager/Dashboard';
 import ManageCustomer from '../pages/Manager/ManageCustomer';
-import ManageProduct from '../pages/Manager/ManageProduct';
+import ManagerManageProduct from '../pages/Manager/ManageProduct';
 import ManageSupplier from '../pages/Manager/ManageSupplier';
 import OrderHistory from '../pages/Manager/OrderHistory';
 
 //Purchasing Manager
+import PurchasingManagerDashboard from '../pages/PurchasingManager/Dashboard';
+import PurchasingManagerManageProduct from '../pages/PurchasingManager/ManageProduct';
 import ManagePOQuotation from '../pages/PurchasingManager/ManagePOQuotation';
 import ManageSales from '../pages/PurchasingManager/ManageSales';
 import SalesTrendAnalytics from '../pages/PurchasingManager/SalesTrendAnalytics';
 import SupplierPayment from '../pages/PurchasingManager/SupplierPayment';
 
-//Sales Representative
-import PersonalOrderHistory from '../pages/SalesRepresentative/PersonalOrderHistory';
-import SalesAndInvoicing from '../pages/SalesRepresentative/SalesAndInvoicing';
-
 //Store Keeper
+import StoreKeeperDashboard from '../pages/StoreKeeper/Dashboard';
 import GRNGIN from '../pages/StoreKeeper/GRNGIN';
+import StoreKeeperManageProduct from '../pages/StoreKeeper/ManageProduct';
+
+//Sales Representative
+import SalesRepresentativeDashboard from '../pages/SalesRepresentative/Dashboard';
+import PersonalOrderHistory from '../pages/SalesRepresentative/PersonalOrderHistory';
+import SalesAndInvoice from '../pages/SalesRepresentative/SalesAndInvoice';
+import SalesRepresentativeManageCustomer from '../pages/SalesRepresentative/ManageCustomer';
+
 
 const theme = createTheme({
   palette: {
@@ -68,23 +77,43 @@ function App() {
             <Route exact path='/page' component={Page} />
             <Route exact path='/login' component={Login} />
             <Route exact path='/forgot-password' component={ForgotPassword} />
-            <Route exact path='/dashboard' component={Dashboard} />
             <Route exact path='/change-password' component={ChangePassword} />
             <Route exact path='/sales-report' component={SalesReport} />
             <Route exact path='/sales-representative-analytics' component={SalesRepresentativeAnalytics} />
-            <Route exact path='/manage-admin' component={ManageAdmin} />
-            <Route exact path='/manage-employee' component={ManageEmployee} />
-            <Route exact path='/manage-customer' component={ManageCustomer} />
-            <Route exact path='/manage-product' component={ManageProduct} />
-            <Route exact path='/manage-supplier' component={ManageSupplier} />
-            <Route exact path='/order-history' component={OrderHistory} />
-            <Route exact path='/manage-po-quotation' component={ManagePOQuotation} />
-            <Route exact path='/manage-sales' component={ManageSales} />
             <Route exact path='/sales-trend-analytics' component={SalesTrendAnalytics} />
-            <Route exact path='/supplier-payment' component={SupplierPayment} />
-            <Route exact path='/personal-order-history' component={PersonalOrderHistory} />
-            <Route exact path='/sales-and-invoicing' component={SalesAndInvoicing} />
-            <Route exact path='/grn-gin' component={GRNGIN} />
+
+            {/* Distributor */}
+            <Route exact path='/distributor/dashboard' component={DistributorDashboard} />
+
+            {/* Human Resources */}
+            <Route exact path='/human-resources/dashboard' component={HRDashboard} />
+            <Route exact path='/human-resources/manage-admin' component={ManageAdmin} />
+            <Route exact path='/human-resources/manage-employee' component={ManageEmployee} />
+
+            {/* Manager */}
+            <Route exact path='/manager/dashboard' component={ManagerDashboard} />
+            <Route exact path='/manager/manage-supplier' component={ManageSupplier} />
+            <Route exact path='/manager/manage-product' component={ManagerManageProduct} />
+            <Route exact path='/manager/manage-customer' component={ManageCustomer} />
+            <Route exact path='/manager/order-history' component={OrderHistory} />
+
+            {/* Purchasing Manager */}
+            <Route exact path='/purchasing-manager/dashboard' component={PurchasingManagerDashboard} />
+            <Route exact path='/purchasing-manager/manage-product' component={PurchasingManagerManageProduct} />
+            <Route exact path='/purchasing-manager/manage-sales' component={ManageSales} />
+            <Route exact path='/purchasing-manager/manage-po-quotation' component={ManagePOQuotation} />
+            <Route exact path='/purchasing-manager/supplier-payment' component={SupplierPayment} />
+
+            {/* Store Keeper */}
+            <Route exact path='/store-keeper/dashboard' component={StoreKeeperDashboard} />
+            <Route exact path='/store-keeper/grn-gin' component={GRNGIN} />
+            <Route exact path='/store-keeper/manage-products' component={StoreKeeperManageProduct} />
+
+            {/* Sales Representative */}
+            <Route exact path='/sales-representative/dashboard' component={SalesRepresentativeDashboard} />
+            <Route exact path='/sales-representative/manage-customers' component={SalesRepresentativeManageCustomer} />
+            <Route exact path='/sales-representative/personal-order-history' component={PersonalOrderHistory} />
+            <Route exact path='/sales-representative/sales-and-invoice' component={SalesAndInvoice} />
           </Switch>
         </BrowserRouter>
       }

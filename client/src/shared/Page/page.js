@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 //Development Stage Imports
 import Photo from './Photo.jpg';
+import * as drawerListItems from '../../services/drawerListItems';
 
 //Material UI 
 import Avatar from '@material-ui/core/Avatar';
@@ -12,14 +13,9 @@ import ListItem from '@material-ui/core/ListItem';
 import { makeStyles } from '@material-ui/core/styles';
 
 //Material UI Icons
-import AssignmentIcon from '@material-ui/icons/Assignment';
-import BusinessIcon from '@material-ui/icons/Business';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import MenuIcon from '@material-ui/icons/Menu';
-import PersonIcon from '@material-ui/icons/Person';
-import PeopleIcon from '@material-ui/icons/People';
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
-import DashboardIcon from '@material-ui/icons/Dashboard';
 import LockIcon from '@material-ui/icons/Lock';
 
 //SCSS Styles
@@ -70,8 +66,8 @@ const useStyles = makeStyles({
             transitionDuration: "0.3s",
         },
     },
-    listIcon: {
-        marginRight: "15px"
+    listTitle: {
+        marginLeft: "15px"
     },
     drawerFooter: {
         bottom: "0",
@@ -119,46 +115,19 @@ export default function Page(props) {
     const list = () => (
         <div onClick={toggleDrawer(false)} className={classes.list}>
             <List>
-                <ListItem
-                    button
-                    className={classes.listItem}
-                    onClick={() => { window.location.replace("http://localhost:3000/dashboard") }}
-                >
-                    <DashboardIcon className={classes.listIcon} />
-                    Dashboard
-                </ListItem>
-                <ListItem
-                    button
-                    className={classes.listItem}
-                    onClick={() => { window.location.replace("http://localhost:3000/manage-employee") }}
-                >
-                    <PeopleIcon className={classes.listIcon} />
-                    Manage Employees
-                </ListItem>
-                <ListItem
-                    button
-                    className={classes.listItem}
-                    onClick={() => { window.location.replace("http://localhost:3000/manage-customer") }}
-                >
-                    <PersonIcon className={classes.listIcon} />
-                    Manage Customers
-                </ListItem>
-                <ListItem
-                    button
-                    className={classes.listItem}
-                    onClick={() => { window.location.replace("http://localhost:3000/manage-supplier") }}
-                >
-                    <BusinessIcon className={classes.listIcon} />
-                    Manage Suppliers
-                </ListItem>
-                <ListItem
-                    button
-                    className={classes.listItem}
-                    onClick={() => { window.location.replace("http://localhost:3000/order-history") }}
-                >
-                    <AssignmentIcon className={classes.listIcon} />
-                    Order History
-                </ListItem>
+                {
+                    drawerListItems.getSalesRepresentativeListItems().map((listItem) => (
+                        <ListItem
+                            button
+                            className={classes.listItem}
+                            onClick={() => { window.location.replace(`${listItem.path}`) }}
+                            key={listItem.id}
+                        >
+                            {listItem.icon}
+                            <span className={classes.listTitle}>{listItem.title}</span>
+                        </ListItem>
+                    ))
+                }
             </List>
         </div>
     );
