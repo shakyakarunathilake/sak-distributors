@@ -42,18 +42,18 @@ export default function Login() {
                         <img src={logo} alt="" />
                     </div>
                     <div className={style.heading}>
-                        <span>Forgot Password</span>
+                        <span>Forgot Password ?</span>
                     </div>
                     <div className={style.description}>
                         <p>
                             Enter the email address you used when you joined
-                            and we’ll send you instructions to reset your password.
+                            and we’ll send you instructions to reset your password. 
                             
                             <br />
                             <br />
                             
                             For security reasons, we do NOT store your password. 
-                            So rest assured that we will never send your password via email.
+                            So rest assured that we will never send your password via email. 
                         </p>
                     </div>
                     <div className={style.textfield}>
