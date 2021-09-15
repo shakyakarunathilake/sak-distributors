@@ -14,7 +14,7 @@ import DescriptionIcon from '@material-ui/icons/Description';
 import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 
-export const getDistributorListItems = () => ([
+const getDistributorListItems = [
     {
         id: "Dashboard",
         title: "Dashboard",
@@ -33,9 +33,9 @@ export const getDistributorListItems = () => ([
         path: "http://localhost:3000/sales-representative-analytics",
         icon: <TimelineIcon />
     },
-]);
+];
 
-export const getHRListItems = () => ([
+const getHRListItems = [
     {
         id: "Dashboard",
         title: "Dashboard",
@@ -54,9 +54,9 @@ export const getHRListItems = () => ([
         path: "http://localhost:3000/human-resources/manage-employee",
         icon: <PeopleIcon />,
     }
-]);
+];
 
-export const getManagerListItems = () => ([
+const getManagerListItems = [
     {
         id: "Dashboard",
         title: "Dashboard",
@@ -93,9 +93,9 @@ export const getManagerListItems = () => ([
         path: "http://localhost:3000/sales-representative-analytics",
         icon: <TimelineIcon />
     },
-]);
+];
 
-export const getPurchasingManagerListItems = () => ([
+const getPurchasingManagerListItems = [
     {
         id: "Dashboard",
         title: "Dashboard",
@@ -138,9 +138,9 @@ export const getPurchasingManagerListItems = () => ([
         path: "http://localhost:3000/sales-trend-analytics",
         icon: <TrendingUpIcon />
     },
-]);
+];
 
-export const getStoreKeeperListItems = () => ([
+const getStoreKeeperListItems = [
     {
         id: "Dashboard",
         title: "Dashboard",
@@ -159,9 +159,9 @@ export const getStoreKeeperListItems = () => ([
         path: "http://localhost:3000/store-keeper/manage-products",
         icon: <AssignmentIcon />,
     },
-]);
+];
 
-export const getSalesRepresentativeListItems  = () => ([
+const getSalesRepresentativeListItems = [
     {
         id: "Dashboard",
         title: "Dashboard",
@@ -192,5 +192,26 @@ export const getSalesRepresentativeListItems  = () => ([
         path: "http://localhost:3000/sales-representative-analytics",
         icon: <TimelineIcon />
     },
-    
-]);
+
+];
+
+export function drawerListItems(role) {
+    if (role === "Distributor") {
+        return (getDistributorListItems)
+    }
+    if (role === "HR" ) {
+        return (getHRListItems)
+    }
+    if (role === "Manager" ) {
+        return (getManagerListItems)
+    }
+    if (role === "Purchasing Manager" ) {
+        return (getPurchasingManagerListItems)
+    }
+    if (role === "Store Keeper" ) {
+        return (getStoreKeeperListItems)
+    }
+    if (role === "Sales Representative" ) {
+        return (getSalesRepresentativeListItems)
+    }
+}

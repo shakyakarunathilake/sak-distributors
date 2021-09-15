@@ -116,7 +116,7 @@ export default function Page(props) {
         <div onClick={toggleDrawer(false)} className={classes.list}>
             <List>
                 {
-                    drawerListItems.getSalesRepresentativeListItems().map((listItem) => (
+                    drawerListItems.drawerListItems(localStorage.getItem("Role")).map((listItem) => (
                         <ListItem
                             button
                             className={classes.listItem}
