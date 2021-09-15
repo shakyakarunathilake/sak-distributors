@@ -24,7 +24,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 export default function Login() {
 
     const postData = () => {
-        window.location.replace("http://localhost:3000/dashboard");
+        window.location.replace("http://localhost:3000/sales-representative/dashboard");
     }
 
     const initialFieldValues = {
