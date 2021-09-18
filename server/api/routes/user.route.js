@@ -36,7 +36,7 @@ router.post("/signup", (req, res, next) => {
 router.post("/signin", (req, res, next) => {
 
     User
-        .find({ username: req.body.username })
+        .find({ employeeid: req.body.username })
         .exec()
         .then(user => {
             const passwordIsValid = bcrypt.compareSync(
@@ -52,15 +52,18 @@ router.post("/signin", (req, res, next) => {
             }
 
             const token = jwt.sign(
-                { username: user[0].username, role: "User" },
+                { username: user[0].employeeid, role: user[0].designation },
                 "authconfig.secret",
                 { expiresIn: 7200 }
             );
 
             res.status(200).json({
                 auth_status: "AUTHORIZED",
-                username: user[0].username,
-                role: "User",
+                username: user[0].employeeid,
+                name: `${user[0].firstname}  ${user[0].lastname}`,
+                role: user[0].designation,
+                email: user[0].email,
+                employeeimage: user[0].employeeimage,
                 accessToken: token
             });
         })

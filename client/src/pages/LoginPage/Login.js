@@ -19,12 +19,35 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 //Connecting to Backend
-// import axios from 'axios';
+import axios from 'axios';
 
 export default function Login() {
 
     const postData = () => {
-        window.location.replace("http://localhost:3000/sales-representative/dashboard");
+        console.log({
+            "username": values.username,
+            "password": values.password
+        });
+        axios
+            .post("http://localhost:8080/users/signin", {
+                "username": values.username,
+                "password": values.password
+            },
+                {
+                    headers: {
+                        authorisation: JSON.parse(localStorage.getItem("Auth")).accesstoken
+                    }
+                }
+            )
+            .then(res => {
+                // console.log(res.data);
+                localStorage.setItem("Auth", JSON.stringify(res.data));
+                // console.log(JSON.parse(localStorage.getItem("Auth")));
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        // window.location.replace("http://localhost:3000/sales-representative/dashboard");
     }
 
     const initialFieldValues = {
@@ -56,7 +79,7 @@ export default function Login() {
                             className={style.field}
                             label="Username"
                             onChange={handleInputChange}
-                            value={values.username}
+                            value={values?.username}
                             name="username"
                             InputProps={{
                                 endAdornment: (
@@ -74,7 +97,7 @@ export default function Login() {
                             name="password"
                             onChange={handleInputChange}
                             type={values.showPassword ? 'text' : 'password'}
-                            value={values.password}
+                            value={values?.password}
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">

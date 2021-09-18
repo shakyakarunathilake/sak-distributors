@@ -77,7 +77,8 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
         contactnumber: req.body.contactnumber,
         designation: req.body.designation,
         civilstatus: req.body.civilstatus,
-        employeestatus: req.body.employeestatus
+        employeestatus: req.body.employeestatus,
+        password: req.body.password, //Development Stage
     });
 
     employee
@@ -141,7 +142,7 @@ router.get("/get-all-employees", (req, res, next) => {
             res.status(200).json({
                 thead: thead,
                 tbody: tbody,
-                defaultkey: 0, 
+                defaultkey: 0,
             });
         })
         .catch(err => {
