@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 //Routes
-const userRoutes = require("./api/routes/user.route");
+const authRoutes = require("./api/routes/auth.route");
 const employeeRoutes = require("./api/routes/employee.route");
 const customerRoutes = require("./api/routes/customer.route");
 
@@ -34,7 +34,7 @@ app.use((error, req, res, next) => {
 
 app.use(express.static("uploads"));
 
-app.use("/users", userRoutes);
+app.use("/auth", authRoutes);
 app.use("/employees", employeeRoutes);
 app.use("/customers", customerRoutes);
 

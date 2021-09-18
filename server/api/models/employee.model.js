@@ -17,7 +17,8 @@ const employeeSchema = mongoose.Schema({
     contactnumber: { type: Number, required: false },
     designation: { type: String, required: false },
     civilstatus: { type: String, required: false },
-    employeestatus: { type: String, required: false }
+    employeestatus: { type: String, required: false },
+    password: { type: String, required: false }
 })
 
 module.exports = mongoose.model('Employee', employeeSchema);

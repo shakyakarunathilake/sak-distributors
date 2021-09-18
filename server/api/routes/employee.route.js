@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+
+const bcrypt = require("bcrypt"); /* For Passwords */
+
 const multer = require("multer");  /* For images */
 
 const Employee = require("../models/employee.model");
@@ -60,38 +63,46 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
     const dob = new Date(req.body.dob);
     const hireddate = new Date(req.body.hireddate);
 
-    const employee = new Employee({
-        _id: new mongoose.Types.ObjectId(),
-        employeeid: req.body.employeeid,
-        employeeimage: `localhost:8080/${req.body.employeeid}.jpg`,
-        fullname: req.body.fullname,
-        title: req.body.title,
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
-        email: req.body.email,
-        dob: dob.toISOString().split('T')[0],
-        hireddate: hireddate.toISOString().split('T')[0],
-        address: req.body.address,
-        nic: req.body.nic,
-        gender: req.body.gender,
-        contactnumber: req.body.contactnumber,
-        designation: req.body.designation,
-        civilstatus: req.body.civilstatus,
-        employeestatus: req.body.employeestatus,
-        password: req.body.password, //Development Stage
+    bcrypt.hash(req.body.password, 10, (err, hash) => {
+        if (err) {
+            console.log(err);
+        } else {
+            const employee = new Employee({
+                _id: new mongoose.Types.ObjectId(),
+                employeeid: req.body.employeeid,
+                employeeimage: `localhost:8080/${req.body.employeeid}.jpg`,
+                fullname: req.body.fullname,
+                title: req.body.title,
+                firstname: req.body.firstname,
+                lastname: req.body.lastname,
+                email: req.body.email,
+                dob: dob.toISOString().split('T')[0],
+                hireddate: hireddate.toISOString().split('T')[0],
+                address: req.body.address,
+                nic: req.body.nic,
+                gender: req.body.gender,
+                contactnumber: req.body.contactnumber,
+                designation: req.body.designation,
+                civilstatus: req.body.civilstatus,
+                employeestatus: req.body.employeestatus,
+                password: hash, //Development Stage
+            });
+        
+            employee
+                .save()
+                .then(result => {
+                    res.status(201).json({
+                        message: "Handling POST requests to /employees/create-employee, EMPLOYEE SAVED",
+                        addedEmployee: result
+                    });
+                })
+                .catch(err => {
+                    console.log("Error: ", err)
+                })
+        };
     });
 
-    employee
-        .save()
-        .then(result => {
-            res.status(201).json({
-                message: "Handling POST requests to /employees/create-employee, EMPLOYEE SAVED",
-                addedEmployee: result
-            });
-        })
-        .catch(err => {
-            console.log("Error: ", err)
-        })
+   
 });
 
 //Get all employee data

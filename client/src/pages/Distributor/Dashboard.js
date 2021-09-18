@@ -7,8 +7,6 @@ import Page from '../../shared/Page/Page';
 
 export default function Dashboard() {
 
-    localStorage.setItem("Role", "Distributor");
-
     return (
         <Page
             title="Dashboard">

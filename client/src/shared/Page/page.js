@@ -101,6 +101,7 @@ export default function Page(props) {
 
     const classes = useStyles();
     const [state, setState] = useState();
+    const role = JSON.parse(localStorage.getItem("Auth")).role;
 
     //Toggle Drawer Function
     const toggleDrawer = (open) => (event) => {
@@ -116,7 +117,7 @@ export default function Page(props) {
         <div onClick={toggleDrawer(false)} className={classes.list}>
             <List>
                 {
-                    drawerListItems.drawerListItems(localStorage.getItem("Role")).map((listItem) => (
+                    drawerListItems.drawerListItems(role).map((listItem) => (
                         <ListItem
                             button
                             className={classes.listItem}

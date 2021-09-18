@@ -29,25 +29,41 @@ export default function Login() {
             "password": values.password
         });
         axios
-            .post("http://localhost:8080/users/signin", {
+            .post("http://localhost:8080/auth/signin", {
                 "username": values.username,
                 "password": values.password
             },
-                {
-                    headers: {
-                        authorisation: JSON.parse(localStorage.getItem("Auth")).accesstoken
-                    }
-                }
+                // {
+                //     headers: {
+                //         authorisation: JSON.parse(localStorage.getItem("Auth")).accesstoken
+                //     }
+                // }
             )
             .then(res => {
                 // console.log(res.data);
                 localStorage.setItem("Auth", JSON.stringify(res.data));
-                // console.log(JSON.parse(localStorage.getItem("Auth")));
+                const role = JSON.parse(localStorage.getItem("Auth")).role;
+                console.log(role);
+
+                switch (role) {
+                    case "Distributor": window.location.replace("http://localhost:3000/distributor/dashboard");
+                    break;
+                    case "Human Resources": window.location.replace("http://localhost:3000/human-resources/dashboard");
+                    break;
+                    case "Manager": window.location.replace("http://localhost:3000/manager/dashboard");
+                    break;
+                    case "Purchasing Manager": window.location.replace("http://localhost:3000/purchasing-manager/dashboard");
+                    break;
+                    case "Store Keeper": window.location.replace("http://localhost:3000/store-keeper/dashboard");
+                    break;
+                    case "Sales Representative": window.location.replace("http://localhost:3000/sales-representative/dashboard");
+                    break;
+                    default: window.location.replace("http://localhost:3000/");
+                }
             })
             .catch(error => {
                 console.log(error)
             })
-        // window.location.replace("http://localhost:3000/sales-representative/dashboard");
     }
 
     const initialFieldValues = {
