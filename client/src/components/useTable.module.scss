@@ -1,0 +1,102 @@
+@import "../styles/variables";
+
+.tablecontainer {
+    overflow-x: auto;
+    overflow-y: auto;
+    height: inherit;
+    white-space: nowrap; //To get rid of the scroll and inline text
+    box-sizing: border-box;
+}
+
+.tablehead {
+    position: sticky;
+    top: 0;
+}
+
+.tableheadrow {
+    background-color: $primaryMain;
+    font-size: 1.3em;
+    .tablecell {
+        color: $inverseFontColor;
+        // .tablesortlabel {
+        //     background-color: $primaryMain;
+        //     color: inherit;
+        // }
+    }
+    .tableheadfontstyles {
+        font-style: bold;
+        color: white;
+    }
+}
+
+.greytablerow {
+    background-color: $secondaryLight;
+    &:hover {
+        background-color: #949494;
+    }
+}
+
+.whitetablerow {
+    background-color: white;
+    &:hover {
+        background-color: #949494;
+    }
+}
+
+// .columnone {
+//     position: sticky;
+//     left: 0;
+//     background-color: inherit;
+//     z-index: 1000;
+// }
+
+// .columntwo {
+//     position: sticky;
+//     z-index: 1000;
+//     left: 75.88px;
+//     background-color: inherit;
+// }
+
+// .columnthree {
+//     position: sticky;
+//     z-index: 1000;
+//     left: 133.69px;
+//     background-color: inherit;
+// }
+
+// .columnfoursticky {
+//     position: sticky;
+//     z-index: 1000;
+//     // left: 305.69px;
+//     left: 317.3px;
+//     background-color: inherit;
+// }
+
+// .active {
+//     color: $successColor;
+//     margin-right: 15px;
+// }
+
+// .inactive {
+//     color: $warningColor;
+//     margin-right: 15px;
+// }
+
+.actioncolumn {
+    white-space: nowrap;
+    background-color: inherit;
+    // box-shadow: -10px 0px 10px 1px #aaaaaa;
+}
+
+.visibilityIcon {
+    margin-right: 15px;
+    &:hover {
+        transform: scale(1.3);
+    }
+}
+
+.editIcon {
+    &:hover {
+        transform: scale(1.3);
+    }
+}
