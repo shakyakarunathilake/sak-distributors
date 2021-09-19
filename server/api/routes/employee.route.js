@@ -56,14 +56,26 @@ router.get("/get-next-regno", (req, res, next) => {
 
 })
 
+function notifyEmailCreatedUser(employee) {
+    console.log(employee)
+}
 
 //Create an employee
 router.post("/create-employee", uploads.single('employeeimage'), (req, res, next) => {
 
-    const dob = new Date(req.body.dob);
-    const hireddate = new Date(req.body.hireddate);
+    const dob = new Date(req.body.dob).toISOString().split('T')[0];
+    const hireddate = new Date(req.body.hireddate).toISOString().split('T')[0];
 
-    bcrypt.hash(req.body.password, 10, (err, hash) => {
+    var nic = req.body.nic;
+    var firstpassword = "";
+
+    if (nic.slice(-1) == "v") {
+        firstpassword = nic.substring(7, 11) + "-" + dob;
+    } else {
+        firstpassword = nic.substring(8, 12) + "-" + dob;
+    }
+
+    bcrypt.hash(firstpassword, 10, (err, hash) => {
         if (err) {
             console.log(err);
         } else {
@@ -76,8 +88,8 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
                 firstname: req.body.firstname,
                 lastname: req.body.lastname,
                 email: req.body.email,
-                dob: dob.toISOString().split('T')[0],
-                hireddate: hireddate.toISOString().split('T')[0],
+                dob: dob,
+                hireddate: hireddate,
                 address: req.body.address,
                 nic: req.body.nic,
                 gender: req.body.gender,
@@ -85,9 +97,10 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
                 designation: req.body.designation,
                 civilstatus: req.body.civilstatus,
                 employeestatus: req.body.employeestatus,
+                firsttimelogin: true,
                 password: hash, //Development Stage
             });
-        
+
             employee
                 .save()
                 .then(result => {
@@ -95,6 +108,7 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
                         message: "Handling POST requests to /employees/create-employee, EMPLOYEE SAVED",
                         addedEmployee: result
                     });
+                    notifyEmailCreatedUser(result);
                 })
                 .catch(err => {
                     console.log("Error: ", err)
@@ -102,7 +116,6 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
         };
     });
 
-   
 });
 
 //Get all employee data

@@ -199,7 +199,7 @@ export function drawerListItems(role) {
     if (role === "Distributor") {
         return (getDistributorListItems)
     }
-    if (role === "HR" ) {
+    if (role === "Human Resources" ) {
         return (getHRListItems)
     }
     if (role === "Manager" ) {

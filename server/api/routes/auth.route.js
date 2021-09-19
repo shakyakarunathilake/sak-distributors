@@ -9,23 +9,16 @@ const Employee = require("../models/employee.model");
 
 //Sign in
 router.post("/signin", (req, res, next) => {
-    console.log("Req Username:", req.body.username);
 
     Employee
         .find({ employeeid: req.body.username })
         .exec()
         .then(employee => {
 
-            console.log("Req Username:", req.body.username, employee[0].employeeid);
-            console.log("Req: ", req.body.password, employee[0].password);
-
-
             const passwordIsValid = bcrypt.compareSync(
                 req.body.password,
                 employee[0].password
             );
-
-            console.log("Validation:", passwordIsValid);
 
             if (!passwordIsValid) {
                 return res.status(401).json({
@@ -51,11 +44,12 @@ router.post("/signin", (req, res, next) => {
                 auth_status: "AUTHORIZED",
                 username: employee[0].username,
                 role: employee[0].designation,
+                firsttimelogin: employee[0].firsttimelogin,
                 accessToken: token
             });
         })
         .catch(err => {
-            
+
             console.log("Invalid Username");
 
             return res.status(401).json({

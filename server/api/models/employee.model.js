@@ -18,6 +18,7 @@ const employeeSchema = mongoose.Schema({
     designation: { type: String, required: false },
     civilstatus: { type: String, required: false },
     employeestatus: { type: String, required: false },
+    firsttimelogin: { type: Boolean, required: false },
     password: { type: String, required: false }
 })
 
