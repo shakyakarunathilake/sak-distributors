@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt"); /* For Passwords */
 
 const multer = require("multer");  /* For images */
 
-const notifyEmail = require("../notification/notifyEmail");
+const notifyEmail = require("../services/notifyEmail");
 const Employee = require("../models/employee.model");
 
 const storage = multer.diskStorage({
