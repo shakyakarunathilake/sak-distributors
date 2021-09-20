@@ -2,7 +2,11 @@ const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
     service: "gmail",
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: false,
     auth: {
+        type: "login",
         user: process.env.MAIL_ADDRESS,
         pass: process.env.MAIL_PASSWORD
     }
@@ -23,7 +27,14 @@ exports.notifyCreateEmployee = (data) => {
         
         Best Regards,
         Admin,
-        SAK Distributor
-        `
+        SAK Distributor`
     };
+
+    transporter.sendMail({ mailOptions }, (error, info) => {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log("Email Sent:" + info);
+        };
+    });
 }
