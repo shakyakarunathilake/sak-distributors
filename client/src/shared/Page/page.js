@@ -186,7 +186,7 @@ export default function Page(props) {
                     <Avatar alt="Khione" className={style.avatar} src={Photo} />
                 </div>
             </div>
-            <div className={style.pagecontent}>
+            <div className={style.pageContent}>
                 {props.children}
             </div>
         </div>

@@ -2,7 +2,15 @@ import React from 'react';
 import classnames from 'classnames';
 
 //Material UI 
-import { TableContainer, Paper, Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core';
+import {
+    TableContainer,
+    Paper,
+    Table as MuiTable,
+    TableHead,
+    TableBody,
+    TableRow,
+    TableCell
+} from '@material-ui/core';
 
 //Material UI Icons
 import EditIcon from '@material-ui/icons/Edit';
@@ -11,11 +19,11 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 //SCSS styles
 import style from './useTable.module.scss';
 
-export default function useTable() {
+export default function useTable(thead, records) {
 
-    return (
+    const Table = (props) => (
         <TableContainer className={style.tablecontainer} component={Paper} >
-            <Table>
+            <MuiTable>
                 <TableHead className={style.tablehead}>
                     <TableRow className={style.tableheadrow}>
                         {/* {
@@ -30,11 +38,14 @@ export default function useTable() {
                             ))
                         } */}
 
-                        <TableCell align="center"> Employee ID </TableCell>
-                        <TableCell align="center"> Title </TableCell>
-                        <TableCell align="center"> Name </TableCell>
-                        <TableCell align="center"> Designation </TableCell>
-                        <TableCell align="center"> Employee Status </TableCell>
+                        {/* Development Stage */}
+                        <TableCell align="center" className={style.tablecell}> Employee ID </TableCell>
+                        <TableCell align="center" className={style.tablecell}> Title </TableCell>
+                        <TableCell align="center" className={style.tablecell}> Name </TableCell>
+                        <TableCell align="center" className={style.tablecell}> Designation </TableCell>
+                        <TableCell align="center" className={style.tablecell}> Employee Status </TableCell>
+                        {/* End */}
+
                         <TableCell
                             align="center"
                             className={classnames(style.actioncolumn, style.tableheadfontstyles)}
@@ -44,47 +55,52 @@ export default function useTable() {
                     </TableRow>
                 </TableHead>
                 <TableBody className={style.tablebody}>
-                    {/* {
-                        records.map((row, i) => (
-                            <TableRow
-                                className={classnames(
-                                    { [style.greytablerow]: i % 2 === 1 },
-                                    { [style.whitetablerow]: i % 2 === 0 },
-                                )}
-                                key={i}
-                            >
-                                {
-                                    row.map((cell, i) => (
-                                        <TableCell key={cell.id} >
-                                            {cell.label}
-                                        </TableCell>
-                                    ))
-                                }
-                                <TableCell
-                                    align="center"
-                                    className={style.actioncolumn}
-                                >
-                                    <VisibilityIcon
-                                        className={style.visibilityIcon}
-                                    />
-                                    <EditIcon
-                                        className={style.editIcon}
-                                    // onClick={() => {
-                                    //     openInPopup(row[0].label);
-                                    // }}
-                                    />
-                                </TableCell>
-                            </TableRow>
-
-                        ))
-                    } */}
-
                     <TableRow>
-                        <TableCell align="center"> E00 </TableCell>
-                        <TableCell align="center"> Title </TableCell>
-                        <TableCell align="center"> Name </TableCell>
-                        <TableCell align="center"> Designation </TableCell>
-                        <TableCell align="center"> Employee Status </TableCell>
+                        {/* {
+                            records.map((row, i) => (
+                                <TableRow
+                                    className={classnames(
+                                        { [style.greytablerow]: i % 2 === 1 },
+                                        { [style.whitetablerow]: i % 2 === 0 },
+                                    )}
+                                    key={i}
+                                >
+                                    {
+                                        row.map((cell, i) => (
+                                            <TableCell key={cell.id} >
+                                                {cell.label}
+                                            </TableCell>
+                                        ))
+                                    }
+                                    <TableCell
+                                        align="center"
+                                        className={style.actioncolumn}
+                                    >
+                                        <VisibilityIcon
+                                            className={style.visibilityIcon}
+                                        />
+                                        <EditIcon
+                                            className={style.editIcon}
+                                        // onClick={() => {
+                                        //     openInPopup(row[0].label);
+                                        // }}
+                                        />
+                                    </TableCell>
+                                </TableRow>
+
+                            ))
+                        } */}
+
+
+                        {/* Development Stage */}
+                        <TableCell align="center"> E00001 </TableCell>
+                        <TableCell align="center"> Miss </TableCell>
+                        <TableCell align="center"> Shakya Karunathilake </TableCell>
+                        <TableCell align="center"> Distributor </TableCell>
+                        <TableCell align="center"> Active </TableCell>
+                        {/* End */}
+
+
                         <TableCell
                             align="center"
                             className={style.actioncolumn}
@@ -101,8 +117,13 @@ export default function useTable() {
                         </TableCell>
                     </TableRow>
                 </TableBody>
-            </Table>
+            </MuiTable>
         </TableContainer>
     )
+
+
+    return {
+        Table,
+    }
 }
 
