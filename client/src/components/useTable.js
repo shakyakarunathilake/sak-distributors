@@ -19,7 +19,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 //SCSS styles
 import style from './useTable.module.scss';
 
-export default function useTable(thead, records) {
+export default function useTable(thead, trecords) {
 
     const Table = (props) => (
         <TableContainer className={style.tablecontainer} component={Paper} >
@@ -57,7 +57,7 @@ export default function useTable(thead, records) {
                 <TableBody className={style.tablebody}>
                     <TableRow>
                         {/* {
-                            records.map((row, i) => (
+                            trecords.map((row, i) => (
                                 <TableRow
                                     className={classnames(
                                         { [style.greytablerow]: i % 2 === 1 },

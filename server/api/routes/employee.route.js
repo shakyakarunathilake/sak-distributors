@@ -6,6 +6,7 @@ const bcrypt = require("bcrypt"); /* For Passwords */
 
 const multer = require("multer");  /* For images */
 
+const notifyEmail = require("../notification/notifyEmail");
 const Employee = require("../models/employee.model");
 
 const storage = multer.diskStorage({
@@ -56,10 +57,6 @@ router.get("/get-next-regno", (req, res, next) => {
 
 })
 
-function notifyEmailCreatedUser(employee) {
-    console.log(employee)
-}
-
 //Create an employee
 router.post("/create-employee", uploads.single('employeeimage'), (req, res, next) => {
 
@@ -108,7 +105,13 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
                         message: "Handling POST requests to /employees/create-employee, EMPLOYEE SAVED",
                         addedEmployee: result
                     });
-                    notifyEmailCreatedUser(result);
+                    notifyEmail.notifyCreateEmployee({
+                        firstname: result.firstname,
+                        lastname: result.lastname,
+                        designation: result.designation,
+                        username: result.employeeid,
+                        password: firstpassword
+                    });
                 })
                 .catch(err => {
                     console.log("Error: ", err)
