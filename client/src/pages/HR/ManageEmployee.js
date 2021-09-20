@@ -19,6 +19,8 @@ import SearchIcon from '@material-ui/icons/Search';
 export default function ManageEmployee() {
 
     const { Table } = useTable();
+    // const thead = ["Employee Id", "Title", "Name", "Designation", "Employee Status"];
+    // const trecords = [["E00001", "Miss", "Shakya Karunathilake", "Distributor", "Active"]]
 
     return (
         <Page title="Manage Employees">
@@ -56,7 +58,7 @@ export default function ManageEmployee() {
                 </div>
 
                 <div className={style.pagecontent}>
-                    
+                    <Table/>
                 </div>
 
             </div>

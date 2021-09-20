@@ -5,6 +5,7 @@ import './App.scss';
 
 //Development Stage
 import Page from '../shared/Page/Page.js';
+import EmployeesForm from '../pages/HR/EmployeesForm';
 
 import Login from '../pages/LoginPage/Login';
 import ForgotPassword from '../pages/ForgotPassword/ForgotPassword';
@@ -66,7 +67,10 @@ function App() {
       {
         <BrowserRouter>
           <Switch>
+            {/* Developement Stage */}
             <Route exact path='/page' component={Page} />
+            <Route exact path='/employees-form' component={EmployeesForm} />
+
             <Route exact path='/' component={Login} />
             <Route exact path='/forgot-password' component={ForgotPassword} />
             <Route exact path='/change-password' component={ChangePassword} />
