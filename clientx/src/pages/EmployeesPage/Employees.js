@@ -32,7 +32,7 @@ export default function Employees() {
         axios
             .get("http://localhost:8080/employees/get-all-employees")
             .then(res => {
-                localStorage.setItem("AllEmployeeData", JSON.stringify(res.data));
+                sessionStorage.setItem("AllEmployeeData", JSON.stringify(res.data));
             })
             .catch(error => {
                 console.log(error);
@@ -40,10 +40,10 @@ export default function Employees() {
         ;
     })
 
-    console.log(JSON.parse(localStorage.getItem("AllEmployeeData")));
+    console.log(JSON.parse(sessionStorage.getItem("AllEmployeeData")));
 
     //Getting Data From Local Storage
-    const AllEmployeeData = JSON.parse(localStorage.getItem("AllEmployeeData"));
+    const AllEmployeeData = JSON.parse(sessionStorage.getItem("AllEmployeeData"));
     const { thead, tbody } = AllEmployeeData;
 
     const [records, setRecords] = useState(tbody);

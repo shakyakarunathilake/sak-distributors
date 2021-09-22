@@ -35,14 +35,14 @@ export default function Login() {
             },
                 // {
                 //     headers: {
-                //         authorisation: JSON.parse(localStorage.getItem("Auth")).accesstoken
+                //         authorisation: JSON.parse(sessionStorage.getItem("Auth")).accesstoken
                 //     }
                 // }
             )
             .then(res => {
                 // console.log(res.data);
-                localStorage.setItem("Auth", JSON.stringify(res.data));
-                const role = JSON.parse(localStorage.getItem("Auth")).role;
+                sessionStorage.setItem("Auth", JSON.stringify(res.data));
+                const role = JSON.parse(sessionStorage.getItem("Auth")).role;
                 console.log(role);
 
                 switch (role) {

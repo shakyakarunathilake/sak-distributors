@@ -35,14 +35,14 @@ export default function Login() {
             },
                 {
                     headers: {
-                        authorisation: JSON.parse(localStorage.getItem("Auth")).accesstoken
+                        authorisation: JSON.parse(sessionStorage.getItem("Auth")).accesstoken
                     }
                 }
             )
             .then(res => {
                 // console.log(res.data);
-                localStorage.setItem("Auth", JSON.stringify(res.data));
-                // console.log(JSON.parse(localStorage.getItem("Auth")));
+                sessionStorage.setItem("Auth", JSON.stringify(res.data));
+                // console.log(JSON.parse(sessionStorage.getItem("Auth")));
             })
             .catch(error => {
                 console.log(error)

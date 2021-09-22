@@ -28,14 +28,14 @@ export default function Customers() {
     axios
         .get("http://localhost:8080/customers/get-all-customers")
         .then(res => {
-            localStorage.setItem("AllCustomerData", JSON.stringify(res.data));
+            sessionStorage.setItem("AllCustomerData", JSON.stringify(res.data));
         })
         .catch(error => {
             console.log(error);
         })
 
     //Getting Data From Local Storage
-    const AllCustomerData = JSON.parse(localStorage.getItem("AllCustomerData"));
+    const AllCustomerData = JSON.parse(sessionStorage.getItem("AllCustomerData"));
 
     //Deconstructing into thead and tbody
     const { thead, tbody } = AllCustomerData;
