@@ -105,7 +105,7 @@ const getPurchasingManagerListItems = [
     {
         id: "Manage Products",
         title: "Manage Products",
-        path: "http://localhost:3000/purchasing-manager/manage-product",
+        path: "http://localhost:3000/purchasing-manager/manage-products",
         icon: <AssignmentIcon />,
     },
     {

@@ -84,14 +84,14 @@ function App() {
 
             {/* Manager */}
             <Route exact path='/manager/dashboard' component={Dashboard} />
-            <Route exact path='/manager/manage-supplier' component={ManageSupplier} />
-            <Route exact path='/manager/manage-product' component={ManageProduct} />
-            <Route exact path='/manager/manage-customer' component={ManageCustomer} />
+            <Route exact path='/manager/manage-suppliers' component={ManageSupplier} />
+            <Route exact path='/manager/manage-products' component={ManageProduct} />
+            <Route exact path='/manager/manage-customers' component={ManageCustomer} />
             <Route exact path='/manager/order-history' component={OrderHistory} />
 
             {/* Purchasing Manager */}
             <Route exact path='/purchasing-manager/dashboard' component={Dashboard} />
-            <Route exact path='/purchasing-manager/manage-product' component={ManageProduct} />
+            <Route exact path='/purchasing-manager/manage-products' component={ManageProduct} />
             <Route exact path='/purchasing-manager/manage-sales' component={ManageSales} />
             <Route exact path='/purchasing-manager/manage-po-quotation' component={ManagePOQuotation} />
             <Route exact path='/purchasing-manager/supplier-payment' component={SupplierPayment} />
