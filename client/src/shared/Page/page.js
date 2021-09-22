@@ -101,7 +101,11 @@ export default function Page(props) {
 
     const classes = useStyles();
     const [state, setState] = useState();
-    const role = JSON.parse(localStorage.getItem("Auth")).role;
+    const role = JSON.parse(sessionStorage.getItem("Auth")).role;
+    const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
+    const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
+    const email = JSON.parse(sessionStorage.getItem("Auth")).email;
+    const employeeimage = JSON.parse(sessionStorage.getItem("Auth")).employeeimage;
 
     //Toggle Drawer Function
     const toggleDrawer = (open) => (event) => {
@@ -142,10 +146,10 @@ export default function Page(props) {
                 open={state}
             >
                 <div className={classes.userInfo}>
-                    <Avatar alt="Khione" className={classes.avatar} src={Photo} />
-                    <div className={classes.role}>Admin</div>
-                    <div className={classes.name}>Shakya Karunathilake</div>
-                    <div className={classes.email}>karunathilakeshakya@gmail.com</div>
+                    <Avatar alt={firstname} className={classes.avatar} src={employeeimage} />
+                    <div className={classes.role}>{role}</div>
+                    <div className={classes.name}>{firstname} {lastname}</div>
+                    <div className={classes.email}>{email}</div>
                 </div>
                 {list()}
                 <div className={classes.drawerFooter}>
@@ -183,7 +187,7 @@ export default function Page(props) {
                     <NotificationsNoneIcon className={style.icon} />
                 </div>
                 <div className={style.avatarDiv}>
-                    <Avatar alt="Khione" className={style.avatar} src={Photo} />
+                    <Avatar alt={firstname} className={style.avatar} src={employeeimage} />
                 </div>
             </div>
             <div className={style.pageContent}>

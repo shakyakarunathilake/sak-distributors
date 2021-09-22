@@ -44,6 +44,10 @@ router.post("/signin", (req, res, next) => {
                 auth_status: "AUTHORIZED",
                 username: employee[0].username,
                 role: employee[0].designation,
+                firstname: employee[0].firstname,
+                lastname: employee[0].lastname,
+                email: employee[0].email,
+                employeeimage: employee[0].employeeimage,
                 firsttimelogin: employee[0].firsttimelogin,
                 accessToken: token
             });
