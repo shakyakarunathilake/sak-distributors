@@ -1,0 +1,15 @@
+@import "../../styles/variables";
+
+.container {
+    display: grid;
+    grid-template-columns: 60% calc(40% - 20px);
+    grid-column-gap: 20px;
+    height: calc(100vh - 86px);
+    padding: 20px;
+    box-sizing: border-box;
+
+    .paper{
+
+        background-color: $paperColor;
+    }
+}
