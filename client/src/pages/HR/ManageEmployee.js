@@ -2,7 +2,7 @@ import React from 'react';
 
 //Shared Components
 import Page from '../../shared/Page/Page';
-import useTable from '../../components/useTable.js';
+// import useTable from '../../components/useTable.js';
 import TextField from '../../shared/TextField/TextField';
 
 //SCSS styles
@@ -18,7 +18,7 @@ import SearchIcon from '@material-ui/icons/Search';
 
 export default function ManageEmployee() {
 
-    const { Table } = useTable();
+    // const { Table } = useTable();
 
     return (
         <Page title="Manage Employees">
@@ -28,6 +28,7 @@ export default function ManageEmployee() {
                     <div className={style.search}>
                         <TextField
                             // onChange={e => setSearchVal(e.target.value)}
+                            color="primary"
                             className={style.searchtextfield}
                             placeholder="Search"
                             InputProps={{
@@ -56,7 +57,7 @@ export default function ManageEmployee() {
                 </div>
 
                 <div className={style.pagecontent}>
-                    
+
                 </div>
 
             </div>
