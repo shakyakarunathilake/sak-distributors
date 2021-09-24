@@ -164,7 +164,7 @@ export default function Page(props) {
                     </div>
                     <div
                         className={classes.footerDiv}
-                        onClick={() => { window.location.replace("https://www.google.com/") }}
+                        onClick={() => { window.location.replace("http://localhost:3000/") }}
                     >
                         <div className={classes.footerIconDiv}>
                             <ExitToAppIcon className={classes.footerIcon} />
