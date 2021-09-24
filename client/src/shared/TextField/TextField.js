@@ -4,12 +4,14 @@ import { TextField as MuiTextField } from '@material-ui/core';
 
 export default function Input(props) {
 
-    const { name, label, value, onChange, placeholder, InputProps, disabled, error = null, type } = props;
+    const { name, label, value, onChange, placeholder, InputProps, disabled, error = null, type, color, focused } = props;
 
     // const windowHeight = window.innerHeight;
 
     return (
         <MuiTextField
+            focused={focused}
+            color={color}
             fullWidth
             placeholder={placeholder}
             variant="outlined"
