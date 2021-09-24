@@ -7,6 +7,7 @@ const cors = require("cors");
 
 //Routes
 const authRoutes = require("./api/routes/auth.route");
+const changePasswordRoutes = require("./api/routes/changepassword.route");
 const employeeRoutes = require("./api/routes/employee.route");
 const customerRoutes = require("./api/routes/customer.route");
 
@@ -35,6 +36,7 @@ app.use((error, req, res, next) => {
 app.use(express.static("uploads"));
 
 app.use("/auth", authRoutes);
+app.use("/change-password", changePasswordRoutes);
 app.use("/employees", employeeRoutes);
 app.use("/customers", customerRoutes);
 
