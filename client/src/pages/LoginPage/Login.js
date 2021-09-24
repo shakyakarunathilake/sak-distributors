@@ -111,7 +111,7 @@ export default function Login() {
                                         // fullWidth
                                         // variant="outlined"
                                         className={style.field}
-                                        helperText={errors.username ? "Username is required" : ""}
+                                        helperText="Username is required"
                                         error={errors.username ? true : false}
                                         onChange={onChange}
                                         value={value}
