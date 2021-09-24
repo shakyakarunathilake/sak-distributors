@@ -24,10 +24,6 @@ import axios from 'axios';
 export default function Login() {
 
     const postData = () => {
-        console.log({
-            "username": values.username,
-            "password": values.password
-        });
         axios
             .post("http://localhost:8080/auth/signin", {
                 "username": values.username,
@@ -95,7 +91,7 @@ export default function Login() {
                             className={style.field}
                             label="Username"
                             onChange={handleInputChange}
-                            value={values?.username}
+                            value={values?.username || ''}
                             name="username"
                             InputProps={{
                                 endAdornment: (
@@ -113,7 +109,7 @@ export default function Login() {
                             name="password"
                             onChange={handleInputChange}
                             type={values.showPassword ? 'text' : 'password'}
-                            value={values?.password}
+                            value={values?.password || ''}
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
