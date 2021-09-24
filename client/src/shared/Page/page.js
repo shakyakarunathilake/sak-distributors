@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 
 //Development Stage Imports
-import Photo from './Photo.jpg';
+// import Photo from './Photo.jpg';
 import * as drawerListItems from '../../services/drawerListItems';
 
 //Material UI 
