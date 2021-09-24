@@ -42,11 +42,12 @@ router.post("/signin", (req, res, next) => {
 
             res.status(200).json({
                 auth_status: "AUTHORIZED",
-                username: employee[0].username,
+                employeeid: employee[0].employeeid,
                 role: employee[0].designation,
                 firstname: employee[0].firstname,
                 lastname: employee[0].lastname,
                 email: employee[0].email,
+                employeestatus: employee[0].employeestatus,
                 employeeimage: employee[0].employeeimage,
                 firsttimelogin: employee[0].firsttimelogin,
                 accessToken: token
@@ -54,7 +55,7 @@ router.post("/signin", (req, res, next) => {
         })
         .catch(err => {
 
-            console.log("Invalid Username");
+            console.log("Invalid Employee Id"); //Development Stage
 
             return res.status(401).json({
                 accessToken: null,
