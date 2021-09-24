@@ -70,7 +70,7 @@ export default function ChangePassword() {
             handleAlert();
         } else {
             axios
-                .put(`http://localhost:8080/change-password/${employeeid}`, {
+                .put(`http://localhost:8080/password/change-password/${employeeid}`, {
                     "currentpassword": values.currentpassword,
                     "newpassword": values.newpassword,
                     "firsttimelogin": false

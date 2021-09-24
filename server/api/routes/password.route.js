@@ -8,7 +8,7 @@ const router = express.Router();
 const Employee = require("../models/employee.model");
 
 //change-password
-router.put("/:employeeid", (req, res, next) => {
+router.put("/change-password/:employeeid", (req, res, next) => {
     const newpassword = req.body.newpassword;
 
     Employee
