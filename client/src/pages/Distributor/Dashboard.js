@@ -102,15 +102,15 @@ export default function Dashboard() {
                         </div>
                     </div>
 
-                    <div className={style.personalNotes}>
-
-                    </div>
-
                     <div className={style.notifications}>
 
                     </div>
 
                     <div className={style.recentActivities}>
+
+                    </div>
+
+                    <div className={style.personalNotes}>
 
                     </div>
 
@@ -200,15 +200,15 @@ export default function Dashboard() {
                         </div>
                     </div>
 
-                    <div className={style.personalNotes}>
-
-                    </div>
-
                     <div className={style.notifications}>
 
                     </div>
 
                     <div className={style.recentActivities}>
+
+                    </div>
+
+                    <div className={style.personalNotes}>
 
                     </div>
 
@@ -245,60 +245,60 @@ export default function Dashboard() {
 
                     <div className={style.columnA}>
 
-                    <div className={style.userInfo}>
-                        <div className={style.infoRow}>
-                            <div className={style.imgCol}>
-                                <img src={employeeimage.value ? employeeimage : user} alt="" />
-                            </div>
-                            <div className={style.infoCol}>
-                                <div className={style.textDiv}>
-                                    <div className={style.text}>
-                                        <div className={style.boldtext}>
-                                            Emp. ID:
+                        <div className={style.userInfo}>
+                            <div className={style.infoRow}>
+                                <div className={style.imgCol}>
+                                    <img src={employeeimage.value ? employeeimage : user} alt="" />
+                                </div>
+                                <div className={style.infoCol}>
+                                    <div className={style.textDiv}>
+                                        <div className={style.text}>
+                                            <div className={style.boldtext}>
+                                                Emp. ID:
+                                            </div>
+                                            <div className={style.regulartext}>
+                                                {employeeid}
+                                            </div>
                                         </div>
-                                        <div className={style.regulartext}>
-                                            {employeeid}
+                                        <div className={style.text}>
+                                            <div className={style.boldtext}>
+                                                Name:
+                                            </div>
+                                            <div className={style.regulartext}>
+                                                {firstname} {lastname}
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className={style.text}>
-                                        <div className={style.boldtext}>
-                                            Name:
+                                        <div className={style.text}>
+                                            <div className={style.boldtext}>
+                                                Email:
+                                            </div>
+                                            <div className={style.regulartext}>
+                                                {email}
+                                            </div>
                                         </div>
-                                        <div className={style.regulartext}>
-                                            {firstname} {lastname}
+                                        <div className={style.text}>
+                                            <div className={style.boldtext}>
+                                                Role:
+                                            </div>
+                                            <div className={style.regulartext}>
+                                                {role}
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className={style.text}>
-                                        <div className={style.boldtext}>
-                                            Email:
-                                        </div>
-                                        <div className={style.regulartext}>
-                                            {email}
-                                        </div>
-                                    </div>
-                                    <div className={style.text}>
-                                        <div className={style.boldtext}>
-                                            Role:
-                                        </div>
-                                        <div className={style.regulartext}>
-                                            {role}
-                                        </div>
-                                    </div>
-                                    <div className={style.text}>
-                                        <div className={style.boldtext}>
-                                            Status:
-                                        </div>
-                                        <div className={style.regulartext}>
-                                            {employeestatus}
+                                        <div className={style.text}>
+                                            <div className={style.boldtext}>
+                                                Status:
+                                            </div>
+                                            <div className={style.regulartext}>
+                                                {employeestatus}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div className={style.btnRow}>
+                                <Button variant="contained"> Change Password</Button>
+                            </div>
                         </div>
-                        <div className={style.btnRow}>
-                            <Button variant="contained"> Change Password</Button>
-                        </div>
-                    </div>
 
                         <div className={style.personalNotes}>
 
@@ -325,7 +325,7 @@ export default function Dashboard() {
                     <div className={style.calendar}>
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <StaticDatePicker
-                                orientation="landscape"
+                                orientation="ports"
                                 openTo="day"
                                 value={value}
                                 shouldDisableDate={isWeekend}
