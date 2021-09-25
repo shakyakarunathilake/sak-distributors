@@ -11,7 +11,7 @@
 
     .columnDivider {
         display: grid;
-        // grid-template-columns: min-content max-content;
+        grid-template-columns: min-content max-content;
         grid-column-gap: 20px;
         justify-content: center;
 

@@ -1,17 +1,17 @@
 import React from 'react';
 
 //Material UI Components
-// import isWeekend from 'date-fns/isWeekend';
-// import TextField from '@mui/material/TextField';
-// import AdapterDateFns from '@mui/lab/AdapterDateFns';
-// import LocalizationProvider from '@mui/lab/LocalizationProvider';
-// import StaticDatePicker from '@mui/lab/StaticDatePicker';
+import isWeekend from 'date-fns/isWeekend';
+import TextField from '@mui/material/TextField';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import StaticDatePicker from '@mui/lab/StaticDatePicker';
 
 // import AdapterDateFns from '@mui/lab/AdapterDateFns';
 // import LocalizationProvider from '@mui/lab/LocalizationProvider';
 // import CalendarPicker from '@mui/lab/CalendarPicker';
 
-// import Button from '@mui/material/Button';
+import Button from '@mui/material/Button';
 
 //Shared Components
 import Page from '../../shared/Page/Page';
@@ -22,8 +22,8 @@ import user from '../../images/user.svg';
 //SCSS style
 import style from './Dashboard.module.scss';
 
-// const minDate = new Date('2020-01-01T00:00:00.000');
-// const maxDate = new Date('2034-01-01T00:00:00.000');
+const minDate = new Date('2020-01-01T00:00:00.000');
+const maxDate = new Date('2034-01-01T00:00:00.000');
 
 export default function Dashboard() {
 
@@ -40,7 +40,7 @@ export default function Dashboard() {
         window.location.replace("http://localhost:3000/change-password");
     }
 
-    // const [value, setValue] = React.useState(new Date());
+    const [value, setValue] = React.useState(new Date());
     // const [date, setDate] = React.useState(new Date());
 
     return (
@@ -97,12 +97,12 @@ export default function Dashboard() {
                                     </div>
                                 </div>
                             </div>
-                            {/* <div className={style.btnDiv}>
+                            <div className={style.btnDiv}>
                                 <Button variant="contained"> Change Password</Button>
-                            </div> */}
+                            </div>
                         </div>
                     </div>
-                    {/* <div className={style.calendar}>
+                    <div className={style.calendar}>
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <StaticDatePicker
                                 orientation="portrait"
@@ -115,7 +115,7 @@ export default function Dashboard() {
                                 renderInput={(params) => <TextField {...params} />}
                             />
                         </LocalizationProvider>
-                    </div> */}
+                    </div>
                 </div>
             </div>
         </Page>
