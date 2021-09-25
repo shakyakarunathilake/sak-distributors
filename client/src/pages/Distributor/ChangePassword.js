@@ -110,101 +110,101 @@ export default function ChangePassword() {
         <Page title="Change Password" className={style.page}>
             <div className={style.container} onLoad={handleFirstTimeLogin}>
 
-                <div className={style.paper}>
+                <div className={style.blurDiv}>
+                    <div className={style.paper}>
+                        <div className={style.logo}>
+                            <img src={logo} alt="" />
+                        </div>
 
-                    <div className={style.logo}>
-                        <img src={logo} alt="" />
+                        <div className={style.heading}>
+                            <span>Emp. ID: {employeeid}</span>
+                        </div>
+
+                        <div className={style.textfield}>
+                            <TextField
+                                className={style.field}
+                                label="Current Password"
+                                onChange={handleInputChange}
+                                value={values?.currentpassword || ''}
+                                name="currentpassword"
+                                type={values.showPassword ? 'text' : 'password'}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                color="inherit"
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                                edge="end"
+                                            >
+                                                {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        </div>
+
+                        <div className={style.textfield}>
+                            <TextField
+                                className={style.field}
+                                label="New Password"
+                                name="newpassword"
+                                onChange={handleInputChange}
+                                type={values.showPassword ? 'text' : 'password'}
+                                value={values?.newpassword || ''}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                color="inherit"
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                                edge="end"
+                                            >
+                                                {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        </div>
+
+                        <div className={style.textfield}>
+                            <TextField
+                                className={style.field}
+                                label="Confirm Password"
+                                name="confirmpassword"
+                                onChange={handleInputChange}
+                                type={values.showPassword ? 'text' : 'password'}
+                                value={values?.confirmpassword || ''}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                color="inherit"
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                                edge="end"
+                                            >
+                                                {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        </div>
+
+                        <div className={style.div}>
+                            <Button
+                                className={style.button}
+                                color="primary"
+                                onClick={handleSubmit}
+                                variant="contained">
+                                Submit
+                            </Button>
+                        </div>
                     </div>
-
-                    <div className={style.heading}>
-                        <span>Emp. ID: {employeeid}</span>
-                    </div>
-
-                    <div className={style.textfield}>
-                        <TextField
-                            className={style.field}
-                            label="Current Password"
-                            onChange={handleInputChange}
-                            value={values?.currentpassword || ''}
-                            name="currentpassword"
-                            type={values.showPassword ? 'text' : 'password'}
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            color="inherit"
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
-                                            edge="end"
-                                        >
-                                            {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
-                    </div>
-
-                    <div className={style.textfield}>
-                        <TextField
-                            className={style.field}
-                            label="New Password"
-                            name="newpassword"
-                            onChange={handleInputChange}
-                            type={values.showPassword ? 'text' : 'password'}
-                            value={values?.newpassword || ''}
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            color="inherit"
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
-                                            edge="end"
-                                        >
-                                            {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
-                    </div>
-
-                    <div className={style.textfield}>
-                        <TextField
-                            className={style.field}
-                            label="Confirm Password"
-                            name="confirmpassword"
-                            onChange={handleInputChange}
-                            type={values.showPassword ? 'text' : 'password'}
-                            value={values?.confirmpassword || ''}
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            color="inherit"
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
-                                            edge="end"
-                                        >
-                                            {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
-                    </div>
-
-                    <div className={style.div}>
-                        <Button
-                            className={style.button}
-                            color="primary"
-                            onClick={handleSubmit}
-                            variant="contained">
-                            Submit
-                        </Button>
-                    </div>
-
                 </div>
 
                 <Snackbar
