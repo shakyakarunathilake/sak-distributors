@@ -7,10 +7,6 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import StaticDatePicker from '@mui/lab/StaticDatePicker';
 
-// import AdapterDateFns from '@mui/lab/AdapterDateFns';
-// import LocalizationProvider from '@mui/lab/LocalizationProvider';
-// import CalendarPicker from '@mui/lab/CalendarPicker';
-
 import Button from '@mui/material/Button';
 
 //Shared Components
@@ -21,9 +17,6 @@ import user from '../../images/user.svg';
 
 //SCSS style
 import style from './Dashboard.module.scss';
-
-const minDate = new Date('2020-01-01T00:00:00.000');
-const maxDate = new Date('2034-01-01T00:00:00.000');
 
 export default function Dashboard() {
 
@@ -41,7 +34,6 @@ export default function Dashboard() {
     }
 
     const [value, setValue] = React.useState(new Date());
-    // const [date, setDate] = React.useState(new Date());
 
     return (
         <Page title="Dashboard">
