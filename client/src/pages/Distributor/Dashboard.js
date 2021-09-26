@@ -19,16 +19,6 @@ import user from '../../images/user.svg';
 export default function Dashboard() {
 
     const [value, setValue] = React.useState(new Date());
-    // const [orientation, setOrientation] = useState();
-
-    // function settingOrientation() {
-    //     const width = window.innerWidth;
-    //     if (width >= 1220) {
-    //         setOrientation("portrait")
-    //     } else {
-    //         setOrientation("landscape")
-    //     }
-    // }
 
     const firsttimelogin = JSON.parse(sessionStorage.getItem("Auth")).firsttimelogin;
     const employeeimage = JSON.parse(sessionStorage.getItem("Auth")).employeeimage;
@@ -325,7 +315,7 @@ export default function Dashboard() {
                     <div className={style.calendar}>
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <StaticDatePicker
-                                orientation="ports"
+                                orientation="portrait"
                                 openTo="day"
                                 value={value}
                                 shouldDisableDate={isWeekend}
