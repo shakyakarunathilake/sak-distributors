@@ -4,6 +4,8 @@ import style from './Login.module.scss';
 //Shared Components
 import { useForm, Controller } from 'react-hook-form';
 import TextField from '../../shared/TextField/TextField';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 //Logo
 import logo from '../../images/logo.svg';
@@ -21,9 +23,13 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 //Connecting to Backend
 import axios from 'axios';
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+})
+
 export default function Login() {
 
-    const { handleSubmit, formState: { errors }, control, reset } = useForm({
+    const { handleSubmit, formState: { errors }, control } = useForm({
         defaultValues: {
             username: "",
             password: "",
@@ -31,6 +37,21 @@ export default function Login() {
     });
 
     const [passwordShown, setPasswordShown] = useState(false);
+    const [alert, setAlert] = React.useState();
+    const [type, setType] = React.useState();
+    const [open, setOpen] = React.useState(false);
+
+    const handleAlert = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
 
     const togglePasswordVisiblity = () => {
         setPasswordShown(passwordShown ? false : true);
@@ -44,28 +65,30 @@ export default function Login() {
             })
             .then(res => {
                 sessionStorage.setItem("Auth", JSON.stringify(res.data));
-                const role = JSON.parse(sessionStorage.getItem("Auth")).role;
 
-                switch (role) {
-                    case "Distributor": window.location.replace("http://localhost:3000/distributor/dashboard");
-                        break;
-                    case "Human Resources": window.location.replace("http://localhost:3000/human-resources/dashboard");
-                        break;
-                    case "Manager": window.location.replace("http://localhost:3000/manager/dashboard");
-                        break;
-                    case "Purchasing Manager": window.location.replace("http://localhost:3000/purchasing-manager/dashboard");
-                        break;
-                    case "Store Keeper": window.location.replace("http://localhost:3000/store-keeper/dashboard");
-                        break;
-                    case "Sales Representative": window.location.replace("http://localhost:3000/sales-representative/dashboard");
-                        break;
-                    default: window.location.replace("http://localhost:3000/");
+                if (res.data.type === 'error') {
+                    setType(res.data.type);
+                    setAlert(res.data.message);
+                    handleAlert();
+                } else {
+                    const role = JSON.parse(sessionStorage.getItem("Auth")).role;
+
+                    switch (role) {
+                        case "Distributor": window.location.replace("http://localhost:3000/distributor/dashboard");
+                            break;
+                        case "Human Resources": window.location.replace("http://localhost:3000/human-resources/dashboard");
+                            break;
+                        case "Manager": window.location.replace("http://localhost:3000/manager/dashboard");
+                            break;
+                        case "Purchasing Manager": window.location.replace("http://localhost:3000/purchasing-manager/dashboard");
+                            break;
+                        case "Store Keeper": window.location.replace("http://localhost:3000/store-keeper/dashboard");
+                            break;
+                        case "Sales Representative": window.location.replace("http://localhost:3000/sales-representative/dashboard");
+                            break;
+                        default: window.location.replace("http://localhost:3000/");
+                    }
                 }
-
-                reset({
-                    username: "",
-                    password: "",
-                });
             })
             .catch(error => {
                 console.log(error)
@@ -157,6 +180,19 @@ export default function Login() {
                     </div>
                 </div>
             </form>
+            <Snackbar
+                open={open}
+                autoHideDuration={2500}
+                onClose={handleClose}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                }}
+            >
+                <Alert onClose={handleClose} severity={type} sx={{ width: '100%' }}>
+                    {alert}
+                </Alert>
+            </Snackbar>
 
         </div>
     )
