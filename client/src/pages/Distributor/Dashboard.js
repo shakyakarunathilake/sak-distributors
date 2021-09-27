@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import style from './Dashboard.module.scss';
 
 //Material UI Components
@@ -7,8 +7,6 @@ import TextField from '@mui/material/TextField';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import StaticDatePicker from '@mui/lab/StaticDatePicker';
-
-import Button from '@mui/material/Button';
 
 //Shared Components
 import Page from '../../shared/Page/Page';
@@ -86,9 +84,7 @@ export default function Dashboard() {
                                     </div>
                                 </div>
                             </div>
-                            <div className={style.btnDiv}>
-                                <Button variant="contained"> Change Password</Button>
-                            </div>
+
                         </div>
                     </div>
 
@@ -136,58 +132,54 @@ export default function Dashboard() {
                 <div className={style.scrollable}>
 
                     <div className={style.userInfo}>
-                        <div className={style.infoRow}>
-                            <div className={style.imgCol}>
-                                <img src={employeeimage.value ? employeeimage : user} alt="" />
-                            </div>
-                            <div className={style.infoCol}>
-                                <div className={style.textDiv}>
-                                    <div className={style.text}>
-                                        <div className={style.boldtext}>
-                                            Emp. ID:
-                                        </div>
-                                        <div className={style.regulartext}>
-                                            {employeeid}
-                                        </div>
+                        <div className={style.imgCol}>
+                            <img src={employeeimage.value ? employeeimage : user} alt="" />
+                        </div>
+                        <div className={style.infoCol}>
+                            <div className={style.textDiv}>
+                                <div className={style.text}>
+                                    <div className={style.boldtext}>
+                                        Emp. ID:
                                     </div>
-                                    <div className={style.text}>
-                                        <div className={style.boldtext}>
-                                            Name:
-                                        </div>
-                                        <div className={style.regulartext}>
-                                            {firstname} {lastname}
-                                        </div>
+                                    <div className={style.regulartext}>
+                                        {employeeid}
                                     </div>
-                                    <div className={style.text}>
-                                        <div className={style.boldtext}>
-                                            Email:
-                                        </div>
-                                        <div className={style.regulartext}>
-                                            {email}
-                                        </div>
+                                </div>
+                                <div className={style.text}>
+                                    <div className={style.boldtext}>
+                                        Name:
                                     </div>
-                                    <div className={style.text}>
-                                        <div className={style.boldtext}>
-                                            Role:
-                                        </div>
-                                        <div className={style.regulartext}>
-                                            {role}
-                                        </div>
+                                    <div className={style.regulartext}>
+                                        {firstname} {lastname}
                                     </div>
-                                    <div className={style.text}>
-                                        <div className={style.boldtext}>
-                                            Status:
-                                        </div>
-                                        <div className={style.regulartext}>
-                                            {employeestatus}
-                                        </div>
+                                </div>
+                                <div className={style.text}>
+                                    <div className={style.boldtext}>
+                                        Email:
+                                    </div>
+                                    <div className={style.regulartext}>
+                                        {email}
+                                    </div>
+                                </div>
+                                <div className={style.text}>
+                                    <div className={style.boldtext}>
+                                        Role:
+                                    </div>
+                                    <div className={style.regulartext}>
+                                        {role}
+                                    </div>
+                                </div>
+                                <div className={style.text}>
+                                    <div className={style.boldtext}>
+                                        Status:
+                                    </div>
+                                    <div className={style.regulartext}>
+                                        {employeestatus}
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div className={style.btnRow}>
-                            <Button variant="contained"> Change Password</Button>
-                        </div>
+
                     </div>
 
                     <div className={style.notifications}>
@@ -236,57 +228,53 @@ export default function Dashboard() {
                     <div className={style.columnA}>
 
                         <div className={style.userInfo}>
+                            <div className={style.imageRow}>
+                                <img src={employeeimage.value ? employeeimage : user} alt="" />
+                            </div>
                             <div className={style.infoRow}>
-                                <div className={style.imgCol}>
-                                    <img src={employeeimage.value ? employeeimage : user} alt="" />
-                                </div>
-                                <div className={style.infoCol}>
-                                    <div className={style.textDiv}>
-                                        <div className={style.text}>
-                                            <div className={style.boldtext}>
-                                                Emp. ID:
-                                            </div>
-                                            <div className={style.regulartext}>
-                                                {employeeid}
-                                            </div>
+                                <div className={style.textDiv}>
+                                    <div className={style.text}>
+                                        <div className={style.boldtext}>
+                                            Emp. ID:
                                         </div>
-                                        <div className={style.text}>
-                                            <div className={style.boldtext}>
-                                                Name:
-                                            </div>
-                                            <div className={style.regulartext}>
-                                                {firstname} {lastname}
-                                            </div>
+                                        <div className={style.regulartext}>
+                                            {employeeid}
                                         </div>
-                                        <div className={style.text}>
-                                            <div className={style.boldtext}>
-                                                Email:
-                                            </div>
-                                            <div className={style.regulartext}>
-                                                {email}
-                                            </div>
+                                    </div>
+                                    <div className={style.text}>
+                                        <div className={style.boldtext}>
+                                            Name:
                                         </div>
-                                        <div className={style.text}>
-                                            <div className={style.boldtext}>
-                                                Role:
-                                            </div>
-                                            <div className={style.regulartext}>
-                                                {role}
-                                            </div>
+                                        <div className={style.regulartext}>
+                                            {firstname} {lastname}
                                         </div>
-                                        <div className={style.text}>
-                                            <div className={style.boldtext}>
-                                                Status:
-                                            </div>
-                                            <div className={style.regulartext}>
-                                                {employeestatus}
-                                            </div>
+                                    </div>
+                                    <div className={style.text}>
+                                        <div className={style.boldtext}>
+                                            Email:
+                                        </div>
+                                        <div className={style.regulartext}>
+                                            {email}
+                                        </div>
+                                    </div>
+                                    <div className={style.text}>
+                                        <div className={style.boldtext}>
+                                            Role:
+                                        </div>
+                                        <div className={style.regulartext}>
+                                            {role}
+                                        </div>
+                                    </div>
+                                    <div className={style.text}>
+                                        <div className={style.boldtext}>
+                                            Status:
+                                        </div>
+                                        <div className={style.regulartext}>
+                                            {employeestatus}
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className={style.btnRow}>
-                                <Button variant="contained"> Change Password</Button>
+
                             </div>
                         </div>
 
@@ -315,7 +303,7 @@ export default function Dashboard() {
                     <div className={style.calendar}>
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <StaticDatePicker
-                                orientation="portrait"
+                                orientation="landscape"
                                 openTo="day"
                                 value={value}
                                 shouldDisableDate={isWeekend}

@@ -22,7 +22,7 @@
                 background-color: $paperColor;
                 border-radius: 8px;
                 height: min-content;
-                padding: 20px;
+                padding: 30px;
                 box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 
                 .imageRow {
@@ -53,15 +53,6 @@
                             .regulartext {
                                 font-size: 1em;
                             }
-                        }
-                    }
-
-                    .btnDiv {
-                        margin: 20px 0 0 0;
-                        text-align: right;
-
-                        Button {
-                            background-color: $primaryMain;
                         }
                     }
                 }
@@ -145,59 +136,45 @@
             overflow: auto;
 
             .userInfo {
-                display: grid;
-                grid-template-rows: min-content min-content;
-                grid-row-gap: 20px;
                 background-color: $paperColor;
                 border-radius: 8px;
                 height: min-content;
-                padding: 20px;
+                padding: 25px;
                 box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
                 margin: 0 auto;
+                display: grid;
+                grid-template-columns: min-content min-content;
+                grid-column-gap: 30px;
 
-                .infoRow {
-                    display: grid;
-                    grid-template-columns: min-content min-content;
-                    grid-column-gap: 20px;
+                .imgCol {
+                    height: min-content;
+                    display: flex;
+                    justify-content: center;
 
-                    .imgCol {
-                        height: min-content;
-                        display: flex;
-                        justify-content: center;
-
-                        img {
-                            width: 200px;
-                            border-radius: 100%;
-                        }
-                    }
-
-                    .infoCol {
-                        margin: auto 0;
-                        .textDiv {
-                            display: grid;
-                            justify-content: center;
-                            .text {
-                                display: grid;
-                                grid-template-columns: 80px max-content;
-                                margin: 3px;
-
-                                .boldtext {
-                                    font-size: 1em;
-                                    font-weight: 600;
-                                }
-                                .regulartext {
-                                    font-size: 1em;
-                                }
-                            }
-                        }
+                    img {
+                        width: 200px;
+                        border-radius: 100%;
                     }
                 }
 
-                .btnRow {
-                    text-align: right;
+                .infoCol {
+                    margin: auto 0;
+                    .textDiv {
+                        display: grid;
+                        justify-content: center;
+                        .text {
+                            display: grid;
+                            grid-template-columns: 80px max-content;
+                            margin: 3px;
 
-                    Button {
-                        background-color: $primaryMain;
+                            .boldtext {
+                                font-size: 1em;
+                                font-weight: 600;
+                            }
+                            .regulartext {
+                                font-size: 1em;
+                            }
+                        }
                     }
                 }
             }
@@ -286,57 +263,41 @@
                 .userInfo {
                     display: grid;
                     grid-template-rows: min-content min-content;
-                    grid-row-gap: 20px;
                     background-color: $paperColor;
                     border-radius: 8px;
                     height: min-content;
-                    padding: 20px;
+                    padding: 30px;
                     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-                    margin: 0 auto;
 
-                    .infoRow {
-                        display: grid;
-                        grid-template-columns: min-content min-content;
-                        grid-column-gap: 20px;
+                    .imageRow {
+                        height: min-content;
+                        display: flex;
+                        justify-content: center;
+                        margin: 0 0 20px 0;
 
-                        .imgCol {
-                            height: min-content;
-                            display: flex;
-                            justify-content: center;
-
-                            img {
-                                width: 200px;
-                                border-radius: 100%;
-                            }
-                        }
-
-                        .infoCol {
-                            margin: auto 0;
-                            .textDiv {
-                                display: grid;
-                                justify-content: center;
-                                .text {
-                                    display: grid;
-                                    grid-template-columns: 80px max-content;
-                                    margin: 3px;
-
-                                    .boldtext {
-                                        font-size: 1em;
-                                        font-weight: 600;
-                                    }
-                                    .regulartext {
-                                        font-size: 1em;
-                                    }
-                                }
-                            }
+                        img {
+                            width: 200px;
+                            border-radius: 100%;
                         }
                     }
 
-                    .btnRow {
-                        text-align: right;
+                    .infoRow {
+                        .textDiv {
+                            display: grid;
+                            justify-content: center;
+                            .text {
+                                display: grid;
+                                grid-template-columns: 80px max-content;
+                                margin: 3px;
 
-                        Button {
-                            background-color: $primaryMain;
+                                .boldtext {
+                                    font-size: 1em;
+                                    font-weight: 600;
+                                }
+                                .regulartext {
+                                    font-size: 1em;
+                                }
+                            }
                         }
                     }
                 }
