@@ -21,8 +21,9 @@ router.post("/signin", (req, res, next) => {
             );
 
             if (!passwordIsValid) {
-                return res.status(401).json({
+                return res.status(200).json({
                     accessToken: null,
+                    type: 'error',
                     message: "Invalid Password"
                 });
             }
@@ -57,8 +58,9 @@ router.post("/signin", (req, res, next) => {
 
             console.log("Invalid Employee Id"); //Development Stage
 
-            return res.status(401).json({
+            return res.status(200).json({
                 accessToken: null,
+                type: 'error',
                 message: "Invalid Username"
             })
         })
