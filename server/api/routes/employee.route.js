@@ -47,7 +47,7 @@ router.get("/get-next-regno", (req, res, next) => {
 
             res.status(200).json({
                 message: "Handeling GET requests to /get-next-regno",
-                doc: nextemployeeid
+                nextemployeeid: nextemployeeid
             });
         })
         .catch(err => {
@@ -121,52 +121,33 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
 
 });
 
-//Get all employee data
-router.get("/get-all-employees", (req, res, next) => {
+//Get all table employee data
+router.get("/get-all-employees-table-data", (req, res, next) => {
 
     Employee
         .find()
         .exec()
         .then(doc => {
             const thead = [
-                { id: "employeeid", label: "Emp. ID" },
-                // { id: "fullname", label: "Full Name" },
-                { id: "title", label: "Title" },
-                { id: "name", label: "Name" },
-                // { id: "firstname", label: "First Name" },
-                // { id: "lastname", label: "Last Name" },
-                // { id: "nic", label: "NIC" },
-                { id: "designation", label: "Designation" },
-                { id: "employeestatus", label: "Status" },
-                { id: "hireddate", label: "Hired Date" },
-                // { id: "contactnumber", label: "Contact Number" },
-                // { id: "email", label: "Email" },
-                // { id: "address", label: "Address" },
-                // { id: "dob", label: "DOB" },
-                // { id: "gender", label: "Gender" },
-                // { id: "civilstatus", label: "Civil Status" }
+                "Emp. ID",
+                "Title",
+                "Name",
+                "Designation",
+                "Status",
+                "Hired Date",
             ]
 
             const tbody = doc.map(x => [
-                { id: "employeeid", label: x.employeeid },
-                // { id: "fullname", label: x.fullname },
-                { id: "title", label: x.title },
-                { id: "name", label: x.firstname + " " + x.lastname },
-                // { id: "firstname", label: x.firstname },
-                // { id: "lastname", label: x.lastname },
-                //  { id: "nic", label: x.nic },
-                { id: "designation", label: x.designation },
-                { id: "employeestatus", label: x.employeestatus },
-                { id: "hireddate", label: x.hireddate },
-                // { id: "contactnumber", label: x.contactnumber },
-                // { id: "email", label: x.email },
-                // { id: "address", label: x.address },
-                // { id: "dob", label: x.dob },
-                // { id: "gender", label: x.gender },
-                // { id: "civilstatus", label: x.civilstatus }
+                x.employeeid,
+                x.title,
+                x.firstname + " " + x.lastname,
+                x.designation,
+                x.employeestatus,
+                x.hireddate,
             ])
 
             res.status(200).json({
+                message: "Handeling GET requests to /get-all-employees-table-data",
                 thead: thead,
                 tbody: tbody,
                 defaultkey: 0,
@@ -186,8 +167,10 @@ router.get("/:employeeid", (req, res, next) => {
         .findOne({ employeeid: id })
         .exec()
         .then(doc => {
-            console.log(doc);
-            res.status(200).json(doc);
+            res.status(200).json({
+                message: "Handeling GET requests to /:employeeid",
+                employee: doc
+            });
         })
         .catch(err => {
             console.log(err);
@@ -204,13 +187,25 @@ router.put("/update-by-id/:employeeid", (req, res, next) => {
         .findOneAndUpdate({ employeeid: id }, update, { new: true })
         .exec()
         .then(doc => {
-            console.log(doc);
-            res.status(200).json(doc);
+            res.status(200).json({
+                message: "Handeling PUT requests to /update-by-id",
+                employee: doc,
+            });
         })
         .catch(err => {
             console.log(err);
             res.status(500).json({ "Error": err });
         });
 });
+
+router.post("/check-notify-email", (req, res, next) => {
+    notifyEmail.notifyCreateEmployee({
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        designation: req.body.designation,
+        username: req.body.employeeid,
+        password: 2222
+    });
+})
 
 module.exports = router;
