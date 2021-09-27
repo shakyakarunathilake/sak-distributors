@@ -8,11 +8,11 @@ const router = express.Router();
 const Employee = require("../models/employee.model");
 
 //change-password
-router.put("/change-password/:employeeid", (req, res, next) => {
+router.put("/change-password/", (req, res, next) => {
     const newpassword = req.body.newpassword;
 
     Employee
-        .find({ employeeid: req.params.employeeid })
+        .find({ employeeid: req.body.employeeid })
         .exec()
         .then(employee => {
 
@@ -20,9 +20,9 @@ router.put("/change-password/:employeeid", (req, res, next) => {
                 if (err) {
                     console.log(err);
                 } else if (!isMatch) {
-                    return res.status(401).json({
+                    return res.status(200).json({
                         type: "error",
-                        message: "Authorization failed"
+                        message: "Current Password Incorrect"
                     });
                 } else {
                     bcrypt.hash(newpassword.toString(), 10, (err, hash) => {
@@ -30,13 +30,13 @@ router.put("/change-password/:employeeid", (req, res, next) => {
                             console.log(err);
                         } else {
                             Employee
-                                .findOneAndUpdate({ employeeid: req.params.employeeid }, { password: hash, firsttimelogin: req.body.firsttimelogin }, { new: true })
+                                .findOneAndUpdate({ employeeid: req.body.employeeid }, { password: hash, firsttimelogin: req.body.firsttimelogin }, { new: true })
                                 .exec()
                                 .then(doc => {
                                     console.log(doc);
                                     res.status(200).json({
                                         type: "success",
-                                        message: "Password updated"
+                                        message: "Password Changed"
                                     });
                                 })
                                 .catch(err => {
@@ -61,6 +61,8 @@ router.put("/change-password/:employeeid", (req, res, next) => {
         });
 });
 
+
+//Forgot Password
 router.post("/forgot-password", (req, res, next) => {
     Employee
         .find({ email: req.body.email })
