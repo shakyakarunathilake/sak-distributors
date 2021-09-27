@@ -94,13 +94,14 @@ const useStyles = makeStyles({
     footerIcon: {
         marginRight: "15px",
     },
-
 });
 
 export default function Page(props) {
 
     const classes = useStyles();
+
     const [state, setState] = useState();
+
     const role = JSON.parse(sessionStorage.getItem("Auth")).role;
     const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
     const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
@@ -112,7 +113,6 @@ export default function Page(props) {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
         }
-
         setState(open);
     };
 
