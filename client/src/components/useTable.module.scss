@@ -1,9 +1,8 @@
 @import "../styles/variables";
 
 .tablecontainer {
-    overflow-x: auto;
-    overflow-y: auto;
-    height: inherit;
+    overflow: auto;
+    max-height: calc(100vh - 199.28px);
     white-space: nowrap; //To get rid of the scroll and inline text
     box-sizing: border-box;
 }

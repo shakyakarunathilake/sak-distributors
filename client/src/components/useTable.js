@@ -19,33 +19,24 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 //SCSS styles
 import style from './useTable.module.scss';
 
-export default function useTable(thead, trecords) {
+export default function useTable(headCells, records) {
 
     const Table = (props) => (
-        <TableContainer className={style.tablecontainer} component={Paper} >
+        <TableContainer className={style.tablecontainer} component={Paper}>
             <MuiTable>
                 <TableHead className={style.tablehead}>
                     <TableRow className={style.tableheadrow}>
-                        {/* {
-                            thead.map((x, i) => (
+                        {
+                            headCells.map((x, i) => (
                                 <TableCell
                                     align="left"
                                     className={style.tablecell}
-                                    key={x.id}
+                                    key={i}
                                 >
-                                    {x.label}
+                                    {x}
                                 </TableCell>
                             ))
-                        } */}
-
-                        {/* Development Stage */}
-                        <TableCell align="center" className={style.tablecell}> Employee ID </TableCell>
-                        <TableCell align="center" className={style.tablecell}> Title </TableCell>
-                        <TableCell align="center" className={style.tablecell}> Name </TableCell>
-                        <TableCell align="center" className={style.tablecell}> Designation </TableCell>
-                        <TableCell align="center" className={style.tablecell}> Employee Status </TableCell>
-                        {/* End */}
-
+                        }
                         <TableCell
                             align="center"
                             className={classnames(style.actioncolumn, style.tableheadfontstyles)}
@@ -55,67 +46,40 @@ export default function useTable(thead, trecords) {
                     </TableRow>
                 </TableHead>
                 <TableBody className={style.tablebody}>
-                    <TableRow>
-                        {/* {
-                            trecords.map((row, i) => (
-                                <TableRow
-                                    className={classnames(
-                                        { [style.greytablerow]: i % 2 === 1 },
-                                        { [style.whitetablerow]: i % 2 === 0 },
-                                    )}
-                                    key={i}
+                    {
+                        records.map((row, i) => (
+                            <TableRow
+                                className={classnames(
+                                    { [style.greytablerow]: i % 2 === 1 },
+                                    { [style.whitetablerow]: i % 2 === 0 },
+                                )}
+                                key={i}
+                            >
+                                {
+                                    row.map((cell, i) => (
+                                        <TableCell key={i} >
+                                            {cell}
+                                        </TableCell>
+                                    ))
+                                }
+                                <TableCell
+                                    align="center"
+                                    className={style.actioncolumn}
                                 >
-                                    {
-                                        row.map((cell, i) => (
-                                            <TableCell key={cell.id} >
-                                                {cell.label}
-                                            </TableCell>
-                                        ))
-                                    }
-                                    <TableCell
-                                        align="center"
-                                        className={style.actioncolumn}
-                                    >
-                                        <VisibilityIcon
-                                            className={style.visibilityIcon}
-                                        />
-                                        <EditIcon
-                                            className={style.editIcon}
-                                        // onClick={() => {
-                                        //     openInPopup(row[0].label);
-                                        // }}
-                                        />
-                                    </TableCell>
-                                </TableRow>
+                                    <VisibilityIcon
+                                        className={style.visibilityIcon}
+                                    />
+                                    <EditIcon
+                                        className={style.editIcon}
+                                    // onClick={() => {
+                                    //     openInPopup(row[0].label);
+                                    // }}
+                                    />
+                                </TableCell>
+                            </TableRow>
 
-                            ))
-                        } */}
-
-
-                        {/* Development Stage */}
-                        <TableCell align="center"> E00001 </TableCell>
-                        <TableCell align="center"> Miss </TableCell>
-                        <TableCell align="center"> Shakya Karunathilake </TableCell>
-                        <TableCell align="center"> Distributor </TableCell>
-                        <TableCell align="center"> Active </TableCell>
-                        {/* End */}
-
-
-                        <TableCell
-                            align="center"
-                            className={style.actioncolumn}
-                        >
-                            <VisibilityIcon
-                                className={style.visibilityIcon}
-                            />
-                            <EditIcon
-                                className={style.editIcon}
-                            // onClick={() => {
-                            //     openInPopup(row[0].label);
-                            // }}
-                            />
-                        </TableCell>
-                    </TableRow>
+                        ))
+                    }
                 </TableBody>
             </MuiTable>
         </TableContainer>
