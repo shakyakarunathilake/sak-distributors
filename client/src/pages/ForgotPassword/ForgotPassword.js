@@ -1,8 +1,8 @@
 import React from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import style from './ForgotPassword.module.scss';
 
 //Shared Components
-import { useForm, Controller } from 'react-hook-form';
 import TextField from '../../shared/TextField/TextField';
 
 //Logo
@@ -55,10 +55,8 @@ export default function Login() {
             })
             .then(res => {
                 sessionStorage.setItem("Response", JSON.stringify(res.data));
-                const type = JSON.parse(sessionStorage.getItem("Response")).type;
-                const message = JSON.parse(sessionStorage.getItem("Response")).message;
-                setAlert(message);
-                setType(type);
+                setAlert(res.data.message);
+                setType(res.data.type);
                 handleAlert();
             })
             .catch(error => {
@@ -142,7 +140,7 @@ export default function Login() {
                 autoHideDuration={2500}
                 onClose={handleClose}
                 anchorOrigin={{
-                    vertical: 'bottom',
+                    vertical: 'top',
                     horizontal: 'center',
                 }}
             >
