@@ -80,22 +80,20 @@ export default function ChangePassword() {
 
     const onSubmit = (values) => {
         if (values.newpassword !== values.confirmpassword) {
-            setType(true);
+            setType('error');
             setAlert("New Password and Confirm Password doesn't match");
             handleAlert();
         } else {
             axios
-                .put(`http://localhost:8080/password/change-password/${employeeid}`, {
+                .put(`http://localhost:8080/password/change-password/`, {
+                    "employeeid": employeeid,
                     "currentpassword": values.currentpassword,
                     "newpassword": values.newpassword,
                     "firsttimelogin": false
                 })
                 .then(res => {
-                    sessionStorage.setItem("Response", JSON.stringify(res.data));
-                    const type = JSON.parse(sessionStorage.getItem("Response")).type;
-                    const message = JSON.parse(sessionStorage.getItem("Response")).message;
-                    setAlert(message);
-                    setType(type);
+                    setAlert(res.data.message);
+                    setType(res.data.type);
                     handleAlert();
                 })
                 .catch(err => {
@@ -111,7 +109,7 @@ export default function ChangePassword() {
     }
 
     return (
-        <Page title="Change Password" className={style.page}>
+        <Page title="Change Password">
             <div className={style.container} onLoad={handleFirstTimeLogin}>
 
                 <form onSubmit={handleSubmit(onSubmit)}>
@@ -239,7 +237,7 @@ export default function ChangePassword() {
                     autoHideDuration={2500}
                     onClose={handleClose}
                     anchorOrigin={{
-                        vertical: 'bottom',
+                        vertical: 'top',
                         horizontal: 'center',
                     }}
                 >
