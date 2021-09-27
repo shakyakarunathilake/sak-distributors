@@ -5,6 +5,8 @@ import Page from '../../shared/Page/Page';
 import useTable from '../../components/useTable.js';
 import TextField from '../../shared/TextField/TextField';
 import PopUp from '../../shared/PopUp/PopUp';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 //SCSS styles
 import style from './ManageEmployee.module.scss';
@@ -23,13 +25,32 @@ import EmployeeForm from './EmployeeForm';
 //Connecting to Backend
 import axios from 'axios';
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 export default function ManageEmployee() {
 
+    const [open, setOpen] = React.useState(false);
+    const [alert, setAlert] = React.useState();
+    const [type, setType] = React.useState();
     const [headCells, setHeadCells] = useState([]);
     const [records, setRecords] = useState([]);
     const [recordForEdit, setRecordForEdit] = useState(null);
     const [openPopup, setOpenPopup] = useState(false);
     const [nextEmpId, setNextEmpId] = useState();
+    const [reRender, setReRender] = useState(false);
+
+    const handleAlert = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen(false);
+    };
 
     useEffect(() => {
         axios
@@ -40,18 +61,20 @@ export default function ManageEmployee() {
                 // const tbody = JSON.parse(sessionStorage.getItem("EmployeesTableData")).tbody;
                 setHeadCells(res.data.thead);
                 setRecords(res.data.tbody);
+                setReRender(false);
             })
             .catch(error => {
                 console.log(error)
             })
     }, []);
 
-
     const addOrEdit = (employee) => {
         axios
             .post("http://localhost:8080/employees/create-employee", employee)
             .then(res => {
-                console.log(res.data);
+                setAlert(res.data.alert);
+                setType(res.data.type);
+                handleAlert();
             })
             .catch(err => {
                 console.log(err);
@@ -60,6 +83,7 @@ export default function ManageEmployee() {
 
         setOpenPopup(false);
         setRecords(records);
+        setReRender(true);
     }
 
     const openInPopup = item => {
@@ -130,6 +154,23 @@ export default function ManageEmployee() {
                         nextEmpId={nextEmpId}
                     />
                 </PopUp>
+                <Snackbar
+                    open={open}
+                    autoHideDuration={2500}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center',
+                    }}
+                >
+                    <Alert
+                        onClose={handleClose}
+                        severity={type}
+                        sx={{ width: '100%' }}
+                    >
+                        {alert}
+                    </Alert>
+                </Snackbar>
             </div>
         </Page>
     )
