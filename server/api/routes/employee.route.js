@@ -103,6 +103,8 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
                 .then(result => {
                     res.status(201).json({
                         message: "Handling POST requests to /employees/create-employee, EMPLOYEE SAVED",
+                        type: 'success',
+                        alert: `${result.firstname} ${result.lastname} added`,
                         addedEmployee: result
                     });
                     notifyEmail.notifyCreateEmployee({
@@ -114,6 +116,10 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
                     });
                 })
                 .catch(err => {
+                    res.status(200).json({
+                        type: 'error',
+                        alert: `Something went wrong. Could not add employee`,
+                    });
                     console.log("Error: ", err)
                 })
         };
