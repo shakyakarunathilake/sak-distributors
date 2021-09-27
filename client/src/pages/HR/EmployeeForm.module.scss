@@ -53,12 +53,23 @@
                             background-color: #c4c4c4;
                             height: 60px;
                             width: 260px;
-                            margin-top: -55px;
+                            margin-top: -45px;
                             position: relative;
-                            text-align: center;
                             padding-top: 5px;
+                            text-align: center;
+                        }
+
+                        .label {
                             font-size: 1.2em;
                             font-weight: 600;
+                            color: $secondaryMain;
+                            cursor: pointer;
+                        }
+
+                        .input {
+                            opacity: 0;
+                            position: absolute;
+                            z-index: -1;
                         }
                     }
                     // .partialCircle {

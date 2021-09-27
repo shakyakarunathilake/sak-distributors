@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 // import formData from 'form-data';
 import style from './EmployeeForm.module.scss';
@@ -66,24 +66,24 @@ export default function EmployeesForm(props) {
         });
     }
 
-    //Handle Image Upload
-    // var [file, setFile] = useState("");
+    // Handle Image Upload
+    var [file, setFile] = useState("");
 
-    // if (file) {
-    //     file = URL.createObjectURL(file)
-    // } else {
-    //     file = user
-    // }
+    if (file) {
+        file = URL.createObjectURL(file)
+    } else {
+        file = user
+    }
 
-    // const handleChange = e => {
-    //     setFile(e.target.files[0]);
-    // }
+    const handleChange = e => {
+        setFile(e.target.files[0]);
+    }
 
     const onSubmit = (values) => {
 
         const employee = {
             "employeeid": nextEmpId,
-            "employeeimage": values.employeeimage,
+            "employeeimage": file,
             "fullname": values.fullname,
             "title": values.title,
             "firstname": values.firstname,
@@ -99,6 +99,8 @@ export default function EmployeesForm(props) {
             "civilstatus": values.civilstatus,
             "employeestatus": values.employeestatus,
         }
+
+        console.log(employee);
 
         addOrEdit(employee)
 
@@ -148,16 +150,39 @@ export default function EmployeesForm(props) {
 
                                 <div className={style.image}>
                                     <div className={style.imgWrapper}>
-                                        <img src={user} alt="" />
+                                        <img src={file ? file : user} alt="" />
                                         <div className={style.uploadWrapper}>
-                                            Upload
+                                            {/* <Controller
+                                                name={"fullname"}
+                                                control={control}
+                                                rules={{ required: true }}
+                                                render={({ field: { onChange, value } }) => (
+                                                    <input
+                                                        type="file"
+                                                        id="employee-image"
+                                                        className={style.input}
+                                                        onChange={onChange}
+                                                        value={value}
+                                                        defaultValue=""
+                                                    />
+                                                )}
+                                            /> */}
+                                            <label
+                                                className={style.label}
+                                                htmlFor="employee-image"
+                                            >
+                                                Upload
+                                            </label>
+                                            <input
+                                                type="file"
+                                                id="employee-image"
+                                                className={style.input}
+                                                onChange={handleChange}
+                                                defaultValue=""
+                                            />
                                         </div>
                                     </div>
                                     <div className={style.partialCircle}></div>
-                                    {/* 
-                                        <input type="file" onChange={handleChange} />
-                                        <img src={file} alt="" /> 
-                                    */}
                                 </div>
 
                                 <div className={style.employeeId}>
