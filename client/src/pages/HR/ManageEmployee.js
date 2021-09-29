@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import classnames from 'classnames';
 
 //Shared Components
 import Page from '../../shared/Page/Page';
@@ -14,10 +15,14 @@ import style from './ManageEmployee.module.scss';
 //Material UI 
 import Button from '@material-ui/core/Button';
 import { InputAdornment } from '@material-ui/core';
+import { TableBody, TableRow, TableCell } from '@material-ui/core';
+import Tooltip from '@mui/material/Tooltip';
 
 //Material UI Icons
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import SearchIcon from '@material-ui/icons/Search';
+import EditIcon from '@material-ui/icons/Edit';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 
 //Employee Form
 import EmployeeForm from './EmployeeForm';
@@ -31,15 +36,18 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 export default function ManageEmployee() {
 
+    const [type, setType] = React.useState();
     const [open, setOpen] = React.useState(false);
     const [alert, setAlert] = React.useState();
-    const [type, setType] = React.useState();
-    const [headCells, setHeadCells] = useState([]);
-    const [records, setRecords] = useState([]);
+
     const [recordForEdit, setRecordForEdit] = useState(null);
+    const [records, setRecords] = useState([]);
+    const [headCells, setHeadCells] = useState([]);
     const [openPopup, setOpenPopup] = useState(false);
+    const [action, setAction] = useState('');
+
     const [nextEmpId, setNextEmpId] = useState();
-    const [reRender, setReRender] = useState(false);
+    const [reRender, setReRender] = useState(null);
 
     const handleAlert = () => {
         setOpen(true);
@@ -61,34 +69,57 @@ export default function ManageEmployee() {
                 // const tbody = JSON.parse(sessionStorage.getItem("EmployeesTableData")).tbody;
                 setHeadCells(res.data.thead);
                 setRecords(res.data.tbody);
-                setReRender(false);
             })
             .catch(error => {
                 console.log(error)
             })
-    }, []);
+    }, [reRender]);
 
-    const addOrEdit = (employee) => {
+    const addOrEdit = (employee, employeeid) => {
+        if (action === "Create") {
+            axios
+                .post("http://localhost:8080/employees/create-employee", employee)
+                .then(res => {
+                    setAlert(res.data.alert);
+                    setType(res.data.type);
+                    handleAlert();
+                    setReRender(employeeid);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+            ;
+        } if (action === "Edit") {
+            axios
+                .put(`http://localhost:8080/employees/update-by-id/${employeeid}`, employee)
+                .then(res => {
+                    setAlert(res.data.alert);
+                    setType(res.data.type);
+                    handleAlert();
+                    setReRender(employeeid);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+            ;
+        }
+
+        setRecordForEdit(null)
+        setOpenPopup(false);
+    }
+
+    const openInPopup = employeeid => {
         axios
-            .post("http://localhost:8080/employees/create-employee", employee)
+            .get(`http://localhost:8080/employees/${employeeid}`)
             .then(res => {
-                setAlert(res.data.alert);
-                setType(res.data.type);
-                handleAlert();
+                setRecordForEdit(res.data.employee);
+                // console.log(recordForEdit);
+                setAction('Edit');
+                setOpenPopup(true);
             })
             .catch(err => {
                 console.log(err);
-            });
-        ;
-
-        setOpenPopup(false);
-        setRecords(records);
-        setReRender(true);
-    }
-
-    const openInPopup = item => {
-        setRecordForEdit(item);
-        setOpenPopup(true);
+            })
     }
 
     const getNextEmployeeId = () => {
@@ -102,7 +133,7 @@ export default function ManageEmployee() {
             });
     }
 
-    const { Table } = useTable(headCells, records);
+    const { TableContainer, TableHead } = useTable(headCells, records);
 
     return (
         <Page title="Manage Employees">
@@ -133,6 +164,8 @@ export default function ManageEmployee() {
                             () => {
                                 getNextEmployeeId();
                                 setOpenPopup(true);
+                                setRecordForEdit(null);
+                                setAction('Create');
                             }
                         }
                     >
@@ -142,7 +175,54 @@ export default function ManageEmployee() {
                 </div>
 
                 <div className={style.pagecontent}>
-                    <Table />
+                    <TableContainer >
+                        <TableHead />
+                        <TableBody className={style.tablebody}>
+                            {
+                                records.map((row, i) => (
+                                    <TableRow
+                                        className={classnames(
+                                            { [style.greytablerow]: i % 2 === 1 },
+                                            { [style.whitetablerow]: i % 2 === 0 },
+                                        )}
+                                        key={i}
+                                    >
+                                        {
+                                            row.map((cell, i) => (
+                                                <TableCell key={i}
+                                                    className={classnames(
+                                                        { [style.active]: cell === "Active" },
+                                                        { [style.inactive]: cell === "Inactive" }
+                                                    )}
+                                                >
+                                                    {cell}
+                                                </TableCell>
+                                            ))
+                                        }
+                                        <TableCell
+                                            align="center"
+                                            className={style.actioncolumn}
+                                        >
+                                            <Tooltip title="View" arrow>
+                                                <VisibilityIcon
+                                                    className={style.visibilityIcon}
+                                                />
+                                            </Tooltip>
+                                            <Tooltip title="Edit" arrow>
+                                                <EditIcon
+                                                    className={style.editIcon}
+                                                    onClick={() => {
+                                                        openInPopup(row[0]);
+                                                    }}
+                                                />
+                                            </Tooltip>
+                                        </TableCell>
+                                    </TableRow>
+
+                                ))
+                            }
+                        </TableBody>
+                    </TableContainer>
                 </div>
                 <PopUp
                     openPopup={openPopup}
