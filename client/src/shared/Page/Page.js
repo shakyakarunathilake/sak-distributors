@@ -11,6 +11,7 @@ import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import { makeStyles } from '@material-ui/core/styles';
+import Tooltip from '@mui/material/Tooltip';
 
 //Material UI Icons
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -175,16 +176,20 @@ export default function Page(props) {
             </Drawer>
             <div className={style.pageHeader}>
                 <div className={style.iconDiv}>
-                    <MenuIcon
-                        className={style.icon}
-                        onClick={toggleDrawer(true)}
-                    />
+                    <Tooltip title="Menu" arrow>
+                        <MenuIcon
+                            className={style.icon}
+                            onClick={toggleDrawer(true)}
+                        />
+                    </Tooltip>
                 </div>
                 <div className={style.title}>
                     {props.title}
                 </div>
                 <div className={style.iconDiv}>
-                    <NotificationsNoneIcon className={style.icon} />
+                    <Tooltip title="Notifications" arrow>
+                        <NotificationsNoneIcon className={style.icon} />
+                    </Tooltip>
                 </div>
                 <div className={style.avatarDiv}>
                     <Avatar alt={firstname} className={style.avatar} src={employeeimage} />
