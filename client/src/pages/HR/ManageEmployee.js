@@ -91,7 +91,7 @@ export default function ManageEmployee() {
             ;
         } if (action === "Edit") {
             axios
-                .put(`http://localhost:8080/employees/update-by-id/${employeeid}`, employee)
+                .post(`http://localhost:8080/employees/update-by-id/${employeeid}`, employee)
                 .then(res => {
                     setAlert(res.data.alert);
                     setType(res.data.type);

@@ -101,18 +101,18 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
             employee
                 .save()
                 .then(result => {
+                    // notifyEmail.notifyCreateEmployee({
+                    //     firstname: result.firstname,
+                    //     lastname: result.lastname,
+                    //     designation: result.designation,
+                    //     username: result.employeeid,
+                    //     password: firstpassword
+                    // });
                     res.status(201).json({
                         message: "Handling POST requests to /employees/create-employee, EMPLOYEE SAVED",
                         type: 'success',
                         alert: `${result.firstname} ${result.lastname} added`,
                         addedEmployee: result
-                    });
-                    notifyEmail.notifyCreateEmployee({
-                        firstname: result.firstname,
-                        lastname: result.lastname,
-                        designation: result.designation,
-                        username: result.employeeid,
-                        password: firstpassword
                     });
                 })
                 .catch(err => {
@@ -173,6 +173,7 @@ router.get("/:employeeid", (req, res, next) => {
         .findOne({ employeeid: id })
         .exec()
         .then(doc => {
+            console.log(doc);
             res.status(200).json({
                 message: "Handeling GET requests to /:employeeid",
                 employee: doc
@@ -185,23 +186,30 @@ router.get("/:employeeid", (req, res, next) => {
 });
 
 //Update employee data by Employee ID
-router.put("/update-by-id/:employeeid", (req, res, next) => {
+router.post("/update-by-id/:employeeid", (req, res, next) => {
     const id = req.params.employeeid;
-    const update = req.body;
+    // const update = req.body.employee;
 
-    Employee
-        .findOneAndUpdate({ employeeid: id }, update, { new: true })
-        .exec()
-        .then(doc => {
-            res.status(200).json({
-                message: "Handeling PUT requests to /update-by-id",
-                employee: doc,
-            });
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({ "Error": err });
-        });
+    console.log("UPDATE: ", req.body.employee);
+
+    // Employee
+    //     .findOneAndUpdate({ employeeid: id }, update, { new: true })
+    //     .exec()
+    //     .then(doc => {
+    //         res.status(200).json({
+    //             message: "Handling POST requests to /employees/update-by-id/:employeeid, EMPLOYEE UPDATED",
+    //             type: 'success',
+    //             alert: `${doc.firstname} ${doc.lastname} updated`,
+    //             updatedEmployee: doc
+    //         });
+    //     })
+    //     .catch(err => {
+    //         res.status(200).json({
+    //             type: 'error',
+    //             alert: `Something went wrong. Could not update employee`,
+    //         });
+    //         console.log(err);
+    //     });
 });
 
 router.post("/check-notify-email", (req, res, next) => {
