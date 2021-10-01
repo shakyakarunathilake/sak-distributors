@@ -29,7 +29,7 @@
 
             .columnA {
                 display: grid;
-                grid-template-rows: min-content min-content auto;
+                grid-template-rows: min-content min-content min-content auto;
 
                 .image {
                     border-radius: 50%;
@@ -93,9 +93,28 @@
                     // }
                 }
 
+                .redFontCenter {
+                    color: red;
+                    text-align: center;
+                    font-size: 0.7em;
+                }
+
                 .employeeId {
+                    margin-top: 10px;
                     font-size: 1em;
                     text-align: center;
+
+                    .input {
+                        border: none;
+                        border-color: transparent;
+                        text-align: center;
+                        font-size: 1em;
+                        font-weight: 600;
+
+                        &:disabled {
+                            background: #ffffff;
+                        }
+                    }
                 }
             }
 
