@@ -24,15 +24,16 @@ export default function EmployeesForm(props) {
 
     const { setOpenPopup, addOrEdit, recordForEdit, nextEmpId } = props;
 
-    const { handleSubmit, formState: { errors }, control, reset, setValue } = useForm();
+    const { handleSubmit, formState: { errors }, control, reset, setValue, getValues } = useForm();
 
     const [file, setFile] = useState("");
-    const [empId, setEmpId] = useState("");
 
     useEffect(() => {
         if (recordForEdit != null) {
-            setEmpId(recordForEdit.employeeid);
-            // setValue("employeeimage", recordForEdit.employeeimage);
+            setFile(`http://${recordForEdit.employeeimage}`);
+
+            setValue("employeeimage", recordForEdit.employeeimage);
+            setValue("employeeid", recordForEdit.employeeid);
             setValue("fullname", recordForEdit.fullname);
             setValue("title", recordForEdit.title);
             setValue("firstname", recordForEdit.firstname);
@@ -48,13 +49,13 @@ export default function EmployeesForm(props) {
             setValue("civilstatus", recordForEdit.civilstatus);
             setValue("employeestatus", recordForEdit.employeestatus);
         } else {
-            setEmpId(nextEmpId);
+            setValue("employeeid", nextEmpId);
         };
     }, [recordForEdit, nextEmpId])
 
     const resetForm = () => {
         reset({
-            employeeimage: '',
+            // employeeid: getValues("employeeid"),
             fullname: '',
             title: '',
             firstname: '',
@@ -70,20 +71,20 @@ export default function EmployeesForm(props) {
             civilstatus: '',
             employeestatus: '',
         });
+        setFile("");
     }
 
     // Handle Image Upload
     const handleChange = e => {
-        setFile(e.target.files[0]);
-        console.log(file);
+        setFile(URL.createObjectURL(e.target.files[0]));
     }
 
     const onSubmit = (values) => {
 
         const employeeFormData = new formData();
 
-        employeeFormData.append('employeeid', empId);
-        employeeFormData.append('employeeimage', values.employeeimage);
+        employeeFormData.append('employeeid', values.employeeid);
+        employeeFormData.append('employeeimage', values.employeimage);
         employeeFormData.append('fullname', values.fullname);
         employeeFormData.append('title', values.title);
         employeeFormData.append('firstname', values.firstname);
@@ -99,31 +100,7 @@ export default function EmployeesForm(props) {
         employeeFormData.append("civilstatus", values.civilstatus);
         employeeFormData.append("employeestatus", values.employeestatus);
 
-        //Development Stage
-        console.log(employeeFormData);
-        console.log(values.designation);
-
-        addOrEdit(employeeFormData, empId);
-
-        reset({
-            employeeid: '',
-            employeeimage: '',
-            fullname: '',
-            title: '',
-            firstname: '',
-            lastname: '',
-            email: '',
-            dob: '',
-            hireddate: '',
-            address: '',
-            nic: '',
-            gender: '',
-            contactnumber: '',
-            designation: '',
-            civilstatus: '',
-            employeestatus: '',
-        });
-
+        addOrEdit(employeeFormData, getValues("employeeid"));
     };
 
     return (
@@ -131,7 +108,7 @@ export default function EmployeesForm(props) {
             <div className={style.container}>
 
                 <div className={style.header}>
-                    <div>Add New Employee</div>
+                    <div>{recordForEdit ? "Edit Employee" : "Add New Employee"}</div>
                     <div>
                         <HighlightOffIcon
                             className={style.icon}
@@ -151,42 +128,53 @@ export default function EmployeesForm(props) {
 
                                 <div className={style.image}>
                                     <div className={style.imgWrapper}>
-                                        <img src={file ? URL.createObjectURL(file) : user} alt="" />
+                                        <img src={file ? file : user} alt="" />
                                         <div className={style.uploadWrapper}>
-                                            {/* <Controller
+                                            <Controller
                                                 name={"employeeimage"}
                                                 control={control}
-                                                rules={{ required: true }}
-                                                render={({ field: { onChange, value } }) => (
+                                                defaultValue=""
+                                                rules={{ required: { value: true, message: "Employee Image is required" } }}
+                                                render={({ field: { onChange } }) => (
                                                     <input
                                                         type="file"
                                                         id="employee-image"
                                                         className={style.input}
-                                                        onChange={onChange}
-                                                        value={value}
+                                                        onChange={onChange, handleChange}
                                                     />
                                                 )}
-                                            /> */}
+                                            />
                                             <label
                                                 className={style.label}
                                                 htmlFor="employee-image"
                                             >
-                                                Upload
+                                                Upload *
                                             </label>
-                                            <input
-                                                type="file"
-                                                id="employee-image"
-                                                className={style.input}
-                                                onChange={handleChange}
-                                                defaultValue=""
-                                            />
                                         </div>
                                     </div>
                                     <div className={style.partialCircle}></div>
                                 </div>
+                                <div className={style.redFontCenter}>
+                                    {
+                                        errors.employeeimage && errors.employeeimage.message
+                                    }
+                                </div>
 
                                 <div className={style.employeeId}>
-                                    ID: {empId}
+                                    <Controller
+                                        name={"employeeid"}
+                                        control={control}
+                                        rules={{ required: true }}
+                                        render={({ field: { onChange, value } }) => (
+                                            <input
+                                                disabled
+                                                type="text"
+                                                className={style.input}
+                                                onChange={onChange}
+                                                value={`ID: ${value}`}
+                                            />
+                                        )}
+                                    />
                                 </div>
 
                             </div>
@@ -455,7 +443,7 @@ export default function EmployeesForm(props) {
                                         control={control}
                                         rules={{
                                             required: { value: true, message: "Email is required" },
-                                            pattern: { value: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, message: "Email is invalid" }
+                                            pattern: { value: /^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, message: "Email is invalid" }
                                         }}
                                         render={({ field: { onChange, value } }) => (
                                             <TextField
