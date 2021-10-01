@@ -173,10 +173,29 @@ router.get("/:employeeid", (req, res, next) => {
         .findOne({ employeeid: id })
         .exec()
         .then(doc => {
-            console.log(doc);
+
+            const employee = {
+                'employeeid': doc.employeeid,
+                'employeeimage': doc.employeeimage,
+                'fullname': doc.fullname,
+                'title': doc.title,
+                'firstname': doc.firstname,
+                'lastname': doc.lastname,
+                'email': doc.email,
+                'dob': doc.dob,
+                'hireddate': doc.hireddate,
+                "address": doc.address,
+                "nic": doc.nic,
+                "gender": doc.gender,
+                "contactnumber": doc.contactnumber,
+                "designation": doc.designation,
+                "civilstatus": doc.civilstatus,
+                "employeestatus": doc.employeestatus
+            };
+
             res.status(200).json({
                 message: "Handeling GET requests to /:employeeid",
-                employee: doc
+                employee: employee
             });
         })
         .catch(err => {
