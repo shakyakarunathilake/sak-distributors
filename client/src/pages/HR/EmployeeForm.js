@@ -27,7 +27,7 @@ export default function EmployeesForm(props) {
 
     const { setOpenPopup, addOrEdit, employeeRecords, nextEmpId } = props;
 
-    const { handleSubmit, formState: { errors }, control, reset, setValue, getValues } = useForm();
+    const { handleSubmit, formState: { errors }, control, reset, setValue, watch, getValues } = useForm();
 
     const [file, setFile] = useState("");
 
@@ -59,6 +59,7 @@ export default function EmployeesForm(props) {
     const resetForm = () => {
         reset({
             employeeid: getValues("employeeid"),
+            employeeimage: '',
             fullname: '',
             title: '',
             firstname: '',
@@ -87,7 +88,7 @@ export default function EmployeesForm(props) {
         const employeeFormData = new formData();
 
         employeeFormData.append('employeeid', values.employeeid);
-        employeeFormData.append('employeeimage', values.employeimage);
+        employeeFormData.append('employeeimage', values.employeeimage);
         employeeFormData.append('fullname', values.fullname);
         employeeFormData.append('title', values.title);
         employeeFormData.append('firstname', values.firstname);
@@ -142,7 +143,11 @@ export default function EmployeesForm(props) {
                                                     type="file"
                                                     id="employee-image"
                                                     className={style.input}
-                                                    onChange={onChange, handleChange}
+                                                    onChange={(e) => {
+                                                        onChange(e);
+                                                        handleChange(e);
+                                                    }}
+                                                // value={value}
                                                 />
                                             )}
                                         />
