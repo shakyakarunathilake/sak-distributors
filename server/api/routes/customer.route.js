@@ -11,8 +11,41 @@ router.get("/", (req, res, next) => {
     });
 });
 
+//Get Next Registration Number
+router.get("/get-next-regno", (req, res, next) => {
+
+    function pad(num, size) {
+        while (num.length < size) num = "0" + num;
+        return "C" + num;
+    }
+
+    Customer
+        .find({}, { customerid: 1, _id: 0 })
+        .exec()
+        .then(doc => {
+            const customeridarray = doc.map(x => {
+                return parseInt(x.customerid.slice(1))
+            })
+
+            const nextcustomerid = pad(String(Math.max(...customeridarray) + 1), 5);
+
+            res.status(200).json({
+                message: "Handeling GET requests to /get-next-regno",
+                nextcustomerid: nextcustomerid
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        })
+
+})
+
 //Create a customer
 router.post("/create-customer", (req, res, next) => {
+
+    const addeddate = new Date(req.body.addeddate).toISOString().split('T')[0];
+
     const customer = new Customer({
         _id: new mongoose.Types.ObjectId(),
         customerid: req.body.customerid,
@@ -23,7 +56,7 @@ router.post("/create-customer", (req, res, next) => {
         brn: req.body.brn,
         storename: req.body.storename,
         route: req.body.route,
-        addeddate: req.body.addeddate,
+        addeddate: addeddate,
         storecontactnumber: req.body.storecontactnumber,
         customercontactnumber: req.body.customercontactnumber,
         email: req.body.email,
@@ -36,40 +69,49 @@ router.post("/create-customer", (req, res, next) => {
         .then(result => {
             res.status(201).json({
                 message: "Handeling POST requests to /customers/create-customer, CUSTOMER SAVED",
+                type: 'success',
+                alert: `${result.storename} added`,
                 addedCustomer: result
             });
         })
         .catch(err => {
+            res.status(200).json({
+                type: 'error',
+                alert: `Something went wrong. Could not add customer`,
+            });
             console.log("Error: ", err)
         })
 });
 
-router.get("/get-all-customers", (req, res, next) => {
+//Get all table customer data
+router.get("/get-all-customer-table-data", (req, res, next) => {
 
     Customer
         .find()
         .exec()
         .then(doc => {
             const thead = [
-                { id: "customerid", label: "Cus. ID" },
-                { id: "storename", label: "Store Name" },
-                { id: "brn", label: "BRN" },
-                { id: "fullname", label: "Customer Full Name" },
-                { id: "title", label: "Title" },
-                { id: "firstname", label: "Customer First Name" },
-                { id: "lastname", label: "Customer Last Name" },
-                { id: "route", label: "Route" },
-                { id: "billingaddress", label: "Billing Address" },
-                { id: "shippingaddress", label: "Shipping Address" },
-                { id: "storecontactnumber", label: "Store Contact Number" },
-                { id: "customercontactnumber", label: "Customer Contact Number" },
-                { id: "email", label: "Email" },
-                { id: "addeddate", label: "Added Date" },
+                "Cus. ID",
+                "Store Name",
+                "Title",
+                "Customer Name",
+                "Route",
+                "Store Contact Number",
             ]
 
+            const tbody = doc.map(x => [
+                x.customerid,
+                x.storename,
+                x.title,
+                x.firstname + " " + x.lastname,
+                x.route,
+                x.storecontactnumber
+            ])
+
             res.status(201).json({
+                message: "Handeling GET requests to /get-all-customer-table-data",
                 thead: thead,
-                tbody: doc,
+                tbody: tbody,
             });
         })
         .catch(err => {
@@ -79,15 +121,35 @@ router.get("/get-all-customers", (req, res, next) => {
 })
 
 //Get customer data by Customer ID
-router.get("/:customerId", (req, res, next) => {
-    const id = req.params.customerId;
+router.get("/:customerid", (req, res, next) => {
+    const id = req.params.customerid;
 
     Customer
-        .findById(id)
+        .findOne({ customerid: id })
         .exec()
         .then(doc => {
-            console.log(doc);
-            res.status(200).json(doc);
+
+            const customer = {
+                'customerid': doc.customerid,
+                'fullname': doc.fullname,
+                'title': doc.title,
+                'firstname': doc.firstname,
+                'lastname': doc.lastname,
+                'brn': doc.brn,
+                'storename': doc.storename,
+                'route': doc.route,
+                'addeddate': doc.addeddate,
+                'email': doc.email,
+                'billingaddress': doc.billingaddress,
+                'shippingaddress': doc.shippingaddress,
+                'customercontactnumber': doc.customercontactnumber,
+                'storecontactnumber': doc.storecontactnumber
+            }
+
+            res.status(200).json({
+                message: "Handeling GET requests to /:customerid",
+                customer: customer
+            });
         })
         .catch(err => {
             console.log(err);

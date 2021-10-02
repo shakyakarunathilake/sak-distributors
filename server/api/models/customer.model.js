@@ -10,7 +10,7 @@ const customerSchema = mongoose.Schema({
     brn: { type: String, required: true },
     storename: { type: String, required: true },
     route: { type: String, required: true },
-    addeddate: { type: Date, required: true },
+    addeddate: { type: String, required: true },
     storecontactnumber: { type: Number, required: true },
     customercontactnumber: { type: Number, required: false },
     billingaddress: { type: String, required: true },
