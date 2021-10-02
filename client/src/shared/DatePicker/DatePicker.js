@@ -12,7 +12,7 @@ export default function DatePicker(props) {
     return (
         <TextField
             fullWidth
-            inputFormat="yyyy-mm-dd"
+            format="MM/dd/yyyy"
             InputLabelProps={{
                 shrink: true,
             }}
