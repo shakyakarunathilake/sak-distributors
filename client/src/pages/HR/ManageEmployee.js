@@ -92,22 +92,22 @@ export default function ManageEmployee() {
                 });
             ;
         } if (action === "Edit") {
-            // axios
-            //     .post(`http://localhost:8080/employees/update-by-id/${employeeid}`, employee)
-            //     .then(res => {
-            //         setAlert(res.data.alert);
-            //         setType(res.data.type);
-            //         handleAlert();
-            //         setReRender(employeeid);
-            //     })
-            //     .catch(err => {
-            //         console.log(err);
-            //     });
-            // ;
+            axios
+                .post(`http://localhost:8080/employees/update-by-id/${employeeid}`, employee)
+                .then(res => {
+                    setAlert(res.data.alert);
+                    setType(res.data.type);
+                    handleAlert();
+                    setReRender(employeeid);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+            ;
         }
 
         setEmployeeRecords(null)
-        setOpenPopup(false);
+        // setOpenPopup(false);
         setAction('');
     }
 
