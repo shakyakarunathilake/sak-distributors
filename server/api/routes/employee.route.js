@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt"); /* For Passwords */
 
 const multer = require("multer");  /* For images */
+const formDataBody = multer();
 
 const notifyEmail = require("../services/notifyEmail");
 const Employee = require("../models/employee.model");
@@ -58,7 +59,7 @@ router.get("/get-next-regno", (req, res, next) => {
 })
 
 //Create an employee
-router.post("/create-employee", uploads.single('employeeimage'), (req, res, next) => {
+router.post("/create-employee", uploads.single('employeeimage'), formDataBody.fields([]), (req, res, next) => {
 
     const dob = new Date(req.body.dob).toISOString().split('T')[0];
     const hireddate = new Date(req.body.hireddate).toISOString().split('T')[0];
@@ -205,30 +206,27 @@ router.get("/:employeeid", (req, res, next) => {
 });
 
 //Update employee data by Employee ID
-router.post("/update-by-id/:employeeid", (req, res, next) => {
-    const id = req.params.employeeid;
-    // const update = req.body.employee;
+router.post("/update-by-id/:employeeid", uploads.single('employeeimage'), formDataBody.fields([]), (req, res, next) => {
+    console.log("UPDATE: ", req.body);
 
-    console.log("UPDATE: ", req.body.employee);
-
-    // Employee
-    //     .findOneAndUpdate({ employeeid: id }, update, { new: true })
-    //     .exec()
-    //     .then(doc => {
-    //         res.status(200).json({
-    //             message: "Handling POST requests to /employees/update-by-id/:employeeid, EMPLOYEE UPDATED",
-    //             type: 'success',
-    //             alert: `${doc.firstname} ${doc.lastname} updated`,
-    //             updatedEmployee: doc
-    //         });
-    //     })
-    //     .catch(err => {
-    //         res.status(200).json({
-    //             type: 'error',
-    //             alert: `Something went wrong. Could not update employee`,
-    //         });
-    //         console.log(err);
-    //     });
+    Employee
+        .findOneAndUpdate({ employeeid: req.params.employeeid }, req.body, { new: true })
+        .exec()
+        .then(doc => {
+            res.status(200).json({
+                message: "Handling POST requests to /employees/update-by-id/:employeeid, EMPLOYEE UPDATED",
+                type: 'success',
+                alert: `${doc.firstname} ${doc.lastname} updated`,
+                updatedEmployee: doc
+            });
+        })
+        .catch(err => {
+            res.status(200).json({
+                type: 'error',
+                alert: `Something went wrong. Could not update employee`,
+            });
+            console.log(err);
+        });
 });
 
 router.post("/check-notify-email", (req, res, next) => {

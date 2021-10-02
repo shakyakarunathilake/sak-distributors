@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
-const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
@@ -12,8 +11,8 @@ const employeeRoutes = require("./api/routes/employee.route");
 const customerRoutes = require("./api/routes/customer.route");
 
 app.use(morgan("dev"));
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(cors({ origin: "*" }));
 
 //DB Connection
