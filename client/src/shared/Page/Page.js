@@ -147,7 +147,7 @@ export default function Page(props) {
                 open={state}
             >
                 <div className={classes.userInfo}>
-                    <Avatar alt={firstname} className={classes.avatar} src={employeeimage} />
+                    <Avatar alt={firstname} className={classes.avatar} src={`http://${employeeimage}`} />
                     <div className={classes.role}>{role}</div>
                     <div className={classes.name}>{firstname} {lastname}</div>
                     <div className={classes.email}>{email}</div>
@@ -192,7 +192,7 @@ export default function Page(props) {
                     </Tooltip>
                 </div>
                 <div className={style.avatarDiv}>
-                    <Avatar alt={firstname} className={style.avatar} src={employeeimage} />
+                    <Avatar alt={firstname} className={style.avatar} src={`http://${employeeimage}`} />
                 </div>
             </div>
             <div className={style.pageContent}>

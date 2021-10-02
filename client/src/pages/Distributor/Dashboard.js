@@ -39,7 +39,7 @@ export default function Dashboard() {
 
                     <div className={style.userInfo}>
                         <div className={style.imageRow}>
-                            <img src={employeeimage.value ? employeeimage : user} alt="" />
+                            <img src={employeeimage ? `http://${employeeimage}` : user} alt="" />
                         </div>
                         <div className={style.infoRow}>
                             <div className={style.textDiv}>
@@ -133,7 +133,7 @@ export default function Dashboard() {
 
                     <div className={style.userInfo}>
                         <div className={style.imgCol}>
-                            <img src={employeeimage.value ? employeeimage : user} alt="" />
+                            <img src={employeeimage ? `http://${employeeimage}` : user} alt="" />
                         </div>
                         <div className={style.infoCol}>
                             <div className={style.textDiv}>
@@ -229,7 +229,7 @@ export default function Dashboard() {
 
                         <div className={style.userInfo}>
                             <div className={style.imageRow}>
-                                <img src={employeeimage.value ? employeeimage : user} alt="" />
+                                <img src={employeeimage ? `http://${employeeimage}` : user} alt="" />
                             </div>
                             <div className={style.infoRow}>
                                 <div className={style.textDiv}>

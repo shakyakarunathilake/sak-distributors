@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
+
 import { useForm, Controller } from 'react-hook-form';
 import formData from 'form-data';
-import style from './EmployeeForm.module.scss';
 
 //Development Stage
 import * as employeeservice from "../../services/employeeService";
@@ -20,38 +20,41 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 //Images and SVGS
 import user from '../../images/user.svg';
 
+//SCSS Styles
+import style from './EmployeeForm.module.scss';
+
 export default function EmployeesForm(props) {
 
-    const { setOpenPopup, addOrEdit, recordForEdit, nextEmpId } = props;
+    const { setOpenPopup, addOrEdit, employeeRecords, nextEmpId } = props;
 
     const { handleSubmit, formState: { errors }, control, reset, setValue, getValues } = useForm();
 
     const [file, setFile] = useState("");
 
     useEffect(() => {
-        if (recordForEdit != null) {
-            setFile(`http://${recordForEdit.employeeimage}`);
+        if (employeeRecords != null) {
+            setFile(`http://${employeeRecords.employeeimage}`);
 
-            setValue("employeeimage", recordForEdit.employeeimage);
-            setValue("employeeid", recordForEdit.employeeid);
-            setValue("fullname", recordForEdit.fullname);
-            setValue("title", recordForEdit.title);
-            setValue("firstname", recordForEdit.firstname);
-            setValue("lastname", recordForEdit.lastname);
-            setValue("email", recordForEdit.email);
-            setValue("dob", recordForEdit.dob);
-            setValue("hireddate", recordForEdit.hireddate);
-            setValue("address", recordForEdit.address);
-            setValue("nic", recordForEdit.nic);
-            setValue("gender", recordForEdit.gender);
-            setValue("contactnumber", recordForEdit.contactnumber);
-            setValue("designation", recordForEdit.designation);
-            setValue("civilstatus", recordForEdit.civilstatus);
-            setValue("employeestatus", recordForEdit.employeestatus);
+            setValue("employeeimage", employeeRecords.employeeimage);
+            setValue("employeeid", employeeRecords.employeeid);
+            setValue("fullname", employeeRecords.fullname);
+            setValue("title", employeeRecords.title);
+            setValue("firstname", employeeRecords.firstname);
+            setValue("lastname", employeeRecords.lastname);
+            setValue("email", employeeRecords.email);
+            setValue("dob", employeeRecords.dob);
+            setValue("hireddate", employeeRecords.hireddate);
+            setValue("address", employeeRecords.address);
+            setValue("nic", employeeRecords.nic);
+            setValue("gender", employeeRecords.gender);
+            setValue("contactnumber", employeeRecords.contactnumber);
+            setValue("designation", employeeRecords.designation);
+            setValue("civilstatus", employeeRecords.civilstatus);
+            setValue("employeestatus", employeeRecords.employeestatus);
         } else {
             setValue("employeeid", nextEmpId);
         };
-    }, [recordForEdit, nextEmpId])
+    }, [employeeRecords, nextEmpId])
 
     const resetForm = () => {
         reset({
@@ -108,7 +111,7 @@ export default function EmployeesForm(props) {
             <div className={style.container}>
 
                 <div className={style.header}>
-                    <div>{recordForEdit ? "Edit Employee" : "Add New Employee"}</div>
+                    <div>{employeeRecords ? "Edit Employee" : "Add New Employee"}</div>
                     <div>
                         <HighlightOffIcon
                             className={style.icon}

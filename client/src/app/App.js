@@ -6,6 +6,8 @@ import './App.scss';
 //Development Stage
 import Page from '../shared/Page/Page.js';
 import EmployeeForm from '../pages/HR/EmployeeForm';
+import ViewEmployee from '../pages/HR/ViewEmployee';
+import ApproveSubmit from '../pages/HR/ApproveSubmit';
 
 
 import Login from '../pages/LoginPage/Login';
@@ -57,7 +59,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: '"Poppins", sans-serif',
+    fontFamily: '"Roboto", "Poppins", sans-serif',
     fontSize: 12
   },
 });
@@ -71,7 +73,8 @@ function App() {
             {/* Development Stage */}
             <Route exact path='/page' component={Page} />
             <Route exact path='/employee-form' component={EmployeeForm} />
-
+            <Route exact path='/view-employee' component={ViewEmployee} />
+            <Route exact path='/approve-submit' component={ApproveSubmit} />
 
             <Route exact path='/' component={Login} />
             <Route exact path='/forgot-password' component={ForgotPassword} />

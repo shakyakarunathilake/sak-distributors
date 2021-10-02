@@ -38,6 +38,15 @@
     padding: 0px 20px;
 }
 
+.active {
+    color: #4cbb17 !important;
+    font-weight: 600 !important;
+}
+
+.inactive {
+    color: red !important;
+    font-weight: 600 !important;
+}
 
 .greytablerow {
     background-color: $secondaryLight;
@@ -51,16 +60,6 @@
     &:hover {
         background-color: #949494;
     }
-}
-
-.active {
-    color: #4cbb17;
-    font-weight: 600;
-}
-
-.inactive {
-    color: red;
-    font-weight: 600;
 }
 
 .actioncolumn {

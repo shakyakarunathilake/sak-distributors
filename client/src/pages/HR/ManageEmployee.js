@@ -26,9 +26,11 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 
 //Employee Form
 import EmployeeForm from './EmployeeForm';
+import ViewEmployee from './ViewEmployee';
 
 //Connecting to Backend
 import axios from 'axios';
+// import ApproveSubmit from './ApproveSubmit';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -40,11 +42,13 @@ export default function ManageEmployee() {
     const [open, setOpen] = React.useState(false);
     const [alert, setAlert] = React.useState();
 
-    const [recordForEdit, setRecordForEdit] = useState(null);
     const [records, setRecords] = useState([]);
     const [headCells, setHeadCells] = useState([]);
-    const [openPopup, setOpenPopup] = useState(false);
+
+    const [employeeRecords, setEmployeeRecords] = useState(null);
     const [action, setAction] = useState('');
+    const [openPopup, setOpenPopup] = useState(false);
+    const [approve, setApprove] = useState(false);
 
     const [nextEmpId, setNextEmpId] = useState();
     const [reRender, setReRender] = useState(null);
@@ -65,8 +69,6 @@ export default function ManageEmployee() {
             .get("http://localhost:8080/employees/get-all-employees-table-data")
             .then(res => {
                 sessionStorage.setItem("EmployeesTableData", JSON.stringify(res.data));
-                // const thead = JSON.parse(sessionStorage.getItem("EmployeesTableData")).thead;
-                // const tbody = JSON.parse(sessionStorage.getItem("EmployeesTableData")).tbody;
                 setHeadCells(res.data.thead);
                 setRecords(res.data.tbody);
             })
@@ -104,17 +106,16 @@ export default function ManageEmployee() {
             // ;
         }
 
-        setRecordForEdit(null)
+        setEmployeeRecords(null)
         setOpenPopup(false);
+        setAction('');
     }
 
     const openInPopup = employeeid => {
         axios
             .get(`http://localhost:8080/employees/${employeeid}`)
             .then(res => {
-                setRecordForEdit(res.data.employee);
-                // console.log(recordForEdit);
-                setAction('Edit');
+                setEmployeeRecords(res.data.employee);
                 setOpenPopup(true);
             })
             .catch(err => {
@@ -162,10 +163,10 @@ export default function ManageEmployee() {
                         variant="contained"
                         onClick={
                             () => {
+                                setAction('Create');
                                 getNextEmployeeId();
                                 setOpenPopup(true);
-                                setRecordForEdit(null);
-                                setAction('Create');
+                                setEmployeeRecords(null);
                             }
                         }
                     >
@@ -206,12 +207,17 @@ export default function ManageEmployee() {
                                             <Tooltip title="View" arrow>
                                                 <VisibilityIcon
                                                     className={style.visibilityIcon}
+                                                    onClick={() => {
+                                                        setAction('View');
+                                                        openInPopup(row[0]);
+                                                    }}
                                                 />
                                             </Tooltip>
                                             <Tooltip title="Edit" arrow>
                                                 <EditIcon
                                                     className={style.editIcon}
                                                     onClick={() => {
+                                                        setAction('Edit');
                                                         openInPopup(row[0]);
                                                     }}
                                                 />
@@ -227,12 +233,19 @@ export default function ManageEmployee() {
                 <PopUp
                     openPopup={openPopup}
                 >
-                    <EmployeeForm
-                        addOrEdit={addOrEdit}
-                        recordForEdit={recordForEdit}
-                        setOpenPopup={setOpenPopup}
-                        nextEmpId={nextEmpId}
-                    />
+                    {action === 'View' ?
+                        <ViewEmployee
+                            employeeRecords={employeeRecords}
+                            setOpenPopup={setOpenPopup}
+                            setAction={setAction}
+                        /> :
+                        <EmployeeForm
+                            addOrEdit={addOrEdit}
+                            employeeRecords={employeeRecords}
+                            setOpenPopup={setOpenPopup}
+                            nextEmpId={nextEmpId}
+                        />
+                    }
                 </PopUp>
                 <Snackbar
                     open={open}
