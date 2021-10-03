@@ -62,8 +62,8 @@ const useStyles = makeStyles({
         width: 280,
 
         '&:hover': {
-            background: "#2A40A3",
-            fontSize: 17,
+            background: "#4255AA",
+            fontSize: 16.5,
             transitionDuration: "0.3s",
         },
     },
@@ -87,7 +87,7 @@ const useStyles = makeStyles({
         padding: "8px 16px",
 
         '&:hover': {
-            background: "#2A40A3",
+            background: "#4255AA",
             fontSize: 17,
             transitionDuration: "0.3s",
         },
