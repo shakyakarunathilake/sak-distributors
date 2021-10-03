@@ -142,9 +142,9 @@ export default function EmployeesForm(props) {
                                                 <input
                                                     type="file"
                                                     id="employee-image"
-                                                    className={style.input}
+                                                    hidden
                                                     onChange={(e) => {
-                                                        onChange(e);
+                                                        onChange(e.target.files[0]);
                                                         handleChange(e);
                                                     }}
                                                 // value={value}
