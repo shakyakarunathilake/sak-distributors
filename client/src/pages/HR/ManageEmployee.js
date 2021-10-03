@@ -71,6 +71,7 @@ export default function ManageEmployee() {
                 sessionStorage.setItem("EmployeesTableData", JSON.stringify(res.data));
                 setHeadCells(res.data.thead);
                 setRecords(res.data.tbody);
+                setReRender(null);
             })
             .catch(error => {
                 console.log(error)
@@ -78,6 +79,9 @@ export default function ManageEmployee() {
     }, [reRender]);
 
     const addOrEdit = (employee, employeeid) => {
+        for (let [key, value] of employee.entries()) {
+            console.log(key, value);
+        }
         if (action === "Create") {
             axios
                 .post("http://localhost:8080/employees/create-employee", employee)
@@ -91,6 +95,7 @@ export default function ManageEmployee() {
                     console.log(err);
                 });
             ;
+
         } if (action === "Edit") {
             axios
                 .post(`http://localhost:8080/employees/update-by-id/${employeeid}`, employee)
@@ -107,7 +112,7 @@ export default function ManageEmployee() {
         }
 
         setEmployeeRecords(null)
-        // setOpenPopup(false);
+        setOpenPopup(false);
         setAction('');
     }
 
