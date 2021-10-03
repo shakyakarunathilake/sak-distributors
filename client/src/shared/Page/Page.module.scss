@@ -27,7 +27,7 @@
             .icon {
                 font-size: 2em;
                 &:hover {
-                    transform: scale(1.2);
+                    transform: scale(1.1);
                 }
             }
         }
@@ -43,7 +43,8 @@
             width: 45px;
             margin-left: 20px;
             &:hover {
-                transform: scale(1.2);
+                transform: scale(1.1);
+                transition-duration: 0.3s;
             }
         }
     }
