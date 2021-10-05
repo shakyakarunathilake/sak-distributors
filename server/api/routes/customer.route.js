@@ -1,8 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+const multer = require("multer");
 
 const Customer = require("../models/customer.model");
+
+const formDataBody = multer();
 
 //Checks whether the endpoint works
 router.get("/", (req, res, next) => {
@@ -42,7 +45,10 @@ router.get("/get-next-regno", (req, res, next) => {
 })
 
 //Create a customer
-router.post("/create-customer", (req, res, next) => {
+router.post("/create-customer", formDataBody.fields([]), (req, res, next) => {
+
+    console.log("Body: ", req.body);
+    console.log("Added Date: ", req.body.addeddate);
 
     const addeddate = new Date(req.body.addeddate).toISOString().split('T')[0];
 
@@ -95,8 +101,9 @@ router.get("/get-all-customer-table-data", (req, res, next) => {
                 "Store Name",
                 "Title",
                 "Customer Name",
-                "Route",
-                "Store Contact Number",
+                "Shipping Address",
+                "Billing Address",
+                "Customer Contact Number"
             ]
 
             const tbody = doc.map(x => [
@@ -104,8 +111,9 @@ router.get("/get-all-customer-table-data", (req, res, next) => {
                 x.storename,
                 x.title,
                 x.firstname + " " + x.lastname,
-                x.route,
-                x.storecontactnumber
+                x.shippingaddress,
+                x.billingaddress,
+                x.customercontactnumber,
             ])
 
             res.status(201).json({
@@ -156,5 +164,29 @@ router.get("/:customerid", (req, res, next) => {
             res.status(500).json({ "Error": err });
         })
 })
+
+//Update customer data by Customer ID
+router.post("/update-by-id/:customerid", formDataBody.fields([]), (req, res, next) => {
+    console.log("UPDATE: ", req.body);
+
+    Customer
+        .findOneAndUpdate({ customerid: req.params.customerid }, req.body, { new: true })
+        .exec()
+        .then(doc => {
+            res.status(200).json({
+                message: "Handling POST requests to /customers/update-by-id/:customerid, CUSTOMER UPDATED",
+                type: 'success',
+                alert: `${doc.firstname} ${doc.lastname} updated`,
+                updatedCustomer: doc
+            });
+        })
+        .catch(err => {
+            res.status(200).json({
+                type: 'error',
+                alert: `Something went wrong. Could not update customer`,
+            });
+            console.log(err);
+        });
+});
 
 module.exports = router;

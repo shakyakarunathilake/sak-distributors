@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import classnames from 'classnames';
 
 import { useForm, Controller } from 'react-hook-form';
@@ -116,12 +116,11 @@ export default function CustomerForm(props) {
                         <Controller
                             name={"customerid"}
                             control={control}
-                            defaultValue=""
                             rules={{ required: true }}
                             render={({ field: { onChange, value } }) => (
                                 <TextField
                                     label="Customer ID *"
-                                    value={value}
+                                    value={value || ''}
                                     onChange={onChange}
                                     placeholder="Ex: C000234"
                                     disabled={true}
@@ -131,12 +130,11 @@ export default function CustomerForm(props) {
                         <Controller
                             name={"brn"}
                             control={control}
-                            defaultValue=""
                             rules={{ required: { value: true, message: "BRN is required" } }}
                             render={({ field: { onChange, value } }) => (
                                 <TextField
                                     label="BRN *"
-                                    value={value}
+                                    value={value || ''}
                                     onChange={onChange}
                                     placeholder="Ex: 3069002"
                                     error={errors.brn ? true : false}
@@ -147,14 +145,13 @@ export default function CustomerForm(props) {
                         <Controller
                             name={"storename"}
                             control={control}
-                            defaultValue=""
                             rules={{ required: { value: true, message: "Store name is required" } }}
                             render={({ field: { onChange, value } }) => (
                                 <TextField
                                     label="Name of the Store *"
-                                    value={value}
+                                    value={value || ''}
                                     onChange={onChange}
-                                    placeholder="Ex: Champika Super Center & Pharmacy"
+                                    placeholder="Ex: Champika Super Center and Pharmacy"
                                     error={errors.storename ? true : false}
                                     helperText={errors.storename && errors.storename.message}
                                 />
@@ -166,12 +163,11 @@ export default function CustomerForm(props) {
                         <Controller
                             name={"route"}
                             control={control}
-                            defaultValue=""
                             rules={{ required: { value: true, message: "Route is required" } }}
                             render={({ field: { onChange, value } }) => (
                                 <Select
                                     label="Route *"
-                                    value={value}
+                                    value={value || ''}
                                     onChange={onChange}
                                     options={employeeservice.getRouteOptions()}
                                     error={errors.route ? true : false}
@@ -182,12 +178,11 @@ export default function CustomerForm(props) {
                         <Controller
                             name={"addeddate"}
                             control={control}
-                            defaultValue=""
                             rules={{ required: { value: true, message: "Adding date is required" } }}
                             render={({ field: { onChange, value } }) => (
                                 <DatePicker
                                     label="Adding Date *"
-                                    value={value}
+                                    value={value || ''}
                                     onChange={onChange}
                                     error={errors.addeddate ? true : false}
                                     helperText={errors.addeddate && errors.addeddate.message}
@@ -198,7 +193,6 @@ export default function CustomerForm(props) {
                     </div>
                     <div className={style.row}>
                         <Controller
-                            defaultValue=''
                             name={"fullname"}
                             control={control}
                             rules={{
@@ -211,7 +205,7 @@ export default function CustomerForm(props) {
                                     placeholder="Ex: Adikari Deepal Lasitha Abeynayaka"
                                     error={errors.fullname ? true : false}
                                     onChange={onChange}
-                                    value={value}
+                                    value={value || ''}
                                     label="Full Name *"
                                 />
                             )}
@@ -222,12 +216,11 @@ export default function CustomerForm(props) {
                             <Controller
                                 name={"title"}
                                 control={control}
-                                defaultValue=""
                                 rules={{ required: { value: true, message: "Title is required" } }}
                                 render={({ field: { onChange, value } }) => (
                                     <Select
                                         label="Title *"
-                                        value={value}
+                                        value={value || ''}
                                         onChange={onChange}
                                         options={employeeservice.getTitleOptions()}
                                         error={errors.title ? true : false}
@@ -239,7 +232,6 @@ export default function CustomerForm(props) {
 
                         <div className={style.twocolumns}>
                             <Controller
-                                defaultValue=''
                                 name={"firstname"}
                                 control={control}
                                 rules={{
@@ -252,13 +244,12 @@ export default function CustomerForm(props) {
                                         placeholder="Ex: Lasitha"
                                         error={errors.firstname ? true : false}
                                         onChange={onChange}
-                                        value={value}
+                                        value={value || ''}
                                         label="First Name *"
                                     />
                                 )}
                             />
                             <Controller
-                                defaultValue=''
                                 name={"lastname"}
                                 control={control}
                                 rules={{
@@ -271,7 +262,7 @@ export default function CustomerForm(props) {
                                         placeholder="Ex: Abeynayaka"
                                         error={errors.lastname ? true : false}
                                         onChange={onChange}
-                                        value={value}
+                                        value={value || ''}
                                         label="Last Name *"
                                     />
                                 )}
@@ -280,11 +271,10 @@ export default function CustomerForm(props) {
                     </div>
                     <div className={classnames(style.row, style.twocolumns)}>
                         <Controller
-                            defaultValue=''
                             name={"storecontactnumber"}
                             control={control}
                             rules={{
-                                required: { value: true, message: "Store contact number is required" },
+                                // required: { value: true, message: "Store contact number is required" },
                                 pattern: { value: /^[0-9]{10}$/, message: "Store contact Number is invalid" }
                             }}
                             render={({ field: { onChange, value } }) => (
@@ -294,13 +284,12 @@ export default function CustomerForm(props) {
                                     placeholder="Ex: 035 4727772"
                                     error={errors.storecontactnumber ? true : false}
                                     onChange={onChange}
-                                    value={value}
-                                    label="Store Contact Number *"
+                                    value={value || ''}
+                                    label="Store Contact Number"
                                 />
                             )}
                         />
                         <Controller
-                            defaultValue=''
                             name={"customercontactnumber"}
                             control={control}
                             rules={{
@@ -314,15 +303,14 @@ export default function CustomerForm(props) {
                                     placeholder="Ex: 071 2686790"
                                     error={errors.customercontactnumber ? true : false}
                                     onChange={onChange}
-                                    value={value}
-                                    label="Customer Contact Number "
+                                    value={value || ''}
+                                    label="Customer Contact Number *"
                                 />
                             )}
                         />
                     </div>
                     <div className={style.row}>
                         <Controller
-                            defaultValue=''
                             name={"billingaddress"}
                             control={control}
                             rules={{
@@ -335,7 +323,7 @@ export default function CustomerForm(props) {
                                     placeholder="Ex: Rambukkana-Katupitiya Rd, Rambukkana"
                                     error={errors.billingaddress ? true : false}
                                     onChange={onChange}
-                                    value={value}
+                                    value={value || ''}
                                     label="Billing Address *"
                                 />
                             )}
@@ -343,7 +331,6 @@ export default function CustomerForm(props) {
                     </div>
                     <div className={style.row}>
                         <Controller
-                            defaultValue=''
                             name={"shippingaddress"}
                             control={control}
                             rules={{
@@ -356,7 +343,7 @@ export default function CustomerForm(props) {
                                     placeholder="Ex: Rambukkana-Katupitiya Rd, Rambukkana"
                                     error={errors.shippingaddress ? true : false}
                                     onChange={onChange}
-                                    value={value}
+                                    value={value || ''}
                                     label="Shipping Address *"
                                 />
                             )}
@@ -365,11 +352,10 @@ export default function CustomerForm(props) {
 
                     <div className={style.row}>
                         <Controller
-                            defaultValue=''
                             name={"email"}
                             control={control}
                             rules={{
-                                required: { value: true, message: "Email is required" },
+                                // required: { value: true, message: "Email is required" },
                                 pattern: { value: /^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, message: "Email is invalid" }
                             }}
                             render={({ field: { onChange, value } }) => (
@@ -379,8 +365,8 @@ export default function CustomerForm(props) {
                                     error={errors.email ? true : false}
                                     onChange={onChange}
                                     placeholder="Ex: abeynayakalasitha@gmail.com"
-                                    value={value}
-                                    label="Email *"
+                                    value={value || ''}
+                                    label="Email"
                                 />
                             )}
                         />

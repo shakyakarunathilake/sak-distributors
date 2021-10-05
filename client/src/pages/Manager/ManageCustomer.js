@@ -48,7 +48,6 @@ export default function ManageCustomer() {
     const [customerRecords, setCustomerRecords] = useState(null);
     const [action, setAction] = useState('');
     const [openPopup, setOpenPopup] = useState(false);
-    const [approve, setApprove] = useState(false);
 
     const [nextCusId, setNextCusId] = useState();
     const [reRender, setReRender] = useState(null);
@@ -71,6 +70,7 @@ export default function ManageCustomer() {
                 sessionStorage.setItem("CustomerTableData", JSON.stringify(res.data));
                 setHeadCells(res.data.thead);
                 setRecords(res.data.tbody);
+                setReRender(null);
             })
             .catch(error => {
                 console.log(error)
@@ -78,6 +78,9 @@ export default function ManageCustomer() {
     }, [reRender]);
 
     const addOrEdit = (customer, customerid) => {
+        for (let [key, value] of customer.entries()) {
+            console.log(key, value);
+        }
         if (action === "Create") {
             axios
                 .post("http://localhost:8080/customers/create-customer", customer)
@@ -92,18 +95,18 @@ export default function ManageCustomer() {
                 });
             ;
         } if (action === "Edit") {
-            // axios
-            //     .post(`http://localhost:8080/customers/update-by-id/${customerid}`, customer)
-            //     .then(res => {
-            //         setAlert(res.data.alert);
-            //         setType(res.data.type);
-            //         handleAlert();
-            //         setReRender(customerid);
-            //     })
-            //     .catch(err => {
-            //         console.log(err);
-            //     });
-            // ;
+            axios
+                .post(`http://localhost:8080/customers/update-by-id/${customerid}`, customer)
+                .then(res => {
+                    setAlert(res.data.alert);
+                    setType(res.data.type);
+                    handleAlert();
+                    setReRender(customerid);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+            ;
         }
 
         setCustomerRecords(null)
@@ -227,6 +230,7 @@ export default function ManageCustomer() {
                 </div>
                 <PopUp
                     openPopup={openPopup}
+                    setOpenPopup={setOpenPopup}
                 >
                     {action === 'View' ?
                         <ViewCustomer
