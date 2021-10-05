@@ -12,6 +12,9 @@
 
         .icon {
             color: red;
+            &:hover {
+                transform: scale(1.1);
+            }
         }
     }
 
