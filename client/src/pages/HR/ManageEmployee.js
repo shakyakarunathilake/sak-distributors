@@ -48,7 +48,6 @@ export default function ManageEmployee() {
     const [employeeRecords, setEmployeeRecords] = useState(null);
     const [action, setAction] = useState('');
     const [openPopup, setOpenPopup] = useState(false);
-    const [approve, setApprove] = useState(false);
 
     const [nextEmpId, setNextEmpId] = useState();
     const [reRender, setReRender] = useState(null);
@@ -139,7 +138,7 @@ export default function ManageEmployee() {
             });
     }
 
-    const { TableContainer, TableHead } = useTable(headCells, records);
+    const { TableContainer, TableHead } = useTable(headCells);
 
     return (
         <Page title="Manage Employees">
@@ -191,11 +190,11 @@ export default function ManageEmployee() {
                                             { [style.greytablerow]: i % 2 === 1 },
                                             { [style.whitetablerow]: i % 2 === 0 },
                                         )}
-                                        key={i}
+                                        key={row[0]}
                                     >
                                         {
                                             row.map((cell, i) => (
-                                                <TableCell key={i}
+                                                <TableCell key={row[0] + cell}
                                                     className={classnames(
                                                         { [style.active]: cell === "Active" },
                                                         { [style.inactive]: cell === "Inactive" }
@@ -237,6 +236,7 @@ export default function ManageEmployee() {
                 </div>
                 <PopUp
                     openPopup={openPopup}
+                    setOpenPopup={setOpenPopup}
                 >
                     {action === 'View' ?
                         <ViewEmployee
