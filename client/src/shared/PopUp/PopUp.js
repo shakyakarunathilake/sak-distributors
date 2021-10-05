@@ -16,11 +16,15 @@ const useStyles = makeStyles({
 
 export default function PopUp(props) {
 
-    const { children, openPopup } = props;
+    const { children, openPopup, setOpenPopup } = props;
     const classes = useStyles();
 
+    const handleClose = () => {
+        setOpenPopup(false);
+    };
+
     return (
-        <Dialog open={openPopup} maxWidth="lg">
+        <Dialog open={openPopup} onClose={handleClose} maxWidth="lg">
             <DialogContent className={classes.content}>
                 {children}
             </DialogContent>
