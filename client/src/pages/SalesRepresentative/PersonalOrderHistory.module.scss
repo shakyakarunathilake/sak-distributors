@@ -1,0 +1,82 @@
+@import "../../styles/variables";
+
+.container {
+    box-sizing: border-box;
+}
+
+.actionRow {
+    width: 100vw;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: auto max-content;
+
+    .search {
+        width: 250px;
+        margin: 20px 25px;
+
+        .searchtextfield {
+            height: 20px;
+        }
+    }
+
+    .button {
+        height: 53.28px;
+        color: $inverseFontColor;
+        font-size: 0.95em;
+        margin: 20px 25px;
+    }
+
+    .icon {
+        margin-right: 10px;
+    }
+}
+
+.pagecontent {
+    width: 100vw;
+    // height: calc(100vh - 199.28px);
+    box-sizing: border-box;
+    padding: 0px 20px;
+}
+
+.active {
+    color: #4cbb17 !important;
+    font-weight: 600 !important;
+}
+
+.inactive {
+    color: red !important;
+    font-weight: 600 !important;
+}
+
+.greytablerow {
+    background-color: $secondaryLight;
+    &:hover {
+        background-color: #949494;
+    }
+}
+
+.whitetablerow {
+    background-color: white;
+    &:hover {
+        background-color: #949494;
+    }
+}
+
+.actioncolumn {
+    white-space: nowrap;
+    background-color: inherit;
+    // box-shadow: -10px 0px 10px 1px #aaaaaa;
+}
+
+.visibilityIcon {
+    margin-right: 15px;
+    &:hover {
+        transform: scale(1.3);
+    }
+}
+
+.editIcon {
+    &:hover {
+        transform: scale(1.3);
+    }
+}
