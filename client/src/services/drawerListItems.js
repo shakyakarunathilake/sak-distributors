@@ -13,6 +13,7 @@ import PaymentIcon from '@material-ui/icons/Payment';
 import DescriptionIcon from '@material-ui/icons/Description';
 import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import ReceiptIcon from '@material-ui/icons/Receipt';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 const getDistributorListItems = [
     {
@@ -187,6 +188,12 @@ const getSalesRepresentativeListItems = [
         icon: <ViewListIcon />,
     },
     {
+        id: "Add New Order",
+        title: "Add New Order",
+        path: "http://localhost:3000/sales-representative/add-new-order",
+        icon: <AddCircleIcon />
+    },
+    {
         id: "Sales Rep. Analytics",
         title: "Sales Rep. Analytics",
         path: "http://localhost:3000/sales-representative-analytics",
@@ -199,19 +206,19 @@ export function drawerListItems(role) {
     if (role === "Distributor") {
         return (getDistributorListItems)
     }
-    if (role === "Human Resources" ) {
+    if (role === "Human Resources") {
         return (getHRListItems)
     }
-    if (role === "Manager" ) {
+    if (role === "Manager") {
         return (getManagerListItems)
     }
-    if (role === "Purchasing Manager" ) {
+    if (role === "Purchasing Manager") {
         return (getPurchasingManagerListItems)
     }
-    if (role === "Store Keeper" ) {
+    if (role === "Store Keeper") {
         return (getStoreKeeperListItems)
     }
-    if (role === "Sales Representative" ) {
+    if (role === "Sales Representative") {
         return (getSalesRepresentativeListItems)
     }
 }
