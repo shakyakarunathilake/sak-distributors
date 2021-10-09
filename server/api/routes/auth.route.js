@@ -36,6 +36,7 @@ router.post("/signin", (req, res, next) => {
                     lastname: employee[0].lastname,
                     email: employee[0].email,
                     employeeimage: employee[0].employeeimage,
+                    contactnumber: employee[0].contactnumber
                 },
                 "authconfig.secret",
                 { expiresIn: 7200 }
@@ -51,6 +52,7 @@ router.post("/signin", (req, res, next) => {
                 employeestatus: employee[0].employeestatus,
                 employeeimage: employee[0].employeeimage,
                 firsttimelogin: employee[0].firsttimelogin,
+                contactnumber: employee[0].contactnumber,
                 accessToken: token
             });
         })
