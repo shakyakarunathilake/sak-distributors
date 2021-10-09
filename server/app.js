@@ -10,6 +10,8 @@ const authRoutes = require("./api/routes/auth.route");
 const passwordRoutes = require("./api/routes/password.route");
 const employeeRoutes = require("./api/routes/employee.route");
 const customerRoutes = require("./api/routes/customer.route");
+const productRoutes = require("./api/routes/product.route");
+const orderRoutes = require("./api/routes/order.route");
 
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -39,5 +41,7 @@ app.use("/auth", authRoutes);
 app.use("/password", passwordRoutes);
 app.use("/employees", employeeRoutes);
 app.use("/customers", customerRoutes);
+app.use("/products", productRoutes);
+app.use("/orders", orderRoutes);
 
 module.exports = app;
