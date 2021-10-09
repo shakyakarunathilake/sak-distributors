@@ -89,6 +89,31 @@ router.post("/create-customer", formDataBody.fields([]), (req, res, next) => {
         })
 });
 
+//Get all basic customer info
+router.get("/get-all-basic-customer-data", (req, res, next) => {
+
+    Customer
+        .find()
+        .exec()
+        .then(doc => {
+            const customerinfo = doc.map(x => [
+                { "customerid": x.customerid },
+                { "storename": x.storename },
+                { "route": x.route },
+                { "shippingaddress": x.shippingaddress }
+            ])
+
+            res.status(201).json({
+                message: "Handeling GET requests to /get-all-basic-customer-info",
+                customerinfo: customerinfo
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        })
+});
+
 //Get all table customer data
 router.get("/get-all-customer-table-data", (req, res, next) => {
 
