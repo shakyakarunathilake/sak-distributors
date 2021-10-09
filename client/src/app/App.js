@@ -41,7 +41,7 @@ import GRNGIN from '../pages/StoreKeeper/GRNGIN';
 //Sales Representative
 import PersonalOrderHistory from '../pages/SalesRepresentative/PersonalOrderHistory';
 import SalesAndInvoice from '../pages/SalesRepresentative/SalesAndInvoice';
-
+import AddNewOrder from '../pages/SalesRepresentative/AddNewOrder';
 
 const theme = createTheme({
   palette: {
@@ -116,7 +116,7 @@ function App() {
             <Route exact path='/sales-representative/manage-customers' component={ManageCustomer} />
             <Route exact path='/sales-representative/personal-order-history' component={PersonalOrderHistory} />
             <Route exact path='/sales-representative/sales-and-invoice' component={SalesAndInvoice} />
-
+            <Route exact path='/sales-representative/add-new-order' component={AddNewOrder} />
           </Switch>
         </BrowserRouter>
       }
