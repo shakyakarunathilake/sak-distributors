@@ -106,6 +106,7 @@ export default function Login() {
                                         onChange={onChange}
                                         value={value}
                                         label="Email"
+                                        fullWidth={true}
                                         type="text"
                                         InputProps={{
                                             endAdornment: (

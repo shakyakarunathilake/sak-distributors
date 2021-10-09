@@ -202,6 +202,7 @@ export default function EmployeesForm(props) {
                                     }}
                                     render={({ field: { onChange, value } }) => (
                                         <TextField
+                                            fullWidth={true}
                                             className={style.field}
                                             helperText={errors.fullname && errors.fullname.message}
                                             placeholder="Ex: Abesinghe Mudiyanselage Shakya Madara Karunathilake"
@@ -246,6 +247,7 @@ export default function EmployeesForm(props) {
                                         }}
                                         render={({ field: { onChange, value } }) => (
                                             <TextField
+                                                fullWidth={true}
                                                 className={style.field}
                                                 helperText={errors.firstname && errors.firstname.message}
                                                 placeholder="Ex: Shakya"
@@ -267,6 +269,7 @@ export default function EmployeesForm(props) {
                                         }}
                                         render={({ field: { onChange, value } }) => (
                                             <TextField
+                                                fullWidth={true}
                                                 className={style.field}
                                                 helperText={errors.lastname && errors.lastname.message}
                                                 placeholder="Ex: Karunathilake"
@@ -291,6 +294,7 @@ export default function EmployeesForm(props) {
                                         }}
                                         render={({ field: { onChange, value } }) => (
                                             <TextField
+                                                fullWidth={true}
                                                 className={style.field}
                                                 helperText={errors.nic && errors.nic.message}
                                                 placeholder="Ex: 199950910239"
@@ -406,6 +410,7 @@ export default function EmployeesForm(props) {
                                         }}
                                         render={({ field: { onChange, value } }) => (
                                             <TextField
+                                                fullWidth={true}
                                                 className={style.field}
                                                 helperText={errors.contactnumber && errors.contactnumber.message}
                                                 error={errors.contactnumber ? true : false}
@@ -431,6 +436,7 @@ export default function EmployeesForm(props) {
                                     }}
                                     render={({ field: { onChange, value } }) => (
                                         <TextField
+                                            fullWidth={true}
                                             className={style.field}
                                             helperText={errors.address && errors.address.message}
                                             error={errors.address ? true : false}
@@ -454,6 +460,7 @@ export default function EmployeesForm(props) {
                                     }}
                                     render={({ field: { onChange, value } }) => (
                                         <TextField
+                                            fullWidth={true}
                                             className={style.field}
                                             helperText={errors.email && errors.email.message}
                                             error={errors.email ? true : false}

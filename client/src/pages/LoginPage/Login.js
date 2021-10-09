@@ -119,6 +119,7 @@ export default function Login() {
                                         onChange={onChange}
                                         value={value}
                                         label="Username"
+                                        fullWidth={true}
                                         type="text"
                                         InputProps={{
                                             endAdornment: (
@@ -143,6 +144,7 @@ export default function Login() {
                                         error={errors.password ? true : false}
                                         onChange={onChange}
                                         value={value}
+                                        fullWidth={true}
                                         label="Password"
                                         type={passwordShown ? "text" : "password"}
                                         InputProps={{

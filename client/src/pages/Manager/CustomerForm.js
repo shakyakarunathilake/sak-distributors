@@ -119,6 +119,7 @@ export default function CustomerForm(props) {
                             rules={{ required: true }}
                             render={({ field: { onChange, value } }) => (
                                 <TextField
+                                    fullWidth={true}
                                     label="Customer ID *"
                                     value={value || ''}
                                     onChange={onChange}
@@ -133,6 +134,7 @@ export default function CustomerForm(props) {
                             rules={{ required: { value: true, message: "BRN is required" } }}
                             render={({ field: { onChange, value } }) => (
                                 <TextField
+                                    fullWidth={true}
                                     label="BRN *"
                                     value={value || ''}
                                     onChange={onChange}
@@ -148,6 +150,7 @@ export default function CustomerForm(props) {
                             rules={{ required: { value: true, message: "Store name is required" } }}
                             render={({ field: { onChange, value } }) => (
                                 <TextField
+                                    fullWidth={true}
                                     label="Name of the Store *"
                                     value={value || ''}
                                     onChange={onChange}
@@ -200,6 +203,7 @@ export default function CustomerForm(props) {
                             }}
                             render={({ field: { onChange, value } }) => (
                                 <TextField
+                                    fullWidth={true}
                                     className={style.field}
                                     helperText={errors.fullname && errors.fullname.message}
                                     placeholder="Ex: Adikari Deepal Lasitha Abeynayaka"
@@ -239,6 +243,7 @@ export default function CustomerForm(props) {
                                 }}
                                 render={({ field: { onChange, value } }) => (
                                     <TextField
+                                        fullWidth={true}
                                         className={style.field}
                                         helperText={errors.firstname && errors.firstname.message}
                                         placeholder="Ex: Lasitha"
@@ -257,6 +262,7 @@ export default function CustomerForm(props) {
                                 }}
                                 render={({ field: { onChange, value } }) => (
                                     <TextField
+                                        fullWidth={true}
                                         className={style.field}
                                         helperText={errors.lastname && errors.lastname.message}
                                         placeholder="Ex: Abeynayaka"
@@ -279,6 +285,7 @@ export default function CustomerForm(props) {
                             }}
                             render={({ field: { onChange, value } }) => (
                                 <TextField
+                                    fullWidth={true}
                                     className={style.field}
                                     helperText={errors.storecontactnumber && errors.storecontactnumber.message}
                                     placeholder="Ex: 035 4727772"
@@ -298,6 +305,7 @@ export default function CustomerForm(props) {
                             }}
                             render={({ field: { onChange, value } }) => (
                                 <TextField
+                                    fullWidth={true}
                                     className={style.field}
                                     helperText={errors.customercontactnumber && errors.customercontactnumber.message}
                                     placeholder="Ex: 071 2686790"
@@ -318,6 +326,7 @@ export default function CustomerForm(props) {
                             }}
                             render={({ field: { onChange, value } }) => (
                                 <TextField
+                                    fullWidth={true}
                                     className={style.field}
                                     helperText={errors.billingaddress && errors.billingaddress.message}
                                     placeholder="Ex: Rambukkana-Katupitiya Rd, Rambukkana"
@@ -338,6 +347,7 @@ export default function CustomerForm(props) {
                             }}
                             render={({ field: { onChange, value } }) => (
                                 <TextField
+                                    fullWidth={true}
                                     className={style.field}
                                     helperText={errors.shippingaddress && errors.shippingaddress.message}
                                     placeholder="Ex: Rambukkana-Katupitiya Rd, Rambukkana"
@@ -360,6 +370,7 @@ export default function CustomerForm(props) {
                             }}
                             render={({ field: { onChange, value } }) => (
                                 <TextField
+                                    fullWidth={true}
                                     className={style.field}
                                     helperText={errors.email && errors.email.message}
                                     error={errors.email ? true : false}

@@ -150,6 +150,7 @@ export default function ManageEmployee() {
                             // onChange={e => setSearchVal(e.target.value)}
                             color="primary"
                             className={style.searchtextfield}
+                            fullWidth={true}
                             placeholder="Search"
                             InputProps={{
                                 startAdornment: (

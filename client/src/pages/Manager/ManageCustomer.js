@@ -148,6 +148,7 @@ export default function ManageCustomer() {
                         <TextField
                             // onChange={e => setSearchVal(e.target.value)}
                             color="primary"
+                            fullWidth={true}
                             className={style.searchtextfield}
                             placeholder="Search"
                             InputProps={{

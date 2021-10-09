@@ -135,6 +135,7 @@ export default function ChangePassword() {
                                             error={errors.currentpassword ? true : false}
                                             onChange={onChange}
                                             value={value}
+                                            fullWidth={true}
                                             label="Current Password"
                                             type={currentPasswordShown ? "text" : "password"}
                                             InputProps={{
@@ -168,6 +169,7 @@ export default function ChangePassword() {
                                             onChange={onChange}
                                             value={value}
                                             label="New Password"
+                                            fullWidth={true}
                                             type={newPasswordShown ? "text" : "password"}
                                             InputProps={{
                                                 endAdornment: (
@@ -200,6 +202,7 @@ export default function ChangePassword() {
                                             onChange={onChange}
                                             value={value}
                                             label="Confirm Password"
+                                            fullWidth={true}
                                             type={confirmPasswordShown ? "text" : "password"}
                                             InputProps={{
                                                 endAdornment: (
