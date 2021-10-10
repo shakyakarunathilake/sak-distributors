@@ -36,6 +36,8 @@ export default function ViewEmployee(props) {
         setValue("designation", employeeRecords.designation);
         setValue("civilstatus", employeeRecords.civilstatus);
         setValue("employeestatus", employeeRecords.employeestatus);
+        setValue("hiredby", employeeRecords.hiredby);
+
     }, [employeeRecords])
 
 
@@ -272,6 +274,23 @@ export default function ViewEmployee(props) {
                                     <div className={style.employeeData}>
                                         <Controller
                                             name={"employeestatus"}
+                                            control={control}
+                                            render={({ field: { value } }) => (
+                                                <Typography className={style.input}>
+                                                    {value}
+                                                </Typography>
+                                            )}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className={style.row}>
+                                    <div className={style.boldText}>
+                                        Hired By
+                                    </div>
+                                    <div className={style.employeeData}>
+                                        <Controller
+                                            name={"hiredby"}
                                             control={control}
                                             render={({ field: { value } }) => (
                                                 <Typography className={style.input}>
