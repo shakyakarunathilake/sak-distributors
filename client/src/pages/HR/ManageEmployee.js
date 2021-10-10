@@ -198,7 +198,8 @@ export default function ManageEmployee() {
                                                 <TableCell key={row[0] + cell}
                                                     className={classnames(
                                                         { [style.active]: cell === "Active" },
-                                                        { [style.inactive]: cell === "Inactive" }
+                                                        { [style.inactive]: cell === "Inactive" },
+                                                        { [style.limitedAccess]: cell === "Limited Access" }
                                                     )}
                                                 >
                                                     {cell}
@@ -255,7 +256,7 @@ export default function ManageEmployee() {
                 </PopUp>
                 <Snackbar
                     open={open}
-                    autoHideDuration={2500}
+                    autoHideDuration={1500}
                     onClose={handleClose}
                     anchorOrigin={{
                         vertical: 'top',
