@@ -27,9 +27,10 @@ export default function EmployeesForm(props) {
 
     const { setOpenPopup, addOrEdit, employeeRecords, nextEmpId } = props;
 
-    const { handleSubmit, formState: { errors }, control, reset, setValue, getValues } = useForm();
+    const { handleSubmit, formState: { errors }, control, reset, setValue, getValues, trigger, clearErrors } = useForm();
 
     const [file, setFile] = useState("");
+    const [limitedAccess, setLimitedAccess] = useState(false);
 
     useEffect(() => {
         if (employeeRecords != null) {
@@ -56,6 +57,26 @@ export default function EmployeesForm(props) {
         };
     }, [employeeRecords, nextEmpId])
 
+
+    const handleDesignationChange = e => {
+        if (e === "Driver") {
+            setLimitedAccess(true);
+            setValue("employeestatus", "Limited Access");
+            clearErrors("employeestatus");
+        } else if (e === "Product Handler") {
+            setLimitedAccess(true);
+            setValue("employeestatus", "Limited Access");
+            clearErrors("employeestatus");
+        } else if (e === "Warehouse Worker") {
+            setLimitedAccess(true);
+            setValue("employeestatus", "Limited Access");
+            clearErrors("employeestatus");
+        } else {
+            setLimitedAccess(false);
+            setValue("employeestatus", "");
+        }
+    }
+
     const resetForm = () => {
         reset({
             employeeid: getValues("employeeid"),
@@ -76,6 +97,7 @@ export default function EmployeesForm(props) {
             employeestatus: '',
         });
         setFile("");
+        setLimitedAccess("");
     }
 
     // Handle Image Upload
@@ -83,7 +105,13 @@ export default function EmployeesForm(props) {
         setFile(URL.createObjectURL(e.target.files[0]));
     }
 
+
+
     const onSubmit = (values) => {
+
+        const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
+        const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
+        const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
 
         const employeeFormData = new formData();
 
@@ -103,6 +131,7 @@ export default function EmployeesForm(props) {
         employeeFormData.append("designation", values.designation);
         employeeFormData.append("civilstatus", values.civilstatus);
         employeeFormData.append("employeestatus", values.employeestatus);
+        employeeFormData.append("hiredby", `${firstname} ${lastname} (${employeeid})`);
 
         addOrEdit(employeeFormData, getValues("employeeid"));
     };
@@ -390,7 +419,10 @@ export default function EmployeesForm(props) {
                                                 className={style.field}
                                                 helperText={errors.designation && errors.designation.message}
                                                 error={errors.designation ? true : false}
-                                                onChange={onChange}
+                                                onChange={(e) => {
+                                                    onChange(e.target.value)
+                                                    handleDesignationChange(e.target.value)
+                                                }}
                                                 options={employeeservice.getDesignationOptions()}
                                                 value={value}
                                                 label="Designation *"
@@ -490,7 +522,7 @@ export default function EmployeesForm(props) {
                                                 error={errors.employeestatus ? true : false}
                                                 onChange={onChange}
                                                 options={employeeservice.getEmployeeStatusOptions()}
-                                                value={value}
+                                                value={limitedAccess ? "Limited Access" : value}
                                                 label="Employee Status *"
                                             />
                                         )}
