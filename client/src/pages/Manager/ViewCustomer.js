@@ -30,6 +30,7 @@ export default function ViewCustomer(props) {
         setValue("customercontactnumber", customerRecords.customercontactnumber);
         setValue("storecontactnumber", customerRecords.storecontactnumber ? customerRecords.storecontactnumber : "Not Given");
         setValue("email", customerRecords.email ? customerRecords.email : "Not Given");
+        setValue("registeredby", customerRecords.registeredby);
     }, [customerRecords])
 
 
@@ -248,7 +249,25 @@ export default function ViewCustomer(props) {
 
                             <div className={style.row}>
                                 <div className={style.boldText}>
-                                    Added Date
+                                    Registered by
+                                </div>
+                                <div className={style.customerData}>
+                                    <Controller
+                                        name={"registeredby"}
+                                        control={control}
+                                        render={({ field: { value } }) => (
+                                            <Typography className={style.input}>
+                                                {value}
+                                            </Typography>
+                                        )}
+                                    />
+                                    
+                                </div>
+                            </div>
+
+                            <div className={style.row}>
+                                <div className={style.boldText}>
+                                    Registered Date
                                 </div>
                                 <div className={style.customerData}>
                                     <Controller
@@ -260,6 +279,7 @@ export default function ViewCustomer(props) {
                                             </Typography>
                                         )}
                                     />
+                                    
                                 </div>
                             </div>
 

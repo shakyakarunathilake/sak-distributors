@@ -71,6 +71,10 @@ export default function CustomerForm(props) {
 
     const onSubmit = (values) => {
 
+        const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
+        const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
+        const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
+
         const customerFormData = new formData();
 
         customerFormData.append('customerid', values.customerid);
@@ -86,8 +90,8 @@ export default function CustomerForm(props) {
         customerFormData.append("shippingaddress", values.shippingaddress);
         customerFormData.append("billingaddress", values.billingaddress);
         customerFormData.append("customercontactnumber", values.customercontactnumber);
-        customerFormData.append("storecontactnumber", values.storecontactnumber);
-
+        customerFormData.append("storecontactnumber", values.storecontactnumber ? values.storecontactnumber : "");
+        customerFormData.append("registeredby", `${firstname} ${lastname} (${employeeid})`)
         addOrEdit(customerFormData, getValues("customerid"));
     };
 
@@ -131,7 +135,10 @@ export default function CustomerForm(props) {
                         <Controller
                             name={"brn"}
                             control={control}
-                            rules={{ required: { value: true, message: "BRN is required" } }}
+                            rules={{
+                                required: { value: true, message: "BRN is required" },
+                                pattern: { value: /^\d{7}(?:\d{2})?$/, message: "BRN is invalid" }
+                            }}
                             render={({ field: { onChange, value } }) => (
                                 <TextField
                                     fullWidth={true}

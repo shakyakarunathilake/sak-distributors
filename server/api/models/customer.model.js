@@ -12,10 +12,11 @@ const customerSchema = mongoose.Schema({
     route: { type: String, required: true },
     addeddate: { type: String, required: true },
     storecontactnumber: { type: Number, required: false },
-    customercontactnumber: { type: Number, required: false },
+    customercontactnumber: { type: Number, required: true },
     billingaddress: { type: String, required: true },
     shippingaddress: { type: String, required: true },
-    email: { type: String, required: false }
+    email: { type: String, required: false },
+    registeredby: { type: String, required: true },
 })
 
 module.exports = mongoose.model('Customer', customerSchema);

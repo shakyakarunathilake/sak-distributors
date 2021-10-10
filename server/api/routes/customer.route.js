@@ -68,6 +68,7 @@ router.post("/create-customer", formDataBody.fields([]), (req, res, next) => {
         email: req.body.email,
         billingaddress: req.body.billingaddress,
         shippingaddress: req.body.shippingaddress,
+        registeredby: req.body.registeredby,
     });
 
     customer
@@ -176,7 +177,8 @@ router.get("/:customerid", (req, res, next) => {
                 'billingaddress': doc.billingaddress,
                 'shippingaddress': doc.shippingaddress,
                 'customercontactnumber': doc.customercontactnumber,
-                'storecontactnumber': doc.storecontactnumber
+                'storecontactnumber': doc.storecontactnumber,
+                'registeredby': doc.registeredby,
             }
 
             res.status(200).json({
