@@ -66,69 +66,111 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
     const dob = new Date(req.body.dob).toISOString().split('T')[0];
     const hireddate = new Date(req.body.hireddate).toISOString().split('T')[0];
 
-    var nic = req.body.nic;
-    var firstpassword = "";
+    if (!req.body.employeestatus === "Limited Access") {
+        var nic = req.body.nic;
+        var firstpassword = "";
 
-    if (nic.slice(-1) == "v") {
-        firstpassword = nic.substring(7, 11) + "-" + dob;
-    } else {
-        firstpassword = nic.substring(8, 12) + "-" + dob;
-    }
-
-    bcrypt.hash(firstpassword, 10, (err, hash) => {
-        if (err) {
-            console.log(err);
+        if (nic.slice(-1) == "v") {
+            firstpassword = nic.substring(7, 11) + "-" + dob;
         } else {
-            const employee = new Employee({
-                _id: new mongoose.Types.ObjectId(),
-                employeeid: req.body.employeeid,
-                employeeimage: `localhost:8080/${req.body.employeeid}.jpg`,
-                fullname: req.body.fullname,
-                title: req.body.title,
-                firstname: req.body.firstname,
-                lastname: req.body.lastname,
-                email: req.body.email,
-                dob: dob,
-                hireddate: hireddate,
-                address: req.body.address,
-                nic: req.body.nic,
-                gender: req.body.gender,
-                contactnumber: req.body.contactnumber,
-                designation: req.body.designation,
-                civilstatus: req.body.civilstatus,
-                employeestatus: req.body.employeestatus,
-                firsttimelogin: true,
-                password: hash, //Development Stage
-            });
+            firstpassword = nic.substring(8, 12) + "-" + dob;
+        }
 
-            employee
-                .save()
-                .then(result => {
-                    // notifyEmail.notifyCreateEmployee({
-                    //     firstname: result.firstname,
-                    //     lastname: result.lastname,
-                    //     designation: result.designation,
-                    //     username: result.employeeid,
-                    //     password: firstpassword
-                    // });
-                    console.log("Employee Created");
-                    res.status(201).json({
-                        message: "Handling POST requests to /employees/create-employee, EMPLOYEE SAVED",
-                        type: 'success',
-                        alert: `${result.firstname} ${result.lastname} added`,
-                        addedEmployee: result
-                    });
-                })
-                .catch(err => {
-                    res.status(200).json({
-                        type: 'error',
-                        alert: `Something went wrong. Could not add employee`,
-                    });
-                    console.log("Error: ", err)
-                })
-        };
-    });
+        bcrypt.hash(firstpassword, 10, (err, hash) => {
+            if (err) {
+                console.log(err);
+            } else {
+                const employee = new Employee({
+                    _id: new mongoose.Types.ObjectId(),
+                    employeeid: req.body.employeeid,
+                    employeeimage: `localhost:8080/${req.body.employeeid}.jpg`,
+                    fullname: req.body.fullname,
+                    title: req.body.title,
+                    firstname: req.body.firstname,
+                    lastname: req.body.lastname,
+                    email: req.body.email,
+                    dob: dob,
+                    hireddate: hireddate,
+                    hiredby: req.body.hiredby,
+                    address: req.body.address,
+                    nic: req.body.nic,
+                    gender: req.body.gender,
+                    contactnumber: req.body.contactnumber,
+                    designation: req.body.designation,
+                    civilstatus: req.body.civilstatus,
+                    employeestatus: req.body.employeestatus,
+                    firsttimelogin: true,
+                    password: hash, //Development Stage
+                });
 
+                employee
+                    .save()
+                    .then(result => {
+                        // notifyEmail.notifyCreateEmployee({
+                        //     firstname: result.firstname,
+                        //     lastname: result.lastname,
+                        //     designation: result.designation,
+                        //     username: result.employeeid,
+                        //     password: firstpassword
+                        // });
+                        console.log("Employee Created");
+                        res.status(201).json({
+                            message: "Handling POST requests to /employees/create-employee, EMPLOYEE SAVED",
+                            type: 'success',
+                            alert: `${result.firstname} ${result.lastname} added`,
+                            addedEmployee: result
+                        });
+                    })
+                    .catch(err => {
+                        res.status(200).json({
+                            type: 'error',
+                            alert: `Something went wrong. Could not add employee`,
+                        });
+                        console.log("Error: ", err)
+                    })
+            };
+        });
+    } else {
+        const employee = new Employee({
+            _id: new mongoose.Types.ObjectId(),
+            employeeid: req.body.employeeid,
+            employeeimage: `localhost:8080/${req.body.employeeid}.jpg`,
+            fullname: req.body.fullname,
+            title: req.body.title,
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            email: req.body.email,
+            dob: dob,
+            hireddate: hireddate,
+            hiredby: req.body.hiredby,
+            address: req.body.address,
+            nic: req.body.nic,
+            gender: req.body.gender,
+            contactnumber: req.body.contactnumber,
+            designation: req.body.designation,
+            civilstatus: req.body.civilstatus,
+            employeestatus: req.body.employeestatus,
+        });
+
+        employee
+            .save()
+            .then(result => {
+                console.log("Employee Created");
+                res.status(201).json({
+                    message: "Handling POST requests to /employees/create-employee, EMPLOYEE SAVED",
+                    type: 'success',
+                    alert: `${result.firstname} ${result.lastname} added`,
+                    addedEmployee: result
+                });
+            })
+            .catch(err => {
+                res.status(200).json({
+                    type: 'error',
+                    alert: `Something went wrong. Could not add employee`,
+                });
+                console.log("Error: ", err)
+            })
+    }
 });
 
 //Get all table employee data
@@ -194,7 +236,8 @@ router.get("/:employeeid", (req, res, next) => {
                 "contactnumber": doc.contactnumber,
                 "designation": doc.designation,
                 "civilstatus": doc.civilstatus,
-                "employeestatus": doc.employeestatus
+                "employeestatus": doc.employeestatus,
+                "hiredby": doc.hiredby,
             };
 
             res.status(200).json({

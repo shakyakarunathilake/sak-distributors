@@ -11,6 +11,7 @@ const employeeSchema = mongoose.Schema({
     email: { type: String, requied: true },
     dob: { type: String, required: true },
     hireddate: { type: String, required: true },
+    hiredby: { type: String, required: true },
     address: { type: String, required: true },
     nic: { type: String, required: true },
     gender: { type: String, required: true },
@@ -18,8 +19,8 @@ const employeeSchema = mongoose.Schema({
     designation: { type: String, required: true },
     civilstatus: { type: String, required: true },
     employeestatus: { type: String, required: true },
-    firsttimelogin: { type: Boolean, required: true },
-    password: { type: String, required: true }
+    firsttimelogin: { type: Boolean, required: false },
+    password: { type: String, required: false }
 })
 
 module.exports = mongoose.model('Employee', employeeSchema);

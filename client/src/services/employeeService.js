@@ -34,6 +34,7 @@ export const getTitleOptions = () => ([
 export const getEmployeeStatusOptions = () => ([
     { id: "es01", title: "Active" },
     { id: "es02", title: "Inactive" },
+    { id: "es03", title: "Limited Access"}
 ])
 
 // export const getRoleOptions = () => ([
