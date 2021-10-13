@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import classnames from 'classnames';
 
 //Shared Components
 import Page from '../../shared/Page/Page';
@@ -24,7 +25,121 @@ import EditIcon from '@material-ui/icons/Edit';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import NewReleasesIcon from '@mui/icons-material/NewReleases';
 
+//Product Form
+import ProductForm from './ProductForm';
+import ViewProduct from './ViewProduct';
+
+//Connecting to Backend
+import axios from 'axios';
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 export default function ManageProduct() {
+
+    const [type, setType] = React.useState();
+    const [open, setOpen] = React.useState(false);
+    const [alert, setAlert] = React.useState();
+
+    const [records, setRecords] = useState([]);
+    const [headCells, setHeadCells] = useState([]);
+
+    const [productRecords, setProductRecords] = useState(null);
+    const [action, setAction] = useState('');
+    const [openPopup, setOpenPopup] = useState(false);
+
+    const [nextId, setNextId] = useState([]);
+    const [reRender, setReRender] = useState(null);
+
+    const handleAlert = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen(false);
+    };
+
+    useEffect(() => {
+        axios
+            .get("http://localhost:8080/products/get-all-products-table-data")
+            .then(res => {
+                sessionStorage.setItem("ProductsTableData", JSON.stringify(res.data));
+                setHeadCells(res.data.thead);
+                setRecords(res.data.tbody);
+                setReRender(null);
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }, [reRender]);
+
+    const addOrEdit = (product, productid) => {
+        for (let [key, value] of product.entries()) {
+            console.log(key, value);
+        }
+        if (action === "Create") {
+            axios
+                .post("http://localhost:8080/products/create-product", product)
+                .then(res => {
+                    setAlert(res.data.alert);
+                    setType(res.data.type);
+                    handleAlert();
+                    setReRender(productid);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+            ;
+
+        } if (action === "Edit") {
+            axios
+                .post(`http://localhost:8080/products/update-by-id/${productid}`, product)
+                .then(res => {
+                    setAlert(res.data.alert);
+                    setType(res.data.type);
+                    handleAlert();
+                    setReRender(productid);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+            ;
+        }
+
+        setProductRecords(null)
+        setOpenPopup(false);
+        setAction('');
+    }
+
+    const openInPopup = productid => {
+        axios
+            .get(`http://localhost:8080/products/${productid}`)
+            .then(res => {
+                setProductRecords(res.data.product);
+                setOpenPopup(true);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+
+    const getNextProductId = () => {
+        axios
+            .get("http://localhost:8080/products/get-next-product-variant-grn-id")
+            .then(res => {
+                setNextId([res.data.nextproductid, res.data.nextvariantid, res.data.nextgrnid]);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
+    const { TableContainer, TableHead } = useTable(headCells);
+
     return (
         <Page title="Manage Products">
             <div className={style.container}>
@@ -45,7 +160,7 @@ export default function ManageProduct() {
                                 ),
                             }}
                         />
-                    </div> 
+                    </div>
                     <Button
                         className={style.button}
                         color="primary"
@@ -54,14 +169,13 @@ export default function ManageProduct() {
                         onClick={
                             () => {
                                 // setAction('Create');
-                                // getNextCustomerId();
                                 // setOpenPopup(true);
-                                // setCustomerRecords(null);
+                                // setProductRecords(null);
                             }
                         }
                     >
                         <NewReleasesIcon className={style.icon} />
-                        Add New Offer
+                        Add New Variant
                     </Button>
 
                     <Button
@@ -71,10 +185,10 @@ export default function ManageProduct() {
                         variant="contained"
                         onClick={
                             () => {
-                                // setAction('Create');
-                                // getNextCustomerId();
-                                // setOpenPopup(true);
-                                // setCustomerRecords(null);
+                                setAction('Create');
+                                getNextProductId();
+                                setOpenPopup(true);
+                                setProductRecords(null);
                             }
                         }
                     >
@@ -84,8 +198,95 @@ export default function ManageProduct() {
                 </div>
 
                 <div className={style.pagecontent}>
-                </div>
+                    <TableContainer >
+                        <TableHead />
+                        <TableBody className={style.tablebody}>
+                            {
+                                records.map((row, i) => (
+                                    <TableRow
+                                        className={classnames(
+                                            { [style.greytablerow]: i % 2 === 1 },
+                                            { [style.whitetablerow]: i % 2 === 0 },
+                                        )}
+                                        key={row[0]}
+                                    >
+                                        {
+                                            row.map((cell, i) => (
+                                                <TableCell key={row[0] + cell}
+                                                    className={classnames(
+                                                        { [style.active]: cell === "Active" },
+                                                        { [style.inactive]: cell === "Inactive" }
+                                                    )}
+                                                >
+                                                    {cell}
+                                                </TableCell>
+                                            ))
+                                        }
+                                        <TableCell
+                                            align="center"
+                                            className={style.actioncolumn}
+                                        >
+                                            <Tooltip title="View" arrow>
+                                                <VisibilityIcon
+                                                    className={style.visibilityIcon}
+                                                    onClick={() => {
+                                                        setAction('View');
+                                                        openInPopup(row[0]);
+                                                    }}
+                                                />
+                                            </Tooltip>
+                                            <Tooltip title="Edit" arrow>
+                                                <EditIcon
+                                                    className={style.editIcon}
+                                                    onClick={() => {
+                                                        setAction('Edit');
+                                                        openInPopup(row[0]);
+                                                    }}
+                                                />
+                                            </Tooltip>
+                                        </TableCell>
+                                    </TableRow>
 
+                                ))
+                            }
+                        </TableBody>
+                    </TableContainer>
+                </div>
+                <PopUp
+                    openPopup={openPopup}
+                    setOpenPopup={setOpenPopup}
+                >
+                    {action === 'View' ?
+                        <ViewProduct
+                            productRecords={productRecords}
+                            setOpenPopup={setOpenPopup}
+                            setAction={setAction}
+                        /> :
+                        <ProductForm
+                            addOrEdit={addOrEdit}
+                            productRecords={productRecords}
+                            setOpenPopup={setOpenPopup}
+                            nextId={nextId}
+                        />
+                    }
+                </PopUp>
+                <Snackbar
+                    open={open}
+                    autoHideDuration={2500}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center',
+                    }}
+                >
+                    <Alert
+                        onClose={handleClose}
+                        severity={type}
+                        sx={{ width: '100%' }}
+                    >
+                        {alert}
+                    </Alert>
+                </Snackbar>
             </div>
         </Page>
     )

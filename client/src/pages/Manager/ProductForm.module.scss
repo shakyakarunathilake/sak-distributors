@@ -1,0 +1,196 @@
+@import "../../styles/variables";
+
+.container {
+    width: 900px;
+    box-sizing: border-box;
+    grid-template-columns: min-content auto;
+}
+
+.header {
+    display: grid;
+    grid-template-columns: auto min-content;
+    font-size: 1.8em;
+    font-weight: 600;
+
+    .icon {
+        color: red;
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+}
+
+.body {
+    .form {
+        display: grid;
+        grid-template-rows: auto min-content;
+
+        .formFields {
+            display: grid;
+            grid-template-columns: min-content auto;
+            grid-column-gap: 20px;
+
+            .columnA {
+                display: grid;
+                grid-template-rows: min-content min-content min-content auto;
+
+                .image {
+                    border-radius: 50%;
+                    color: #6d6d6d;
+                    padding: 55px 10px 10px 10px;
+                    // position: relative;
+
+                    .imgWrapper {
+                        height: 260px;
+                        width: 260px;
+                        border-radius: 50%;
+                        overflow: hidden;
+
+                        img {
+                            height: 260px;
+                            width: 260px;
+                            object-fit: contained;
+                        }
+
+                        .uploadWrapper {
+                            background-color: #c4c4c4;
+                            height: 60px;
+                            width: 260px;
+                            margin-top: -45px;
+                            position: relative;
+                            padding-top: 5px;
+                            text-align: center;
+                        }
+
+                        .label {
+                            font-size: 1.2em;
+                            font-weight: 600;
+                            color: $secondaryMain;
+                            cursor: pointer;
+                        }
+
+                        // .input {
+                        //     opacity: 0;
+                        //     position: absolute;
+                        //     z-index: -1;
+                        // }
+                    }
+                    // .partialCircle {
+                    //     width: 260px;
+                    //     height: 260px;
+                    //     background: #c4c4c4;
+                    //     border-radius: 50%;
+                    //     // position: fixed;
+                    //     // top: 118px;
+                    //     clip: rect(210px, 260px, 260px, 0);
+                    //     z-index: 5;
+
+                    //     &:after {
+                    //         text-align: center;
+                    //         margin-top: 215px;
+                    //         display: block;
+                    //         font-size: 1.2em;
+                    //         font-weight: 600;
+                    //         content: "Upload";
+                    //     }
+                    // }
+                }
+
+                .redFontCenter {
+                    color: red;
+                    text-align: center;
+                    font-size: 0.7em;
+                }
+
+                .productId {
+                    margin-top: 10px;
+                    font-size: 1em;
+                    text-align: center;
+
+                    .input {
+                        border: none;
+                        border-color: transparent;
+                        text-align: center;
+                        font-size: 1em;
+                        font-weight: 600;
+
+                        &:disabled {
+                            background: #ffffff;
+                        }
+                    }
+                }
+            }
+
+            .columnB {
+                .redFont {
+                    color: red;
+                    font-size: 0.7em;
+                }
+
+                .row {
+                    padding: 8px 0;
+                }
+
+                .dividerDiv {
+                    margin: 30px 0;
+
+                    .chip {
+                        margin: 0 10px;
+                        color: rgba(0, 0, 0, 1);
+                        font-size: 1em;
+                        font-weight: 600;
+                    }
+                }
+
+                .rowminicolumns {
+                    display: grid;
+                    grid-template-columns: calc(25% - 20px) calc(40% - 25px) calc(40% - 25px);
+                    grid-column-gap: 20px;
+                    padding: 8px 0;
+                }
+
+                .gridrow {
+                    display: grid;
+                    grid-template-columns: calc(50% - 10px) calc(50% - 10px);
+                    grid-column-gap: 20px;
+                    padding: 8px 0;
+                }
+
+                .threecolumns {
+                    display: grid;
+                    grid-template-columns: calc(33.3% - 15px) calc(33.3% - 15px) calc(33.3% - 10px);
+                    grid-column-gap: 20px;
+                    padding: 8px 0;
+                }
+
+                .buttonRow {
+                    display: grid;
+                    grid-template-columns: auto min-content;
+                    grid-column-gap: 30px;
+                    text-align: right;
+
+                    Button {
+                        font-size: 1em;
+                        margin: 20px 0px 5px 0px;
+                        height: 45px;
+                        width: 190px;
+                    }
+
+                    .resetBtnDiv {
+                        .resetBtn {
+                            border-color: $primaryMain;
+                            color: $primaryMain;
+                        }
+                    }
+
+                    .submitBtnDiv {
+                        .submitBtn {
+                            background-color: $primaryMain;
+                            color: $inverseFontColor;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
