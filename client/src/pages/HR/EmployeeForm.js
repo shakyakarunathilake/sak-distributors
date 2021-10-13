@@ -27,7 +27,7 @@ export default function EmployeesForm(props) {
 
     const { setOpenPopup, addOrEdit, employeeRecords, nextEmpId } = props;
 
-    const { handleSubmit, formState: { errors }, control, reset, setValue, getValues, trigger, clearErrors } = useForm();
+    const { handleSubmit, formState: { errors }, control, reset, setValue, getValues, clearErrors } = useForm();
 
     const [file, setFile] = useState("");
     const [limitedAccess, setLimitedAccess] = useState(false);
