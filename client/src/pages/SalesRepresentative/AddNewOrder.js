@@ -1,28 +1,28 @@
 import React, { useEffect, useState } from 'react';
 
-import { useForm, Controller } from 'react-hook-form';
+// import { useForm } from 'react-hook-form';
 
 //Shared Components
 import Page from '../../shared/Page/Page';
-import Box from '@mui/material/Box';
+// import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import PopUp from '../../shared/PopUp/PopUp';
-import Snackbar from '@mui/material/Snackbar';
-import MuiAlert from '@mui/material/Alert';
+// import Autocomplete from '@mui/material/Autocomplete';
+// import PopUp from '../../shared/PopUp/PopUp';
+// import Snackbar from '@mui/material/Snackbar';
+// import MuiAlert from '@mui/material/Alert';
 
 //SCSS styles
 import style from './AddNewOrder.module.scss';
 
 //Material UI 
 import Button from '@material-ui/core/Button';
-import { InputAdornment } from '@material-ui/core';
+// import { InputAdornment } from '@material-ui/core';
 import { TableContainer, Paper, Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core';
 import Tooltip from '@mui/material/Tooltip';
 
 //Material UI Icons
 import DoneIcon from '@mui/icons-material/Done';
-import SearchIcon from '@material-ui/icons/Search';
+// import SearchIcon from '@material-ui/icons/Search';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
@@ -36,7 +36,7 @@ export default function CreateOrder() {
     // const [customer, setCustomer] = useState();
     // const [filterData, setFilterData] = useState("");
 
-    const { handleSubmit, formState: { errors }, control, reset, setValue, getValues } = useForm();
+    // const { handleSubmit, formState: { errors }, control, reset, setValue, getValues } = useForm();
 
     useEffect(() => {
         axios
@@ -91,7 +91,26 @@ export default function CreateOrder() {
                             <td align="left">{firstname} {lastname} ({employeeid}) </td>
                             <th align="left">Customer</th>
                             <td align="left" className={style.mincontent}>
-                                
+                                {/* <Autocomplete
+                                    options={customerInfo}
+                                    style={{ width: 350 }}
+                                    getOptionLabel={(option) => {
+                                        console.log("Option:", option);
+                                        return (`${option.customerid}: ${option.storename}`)
+                                    }}
+                                    renderInput={(params) => {
+                                        return (
+                                            <TextField
+                                                {...params}
+                                                variant="outlined"
+                                                label="Customer"
+                                            />
+                                        );
+                                    }}
+                                    renderOption={(option) => {
+                                        return `${option.customerid} - ${option.storename}`;
+                                    }}
+                                /> */}
                             </td>
                         </tr>
                         <tr>
@@ -285,12 +304,13 @@ export default function CreateOrder() {
                                         </Tooltip>
                                     </TableCell>
                                 </TableRow>
-                                <TableRow className={style.whitetablerow}>
+                                <TableRow>
                                     <TableCell padding="none" className={style.textfield}>
                                         <TextField
                                             fullWidth={false}
                                             size="small"
                                             label="Prod. ID/ Name"
+                                            color="primary"
                                         />
                                     </TableCell>
                                     <TableCell align="center"> - </TableCell>
@@ -299,6 +319,7 @@ export default function CreateOrder() {
                                             fullWidth={false}
                                             size="small"
                                             label="Cs"
+                                            color="primary"
                                         />
                                     </TableCell>
                                     <TableCell align="center" padding="none" className={style.textfield}>
@@ -306,6 +327,7 @@ export default function CreateOrder() {
                                             fullWidth={false}
                                             size="small"
                                             label="Pcs"
+                                            color="primary"
                                         />
                                     </TableCell>
                                     <TableCell align="center" padding="none" className={style.textfield}>
@@ -313,6 +335,7 @@ export default function CreateOrder() {
                                             fullWidth={false}
                                             size="small"
                                             label="Cs"
+                                            color="primary"
                                         />
                                     </TableCell>
                                     <TableCell align="center" padding="none" className={style.textfield}>
@@ -320,6 +343,7 @@ export default function CreateOrder() {
                                             fullWidth={false}
                                             size="small"
                                             label="Pcs"
+                                            color="primary"
                                         />
                                     </TableCell>
                                     <TableCell align="center" padding="none" className={style.textfield}>
@@ -327,6 +351,7 @@ export default function CreateOrder() {
                                             fullWidth={false}
                                             size="small"
                                             label="D"
+                                            color="primary"
                                         />
                                     </TableCell>
                                     <TableCell align="center" padding="none" className={style.textfield}>
@@ -334,6 +359,7 @@ export default function CreateOrder() {
                                             fullWidth={false}
                                             size="small"
                                             label="R"
+                                            color="primary"
                                         />
                                     </TableCell>
                                     <TableCell align="center"> - </TableCell>
