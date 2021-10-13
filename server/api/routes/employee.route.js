@@ -60,9 +60,6 @@ router.get("/get-next-regno", (req, res, next) => {
 //Create an employee
 router.post("/create-employee", uploads.single('employeeimage'), (req, res, next) => {
 
-    console.log("Body: ", req.body);
-    console.log("DOB: ", req.body.dob, "Hired date:", req.body.hireddate);
-
     const dob = new Date(req.body.dob).toISOString().split('T')[0];
     const hireddate = new Date(req.body.hireddate).toISOString().split('T')[0];
 
