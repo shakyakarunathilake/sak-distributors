@@ -34,15 +34,8 @@ export const getTitleOptions = () => ([
 export const getEmployeeStatusOptions = () => ([
     { id: "es01", title: "Active" },
     { id: "es02", title: "Inactive" },
-    { id: "es03", title: "Limited Access"}
+    { id: "es03", title: "Limited Access" }
 ])
-
-// export const getRoleOptions = () => ([
-//     { id: "r01", title: "Admin" },
-//     { id: "r02", title: "Clerk" },
-//     { id: "r03", title: "Sales Representative" },
-//     { id: "r04", title: "Worker" },
-// ])
 
 export const getCustomerOptions = () => ([
     { id: "c01", title: "Registered Customer" },
@@ -56,4 +49,22 @@ export const getRouteOptions = () => ([
     { id: "rt004", title: "Rambukkana - Mawanella" },
     { id: "rt005", title: "Rambukkana - Mawathagama" },
     { id: "rt006", title: "Rambukkana - Hatharaliyadda" },
+])
+
+export const getSupplierOptions = () => ([
+    { id: "s001", title: "Milco Srilanka (Pvt) Ltd" },
+    { id: "s002", title: "Wijaya Products" },
+    { id: "s003", title: "Cherish Biscuits (Pvt) Ltd" },
+    { id: "s004", title: "Link Natural Products (Pvt) Ltd" },
+    { id: "s005", title: "Swadeshi Industrial Works PLC" },
+])
+
+export const getVariantTypeOptions = () => ([
+    { id: "vt001", title: "General" },
+    { id: "vt002", title: "Promotion" },
+])
+
+export const getVariantStatusOptions = () => ([
+    { id: "vs001", title: "Active" },
+    { id: "vs002", title: "Inactive" },
 ])
