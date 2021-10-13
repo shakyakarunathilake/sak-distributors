@@ -97,12 +97,14 @@ router.get("/get-all-basic-customer-data", (req, res, next) => {
         .find()
         .exec()
         .then(doc => {
-            const customerinfo = doc.map(x => [
-                { "customerid": x.customerid },
-                { "storename": x.storename },
-                { "route": x.route },
-                { "shippingaddress": x.shippingaddress }
-            ])
+            const customerinfo = doc.map(x => ({
+                "customerid": x.customerid,
+                "storename": x.storename,
+                "route": x.route,
+                "shippingaddress": x.shippingaddress
+            }))
+
+            console.log("Customer Info: ", customerinfo);
 
             res.status(201).json({
                 message: "Handeling GET requests to /get-all-basic-customer-info",
@@ -128,8 +130,7 @@ router.get("/get-all-customer-table-data", (req, res, next) => {
                 "Title",
                 "Customer Name",
                 "Shipping Address",
-                "Billing Address",
-                "Customer Contact Number"
+                "Contact No."
             ]
 
             const tbody = doc.map(x => [
@@ -138,7 +139,6 @@ router.get("/get-all-customer-table-data", (req, res, next) => {
                 x.title,
                 x.firstname + " " + x.lastname,
                 x.shippingaddress,
-                x.billingaddress,
                 x.customercontactnumber,
             ])
 
