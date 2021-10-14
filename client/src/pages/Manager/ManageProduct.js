@@ -38,9 +38,11 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 export default function ManageProduct() {
 
-    const [type, setType] = React.useState();
-    const [open, setOpen] = React.useState(false);
-    const [alert, setAlert] = React.useState();
+    const [searchText, setSearchText] = useState();
+
+    const [type, setType] = useState();
+    const [open, setOpen] = useState(false);
+    const [alert, setAlert] = useState();
 
     const [records, setRecords] = useState([]);
     const [headCells, setHeadCells] = useState([]);
@@ -115,9 +117,13 @@ export default function ManageProduct() {
         setAction('');
     }
 
-    const openInPopup = productid => {
+    const openInPopup = (productid, variantid) => {
+
+        //Development Stage
+        console.log(productid, variantid);
+
         axios
-            .get(`http://localhost:8080/products/${productid}`)
+            .get(`http://localhost:8080/products/${productid}/${variantid}`)
             .then(res => {
                 setProductRecords(res.data.product);
                 setOpenPopup(true);
@@ -152,6 +158,9 @@ export default function ManageProduct() {
                             className={style.searchtextfield}
                             fullWidth={true}
                             placeholder="Search"
+                            onChange={e =>
+                                setSearchText(e.target.value)
+                            }
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">
@@ -161,6 +170,7 @@ export default function ManageProduct() {
                             }}
                         />
                     </div>
+
                     <Button
                         className={style.button}
                         color="primary"
@@ -208,11 +218,11 @@ export default function ManageProduct() {
                                             { [style.greytablerow]: i % 2 === 1 },
                                             { [style.whitetablerow]: i % 2 === 0 },
                                         )}
-                                        key={row[0]}
+                                        key={i}
                                     >
                                         {
                                             row.map((cell, i) => (
-                                                <TableCell key={row[0] + cell}
+                                                < TableCell key={i}
                                                     className={classnames(
                                                         { [style.active]: cell === "Active" },
                                                         { [style.inactive]: cell === "Inactive" }
@@ -231,7 +241,7 @@ export default function ManageProduct() {
                                                     className={style.visibilityIcon}
                                                     onClick={() => {
                                                         setAction('View');
-                                                        openInPopup(row[0]);
+                                                        openInPopup(row[0], row[3]);
                                                     }}
                                                 />
                                             </Tooltip>
@@ -288,6 +298,6 @@ export default function ManageProduct() {
                     </Alert>
                 </Snackbar>
             </div>
-        </Page>
+        </Page >
     )
 }
