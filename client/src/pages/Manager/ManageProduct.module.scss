@@ -9,10 +9,11 @@
     box-sizing: border-box;
     display: grid;
     grid-template-columns: auto max-content max-content;
+    padding: 0 25px;
 
     .search {
         width: 250px;
-        margin: 20px 25px;
+        margin: 20px 20px 20px 0;
 
         .searchtextfield {
             height: 20px;
@@ -23,7 +24,7 @@
         height: 53.28px;
         color: $inverseFontColor;
         font-size: 0.95em;
-        margin: 20px 25px 20px 0;
+        margin: 20px 0 20px 20px;
     }
 
     .icon {

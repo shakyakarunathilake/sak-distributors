@@ -25,6 +25,7 @@ router.get("/", (req, res, next) => {
     });
 });
 
+
 //Get next product id
 router.get("/get-next-product-variant-grn-id", (req, res, next) => {
 
@@ -37,27 +38,24 @@ router.get("/get-next-product-variant-grn-id", (req, res, next) => {
         .find({}, { productid: 1, _id: 0 })
         .exec()
         .then(doc => {
-            let productidarray;
-
-            if (!doc.length === 0) {
-                productidarray = doc.map(x => {
-                    return parseInt(x.productid.slice(9))
-                });
-            } else {
-                productidarray = [00000];
-            }
-
+            const productidarray = doc.map(x => {
+                return parseInt(x.productid.slice(1))
+            })
 
             const nextproductid = pad(String(Math.max(...productidarray) + 1), 6);
             const nextvariantid = "PV0001";
             const nextgrnid = "GRN0001";
 
-            res.status(200).json({
-                message: "Handeling GET requests to /get-next-productid",
-                nextproductid: nextproductid,
-                nextvariantid: nextvariantid,
-                nextgrnid: nextgrnid
-            });
+            console.log("PRODUCT ID: ", nextproductid);
+            console.log("VARIANTID: ", nextvariantid);
+            console.log("GRN ID:", nextgrnid);
+
+            // res.status(200).json({
+            //     message: "Handeling GET requests to /get-next-productid",
+            //     nextproductid: nextproductid,
+            //     nextvariantid: nextvariantid,
+            //     nextgrnid: nextgrnid
+            // });
         })
         .catch(err => {
             console.log(err);
@@ -66,6 +64,7 @@ router.get("/get-next-product-variant-grn-id", (req, res, next) => {
 
 })
 
+
 //Get all table product data
 router.get("/get-all-products-table-data", (req, res, next) => {
 
@@ -73,6 +72,7 @@ router.get("/get-all-products-table-data", (req, res, next) => {
         .find()
         .exec()
         .then(doc => {
+
             const thead = [
                 "Prod. ID",
                 "Name",
@@ -162,4 +162,54 @@ router.post("/create-product", uploads.single("productimage"), (req, res, next) 
         })
 });
 
+
+//Get product data by Product ID
+router.get("/:productid/:variantid", (req, res, next) => {
+    const productid = req.params.productid;
+    const variantid = req.params.variantid;
+
+    Product
+        .findOne({ "productid": productid })
+        .exec()
+        .then(doc => {
+
+            let result = doc.variants.map(x => {
+                if (x.variantid = variantid) {
+                    return x
+                }
+            })
+
+            console.log(result)
+
+            const product = {
+                "productid": doc.productid,
+                "name": doc.name,
+                "supplier": doc.supplier,
+                "productimage": doc.productimage,
+                "addeddate": doc.addeddate,
+                "addedby": doc.addedby,
+                "variantid": result[0].variantid,
+                "type": result[0].type,
+                "bulkprice": result[0].bulkprice,
+                "mrp": result[0].mrp,
+                "price": result[0].price,
+                "grnid": result[0].grnid,
+                "offercaption": result[0].offercaption,
+                "status": result[0].status,
+                "variantaddeddate": result[0].addeddate,
+                "variantaddedby": result[0].addedby,
+            };
+
+            console.log(product);
+
+            res.status(200).json({
+                message: "Handeling GET requests to /:productid/:variantid",
+                product: product
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error ": err });
+        })
+})
 module.exports = router;

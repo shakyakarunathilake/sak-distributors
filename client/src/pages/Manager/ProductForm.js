@@ -20,7 +20,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 //Material UI Icons
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
-//Images and SVGS
+//Default Image
 import product from '../../images/product.svg';
 
 //SCSS Styles
@@ -131,6 +131,7 @@ export default function ProductsForm(props) {
         productFormData.append("variantaddedby", values.variantaddedby);
 
 
+        resetForm();
         addOrEdit(productFormData, getValues("productid"));
     };
 
@@ -221,7 +222,7 @@ export default function ProductsForm(props) {
 
                             <div className={style.row}>
                                 <Controller
-                                    
+
                                     name={"name"}
                                     control={control}
                                     rules={{
@@ -244,7 +245,6 @@ export default function ProductsForm(props) {
 
                             <div className={style.row}>
                                 <Controller
-                                    
                                     name={"supplier"}
                                     control={control}
                                     rules={{
@@ -267,7 +267,7 @@ export default function ProductsForm(props) {
                             <div className={style.gridrow}>
                                 <div>
                                     <Controller
-                                        
+
                                         name={"addedby"}
                                         control={control}
                                         rules={{
@@ -289,7 +289,7 @@ export default function ProductsForm(props) {
                                 </div>
                                 <div>
                                     <Controller
-                                        
+
                                         name={"addeddate"}
                                         control={control}
                                         rules={{
@@ -320,7 +320,7 @@ export default function ProductsForm(props) {
                             <div className={style.gridrow}>
                                 <div>
                                     <Controller
-                                        
+
                                         name={"variantid"}
                                         control={control}
                                         rules={{
@@ -341,7 +341,7 @@ export default function ProductsForm(props) {
                                 </div>
                                 <div>
                                     <Controller
-                                        
+
                                         name={"type"}
                                         control={control}
                                         rules={{
@@ -364,7 +364,6 @@ export default function ProductsForm(props) {
 
                             <div className={style.row}>
                                 <Controller
-                                    
                                     name={"offercaption"}
                                     control={control}
                                     render={({ field: { onChange, value } }) => (
@@ -412,7 +411,7 @@ export default function ProductsForm(props) {
                                 </div>
                                 <div>
                                     <Controller
-                                        
+
                                         name={"mrp"}
                                         control={control}
                                         rules={{
@@ -474,7 +473,7 @@ export default function ProductsForm(props) {
                             <div className={style.gridrow}>
                                 <div>
                                     <Controller
-                                        
+
                                         name={"grnid"}
                                         control={control}
                                         rules={{
@@ -495,7 +494,7 @@ export default function ProductsForm(props) {
                                 </div>
                                 <div>
                                     <Controller
-                                        
+
                                         name={"status"}
                                         control={control}
                                         rules={{
@@ -519,7 +518,7 @@ export default function ProductsForm(props) {
                             <div className={style.gridrow}>
                                 <div>
                                     <Controller
-                                        
+
                                         name={"variantaddedby"}
                                         control={control}
                                         rules={{
@@ -541,7 +540,7 @@ export default function ProductsForm(props) {
                                 </div>
                                 <div>
                                     <Controller
-                                        
+
                                         name={"variantaddeddate"}
                                         control={control}
                                         rules={{

@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import Page from '../../shared/Page/Page';
 // import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-// import Autocomplete from '@mui/material/Autocomplete';
+import Autocomplete from '@mui/material/Autocomplete';
 // import PopUp from '../../shared/PopUp/PopUp';
 // import Snackbar from '@mui/material/Snackbar';
 // import MuiAlert from '@mui/material/Alert';
@@ -91,11 +91,10 @@ export default function CreateOrder() {
                             <td align="left">{firstname} {lastname} ({employeeid}) </td>
                             <th align="left">Customer</th>
                             <td align="left" className={style.mincontent}>
-                                {/* <Autocomplete
+                                <Autocomplete
                                     options={customerInfo}
                                     style={{ width: 350 }}
                                     getOptionLabel={(option) => {
-                                        console.log("Option:", option);
                                         return (`${option.customerid}: ${option.storename}`)
                                     }}
                                     renderInput={(params) => {
@@ -108,9 +107,9 @@ export default function CreateOrder() {
                                         );
                                     }}
                                     renderOption={(option) => {
-                                        return `${option.customerid} - ${option.storename}`;
+                                        return `${option.key}`;
                                     }}
-                                /> */}
+                                />
                             </td>
                         </tr>
                         <tr>
