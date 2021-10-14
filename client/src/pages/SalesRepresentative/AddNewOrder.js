@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
-// import { useForm } from 'react-hook-form';
-
 //Shared Components
 import Page from '../../shared/Page/Page';
-// import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import MenuItem from '@mui/material/MenuItem';
 // import PopUp from '../../shared/PopUp/PopUp';
 // import Snackbar from '@mui/material/Snackbar';
 // import MuiAlert from '@mui/material/Alert';
@@ -16,20 +14,18 @@ import style from './AddNewOrder.module.scss';
 
 //Material UI 
 import Button from '@material-ui/core/Button';
-// import { InputAdornment } from '@material-ui/core';
 import { TableContainer, Paper, Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core';
 import Tooltip from '@mui/material/Tooltip';
 
 //Material UI Icons
 import DoneIcon from '@mui/icons-material/Done';
-// import SearchIcon from '@material-ui/icons/Search';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 //Connecting to backend
 import axios from 'axios';
 
-export default function CreateOrder() {
+export default function AddNewOrder() {
 
     const [nextInvoiceNo, setNextInvoiceNo] = useState("");
     const [customerInfo, setCustomerInfo] = useState([]);
@@ -77,55 +73,75 @@ export default function CreateOrder() {
 
             <div className={style.container}>
 
+                <div className={style.orderDetails}>
+                    <table className={style.details}>
+                        <tbody>
+                            <tr>
+                                <th align="left">Order Placed</th>
+                                <td align="left">{dateTime}</td>
+                            </tr>
+                            <tr>
+                                <th align="left">Sales Rep.</th>
+                                <td align="left">{firstname} {lastname} ({employeeid}) </td>
+                            </tr>
+                            <tr>
+                                <th align="left">Contact No.</th>
+                                <td align="left">{contactnumber}</td>
+                            </tr>
+                            <tr>
+                                <th align="left">Delivery Date</th>
+                                <td align="left">{deliveryDate}</td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                <table className={style.details}>
-                    <tbody>
-                        <tr>
-                            <th align="left">Order Placed</th>
-                            <td align="left">{dateTime}</td>
-                            <th align="left">Bill No.</th>
-                            <td align="left" className={style.mincontent}>{nextInvoiceNo}</td>
-                        </tr>
-                        <tr>
-                            <th align="left">Sales Rep.</th>
-                            <td align="left">{firstname} {lastname} ({employeeid}) </td>
-                            <th align="left">Customer</th>
-                            <td align="left" className={style.mincontent}>
-                                <Autocomplete
-                                    options={customerInfo}
-                                    style={{ width: 350 }}
-                                    getOptionLabel={(option) => {
-                                        return (`${option.customerid}: ${option.storename}`)
-                                    }}
-                                    renderInput={(params) => {
-                                        return (
-                                            <TextField
-                                                {...params}
-                                                variant="outlined"
-                                                label="Customer"
-                                            />
-                                        );
-                                    }}
-                                    renderOption={(option) => {
-                                        return `${option.key}`;
-                                    }}
-                                />
-                            </td>
-                        </tr>
-                        <tr>
-                            <th align="left">Contact No.</th>
-                            <td align="left">{contactnumber}</td>
-                            <th align="left">Route</th>
-                            <td align="left" className={style.mincontent}>{customerInfo.route}</td>
-                        </tr>
-                        <tr>
-                            <th align="left">Delivery Date</th>
-                            <td align="left">{deliveryDate}</td>
-                            <th align="left">Address</th>
-                            <td align="left" className={style.mincontent}>{customerInfo.shippingaddress}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <table className={style.details}>
+                        <tbody>
+                            <tr>
+                                <th align="left">Bill No.</th>
+                                <td align="left">{nextInvoiceNo}</td>
+                            </tr>
+                            <tr>
+                                <th align="left">Customer</th>
+                                <td align="left">
+                                    <Autocomplete
+                                        options={customerInfo}
+                                        style={{ width: 350 }}
+                                        getOptionLabel={(option) => {
+                                            return `${option.storename} (${option.customerid})`
+                                        }}
+                                        renderInput={(params) => {
+                                            return (
+                                                <TextField
+                                                    {...params}
+                                                    variant="outlined"
+                                                    label="Customer"
+                                                    size="small"
+                                                    fullWidth={true}
+                                                />
+                                            );
+                                        }}
+                                        renderOption={(option) => {
+                                            return (
+                                                <MenuItem>
+                                                    {option.key}
+                                                </MenuItem>
+                                            )
+                                        }}
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th align="left">Route</th>
+                                <td align="left">{customerInfo.route}</td>
+                            </tr>
+                            <tr>
+                                <th align="left">Address</th>
+                                <td align="left">{customerInfo.shippingaddress}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
                 <div className={style.table}>
                     <TableContainer className={style.tablecontainer} component={Paper}>
