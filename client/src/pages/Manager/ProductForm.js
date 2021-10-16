@@ -15,7 +15,6 @@ import DatePicker from '../../shared/DatePicker/DatePicker';
 import Button from '@material-ui/core/Button';
 import Divider from '@mui/material/Divider';
 import { InputAdornment } from '@material-ui/core';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 //Material UI Icons
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
@@ -27,22 +26,6 @@ import product from '../../images/product.svg';
 import style from './ProductForm.module.scss';
 
 
-const theme = createTheme({
-    components: {
-        MuiDivider: {
-            styleOverrides: {
-                root: {
-                    ":before": {
-                        borderTop: "thin solid rgba(0, 0, 0, 1)"
-                    },
-                    ":after": {
-                        borderTop: "thin solid rgba(0, 0, 0, 1)"
-                    }
-                },
-            },
-        },
-    },
-});
 
 
 export default function ProductsForm(props) {
@@ -71,8 +54,8 @@ export default function ProductsForm(props) {
             setValue("grnid", productRecords.grnid);
             setValue("offercaption", productRecords.offercaption);
             setValue("status", productRecords.status);
-            setValue("variantaddeddate", productRecords.addeddate);
-            setValue("variantaddedby", productRecords.addedby);
+            setValue("variantaddeddate", productRecords.variantaddeddate);
+            setValue("variantaddedby", productRecords.variantaddedby);
 
 
         } else {
@@ -125,7 +108,7 @@ export default function ProductsForm(props) {
         productFormData.append("mrp", values.mrp);
         productFormData.append("price", values.price);
         productFormData.append("grnid", values.grnid);
-        productFormData.append("offercaption", values.offercaption);
+        productFormData.append("offercaption", values.offercaption ? values.offercaption : "");
         productFormData.append("status", values.status);
         productFormData.append("variantaddeddate", values.variantaddeddate);
         productFormData.append("variantaddedby", values.variantaddedby);
@@ -289,7 +272,6 @@ export default function ProductsForm(props) {
                                 </div>
                                 <div>
                                     <Controller
-
                                         name={"addeddate"}
                                         control={control}
                                         rules={{
@@ -310,17 +292,12 @@ export default function ProductsForm(props) {
                             </div>
 
                             <div className={style.dividerDiv}>
-                                <ThemeProvider theme={theme}>
-                                    <Divider >
-                                        <span className={style.chip}> Product Variant</span>
-                                    </Divider>
-                                </ThemeProvider>
+                                <Divider variant="middle" />
                             </div>
 
                             <div className={style.gridrow}>
                                 <div>
                                     <Controller
-
                                         name={"variantid"}
                                         control={control}
                                         rules={{
@@ -341,7 +318,6 @@ export default function ProductsForm(props) {
                                 </div>
                                 <div>
                                     <Controller
-
                                         name={"type"}
                                         control={control}
                                         rules={{
@@ -373,7 +349,7 @@ export default function ProductsForm(props) {
                                             placeholder="Ex: Buy 24 and get 6 free"
                                             onChange={onChange}
                                             value={value || ''}
-                                            label="Offer Caption *"
+                                            label="Offer Caption"
                                         />
                                     )}
                                 />
