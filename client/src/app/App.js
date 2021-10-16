@@ -9,6 +9,7 @@ import EmployeeForm from '../pages/HR/EmployeeForm';
 import ViewEmployee from '../pages/HR/ViewEmployee';
 import ApproveSubmit from '../pages/HR/ApproveSubmit';
 import CustomerForm from '../pages/Manager/CustomerForm';
+import AddNewVariant from '../pages/Manager/AddNewVariant';
 
 import Login from '../pages/LoginPage/Login';
 import ForgotPassword from '../pages/ForgotPassword/ForgotPassword';
@@ -76,6 +77,7 @@ function App() {
             <Route exact path='/view-employee' component={ViewEmployee} />
             <Route exact path='/approve-submit' component={ApproveSubmit} />
             <Route exact path='/customer-form' component={CustomerForm} />
+            <Route exact path='/add-new-variant' component={AddNewVariant} />
 
             <Route exact path='/' component={Login} />
             <Route exact path='/forgot-password' component={ForgotPassword} />
