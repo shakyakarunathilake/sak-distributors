@@ -5,8 +5,8 @@ import TextField from '@material-ui/core/TextField';
 
 export default function DatePicker(props) {
 
-    const { name, label, value, onChange, error, helperText } = props;
-    
+    const { name, label, value, onChange, error, helperText, disabled } = props;
+
     // const windowHeight = window.innerHeight;
 
     return (
@@ -21,6 +21,7 @@ export default function DatePicker(props) {
             onChange={onChange}
             type="date"
             value={value}
+            disabled={disabled}
             // size={classnames(windowHeight < 900 ? "small" : "normal")}
 
             variant="outlined"
