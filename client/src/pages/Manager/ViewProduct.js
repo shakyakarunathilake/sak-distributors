@@ -30,16 +30,6 @@ export default function ViewProduct(props) {
         setValue("productimage", productRecords.productimage);
         setValue("addeddate", productRecords.addeddate);
         setValue("addedby", productRecords.addedby);
-        setValue("variantid", productRecords.variantid);
-        setValue("type", productRecords.type);
-        setValue("bulkprice", productRecords.bulkprice);
-        setValue("mrp", productRecords.mrp);
-        setValue("price", productRecords.price);
-        setValue("grnid", productRecords.grnid);
-        setValue("offercaption", productRecords.offercaption);
-        setValue("status", productRecords.status);
-        setValue("variantaddeddate", productRecords.addeddate);
-        setValue("variantaddedby", productRecords.addedby);
 
         setShow(productRecords.offercaption ? true : false);
 
@@ -169,193 +159,21 @@ export default function ViewProduct(props) {
                                     </div>
                                 </div>
 
-                                <div className={style.row}>
-                                    <div className={style.boldText}>
-                                        Variant ID
-                                    </div>
-                                    <div className={style.productData}>
-                                        <Controller
-                                            name={"variantid"}
-                                            control={control}
-                                            render={({ field: { value } }) => (
-                                                <Typography className={style.input}>
-                                                    {value}
-                                                </Typography>
-                                            )}
-                                        />
-                                    </div>
-                                </div>
 
-                                <div className={style.row}>
-                                    <div className={style.boldText}>
-                                        Type
-                                    </div>
-                                    <div className={style.productData}>
-                                        <Controller
-                                            name={"type"}
-                                            control={control}
-                                            render={({ field: { value } }) => (
-                                                <Typography className={style.input}>
-                                                    {value}
-                                                </Typography>
-                                            )}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className={style.row}>
-                                    <div className={style.boldText}>
-                                        Bulk Price
-                                    </div>
-                                    <div className={style.productData}>
-                                        <Controller
-                                            name={"bulkprice"}
-                                            control={control}
-                                            render={({ field: { value } }) => (
-                                                <Typography className={style.input}>
-                                                    {value}
-                                                </Typography>
-                                            )}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className={style.row}>
-                                    <div className={style.boldText}>
-                                        MRP
-                                    </div>
-                                    <div className={style.productData}>
-                                        <Controller
-                                            name={"mrp"}
-                                            control={control}
-                                            render={({ field: { value } }) => (
-                                                <Typography className={style.input}>
-                                                    {value}
-                                                </Typography>
-                                            )}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className={style.row}>
-                                    <div className={style.boldText}>
-                                        Price
-                                    </div>
-                                    <div className={style.productData}>
-                                        <Controller
-                                            name={"price"}
-                                            control={control}
-                                            render={({ field: { value } }) => (
-                                                <Typography className={style.input}>
-                                                    {value}
-                                                </Typography>
-                                            )}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className={style.row}>
-                                    <div className={style.boldText}>
-                                        GRN ID
-                                    </div>
-                                    <div className={style.productData}>
-                                        <Controller
-                                            name={"grnid"}
-                                            control={control}
-                                            render={({ field: { value } }) => (
-                                                <Typography className={style.input}>
-                                                    {value}
-                                                </Typography>
-                                            )}
-                                        />
-                                    </div>
-                                </div>
-
-                                {
-                                    show &&
-
-                                    <div className={style.row}>
-                                        <div className={style.boldText}>
-                                            Offer Caption
-                                        </div>
-                                        <div className={style.productData}>
-                                            <Controller
-                                                name={"offercaption"}
-                                                control={control}
-                                                render={({ field: { value } }) => (
-                                                    <Typography className={style.input}>
-                                                        {value}
-                                                    </Typography>
-                                                )}
-                                            />
-                                        </div>
-                                    </div>
-                                }
-
-                                <div className={style.row}>
-                                    <div className={style.boldText}>
-                                        Status
-                                    </div>
-                                    <div className={style.productData}>
-                                        <Controller
-                                            name={"status"}
-                                            control={control}
-                                            render={({ field: { value } }) => (
-                                                <Typography className={style.input}>
-                                                    {value}
-                                                </Typography>
-                                            )}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className={style.row}>
-                                    <div className={style.boldText}>
-                                        Added By
-                                    </div>
-                                    <div className={style.productData}>
-                                        <Controller
-                                            name={"variantaddedby"}
-                                            control={control}
-                                            render={({ field: { value } }) => (
-                                                <Typography className={style.input}>
-                                                    {value}
-                                                </Typography>
-                                            )}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className={style.row}>
-                                    <div className={style.boldText}>
-                                        Added Date
-                                    </div>
-                                    <div className={style.productData}>
-                                        <Controller
-                                            name={"variantaddeddate"}
-                                            control={control}
-                                            render={({ field: { value } }) => (
-                                                <Typography className={style.input}>
-                                                    {value}
-                                                </Typography>
-                                            )}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className={style.buttonRow}>
-                                    <Button
-                                        className={style.doneBtn}
-                                        type="submit"
-                                        variant="contained"
-                                    >
-                                        Done
-                                    </Button>
-                                </div>
                             </div>
 
-
                         </div>
+
+                        <div className={style.buttonRow}>
+                            <Button
+                                className={style.doneBtn}
+                                type="submit"
+                                variant="contained"
+                            >
+                                Done
+                            </Button>
+                        </div>
+                        
                     </form>
                 </div>
             </div>

@@ -37,7 +37,7 @@
                 .image {
                     border-radius: 50%;
                     color: #6d6d6d;
-                    padding: 55px 10px 10px 10px;
+                    padding: 10px;
 
                     .imgWrapper {
                         height: 260px;
@@ -67,7 +67,7 @@
             }
 
             .columnB {
-                padding-top: 30px;
+                margin: auto 0;
 
                 .input {
                     text-align: left;
@@ -84,19 +84,19 @@
                         font-weight: 700;
                     }
                 }
+            }
+        }
 
-                .buttonRow {
-                    text-align: right;
+        .buttonRow {
+            text-align: right;
 
-                    Button {
-                        font-size: 1em;
-                        margin: 20px 0px 5px 0px;
-                        height: 45px;
-                        width: 190px;
-                        background-color: $primaryMain;
-                        color: $inverseFontColor;
-                    }
-                }
+            Button {
+                font-size: 1em;
+                margin: 0px 0px 5px 0px;
+                height: 45px;
+                width: 190px;
+                background-color: $primaryMain;
+                color: $inverseFontColor;
             }
         }
     }
