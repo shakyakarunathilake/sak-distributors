@@ -68,32 +68,7 @@
                             color: $secondaryMain;
                             cursor: pointer;
                         }
-
-                        // .input {
-                        //     opacity: 0;
-                        //     position: absolute;
-                        //     z-index: -1;
-                        // }
                     }
-                    // .partialCircle {
-                    //     width: 260px;
-                    //     height: 260px;
-                    //     background: #c4c4c4;
-                    //     border-radius: 50%;
-                    //     // position: fixed;
-                    //     // top: 118px;
-                    //     clip: rect(210px, 260px, 260px, 0);
-                    //     z-index: 5;
-
-                    //     &:after {
-                    //         text-align: center;
-                    //         margin-top: 215px;
-                    //         display: block;
-                    //         font-size: 1.2em;
-                    //         font-weight: 600;
-                    //         content: "Upload";
-                    //     }
-                    // }
                 }
 
                 .redFontCenter {
@@ -122,73 +97,55 @@
             }
 
             .columnB {
-                .redFont {
-                    color: red;
-                    font-size: 0.7em;
-                }
+                display: grid;
+                grid-template-rows: auto min-content;
 
-                .row {
-                    padding: 8px 0;
-                }
+                .textFields {
+                    margin: auto 0;
 
-                .dividerDiv {
-                    margin: 15px 0;
-
-                    .chip {
-                        margin: 0 10px;
-                        color: rgba(0, 0, 0, 1);
-                        font-size: 1em;
-                        font-weight: 600;
-                    }
-                }
-
-                .rowminicolumns {
-                    display: grid;
-                    grid-template-columns: calc(25% - 20px) calc(40% - 25px) calc(40% - 25px);
-                    grid-column-gap: 20px;
-                    padding: 8px 0;
-                }
-
-                .gridrow {
-                    display: grid;
-                    grid-template-columns: calc(50% - 10px) calc(50% - 10px);
-                    grid-column-gap: 20px;
-                    padding: 8px 0;
-                }
-
-                .threecolumns {
-                    display: grid;
-                    grid-template-columns: calc(33.3% - 15px) calc(33.3% - 15px) calc(33.3% - 10px);
-                    grid-column-gap: 20px;
-                    padding: 8px 0;
-                }
-
-                .buttonRow {
-                    display: grid;
-                    grid-template-columns: auto min-content;
-                    grid-column-gap: 30px;
-                    text-align: right;
-
-                    Button {
-                        font-size: 1em;
-                        margin: 20px 0px 5px 0px;
-                        height: 45px;
-                        width: 190px;
+                    .redFont {
+                        color: red;
+                        font-size: 0.7em;
                     }
 
-                    .resetBtnDiv {
-                        .resetBtn {
-                            border-color: $primaryMain;
-                            color: $primaryMain;
-                        }
+                    .row {
+                        padding: 8px 0;
                     }
 
-                    .submitBtnDiv {
-                        .submitBtn {
-                            background-color: $primaryMain;
-                            color: $inverseFontColor;
-                        }
+                    .gridrow {
+                        display: grid;
+                        grid-template-columns: calc(50% - 10px) calc(50% - 10px);
+                        grid-column-gap: 20px;
+                        padding: 8px 0;
                     }
+                }
+            }
+        }
+        
+        .buttonRow {
+            display: grid;
+            grid-template-columns: auto min-content;
+            grid-column-gap: 30px;
+            text-align: right;
+
+            Button {
+                font-size: 1em;
+                margin: 20px 0px 5px 0px;
+                height: 45px;
+                width: 190px;
+            }
+
+            .resetBtnDiv {
+                .resetBtn {
+                    border-color: $primaryMain;
+                    color: $primaryMain;
+                }
+            }
+
+            .submitBtnDiv {
+                .submitBtn {
+                    background-color: $primaryMain;
+                    color: $inverseFontColor;
                 }
             }
         }
