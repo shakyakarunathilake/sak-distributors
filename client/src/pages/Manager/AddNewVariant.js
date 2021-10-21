@@ -16,7 +16,7 @@ import Button from '@material-ui/core/Button';
 import Divider from '@mui/material/Divider';
 import { InputAdornment } from '@material-ui/core';
 import Autocomplete from '@mui/material/Autocomplete';
-import MenuItem from '@mui/material/MenuItem';
+import { TextField as MuiTextField } from '@mui/material';
 
 //Material UI Icons
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
@@ -30,48 +30,31 @@ import style from './AddNewVariant.module.scss';
 
 export default function AddNewVariant(props) {
 
-    const { setOpenPopup, addOrEdit, productInfo, nextId } = props;
+    const { setOpenPopup, addVariant, productOptions, employeeOptions } = props;
 
     const { handleSubmit, formState: { errors }, control, reset, setValue, getValues } = useForm();
 
-    const [file, setFile] = useState("");
+    const [file, setFile] = useState();
+    const [show, setShow] = useState(false);
 
-    useEffect(() => {
-        if (productInfo != null) {
-            setFile(`http://${productInfo.productimage}`);
-            setValue("productid", productInfo.productid);
-            setValue("name", productInfo.name);
-            setValue("supplier", productInfo.supplier);
-            setValue("productimage", productInfo.productimage);
-            setValue("addeddate", productInfo.addeddate);
-            setValue("addedby", productInfo.addedby);
+    const [productName, setProductName] = useState();
+
+    const handleProductChange = (event, option) => {
+        if (option) {
+            setProductName(option.title)
+            setFile(`http://${option.productimage}`);
+            setValue("productid", option.productid);
+            setValue("name", option.name);
+            setValue("supplier", option.supplier);
+            setValue("productimage", option.productimage);
+            setValue("addeddate", option.addeddate);
+            setValue("addedby", option.addedby);
+            setValue("variantid", option.variantid);;
+            setValue("productstatus", option.status);;
+
         } else {
-            // setValue("productid", nextId[0]);
-            // setValue("variantid", nextId[1]);
-            // setValue("grnid", nextId[2]);
-        };
-    }, [productInfo, nextId])
-
-    const resetForm = () => {
-        reset({
-            productid: getValues("productid"),
-            name: getValues("name"),
-            supplier: getValues("supplier"),
-            productimage: getValues("productimage"),
-            addeddate: getValues("addeddate"),
-            addedby: getValues("addedby"),
-            variantid: '',
-            type: '',
-            bulkprice: '',
-            mrp: '',
-            price: '',
-            grnid: '',
-            offercaption: '',
-            status: '',
-            variantaddeddate: '',
-            variantaddedby: '',
-        });
-        setFile("");
+            setProductName()
+        }
     }
 
     // Handle Image Upload
@@ -79,30 +62,56 @@ export default function AddNewVariant(props) {
         setFile(URL.createObjectURL(e.target.files[0]));
     }
 
+    const handleTypeChange = value => {
+        if (value === "General") {
+            setShow(false)
+        } else {
+            setShow(true)
+        }
+    }
+
+    const resetForm = () => {
+        reset({
+            productid: '',
+            name: '',
+            supplier: '',
+            productimage: '',
+            addeddate: '',
+            addedby: '',
+            variantid: '',
+            type: '',
+            bulkprice: '',
+            mrp: '',
+            sellingprice: '',
+            purchaseprice: '',
+            offercaption: '',
+            variantstatus: '',
+            variantaddeddate: '',
+            variantaddedby: '',
+        });
+        setFile("");
+    }
+
     const onSubmit = (values) => {
 
         const productFormData = new formData();
 
         productFormData.append('productid', values.productid);
-        productFormData.append('productimage', values.productimage);
-        productFormData.append('name', values.name);
-        productFormData.append('supplier', values.supplier);
-        productFormData.append('addeddate', values.addeddate);
-        productFormData.append("addedby", values.addedby);
+        productFormData.append('productstatus', values.productstatus);
         productFormData.append("variantid", values.variantid);
         productFormData.append('type', values.type);
-        productFormData.append("bulkprice", values.bulkprice);
-        productFormData.append("mrp", values.mrp);
-        productFormData.append("price", values.price);
-        productFormData.append("grnid", values.grnid);
         productFormData.append("offercaption", values.offercaption ? values.offercaption : "");
-        productFormData.append("status", values.status);
-        productFormData.append("variantaddeddate", values.variantaddeddate);
+        productFormData.append("bulkprice", values.bulkprice);
+        productFormData.append("purchaseprice", values.purchaseprice);
+        productFormData.append("sellingprice", values.sellingprice);
+        productFormData.append("mrp", values.mrp);
         productFormData.append("variantaddedby", values.variantaddedby);
+        productFormData.append("variantaddeddate", values.variantaddeddate);
+        productFormData.append("variantstatus", values.variantstatus);
 
 
         resetForm();
-        addOrEdit(productFormData, getValues("productid"));
+        addVariant(productFormData, values.productid);
     };
 
     return (
@@ -138,6 +147,7 @@ export default function AddNewVariant(props) {
                                             rules={{ required: { value: true, message: "Product Image is required" } }}
                                             render={({ field: { onChange } }) => (
                                                 <input
+                                                    disabled
                                                     type="file"
                                                     id="product-image"
                                                     hidden
@@ -175,7 +185,7 @@ export default function AddNewVariant(props) {
                                             type="text"
                                             className={style.input}
                                             onChange={onChange}
-                                            value={`ID: ${value}`}
+                                            value={`ID: ${value ? value : ''}`}
                                         />
                                     )}
                                 />
@@ -191,33 +201,16 @@ export default function AddNewVariant(props) {
 
                             <div className={style.row}>
                                 <Autocomplete
-                                    sx={{
-                                        '& .MuiOutlinedInput-root': {
-                                            padding: 0
-                                        }
-                                    }}
-                                    options={productInfo}
-                                    getOptionLabel={(option) => {
-                                        return `${option.name} (${option.productid})`
-                                    }}
-                                    renderInput={(params) => {
-                                        return (
-                                            <TextField
-                                                {...params}
-                                                variant="outlined"
-                                                label="Product"
-                                                size="medium"
-                                                fullWidth={true}
-                                            />
-                                        );
-                                    }}
-                                    renderOption={(option) => {
-                                        return (
-                                            <MenuItem>
-                                                {option.key}
-                                            </MenuItem>
-                                        )
-                                    }}
+                                    options={productOptions || []}
+                                    fullWidth
+                                    getOptionLabel={(option) => option.title}
+                                    onChange={handleProductChange}
+                                    renderInput={(params) => (
+                                        <MuiTextField
+                                            {...params}
+                                            label="Product"
+                                            variant="outlined" />
+                                    )}
                                 />
                             </div>
 
@@ -230,6 +223,7 @@ export default function AddNewVariant(props) {
                                     }}
                                     render={({ field: { onChange, value } }) => (
                                         <Select
+                                            disabled={true}
                                             className={style.field}
                                             helperText={errors.supplier && errors.supplier.message}
                                             error={errors.supplier ? true : false}
@@ -242,29 +236,31 @@ export default function AddNewVariant(props) {
                                 />
                             </div>
 
-                            <div className={style.gridrow}>
-                                <div>
-                                    <Controller
+                            <div className={style.row}>
+                                <Controller
+                                    name={"addedby"}
+                                    control={control}
+                                    rules={{
+                                        required: { value: true, message: "Added by is required" },
+                                    }}
+                                    render={({ field: { onChange, value } }) => (
+                                        <Select
+                                            disabled={true}
+                                            fullWidth={true}
+                                            className={style.field}
+                                            helperText={errors.addedby && errors.addedby.message}
+                                            placeholder="Ex: Shakya Karunathilake"
+                                            error={errors.addedby ? true : false}
+                                            onChange={onChange}
+                                            value={value || ''}
+                                            options={employeeOptions || []}
+                                            label="Added By"
+                                        />
+                                    )}
+                                />
+                            </div>
 
-                                        name={"addedby"}
-                                        control={control}
-                                        rules={{
-                                            required: { value: true, message: "Added by is required" },
-                                        }}
-                                        render={({ field: { onChange, value } }) => (
-                                            <TextField
-                                                fullWidth={true}
-                                                className={style.field}
-                                                helperText={errors.addedby && errors.addedby.message}
-                                                placeholder="Ex: Shakya Karunathilake"
-                                                error={errors.addedby ? true : false}
-                                                onChange={onChange}
-                                                value={value || ''}
-                                                label="Added by *"
-                                            />
-                                        )}
-                                    />
-                                </div>
+                            <div className={style.gridrow}>
                                 <div>
                                     <Controller
                                         name={"addeddate"}
@@ -274,6 +270,7 @@ export default function AddNewVariant(props) {
                                         }}
                                         render={({ field: { onChange, value } }) => (
                                             <DatePicker
+                                                disabled={true}
                                                 className={style.field}
                                                 helperText={errors.addeddate && errors.addeddate.message}
                                                 error={errors.addeddate ? true : false}
@@ -284,14 +281,30 @@ export default function AddNewVariant(props) {
                                         )}
                                     />
                                 </div>
+                                <div>
+                                    <Controller
+                                        name={"productstatus"}
+                                        control={control}
+                                        rules={{
+                                            required: { value: true, message: "Status is required" },
+                                        }}
+                                        render={({ field: { onChange, value } }) => (
+                                            <Select
+                                                className={style.field}
+                                                helperText={errors.productstatus && errors.productstatus.message}
+                                                error={errors.productstatus ? true : false}
+                                                onChange={onChange}
+                                                value={value || ''}
+                                                options={employeeservice.getProductStatusOptions()}
+                                                label="Status *"
+                                            />
+                                        )}
+                                    />
+                                </div>
                             </div>
 
                             <div className={style.dividerDiv}>
-                                {/* <ThemeProvider theme={theme}> */}
                                 <Divider variant="middle" />
-                                {/* <span className={style.chip}> Product Variant</span> */}
-                                {/* </Divider> */}
-                                {/* </ThemeProvider> */}
                             </div>
 
                             <div className={style.gridrow}>
@@ -327,7 +340,10 @@ export default function AddNewVariant(props) {
                                                 className={style.field}
                                                 helperText={errors.type && errors.type.message}
                                                 error={errors.type ? true : false}
-                                                onChange={onChange}
+                                                onChange={e => {
+                                                    onChange(e.target.value)
+                                                    handleTypeChange(e.target.value)
+                                                }}
                                                 value={value || ''}
                                                 options={employeeservice.getVariantTypeOptions()}
                                                 label="Type *"
@@ -336,25 +352,27 @@ export default function AddNewVariant(props) {
                                     />
                                 </div>
                             </div>
+                            {
+                                show &&
+                                <div className={style.row}>
+                                    <Controller
+                                        name={"offercaption"}
+                                        control={control}
+                                        render={({ field: { onChange, value } }) => (
+                                            <TextField
+                                                fullWidth={true}
+                                                className={style.field}
+                                                placeholder="Ex: Buy 24 and get 6 free"
+                                                onChange={onChange}
+                                                value={value || ''}
+                                                label="Offer Caption"
+                                            />
+                                        )}
+                                    />
+                                </div>
+                            }
 
-                            <div className={style.row}>
-                                <Controller
-                                    name={"offercaption"}
-                                    control={control}
-                                    render={({ field: { onChange, value } }) => (
-                                        <TextField
-                                            fullWidth={true}
-                                            className={style.field}
-                                            placeholder="Ex: Buy 24 and get 6 free"
-                                            onChange={onChange}
-                                            value={value || ''}
-                                            label="Offer Caption"
-                                        />
-                                    )}
-                                />
-                            </div>
-
-                            <div className={style.threecolumns}>
+                            <div className={style.gridrow}>
                                 <div>
                                     <Controller
                                         name={"bulkprice"}
@@ -386,7 +404,67 @@ export default function AddNewVariant(props) {
                                 </div>
                                 <div>
                                     <Controller
+                                        name={"purchaseprice"}
+                                        control={control}
+                                        rules={{
+                                            required: { value: true, message: "Purchase Price is required" },
+                                            pattern: { value: /^[0-9]+\.[0-9]{2}$/, message: "Purchase Price is invalid" }
+                                        }}
+                                        render={({ field: { onChange, value } }) => (
+                                            <TextField
+                                                className={style.field}
+                                                helperText={errors.purchaseprice && errors.purchaseprice.message}
+                                                error={errors.purchaseprice ? true : false}
+                                                onChange={onChange}
+                                                value={value || ''}
+                                                label="Purchase Price *"
+                                                placeholder="999.99"
+                                                fullWidth={true}
+                                                InputProps={{
+                                                    endAdornment: (
+                                                        <InputAdornment position="start">
+                                                            Rs
+                                                        </InputAdornment>
+                                                    ),
+                                                }}
+                                            />
+                                        )}
+                                    />
+                                </div>
+                            </div>
 
+                            <div className={style.gridrow}>
+                                <div>
+                                    <Controller
+                                        name={"sellingprice"}
+                                        control={control}
+                                        rules={{
+                                            required: { value: true, message: "Selling Price is required" },
+                                            pattern: { value: /^[0-9]+\.[0-9]{2}$/, message: "Selling Price is invalid" }
+                                        }}
+                                        render={({ field: { onChange, value } }) => (
+                                            <TextField
+                                                className={style.field}
+                                                helperText={errors.sellingprice && errors.sellingprice.message}
+                                                error={errors.sellingprice ? true : false}
+                                                onChange={onChange}
+                                                value={value || ''}
+                                                label="Selling Price *"
+                                                placeholder="999.99"
+                                                fullWidth={true}
+                                                InputProps={{
+                                                    endAdornment: (
+                                                        <InputAdornment position="start">
+                                                            Rs
+                                                        </InputAdornment>
+                                                    ),
+                                                }}
+                                            />
+                                        )}
+                                    />
+                                </div>
+                                <div>
+                                    <Controller
                                         name={"mrp"}
                                         control={control}
                                         rules={{
@@ -414,63 +492,34 @@ export default function AddNewVariant(props) {
                                         )}
                                     />
                                 </div>
-                                <div>
-                                    <Controller
-                                        name={"price"}
-                                        control={control}
-                                        rules={{
-                                            required: { value: true, message: "Price is required" },
-                                            pattern: { value: /^[0-9]+\.[0-9]{2}$/, message: "Price is invalid" }
-                                        }}
-                                        render={({ field: { onChange, value } }) => (
-                                            <TextField
-                                                className={style.field}
-                                                helperText={errors.price && errors.price.message}
-                                                error={errors.price ? true : false}
-                                                onChange={onChange}
-                                                value={value || ''}
-                                                label="Price *"
-                                                placeholder="999.99"
-                                                fullWidth={true}
-                                                InputProps={{
-                                                    endAdornment: (
-                                                        <InputAdornment position="start">
-                                                            Rs
-                                                        </InputAdornment>
-                                                    ),
-                                                }}
-                                            />
-                                        )}
-                                    />
-                                </div>
+                            </div>
+
+                            <div className={style.row}>
+                                <Controller
+                                    name={"variantaddedby"}
+                                    control={control}
+                                    rules={{
+                                        required: { value: true, message: "Added by is required" },
+                                    }}
+                                    render={({ field: { onChange, value } }) => (
+                                        <Select
+                                            fullWidth={true}
+                                            className={style.field}
+                                            helperText={errors.variantaddedby && errors.variantaddedby.message}
+                                            error={errors.variantaddedby ? true : false}
+                                            onChange={onChange}
+                                            value={value || ''}
+                                            options={employeeOptions || []}
+                                            label="Added By"
+                                        />
+                                    )}
+                                />
                             </div>
 
                             <div className={style.gridrow}>
                                 <div>
                                     <Controller
-
-                                        name={"grnid"}
-                                        control={control}
-                                        rules={{
-                                            required: { value: true },
-                                        }}
-                                        render={({ field: { onChange, value } }) => (
-                                            <TextField
-                                                fullWidth={true}
-                                                className={style.field}
-                                                placeholder="Ex: GRN0001"
-                                                onChange={onChange}
-                                                value={value || ''}
-                                                disabled={true}
-                                                label="GRN ID *"
-                                            />
-                                        )}
-                                    />
-                                </div>
-                                <div>
-                                    <Controller
-
-                                        name={"status"}
+                                        name={"variantstatus"}
                                         control={control}
                                         rules={{
                                             required: { value: true, message: "Status is required" },
@@ -478,8 +527,9 @@ export default function AddNewVariant(props) {
                                         render={({ field: { onChange, value } }) => (
                                             <Select
                                                 className={style.field}
-                                                helperText={errors.status && errors.status.message}
-                                                error={errors.status ? true : false}
+                                                helperText={errors.variantstatus && errors.variantstatus.message}
+                                                error={errors.variantstatus ? true : false}
+
                                                 onChange={onChange}
                                                 value={value || ''}
                                                 options={employeeservice.getVariantStatusOptions()}
@@ -488,34 +538,8 @@ export default function AddNewVariant(props) {
                                         )}
                                     />
                                 </div>
-                            </div>
-
-                            <div className={style.gridrow}>
                                 <div>
                                     <Controller
-
-                                        name={"variantaddedby"}
-                                        control={control}
-                                        rules={{
-                                            required: { value: true, message: "Added by is required" },
-                                        }}
-                                        render={({ field: { onChange, value } }) => (
-                                            <TextField
-                                                fullWidth={true}
-                                                className={style.field}
-                                                helperText={errors.variantaddedby && errors.variantaddedby.message}
-                                                placeholder="Ex: Shakya Karunathilake"
-                                                error={errors.variantaddedby ? true : false}
-                                                onChange={onChange}
-                                                value={value || ''}
-                                                label="Added by *"
-                                            />
-                                        )}
-                                    />
-                                </div>
-                                <div>
-                                    <Controller
-
                                         name={"variantaddeddate"}
                                         control={control}
                                         rules={{
