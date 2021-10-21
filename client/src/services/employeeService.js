@@ -68,3 +68,7 @@ export const getVariantStatusOptions = () => ([
     { id: "vs001", title: "Active" },
     { id: "vs002", title: "Inactive" },
 ])
+export const getProductStatusOptions = () => ([
+    { id: "ps001", title: "Active" },
+    { id: "ps002", title: "Inactive" },
+])
