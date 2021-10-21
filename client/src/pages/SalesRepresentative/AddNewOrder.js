@@ -123,7 +123,7 @@ export default function AddNewOrder() {
                                         }}
                                         renderOption={(option) => {
                                             return (
-                                                <MenuItem>
+                                                <MenuItem  key={option.key}>
                                                     {option.key}
                                                 </MenuItem>
                                             )
