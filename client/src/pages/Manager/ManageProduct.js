@@ -13,10 +13,13 @@ import MuiAlert from '@mui/material/Alert';
 import style from './ManageProduct.module.scss';
 
 //Material UI 
+import Box from '@mui/material/Box';
+import Collapse from '@mui/material/Collapse';
 import Button from '@material-ui/core/Button';
 import { InputAdornment } from '@material-ui/core';
-import { TableBody, TableRow, TableCell } from '@material-ui/core';
+import { Table, TableBody, TableRow, TableCell } from '@material-ui/core';
 import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
 
 //Material UI Icons
 import AddCircleIcon from '@material-ui/icons/AddCircle';
@@ -24,10 +27,13 @@ import SearchIcon from '@material-ui/icons/Search';
 import EditIcon from '@material-ui/icons/Edit';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import NewReleasesIcon from '@mui/icons-material/NewReleases';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 //Product Form
 import ProductForm from './ProductForm';
 import ViewProduct from './ViewProduct';
+import AddNewVariant from './AddNewVariant';
 
 //Connecting to Backend
 import axios from 'axios';
@@ -47,12 +53,16 @@ export default function ManageProduct() {
     const [records, setRecords] = useState([]);
     const [headCells, setHeadCells] = useState([]);
 
+    const [productOptions, setProductOptions] = useState(null);
+    const [employeeOptions, setEmployeeOptions] = useState(null);
     const [productRecords, setProductRecords] = useState(null);
     const [action, setAction] = useState('');
     const [openPopup, setOpenPopup] = useState(false);
 
     const [nextId, setNextId] = useState([]);
     const [reRender, setReRender] = useState(null);
+
+    const [uncollapse, setUncollapse] = useState(false);
 
     const handleAlert = () => {
         setOpen(true);
@@ -67,7 +77,7 @@ export default function ManageProduct() {
 
     useEffect(() => {
         axios
-            .get("http://localhost:8080/products/get-all-products-table-data")
+            .get("http://localhost:8080/products/get-all-product-table-data")
             .then(res => {
                 sessionStorage.setItem("ProductsTableData", JSON.stringify(res.data));
                 setHeadCells(res.data.thead);
@@ -79,7 +89,7 @@ export default function ManageProduct() {
             })
     }, [reRender]);
 
-    const addOrEdit = (product, productid) => {
+    const addOrEdit = (product, productid, variantid) => {
         for (let [key, value] of product.entries()) {
             console.log(key, value);
         }
@@ -99,7 +109,7 @@ export default function ManageProduct() {
 
         } if (action === "Edit") {
             axios
-                .post(`http://localhost:8080/products/update-by-id/${productid}`, product)
+                .post(`http://localhost:8080/products/update-by-id/${productid}/${variantid}`, product)
                 .then(res => {
                     setAlert(res.data.alert);
                     setType(res.data.type);
@@ -117,13 +127,28 @@ export default function ManageProduct() {
         setAction('');
     }
 
-    const openInPopup = (productid, variantid) => {
-
-        //Development Stage
-        console.log(productid, variantid);
-
+    const addVariant = (product, productid) => {
+        for (let [key, value] of product.entries()) {
+            console.log(key, value);
+        }
         axios
-            .get(`http://localhost:8080/products/${productid}/${variantid}`)
+            .post(`http://localhost:8080/products/add-new-variant/${productid}`, product)
+            .then(res => {
+                setAlert(res.data.alert);
+                setType(res.data.type);
+                handleAlert();
+                setReRender(productid);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        ;
+        setOpenPopup(false);
+    }
+
+    const openInPopup = (productid) => {
+        axios
+            .get(`http://localhost:8080/products/${productid}`)
             .then(res => {
                 setProductRecords(res.data.product);
                 setOpenPopup(true);
@@ -133,17 +158,44 @@ export default function ManageProduct() {
             })
     }
 
+
+    const getProductOptions = () => {
+        axios
+            .get("http://localhost:8080/options/product-options")
+            .then(res => {
+                setProductOptions(res.data.productOptions);
+                setEmployeeOptions(res.data.employeeOptions);
+                setOpenPopup(true);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        console.log(productOptions)
+
+    }
+
+    const getEmployeeOptions = () => {
+        axios
+            .get("http://localhost:8080/options/employee-options")
+            .then(res => {
+                setEmployeeOptions(res.data.employeeOptions);
+                setOpenPopup(true);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+
     const getNextProductId = () => {
         axios
-            .get("http://localhost:8080/products/get-next-product-variant-grn-id")
+            .get("http://localhost:8080/products/get-next-productid")
             .then(res => {
-                setNextId([res.data.nextproductid, res.data.nextvariantid, res.data.nextgrnid]);
+                setNextId(res.data.nextproductid);
             })
             .catch(err => {
                 console.log(err);
             });
     }
-
     const { TableContainer, TableHead } = useTable(headCells);
 
     return (
@@ -178,9 +230,10 @@ export default function ManageProduct() {
                         variant="contained"
                         onClick={
                             () => {
-                                // setAction('Create');
-                                // setOpenPopup(true);
-                                // setProductRecords(null);
+                                setAction('Variant');
+                                getProductOptions();
+                                getEmployeeOptions();
+                                setOpenPopup(true);
                             }
                         }
                     >
@@ -197,6 +250,7 @@ export default function ManageProduct() {
                             () => {
                                 setAction('Create');
                                 getNextProductId();
+                                getEmployeeOptions();
                                 setOpenPopup(true);
                                 setProductRecords(null);
                             }
@@ -213,50 +267,84 @@ export default function ManageProduct() {
                         <TableBody className={style.tablebody}>
                             {
                                 records.map((row, i) => (
-                                    <TableRow
-                                        className={classnames(
-                                            { [style.greytablerow]: i % 2 === 1 },
-                                            { [style.whitetablerow]: i % 2 === 0 },
-                                        )}
-                                        key={i}
-                                    >
-                                        {
-                                            row.map((cell, i) => (
-                                                < TableCell key={i}
-                                                    className={classnames(
-                                                        { [style.active]: cell === "Active" },
-                                                        { [style.inactive]: cell === "Inactive" }
-                                                    )}
-                                                >
-                                                    {cell}
-                                                </TableCell>
-                                            ))
-                                        }
-                                        <TableCell
-                                            align="center"
-                                            className={style.actioncolumn}
+                                    <React.Fragment key={i}>
+                                        <TableRow
+                                            className={classnames(
+                                                { [style.greytablerow]: i % 2 === 1 },
+                                                { [style.whitetablerow]: i % 2 === 0 },
+                                            )}
                                         >
-                                            <Tooltip title="View" arrow>
-                                                <VisibilityIcon
-                                                    className={style.visibilityIcon}
-                                                    onClick={() => {
-                                                        setAction('View');
-                                                        openInPopup(row[0], row[3]);
-                                                    }}
-                                                />
-                                            </Tooltip>
-                                            <Tooltip title="Edit" arrow>
-                                                <EditIcon
-                                                    className={style.editIcon}
-                                                    onClick={() => {
-                                                        setAction('Edit');
-                                                        openInPopup(row[0]);
-                                                    }}
-                                                />
-                                            </Tooltip>
-                                        </TableCell>
-                                    </TableRow>
-
+                                            <TableCell>
+                                                <IconButton
+                                                    aria-label="expand row"
+                                                    size="small"
+                                                    onClick={() => setUncollapse(!uncollapse)}
+                                                >
+                                                    {uncollapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                                                </IconButton>
+                                            </TableCell>
+                                            <TableCell> {row.productid} </TableCell>
+                                            <TableCell> {row.name} </TableCell>
+                                            <TableCell> {row.supplier} </TableCell>
+                                            <TableCell> - </TableCell>
+                                            <TableCell> - </TableCell>
+                                            <TableCell> - </TableCell>
+                                            <TableCell
+                                                className={classnames(
+                                                    { [style.active]: row.status === "Active" },
+                                                    { [style.inactive]: row.status === "Inactive" }
+                                                )}
+                                            >
+                                                {row.status}
+                                            </TableCell>
+                                            <TableCell> - </TableCell>
+                                            <TableCell
+                                                align="center"
+                                                className={style.actioncolumn}
+                                            >
+                                                <Tooltip title="View" arrow>
+                                                    <VisibilityIcon
+                                                        className={style.visibilityIcon}
+                                                        onClick={() => {
+                                                            setAction('View');
+                                                            openInPopup(row.productid);
+                                                        }}
+                                                    />
+                                                </Tooltip>
+                                                <Tooltip title="Edit" arrow>
+                                                    <EditIcon
+                                                        className={style.editIcon}
+                                                        onClick={() => {
+                                                            setAction('Edit');
+                                                            openInPopup(row.productid);
+                                                        }}
+                                                    />
+                                                </Tooltip>
+                                            </TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={10}>
+                                                <Collapse in={uncollapse} timeout="auto" unmountOnExit>
+                                                    <Box sx={{ margin: 1 }}>
+                                                        <Table size="small">
+                                                            <TableBody>
+                                                                {records.map(y => (
+                                                                    y.variants.map(x => (
+                                                                        <TableRow key={x.variantid}>
+                                                                            <TableCell> {x.variantid} </TableCell>
+                                                                            <TableCell> {x.mrp} </TableCell>
+                                                                            <TableCell> {x.price} </TableCell>
+                                                                            <TableCell> {x.type} </TableCell>
+                                                                        </TableRow>
+                                                                    ))
+                                                                ))}
+                                                            </TableBody>
+                                                        </Table>
+                                                    </Box>
+                                                </Collapse>
+                                            </TableCell>
+                                        </TableRow>
+                                    </React.Fragment>
                                 ))
                             }
                         </TableBody>
@@ -266,18 +354,29 @@ export default function ManageProduct() {
                     openPopup={openPopup}
                     setOpenPopup={setOpenPopup}
                 >
-                    {action === 'View' ?
-                        <ViewProduct
-                            productRecords={productRecords}
-                            setOpenPopup={setOpenPopup}
-                            setAction={setAction}
-                        /> :
-                        <ProductForm
-                            addOrEdit={addOrEdit}
-                            productRecords={productRecords}
-                            setOpenPopup={setOpenPopup}
-                            nextId={nextId}
-                        />
+                    {
+                        action === 'View' ?
+                            <ViewProduct
+                                productRecords={productRecords}
+                                setOpenPopup={setOpenPopup}
+                                setAction={setAction}
+                            />
+                            : action === "Variant" ?
+                                <AddNewVariant
+                                    addVariant={addVariant}
+                                    productOptions={productOptions}
+                                    employeeOptions={employeeOptions}
+                                    setOpenPopup={setOpenPopup}
+                                    setAction={setAction}
+                                /> :
+                                <ProductForm
+                                    addOrEdit={addOrEdit}
+                                    productRecords={productRecords}
+                                    employeeOptions={employeeOptions}
+                                    setOpenPopup={setOpenPopup}
+                                    nextId={nextId}
+                                />
+
                     }
                 </PopUp>
                 <Snackbar
