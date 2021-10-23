@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import MaterialTable from 'material-table';
-import classnames from 'classnames';
 
 //Shared Components
 import Page from '../../shared/Page/Page';
-import TextField from '../../shared/TextField/TextField';
 import PopUp from '../../shared/PopUp/PopUp';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
@@ -14,14 +12,9 @@ import style from './ManageProduct.module.scss';
 
 //Material UI 
 import Button from '@material-ui/core/Button';
-import { InputAdornment } from '@material-ui/core';
-import Tooltip from '@mui/material/Tooltip';
 
 //Material UI Icons
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import SearchIcon from '@material-ui/icons/Search';
-import EditIcon from '@material-ui/icons/Edit';
-import VisibilityIcon from '@material-ui/icons/Visibility';
 import NewReleasesIcon from '@mui/icons-material/NewReleases';
 
 //Product Form
@@ -36,6 +29,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
+
 export default function ManageProduct() {
 
     const [type, setType] = useState();
@@ -43,7 +37,6 @@ export default function ManageProduct() {
     const [alert, setAlert] = useState();
 
     const [records, setRecords] = useState([]);
-    const [headCells, setHeadCells] = useState([]);
 
     const [productOptions, setProductOptions] = useState(null);
     const [employeeOptions, setEmployeeOptions] = useState(null);
@@ -53,6 +46,7 @@ export default function ManageProduct() {
 
     const [nextId, setNextId] = useState([]);
     const [reRender, setReRender] = useState(null);
+    const [selectedRow, setSelectedRow] = useState(null);
 
     const handleAlert = () => {
         setOpen(true);
@@ -70,7 +64,6 @@ export default function ManageProduct() {
             .get("http://localhost:8080/products/get-all-product-table-data")
             .then(res => {
                 sessionStorage.setItem("ProductsTableData", JSON.stringify(res.data));
-                setHeadCells(res.data.thead);
                 setRecords(res.data.tbody);
                 setReRender(null);
             })
@@ -99,7 +92,7 @@ export default function ManageProduct() {
 
         } if (action === "Edit") {
             axios
-                .post(`http://localhost:8080/products/update-by-id/${productid}/${variantid}`, product)
+                .post(`http://localhost:8080/products/update-by-id/${productid}`, product)
                 .then(res => {
                     setAlert(res.data.alert);
                     setType(res.data.type);
@@ -148,7 +141,6 @@ export default function ManageProduct() {
             })
     }
 
-
     const getProductOptions = () => {
         axios
             .get("http://localhost:8080/options/product-options")
@@ -192,46 +184,9 @@ export default function ManageProduct() {
             <div className={style.container}>
 
                 <div className={style.actionRow}>
-                    <div className={style.search}>
-                        <TextField
-                            // onChange={e => setSearchVal(e.target.value)}
-                            color="primary"
-                            className={style.searchtextfield}
-                            fullWidth={true}
-                            placeholder="Search"
-                            // onChange={e =>
-                            //     setSearchText(e.target.value)
-                            // }
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <SearchIcon />
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
-                    </div>
 
                     <Button
-                        className={style.button}
-                        color="primary"
-                        size="medium"
-                        variant="contained"
-                        onClick={
-                            () => {
-                                setAction('Variant');
-                                getProductOptions();
-                                getEmployeeOptions();
-                                setOpenPopup(true);
-                            }
-                        }
-                    >
-                        <NewReleasesIcon className={style.icon} />
-                        Add New Variant
-                    </Button>
-
-                    <Button
-                        className={style.button}
+                        className={style.productbutton}
                         color="primary"
                         size="medium"
                         variant="contained"
@@ -248,27 +203,86 @@ export default function ManageProduct() {
                         <AddCircleIcon className={style.icon} />
                         Add New Product
                     </Button>
+
+                    <Button
+                        className={style.variantbutton}
+                        color="primary"
+                        size="medium"
+                        variant="contained"
+                        onClick={
+                            () => {
+                                setAction('Variant');
+                                getProductOptions();
+                                getEmployeeOptions();
+                                setOpenPopup(true);
+                            }
+                        }
+                    >
+                        <NewReleasesIcon className={style.icon} />
+                        Add New Variant
+                    </Button>
+
                 </div>
 
                 <div className={style.pagecontent}>
-                    <MaterialTable
-                        columns={headCells}
-                        data={records}
-                        title=""
-                        options={{
-                            filtering: true,
-                            search: false
-                        }}
-                        actions={[
-                            {
-                                icon: 'edit',
-                                tooltip: 'Edit',
-                                onClick: (event, rowData) => {
-                                    
+                    <div className={style.materialTable}>
+                        <MaterialTable
+                            columns={[
+                                { title: "Prod. ID", field: "productid", cellStyle: { width: "10%" } },
+                                { title: "Name", field: "name" },
+                                { title: "Supplier", field: "supplier" },
+                                { title: "Var. ID", field: "variantid" },
+                                { title: "Type", field: "type" },
+                                {
+                                    title: "Status", field: "status", render: rowData => {
+                                        return (
+                                            rowData.status == "Active" ?
+                                                <p style={{ padding: "0", margin: "0", color: "#4cbb17", fontWeight: "bold" }}>{rowData.status}</p> :
+                                                <p style={{ padding: "0", margin: "0", color: "red", fontWeight: "bold" }}>{rowData.status}</p>
+                                        )
+                                    }
+                                },
+                            ]}
+                            data={records}
+                            parentChildData={(row, rows) => rows.find(a => a.productid === row.productid)}
+                            onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow.tableData.id))}
+                            options={{
+                                toolbar: false,
+                                filtering: true,
+                                search: false,
+                                paging: false,
+                                actionsColumnIndex: -1,
+                                headerStyle: {
+                                    backgroundColor: '#20369f',
+                                    color: '#FFF',
+                                    fontSize: "0.8em"
+                                },
+                                rowStyle: rowData => ({
+                                    fontSize: "0.8em",
+                                    backgroundColor: (rowData.tableData.id % 2 === 1) ? '#ebebeb' : '#ffffff'
+                                })
+                            }}
+                            actions={[
+                                {
+                                    icon: 'edit',
+                                    tooltip: 'Edit',
+                                    onClick: (event, rowData) => {
+                                        setAction('Edit');
+                                        getEmployeeOptions();
+                                        openInPopup(rowData.productid);
+                                    }
+                                },
+                                {
+                                    icon: 'chevron_right',
+                                    tooltip: 'View',
+                                    onClick: (event, rowData) => {
+                                        setAction('View');
+                                        openInPopup(rowData.productid);
+                                    }
                                 }
-                            }
-                        ]}
-                    />
+                            ]}
+                        />
+                    </div>
                 </div>
                 <PopUp
                     openPopup={openPopup}

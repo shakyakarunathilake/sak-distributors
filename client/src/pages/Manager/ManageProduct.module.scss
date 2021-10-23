@@ -7,20 +7,20 @@
 .actionRow {
     width: 100vw;
     box-sizing: border-box;
-    display: grid;
-    grid-template-columns: auto max-content max-content;
+    display: inline-flex;
+    flex-direction: row-reverse;
     padding: 0 25px;
 
-    .search {
-        width: 250px;
-        margin: 20px 20px 20px 0;
-
-        .searchtextfield {
-            height: 20px;
-        }
+    .variantbutton {
+        width: 206.75px;
+        height: 53.28px;
+        color: $inverseFontColor;
+        font-size: 0.95em;
+        margin: 20px 0 20px 20px;
     }
 
-    .button {
+    .productbutton {
+        width: 213.72px;
         height: 53.28px;
         color: $inverseFontColor;
         font-size: 0.95em;
@@ -30,15 +30,6 @@
     .icon {
         margin-right: 10px;
     }
-}
-
-.tablehead {
-    background-color: #D3D3D3;
-}
-
-.whitefont {
-    color: black !important;
-    font-weight: 600;
 }
 
 .pagecontent {
@@ -75,7 +66,6 @@
 .actioncolumn {
     white-space: nowrap;
     background-color: inherit;
-    // box-shadow: -10px 0px 10px 1px #aaaaaa;
 }
 
 .visibilityIcon {

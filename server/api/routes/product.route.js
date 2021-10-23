@@ -31,34 +31,26 @@ router.get("/get-all-product-table-data", (req, res, next) => {
         .find()
         .exec()
         .then(doc => {
-            const thead = [
-                { title: "Prod. ID", field: "productid" },
-                { title: "Name", field: "name" },
-                { title: "Supplier", field: "supplier" },
-                { title: "Status", field: "status" },
-                { title: "Action", field: "action" },
-            ]
 
             const tbody = doc.map(x => ({
+                "productid": x.productid,
+                "name": x.name,
+                "supplier": x.supplier,
+                "status": x.status,
+                "variants": x.variants.map(y => ({
                     "productid": x.productid,
                     "name": x.name,
                     "supplier": x.supplier,
+                    "variantid": y.variantid,
+                    "type": y.type,
                     "status": x.status,
-
-                    // "variants": x.variants.map(y => ({
-                    //     "variantid": y.variantid,
-                    //     "type": y.type,
-                    //     "purchaseprice": y.purchaseprice,
-                    //     "sellingprice": y.sellingprice,
-                    //     "mrp": y.mrp,
-                    // }))
                 }))
+            }))
 
             console.log("TABLE BODY: ", tbody);
 
             res.status(201).json({
                 message: "Handeling GET requests to /get-all-product-table-data",
-                thead: thead,
                 tbody: tbody,
             });
         })
@@ -122,7 +114,6 @@ router.post("/create-product", uploads.single("productimage"), (req, res, next) 
         status: req.body.status,
         addeddate: addeddate,
         addedby: req.body.addedby,
-
     })
 
     product
@@ -224,6 +215,42 @@ router.get("/:productid", (req, res, next) => {
 })
 
 //Update product data by Product ID
+router.post("/update-by-id/:productid", uploads.single("productimage"), (req, res, next) => {
+
+    Product
+        .findOneAndUpdate(
+            { "productid": req.params.productid },
+            {
+                '$set': {
+                    'name': req.body.name,
+                    'status': req.body.status,
+                    'supplier': req.body.supplier,
+                    'productimage': req.body.productimage,
+                    'addeddate': req.body.addeddate,
+                    'addedby': req.body.addedby,
+                }
+            },
+            { upsert: true }
+        )
+        .exec()
+        .then(doc => {
+            res.status(200).json({
+                message: "Handling POST requests to /products/update-by-id/:productid, PRODUCT UPDATED",
+                type: 'success',
+                alert: `${doc.name} (${doc.productid}) Updated`,
+                updatedProduct: doc
+            });
+        })
+        .catch(err => {
+            res.status(200).json({
+                type: 'error',
+                alert: `Something went wrong. Could not update product`,
+            });
+            console.log(err);
+        });
+});
+
+//Update product data by Product ID and Variant ID
 router.post("/update-by-id/:productid/:variantid", uploads.single("productimage"), (req, res, next) => {
 
     Product
