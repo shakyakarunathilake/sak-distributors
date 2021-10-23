@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import MaterialTable from 'material-table';
 import classnames from 'classnames';
 
 //Shared Components
 import Page from '../../shared/Page/Page';
-import useTable from '../../components/useTable.js';
 import TextField from '../../shared/TextField/TextField';
 import PopUp from '../../shared/PopUp/PopUp';
 import Snackbar from '@mui/material/Snackbar';
@@ -13,13 +13,9 @@ import MuiAlert from '@mui/material/Alert';
 import style from './ManageProduct.module.scss';
 
 //Material UI 
-import Box from '@mui/material/Box';
-import Collapse from '@mui/material/Collapse';
 import Button from '@material-ui/core/Button';
 import { InputAdornment } from '@material-ui/core';
-import { Table, TableHead as MuiTableHead, TableBody, TableRow, TableCell } from '@material-ui/core';
 import Tooltip from '@mui/material/Tooltip';
-import IconButton from '@mui/material/IconButton';
 
 //Material UI Icons
 import AddCircleIcon from '@material-ui/icons/AddCircle';
@@ -27,8 +23,6 @@ import SearchIcon from '@material-ui/icons/Search';
 import EditIcon from '@material-ui/icons/Edit';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import NewReleasesIcon from '@mui/icons-material/NewReleases';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 //Product Form
 import ProductForm from './ProductForm';
@@ -43,8 +37,6 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 export default function ManageProduct() {
-
-    const [searchText, setSearchText] = useState();
 
     const [type, setType] = useState();
     const [open, setOpen] = useState(false);
@@ -61,9 +53,6 @@ export default function ManageProduct() {
 
     const [nextId, setNextId] = useState([]);
     const [reRender, setReRender] = useState(null);
-
-    const [uncollapse, setUncollapse] = useState(false);
-    const [productID, setProductID] = useState(null);
 
     const handleAlert = () => {
         setOpen(true);
@@ -197,90 +186,6 @@ export default function ManageProduct() {
                 console.log(err);
             });
     }
-    const { TableContainer, TableHead } = useTable(headCells);
-
-
-
-    const getRows = (records) => (
-        records.map((row, i) => (
-            <React.Fragment key={i}>
-                <TableRow
-                    className={classnames(
-                        { [style.greytablerow]: i % 2 === 1 },
-                        { [style.whitetablerow]: i % 2 === 0 },
-                    )}
-                >
-                    <TableCell>
-                        <IconButton
-                            size="small"
-                            onClick={() => setUncollapse(!uncollapse)}
-                        >
-                            {uncollapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                        </IconButton>
-                    </TableCell>
-                    <TableCell component="th" scope="row"> {row.productid} </TableCell>
-                    <TableCell> {row.name} </TableCell>
-                    <TableCell> {row.supplier} </TableCell>
-                    <TableCell
-                        className={classnames(
-                            { [style.active]: row.status === "Active" },
-                            { [style.inactive]: row.status === "Inactive" }
-                        )}
-                    >
-                        {row.status}
-                    </TableCell>
-                    <TableCell
-                        align="center"
-                        className={style.actioncolumn}
-                    >
-                        <Tooltip title="View" arrow>
-                            <VisibilityIcon
-                                className={style.visibilityIcon}
-                                onClick={() => {
-                                    setAction('View');
-                                    openInPopup(row.productid);
-                                }}
-                            />
-                        </Tooltip>
-                        <Tooltip title="Edit" arrow>
-                            <EditIcon
-                                className={style.editIcon}
-                                onClick={() => {
-                                    setAction('Edit');
-                                    openInPopup(row.productid);
-                                }}
-                            />
-                        </Tooltip>
-                    </TableCell>
-                </TableRow>
-                <TableRow>
-                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                        <Collapse  hidden={!uncollapse} in={uncollapse} timeout="auto" unmountOnExit>
-                            <Box >
-                                <Table size="small">
-                                    <MuiTableHead className={style.tablehead} >
-                                        <TableRow>
-                                            <TableCell className={style.whitefont}> Variant ID </TableCell>
-                                            <TableCell className={style.whitefont}> Type </TableCell>
-                                            <TableCell align="center" className={style.whitefont}> Purchase Price </TableCell>
-                                            <TableCell align="center" className={style.whitefont}> Selling Price </TableCell>
-                                            <TableCell align="center" className={style.whitefont}> MRP </TableCell>
-                                            <TableCell align="center" className={style.whitefont}> Action </TableCell>
-                                        </TableRow>
-                                    </MuiTableHead>
-                                    <TableBody>
-
-                                    </TableBody>
-                                </Table>
-                            </Box>
-                        </Collapse>
-                    </TableCell>
-                </TableRow>
-            </React.Fragment>
-        ))
-    )
-
-    console.log(records);
 
     return (
         <Page title="Manage Products">
@@ -294,9 +199,9 @@ export default function ManageProduct() {
                             className={style.searchtextfield}
                             fullWidth={true}
                             placeholder="Search"
-                            onChange={e =>
-                                setSearchText(e.target.value)
-                            }
+                            // onChange={e =>
+                            //     setSearchText(e.target.value)
+                            // }
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">
@@ -346,12 +251,24 @@ export default function ManageProduct() {
                 </div>
 
                 <div className={style.pagecontent}>
-                    <TableContainer >
-                        <TableHead />
-                        <TableBody className={style.tablebody}>
-                            {getRows(records)}
-                        </TableBody>
-                    </TableContainer>
+                    <MaterialTable
+                        columns={headCells}
+                        data={records}
+                        title=""
+                        options={{
+                            filtering: true,
+                            search: false
+                        }}
+                        actions={[
+                            {
+                                icon: 'edit',
+                                tooltip: 'Edit',
+                                onClick: (event, rowData) => {
+                                    
+                                }
+                            }
+                        ]}
+                    />
                 </div>
                 <PopUp
                     openPopup={openPopup}

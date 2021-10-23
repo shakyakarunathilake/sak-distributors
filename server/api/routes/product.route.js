@@ -32,26 +32,29 @@ router.get("/get-all-product-table-data", (req, res, next) => {
         .exec()
         .then(doc => {
             const thead = [
-                "",
-                "Prod. ID",
-                "Name",
-                "Supplier",
-                "Status",
+                { title: "Prod. ID", field: "productid" },
+                { title: "Name", field: "name" },
+                { title: "Supplier", field: "supplier" },
+                { title: "Status", field: "status" },
+                { title: "Action", field: "action" },
             ]
 
             const tbody = doc.map(x => ({
-                "productid": x.productid,
-                "name": x.name,
-                "supplier": x.supplier,
-                "status": x.status,
-                "variants": x.variants.map(y => ({
-                    "variantid": y.variantid,
-                    "type": y.type,
-                    "purchaseprice": y.purchaseprice,
-                    "sellingprice": y.sellingprice,
-                    "mrp": y.mrp,
+                    "productid": x.productid,
+                    "name": x.name,
+                    "supplier": x.supplier,
+                    "status": x.status,
+
+                    // "variants": x.variants.map(y => ({
+                    //     "variantid": y.variantid,
+                    //     "type": y.type,
+                    //     "purchaseprice": y.purchaseprice,
+                    //     "sellingprice": y.sellingprice,
+                    //     "mrp": y.mrp,
+                    // }))
                 }))
-            }))
+
+            console.log("TABLE BODY: ", tbody);
 
             res.status(201).json({
                 message: "Handeling GET requests to /get-all-product-table-data",
@@ -80,7 +83,7 @@ router.get("/get-next-productid", (req, res, next) => {
         .then(doc => {
 
             let nextproductid;
-            
+
             if (doc.length === 0) {
                 nextproductid = "P000001"
             } else {
