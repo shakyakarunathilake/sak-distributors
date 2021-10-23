@@ -17,7 +17,7 @@ import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import Button from '@material-ui/core/Button';
 import { InputAdornment } from '@material-ui/core';
-import { Table, TableBody, TableRow, TableCell } from '@material-ui/core';
+import { Table, TableHead as MuiTableHead, TableBody, TableRow, TableCell } from '@material-ui/core';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 
@@ -63,6 +63,7 @@ export default function ManageProduct() {
     const [reRender, setReRender] = useState(null);
 
     const [uncollapse, setUncollapse] = useState(false);
+    const [productID, setProductID] = useState(null);
 
     const handleAlert = () => {
         setOpen(true);
@@ -198,6 +199,89 @@ export default function ManageProduct() {
     }
     const { TableContainer, TableHead } = useTable(headCells);
 
+
+
+    const getRows = (records) => (
+        records.map((row, i) => (
+            <React.Fragment key={i}>
+                <TableRow
+                    className={classnames(
+                        { [style.greytablerow]: i % 2 === 1 },
+                        { [style.whitetablerow]: i % 2 === 0 },
+                    )}
+                >
+                    <TableCell>
+                        <IconButton
+                            size="small"
+                            onClick={() => setUncollapse(!uncollapse)}
+                        >
+                            {uncollapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                        </IconButton>
+                    </TableCell>
+                    <TableCell component="th" scope="row"> {row.productid} </TableCell>
+                    <TableCell> {row.name} </TableCell>
+                    <TableCell> {row.supplier} </TableCell>
+                    <TableCell
+                        className={classnames(
+                            { [style.active]: row.status === "Active" },
+                            { [style.inactive]: row.status === "Inactive" }
+                        )}
+                    >
+                        {row.status}
+                    </TableCell>
+                    <TableCell
+                        align="center"
+                        className={style.actioncolumn}
+                    >
+                        <Tooltip title="View" arrow>
+                            <VisibilityIcon
+                                className={style.visibilityIcon}
+                                onClick={() => {
+                                    setAction('View');
+                                    openInPopup(row.productid);
+                                }}
+                            />
+                        </Tooltip>
+                        <Tooltip title="Edit" arrow>
+                            <EditIcon
+                                className={style.editIcon}
+                                onClick={() => {
+                                    setAction('Edit');
+                                    openInPopup(row.productid);
+                                }}
+                            />
+                        </Tooltip>
+                    </TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                        <Collapse  hidden={!uncollapse} in={uncollapse} timeout="auto" unmountOnExit>
+                            <Box >
+                                <Table size="small">
+                                    <MuiTableHead className={style.tablehead} >
+                                        <TableRow>
+                                            <TableCell className={style.whitefont}> Variant ID </TableCell>
+                                            <TableCell className={style.whitefont}> Type </TableCell>
+                                            <TableCell align="center" className={style.whitefont}> Purchase Price </TableCell>
+                                            <TableCell align="center" className={style.whitefont}> Selling Price </TableCell>
+                                            <TableCell align="center" className={style.whitefont}> MRP </TableCell>
+                                            <TableCell align="center" className={style.whitefont}> Action </TableCell>
+                                        </TableRow>
+                                    </MuiTableHead>
+                                    <TableBody>
+
+                                    </TableBody>
+                                </Table>
+                            </Box>
+                        </Collapse>
+                    </TableCell>
+                </TableRow>
+            </React.Fragment>
+        ))
+    )
+
+    console.log(records);
+
     return (
         <Page title="Manage Products">
             <div className={style.container}>
@@ -265,88 +349,7 @@ export default function ManageProduct() {
                     <TableContainer >
                         <TableHead />
                         <TableBody className={style.tablebody}>
-                            {
-                                records.map((row, i) => (
-                                    <React.Fragment key={i}>
-                                        <TableRow
-                                            className={classnames(
-                                                { [style.greytablerow]: i % 2 === 1 },
-                                                { [style.whitetablerow]: i % 2 === 0 },
-                                            )}
-                                        >
-                                            <TableCell>
-                                                <IconButton
-                                                    aria-label="expand row"
-                                                    size="small"
-                                                    onClick={() => setUncollapse(!uncollapse)}
-                                                >
-                                                    {uncollapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                                                </IconButton>
-                                            </TableCell>
-                                            <TableCell> {row.productid} </TableCell>
-                                            <TableCell> {row.name} </TableCell>
-                                            <TableCell> {row.supplier} </TableCell>
-                                            <TableCell> - </TableCell>
-                                            <TableCell> - </TableCell>
-                                            <TableCell> - </TableCell>
-                                            <TableCell
-                                                className={classnames(
-                                                    { [style.active]: row.status === "Active" },
-                                                    { [style.inactive]: row.status === "Inactive" }
-                                                )}
-                                            >
-                                                {row.status}
-                                            </TableCell>
-                                            <TableCell> - </TableCell>
-                                            <TableCell
-                                                align="center"
-                                                className={style.actioncolumn}
-                                            >
-                                                <Tooltip title="View" arrow>
-                                                    <VisibilityIcon
-                                                        className={style.visibilityIcon}
-                                                        onClick={() => {
-                                                            setAction('View');
-                                                            openInPopup(row.productid);
-                                                        }}
-                                                    />
-                                                </Tooltip>
-                                                <Tooltip title="Edit" arrow>
-                                                    <EditIcon
-                                                        className={style.editIcon}
-                                                        onClick={() => {
-                                                            setAction('Edit');
-                                                            openInPopup(row.productid);
-                                                        }}
-                                                    />
-                                                </Tooltip>
-                                            </TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={10}>
-                                                <Collapse in={uncollapse} timeout="auto" unmountOnExit>
-                                                    <Box sx={{ margin: 1 }}>
-                                                        <Table size="small">
-                                                            <TableBody>
-                                                                {records.map(y => (
-                                                                    y.variants.map(x => (
-                                                                        <TableRow key={x.variantid}>
-                                                                            <TableCell> {x.variantid} </TableCell>
-                                                                            <TableCell> {x.mrp} </TableCell>
-                                                                            <TableCell> {x.price} </TableCell>
-                                                                            <TableCell> {x.type} </TableCell>
-                                                                        </TableRow>
-                                                                    ))
-                                                                ))}
-                                                            </TableBody>
-                                                        </Table>
-                                                    </Box>
-                                                </Collapse>
-                                            </TableCell>
-                                        </TableRow>
-                                    </React.Fragment>
-                                ))
-                            }
+                            {getRows(records)}
                         </TableBody>
                     </TableContainer>
                 </div>
