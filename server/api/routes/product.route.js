@@ -36,11 +36,7 @@ router.get("/get-all-product-table-data", (req, res, next) => {
                 "Prod. ID",
                 "Name",
                 "Supplier",
-                "Var. ID",
-                "Price",
-                "MRP",
                 "Status",
-                "Type"
             ]
 
             const tbody = doc.map(x => ({
@@ -50,9 +46,10 @@ router.get("/get-all-product-table-data", (req, res, next) => {
                 "status": x.status,
                 "variants": x.variants.map(y => ({
                     "variantid": y.variantid,
-                    "type": x.type,
-                    "price": x.price,
-                    "mrp": x.mrp,
+                    "type": y.type,
+                    "purchaseprice": y.purchaseprice,
+                    "sellingprice": y.sellingprice,
+                    "mrp": y.mrp,
                 }))
             }))
 
