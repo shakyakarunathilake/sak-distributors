@@ -13,8 +13,6 @@ import DatePicker from '../../shared/DatePicker/DatePicker';
 
 //Material UI Components
 import Button from '@material-ui/core/Button';
-import { TextField as MuiTextField } from '@mui/material';
-import Autocomplete from '@mui/material/Autocomplete';
 
 //Material UI Icons
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
@@ -36,8 +34,6 @@ export default function ProductsForm(props) {
 
     const [file, setFile] = useState("");
 
-    const [addedBy, setAddedBy] = useState();
-
     useEffect(() => {
         if (productRecords != null) {
             setFile(`http://${productRecords.productimage}`);
@@ -54,7 +50,7 @@ export default function ProductsForm(props) {
         } else {
             setValue("productid", nextId);
         };
-    }, [productRecords, nextId])
+    }, [productRecords, nextId, setValue])
 
     const resetForm = () => {
         reset({
