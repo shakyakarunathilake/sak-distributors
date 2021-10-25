@@ -14,13 +14,15 @@ import style from './ManageProduct.module.scss';
 import Button from '@material-ui/core/Button';
 
 //Material UI Icons
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import NewReleasesIcon from '@mui/icons-material/NewReleases';
 
 //Product Form
-import ProductForm from './ProductForm';
 import ViewProduct from './ViewProduct';
-import AddNewVariant from './AddNewVariant';
+import ViewProductVariant from './ViewProductVariant';
+import ProductForm from './ProductForm';
+import VariantForm from './VariantForm';
 
 //Connecting to Backend
 import axios from 'axios';
@@ -41,12 +43,14 @@ export default function ManageProduct() {
     const [productOptions, setProductOptions] = useState(null);
     const [employeeOptions, setEmployeeOptions] = useState(null);
     const [productRecords, setProductRecords] = useState(null);
+
     const [action, setAction] = useState('');
+    const [formType, setFormType] = useState('');
+
     const [openPopup, setOpenPopup] = useState(false);
 
     const [nextId, setNextId] = useState([]);
     const [reRender, setReRender] = useState(null);
-    const [selectedRow, setSelectedRow] = useState(null);
 
     const handleAlert = () => {
         setOpen(true);
@@ -72,7 +76,7 @@ export default function ManageProduct() {
             })
     }, [reRender]);
 
-    const addOrEdit = (product, productid, variantid) => {
+    const addOrEdit = (product, productid) => {
         for (let [key, value] of product.entries()) {
             console.log(key, value);
         }
@@ -110,35 +114,71 @@ export default function ManageProduct() {
         setAction('');
     }
 
-    const addVariant = (product, productid) => {
+    const addVariant = (product, productid, variantid) => {
         for (let [key, value] of product.entries()) {
             console.log(key, value);
         }
-        axios
-            .post(`http://localhost:8080/products/add-new-variant/${productid}`, product)
-            .then(res => {
-                setAlert(res.data.alert);
-                setType(res.data.type);
-                handleAlert();
-                setReRender(productid);
-            })
-            .catch(err => {
-                console.log(err);
-            });
-        ;
-        setOpenPopup(false);
+
+        if (action === "Create") {
+            axios
+                .post(`http://localhost:8080/products/add-new-variant/${productid}`, product)
+                .then(res => {
+                    setAlert(res.data.alert);
+                    setType(res.data.type);
+                    handleAlert();
+                    setReRender(productid);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+            ;
+            setOpenPopup(false);
+        } else {
+            axios
+                .post(`http://localhost:8080/products/update-by-id/${productid}/${variantid}`, product)
+                .then(res => {
+                    setAlert(res.data.alert);
+                    setType(res.data.type);
+                    handleAlert();
+                    setReRender(productid);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+            ;
+            setOpenPopup(false);
+        }
     }
 
-    const openInPopup = (productid) => {
-        axios
-            .get(`http://localhost:8080/products/${productid}`)
-            .then(res => {
-                setProductRecords(res.data.product);
-                setOpenPopup(true);
-            })
-            .catch(err => {
-                console.log(err);
-            })
+    const openInPopup = (productid, variantid) => {
+        console.log("Variant ID: ", variantid,
+            "Product ID: ", productid
+        );
+
+        if (typeof variantid === 'undefined') {
+            setFormType('Product')
+            axios
+                .get(`http://localhost:8080/products/${productid}`)
+                .then(res => {
+                    setProductRecords(res.data.product);
+                    setOpenPopup(true);
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+
+        } else {
+            setFormType('Variant')
+            axios
+                .get(`http://localhost:8080/products/${productid}/${variantid}`)
+                .then(res => {
+                    setProductRecords(res.data.product);
+                    setOpenPopup(true);
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        }
     }
 
     const getProductOptions = () => {
@@ -193,6 +233,7 @@ export default function ManageProduct() {
                         onClick={
                             () => {
                                 setAction('Create');
+                                setFormType('Product')
                                 getNextProductId();
                                 getEmployeeOptions();
                                 setOpenPopup(true);
@@ -211,7 +252,8 @@ export default function ManageProduct() {
                         variant="contained"
                         onClick={
                             () => {
-                                setAction('Variant');
+                                setAction('Create');
+                                setFormType('Variant')
                                 getProductOptions();
                                 getEmployeeOptions();
                                 setOpenPopup(true);
@@ -228,31 +270,46 @@ export default function ManageProduct() {
                     <div className={style.materialTable}>
                         <MaterialTable
                             columns={[
-                                { title: "Prod. ID", field: "productid", cellStyle: { width: "10%" } },
+                                {
+                                    title: "Product ID", field: "productid", render: rowData => {
+                                        return (
+                                            <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.productid}</p>
+                                        )
+                                    }
+                                },
                                 { title: "Name", field: "name" },
                                 { title: "Supplier", field: "supplier" },
-                                { title: "Var. ID", field: "variantid" },
+                                {
+                                    title: "Variant ID", field: "variantid", render: rowData => {
+                                        return (
+                                            <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.variantid}</p>
+                                        )
+                                    }
+                                },
                                 { title: "Type", field: "type" },
                                 {
                                     title: "Status", field: "status", render: rowData => {
                                         return (
-                                            rowData.status == "Active" ?
-                                                <p style={{ padding: "0", margin: "0", color: "#4cbb17", fontWeight: "bold" }}>{rowData.status}</p> :
-                                                <p style={{ padding: "0", margin: "0", color: "red", fontWeight: "bold" }}>{rowData.status}</p>
+                                            rowData.status === "Active" ?
+                                                <p style={{ padding: "0", margin: "0", color: "#4cbb17", fontWeight: "700" }}>{rowData.status}</p> :
+                                                <p style={{ padding: "0", margin: "0", color: "red", fontWeight: "700" }}>{rowData.status}</p>
                                         )
                                     }
                                 },
                             ]}
                             data={records}
-                            parentChildData={(row, rows) => rows.find(a => a.productid === row.productid)}
-                            onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow.tableData.id))}
+                            parentChildData={(row, rows) => rows.find(a => a.id === row.parentid)}
+                            // onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow.tableData.id))}
                             options={{
                                 toolbar: false,
                                 filtering: true,
                                 search: false,
                                 paging: false,
                                 actionsColumnIndex: -1,
+                                maxBodyHeight: "calc(100vh - 199.27px)",
                                 headerStyle: {
+                                    position: "sticky",
+                                    top: "0",
                                     backgroundColor: '#20369f',
                                     color: '#FFF',
                                     fontSize: "0.8em"
@@ -264,20 +321,20 @@ export default function ManageProduct() {
                             }}
                             actions={[
                                 {
+                                    icon: VisibilityIcon,
+                                    tooltip: 'View',
+                                    onClick: (event, rowData) => {
+                                        setAction('View');
+                                        openInPopup(rowData.productid, rowData.variantid);
+                                    }
+                                },
+                                {
                                     icon: 'edit',
                                     tooltip: 'Edit',
                                     onClick: (event, rowData) => {
                                         setAction('Edit');
                                         getEmployeeOptions();
-                                        openInPopup(rowData.productid);
-                                    }
-                                },
-                                {
-                                    icon: 'chevron_right',
-                                    tooltip: 'View',
-                                    onClick: (event, rowData) => {
-                                        setAction('View');
-                                        openInPopup(rowData.productid);
+                                        openInPopup(rowData.productid, rowData.variantid);
                                     }
                                 }
                             ]}
@@ -289,27 +346,39 @@ export default function ManageProduct() {
                     setOpenPopup={setOpenPopup}
                 >
                     {
-                        action === 'View' ?
+
+                        formType === "Product" && action === 'View' ?
                             <ViewProduct
                                 productRecords={productRecords}
                                 setOpenPopup={setOpenPopup}
                                 setAction={setAction}
+                                setFormType={setFormType}
                             />
-                            : action === "Variant" ?
-                                <AddNewVariant
-                                    addVariant={addVariant}
-                                    productOptions={productOptions}
-                                    employeeOptions={employeeOptions}
-                                    setOpenPopup={setOpenPopup}
-                                    setAction={setAction}
-                                /> :
+                            : formType === "Product" && (action === 'Create' || 'Edit') ?
                                 <ProductForm
                                     addOrEdit={addOrEdit}
                                     productRecords={productRecords}
                                     employeeOptions={employeeOptions}
                                     setOpenPopup={setOpenPopup}
                                     nextId={nextId}
-                                />
+                                    setFormType={setFormType}
+                                    setAction={setAction}
+                                /> : formType === "Variant" && (action === 'Create' || 'Edit') ?
+                                    <VariantForm
+                                        addVariant={addVariant}
+                                        productOptions={productOptions}
+                                        employeeOptions={employeeOptions}
+                                        setOpenPopup={setOpenPopup}
+                                        setAction={setAction}
+                                        setFormType={setFormType}
+                                        productRecords={productRecords}
+                                    /> :
+                                    <ViewProductVariant
+                                        productRecords={productRecords}
+                                        setOpenPopup={setOpenPopup}
+                                        setAction={setAction}
+                                        setFormType={setFormType}
+                                    />
 
                     }
                 </PopUp>
