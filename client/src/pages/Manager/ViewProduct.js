@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import { useForm, Controller } from 'react-hook-form';
 
@@ -17,11 +17,10 @@ import style from './ViewProduct.module.scss';
 
 export default function ViewProduct(props) {
 
-    const { setOpenPopup, setAction, productRecords } = props;
+    const { setOpenPopup, productRecords } = props;
 
     const { handleSubmit, control, setValue } = useForm();
 
-    const [show, setShow] = useState(false);
 
     useEffect(() => {
         setValue("productid", productRecords.productid);
@@ -31,13 +30,10 @@ export default function ViewProduct(props) {
         setValue("addeddate", productRecords.addeddate);
         setValue("addedby", productRecords.addedby);
 
-        setShow(productRecords.offercaption ? true : false);
-
-    }, [productRecords])
+    }, [productRecords, setValue])
 
     const onSubmit = () => {
         setOpenPopup(false);
-        setAction('');
     };
 
     return (
@@ -173,7 +169,7 @@ export default function ViewProduct(props) {
                                 Done
                             </Button>
                         </div>
-                        
+
                     </form>
                 </div>
             </div>

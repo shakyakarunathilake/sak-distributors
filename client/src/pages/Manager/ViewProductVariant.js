@@ -17,7 +17,7 @@ import style from './ViewProduct.module.scss';
 
 export default function ViewProductVariant(props) {
 
-    const { setOpenPopup, setAction, productRecords } = props;
+    const { setOpenPopup, productRecords } = props;
 
     const { handleSubmit, control, setValue } = useForm();
 
@@ -30,23 +30,24 @@ export default function ViewProductVariant(props) {
         setValue("productimage", productRecords.productimage);
         setValue("addeddate", productRecords.addeddate);
         setValue("addedby", productRecords.addedby);
-        setValue("variantid", productRecords.variantid);
-        setValue("type", productRecords.type);
-        setValue("bulkprice", productRecords.bulkprice);
-        setValue("mrp", productRecords.mrp);
-        setValue("price", productRecords.price);
-        setValue("offercaption", productRecords.offercaption);
-        setValue("status", productRecords.status);
-        setValue("variantaddeddate", productRecords.addeddate);
-        setValue("variantaddedby", productRecords.addedby);
+        setValue("productstatus", productRecords.status);
+        setValue("variantid", productRecords.variant["variantid"]);
+        setValue("type", productRecords.variant.type);
+        setValue("bulkprice", productRecords.variant.bulkprice);
+        setValue("mrp", productRecords.variant.mrp);
+        setValue("sellingprice", productRecords.variant.sellingprice);
+        setValue("purchaseprice", productRecords.variant.purchaseprice);
+        setValue("offercaption", productRecords.variant.offercaption);
+        setValue("variantstatus", productRecords.variant.status);
+        setValue("variantaddeddate", productRecords.variant.addeddate);
+        setValue("variantaddedby", productRecords.variant.addedby);
 
         setShow(productRecords.offercaption ? true : false);
 
-    }, [productRecords])
+    }, [productRecords, setValue])
 
     const onSubmit = () => {
         setOpenPopup(false);
-        setAction('');
     };
 
     return (
@@ -54,7 +55,7 @@ export default function ViewProductVariant(props) {
             <div className={style.container}>
 
                 <div className={style.header}>
-                    <div>View Product</div>
+                    <div>View Product Variant</div>
                     <div>
                         <HighlightOffIcon
                             className={style.icon}
@@ -136,6 +137,23 @@ export default function ViewProductVariant(props) {
 
                                 <div className={style.row}>
                                     <div className={style.boldText}>
+                                        Status
+                                    </div>
+                                    <div className={style.productData}>
+                                        <Controller
+                                            name={"productstatus"}
+                                            control={control}
+                                            render={({ field: { value } }) => (
+                                                <Typography className={style.input}>
+                                                    {value}
+                                                </Typography>
+                                            )}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className={style.row}>
+                                    <div className={style.boldText}>
                                         Added By
                                     </div>
                                     <div className={style.productData}>
@@ -202,57 +220,6 @@ export default function ViewProductVariant(props) {
                                     </div>
                                 </div>
 
-                                <div className={style.row}>
-                                    <div className={style.boldText}>
-                                        Bulk Price
-                                    </div>
-                                    <div className={style.productData}>
-                                        <Controller
-                                            name={"bulkprice"}
-                                            control={control}
-                                            render={({ field: { value } }) => (
-                                                <Typography className={style.input}>
-                                                    {value}
-                                                </Typography>
-                                            )}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className={style.row}>
-                                    <div className={style.boldText}>
-                                        MRP
-                                    </div>
-                                    <div className={style.productData}>
-                                        <Controller
-                                            name={"mrp"}
-                                            control={control}
-                                            render={({ field: { value } }) => (
-                                                <Typography className={style.input}>
-                                                    {value}
-                                                </Typography>
-                                            )}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className={style.row}>
-                                    <div className={style.boldText}>
-                                        Price
-                                    </div>
-                                    <div className={style.productData}>
-                                        <Controller
-                                            name={"price"}
-                                            control={control}
-                                            render={({ field: { value } }) => (
-                                                <Typography className={style.input}>
-                                                    {value}
-                                                </Typography>
-                                            )}
-                                        />
-                                    </div>
-                                </div>
-
                                 {
                                     show &&
 
@@ -280,7 +247,75 @@ export default function ViewProductVariant(props) {
                                     </div>
                                     <div className={style.productData}>
                                         <Controller
-                                            name={"status"}
+                                            name={"variantstatus"}
+                                            control={control}
+                                            render={({ field: { value } }) => (
+                                                <Typography className={style.input}>
+                                                    {value}
+                                                </Typography>
+                                            )}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className={style.row}>
+                                    <div className={style.boldText}>
+                                        Bulk Price
+                                    </div>
+                                    <div className={style.productData}>
+                                        <Controller
+                                            name={"bulkprice"}
+                                            control={control}
+                                            render={({ field: { value } }) => (
+                                                <Typography className={style.input}>
+                                                    {value}
+                                                </Typography>
+                                            )}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className={style.row}>
+                                    <div className={style.boldText}>
+                                        Purchase Price
+                                    </div>
+                                    <div className={style.productData}>
+                                        <Controller
+                                            name={"purchaseprice"}
+                                            control={control}
+                                            render={({ field: { value } }) => (
+                                                <Typography className={style.input}>
+                                                    {value}
+                                                </Typography>
+                                            )}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className={style.row}>
+                                    <div className={style.boldText}>
+                                        Selling Price
+                                    </div>
+                                    <div className={style.productData}>
+                                        <Controller
+                                            name={"sellingprice"}
+                                            control={control}
+                                            render={({ field: { value } }) => (
+                                                <Typography className={style.input}>
+                                                    {value}
+                                                </Typography>
+                                            )}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className={style.row}>
+                                    <div className={style.boldText}>
+                                        MRP
+                                    </div>
+                                    <div className={style.productData}>
+                                        <Controller
+                                            name={"mrp"}
                                             control={control}
                                             render={({ field: { value } }) => (
                                                 <Typography className={style.input}>
