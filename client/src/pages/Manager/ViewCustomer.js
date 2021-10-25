@@ -31,7 +31,7 @@ export default function ViewCustomer(props) {
         setValue("storecontactnumber", customerRecords.storecontactnumber ? customerRecords.storecontactnumber : "Not Given");
         setValue("email", customerRecords.email ? customerRecords.email : "Not Given");
         setValue("registeredby", customerRecords.registeredby);
-    }, [customerRecords])
+    }, [customerRecords, setValue])
 
 
     const onSubmit = () => {
@@ -261,7 +261,7 @@ export default function ViewCustomer(props) {
                                             </Typography>
                                         )}
                                     />
-                                    
+
                                 </div>
                             </div>
 
@@ -279,7 +279,7 @@ export default function ViewCustomer(props) {
                                             </Typography>
                                         )}
                                     />
-                                    
+
                                 </div>
                             </div>
 

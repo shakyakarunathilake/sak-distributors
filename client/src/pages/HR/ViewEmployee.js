@@ -38,7 +38,7 @@ export default function ViewEmployee(props) {
         setValue("employeestatus", employeeRecords.employeestatus);
         setValue("hiredby", employeeRecords.hiredby);
 
-    }, [employeeRecords])
+    }, [employeeRecords, setValue])
 
 
     const onSubmit = () => {

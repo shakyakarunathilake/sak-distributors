@@ -55,7 +55,7 @@ export default function EmployeesForm(props) {
         } else {
             setValue("employeeid", nextEmpId);
         };
-    }, [employeeRecords, nextEmpId])
+    }, [employeeRecords, nextEmpId, setValue])
 
 
     const handleDesignationChange = e => {
