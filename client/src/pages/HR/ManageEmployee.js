@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import classnames from 'classnames';
+
+import MaterialTable from 'material-table';
 
 //Shared Components
 import Page from '../../shared/Page/Page';
-import useTable from '../../components/useTable.js';
-import TextField from '../../shared/TextField/TextField';
 import PopUp from '../../shared/PopUp/PopUp';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
@@ -14,14 +13,9 @@ import style from './ManageEmployee.module.scss';
 
 //Material UI 
 import Button from '@material-ui/core/Button';
-import { InputAdornment } from '@material-ui/core';
-import { TableBody, TableRow, TableCell } from '@material-ui/core';
-import Tooltip from '@mui/material/Tooltip';
 
 //Material UI Icons
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import SearchIcon from '@material-ui/icons/Search';
-import EditIcon from '@material-ui/icons/Edit';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 
 //Employee Form
@@ -43,7 +37,6 @@ export default function ManageEmployee() {
     const [alert, setAlert] = React.useState();
 
     const [records, setRecords] = useState([]);
-    const [headCells, setHeadCells] = useState([]);
 
     const [employeeRecords, setEmployeeRecords] = useState(null);
     const [action, setAction] = useState('');
@@ -68,7 +61,6 @@ export default function ManageEmployee() {
             .get("http://localhost:8080/employees/get-all-employees-table-data")
             .then(res => {
                 sessionStorage.setItem("EmployeesTableData", JSON.stringify(res.data));
-                setHeadCells(res.data.thead);
                 setRecords(res.data.tbody);
                 setReRender(null);
             })
@@ -138,29 +130,11 @@ export default function ManageEmployee() {
             });
     }
 
-    const { TableContainer, TableHead } = useTable(headCells);
-
     return (
         <Page title="Manage Employees">
             <div className={style.container}>
 
                 <div className={style.actionRow}>
-                    <div className={style.search}>
-                        <TextField
-                            // onChange={e => setSearchVal(e.target.value)}
-                            color="primary"
-                            className={style.searchtextfield}
-                            fullWidth={true}
-                            placeholder="Search"
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <SearchIcon />
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
-                    </div>
                     <Button
                         className={style.button}
                         color="primary"
@@ -181,60 +155,71 @@ export default function ManageEmployee() {
                 </div>
 
                 <div className={style.pagecontent}>
-                    <TableContainer >
-                        <TableHead />
-                        <TableBody className={style.tablebody}>
+                    <MaterialTable
+                        columns={[
                             {
-                                records.map((row, i) => (
-                                    <TableRow
-                                        className={classnames(
-                                            { [style.greytablerow]: i % 2 === 1 },
-                                            { [style.whitetablerow]: i % 2 === 0 },
-                                        )}
-                                        key={row[0]}
-                                    >
-                                        {
-                                            row.map((cell, i) => (
-                                                <TableCell key={row[0] + cell}
-                                                    className={classnames(
-                                                        { [style.active]: cell === "Active" },
-                                                        { [style.inactive]: cell === "Inactive" },
-                                                        { [style.limitedAccess]: cell === "Limited Access" }
-                                                    )}
-                                                >
-                                                    {cell}
-                                                </TableCell>
-                                            ))
-                                        }
-                                        <TableCell
-                                            align="center"
-                                            className={style.actioncolumn}
-                                        >
-                                            <Tooltip title="View" arrow>
-                                                <VisibilityIcon
-                                                    className={style.visibilityIcon}
-                                                    onClick={() => {
-                                                        setAction('View');
-                                                        openInPopup(row[0]);
-                                                    }}
-                                                />
-                                            </Tooltip>
-                                            <Tooltip title="Edit" arrow>
-                                                <EditIcon
-                                                    className={style.editIcon}
-                                                    onClick={() => {
-                                                        setAction('Edit');
-                                                        openInPopup(row[0]);
-                                                    }}
-                                                />
-                                            </Tooltip>
-                                        </TableCell>
-                                    </TableRow>
+                                title: "Employee ID", field: "employeeid", render: rowData => {
+                                    return (
+                                        <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.employeeid}</p>
+                                    )
+                                }
+                            },
+                            { title: "Title", field: "title" },
+                            { title: "Name", field: "name" },
+                            { title: "Designation", field: "designation" },
+                            {
+                                title: "Status", field: "status", render: rowData => {
+                                    return (
+                                        rowData.status === "Active" ?
+                                            <p style={{ padding: "0", margin: "0", color: "#4cbb17", fontWeight: "700" }}>{rowData.status}</p> :
+                                            rowData.status === "Inactive" ?
+                                                <p style={{ padding: "0", margin: "0", color: "red", fontWeight: "700" }}>{rowData.status}</p> :
+                                                <p style={{ padding: "0", margin: "0", color: "#eed202", fontWeight: "700" }}>{rowData.status}</p>
 
-                                ))
+                                    )
+                                }
+                            },
+                            { title: "Hired Date", field: "hireddate" },
+                        ]}
+                        data={records}
+                        options={{
+                            toolbar: false,
+                            filtering: true,
+                            search: false,
+                            paging: false,
+                            actionsColumnIndex: -1,
+                            maxBodyHeight: "calc(100vh - 199.27px)",
+                            headerStyle: {
+                                position: "sticky",
+                                top: "0",
+                                backgroundColor: '#20369f',
+                                color: '#FFF',
+                                fontSize: "0.8em"
+                            },
+                            rowStyle: rowData => ({
+                                fontSize: "0.8em",
+                                backgroundColor: (rowData.tableData.id % 2 === 1) ? '#ebebeb' : '#ffffff'
+                            })
+                        }}
+                        actions={[
+                            {
+                                icon: VisibilityIcon,
+                                tooltip: 'View',
+                                onClick: (event, rowData) => {
+                                    setAction('View');
+                                    openInPopup(rowData.employeeid);
+                                }
+                            },
+                            {
+                                icon: 'edit',
+                                tooltip: 'Edit',
+                                onClick: (event, rowData) => {
+                                    setAction('Edit');
+                                    openInPopup(rowData.employeeid);
+                                }
                             }
-                        </TableBody>
-                    </TableContainer>
+                        ]}
+                    />
                 </div>
                 <PopUp
                     openPopup={openPopup}
