@@ -267,79 +267,77 @@ export default function ManageProduct() {
                 </div>
 
                 <div className={style.pagecontent}>
-                    <div className={style.materialTable}>
-                        <MaterialTable
-                            columns={[
-                                {
-                                    title: "Product ID", field: "productid", render: rowData => {
-                                        return (
-                                            <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.productid}</p>
-                                        )
-                                    }
-                                },
-                                { title: "Name", field: "name" },
-                                { title: "Supplier", field: "supplier" },
-                                {
-                                    title: "Variant ID", field: "variantid", render: rowData => {
-                                        return (
-                                            <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.variantid}</p>
-                                        )
-                                    }
-                                },
-                                { title: "Type", field: "type" },
-                                {
-                                    title: "Status", field: "status", render: rowData => {
-                                        return (
-                                            rowData.status === "Active" ?
-                                                <p style={{ padding: "0", margin: "0", color: "#4cbb17", fontWeight: "700" }}>{rowData.status}</p> :
-                                                <p style={{ padding: "0", margin: "0", color: "red", fontWeight: "700" }}>{rowData.status}</p>
-                                        )
-                                    }
-                                },
-                            ]}
-                            data={records}
-                            parentChildData={(row, rows) => rows.find(a => a.id === row.parentid)}
-                            // onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow.tableData.id))}
-                            options={{
-                                toolbar: false,
-                                filtering: true,
-                                search: false,
-                                paging: false,
-                                actionsColumnIndex: -1,
-                                maxBodyHeight: "calc(100vh - 199.27px)",
-                                headerStyle: {
-                                    position: "sticky",
-                                    top: "0",
-                                    backgroundColor: '#20369f',
-                                    color: '#FFF',
-                                    fontSize: "0.8em"
-                                },
-                                rowStyle: rowData => ({
-                                    fontSize: "0.8em",
-                                    backgroundColor: (rowData.tableData.id % 2 === 1) ? '#ebebeb' : '#ffffff'
-                                })
-                            }}
-                            actions={[
-                                {
-                                    icon: VisibilityIcon,
-                                    tooltip: 'View',
-                                    onClick: (event, rowData) => {
-                                        setAction('View');
-                                        openInPopup(rowData.productid, rowData.variantid);
-                                    }
-                                },
-                                {
-                                    icon: 'edit',
-                                    tooltip: 'Edit',
-                                    onClick: (event, rowData) => {
-                                        setAction('Edit');
-                                        getEmployeeOptions();
-                                        openInPopup(rowData.productid, rowData.variantid);
-                                    }
+                    <MaterialTable
+                        columns={[
+                            {
+                                title: "Product ID", field: "productid", render: rowData => {
+                                    return (
+                                        <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.productid}</p>
+                                    )
                                 }
-                            ]}
-                        />
-                    </div>
+                            },
+                            { title: "Name", field: "name" },
+                            { title: "Supplier", field: "supplier" },
+                            {
+                                title: "Variant ID", field: "variantid", render: rowData => {
+                                    return (
+                                        <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.variantid}</p>
+                                    )
+                                }
+                            },
+                            { title: "Type", field: "type" },
+                            {
+                                title: "Status", field: "status", render: rowData => {
+                                    return (
+                                        rowData.status === "Active" ?
+                                            <p style={{ padding: "0", margin: "0", color: "#4cbb17", fontWeight: "700" }}>{rowData.status}</p> :
+                                            <p style={{ padding: "0", margin: "0", color: "red", fontWeight: "700" }}>{rowData.status}</p>
+                                    )
+                                }
+                            },
+                        ]}
+                        data={records}
+                        parentChildData={(row, rows) => rows.find(a => a.id === row.parentid)}
+                        // onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow.tableData.id))}
+                        options={{
+                            toolbar: false,
+                            filtering: true,
+                            search: false,
+                            paging: false,
+                            actionsColumnIndex: -1,
+                            maxBodyHeight: "calc(100vh - 199.27px)",
+                            headerStyle: {
+                                position: "sticky",
+                                top: "0",
+                                backgroundColor: '#20369f',
+                                color: '#FFF',
+                                fontSize: "0.8em"
+                            },
+                            rowStyle: rowData => ({
+                                fontSize: "0.8em",
+                                backgroundColor: (rowData.tableData.id % 2 === 1) ? '#ebebeb' : '#ffffff'
+                            })
+                        }}
+                        actions={[
+                            {
+                                icon: VisibilityIcon,
+                                tooltip: 'View',
+                                onClick: (event, rowData) => {
+                                    setAction('View');
+                                    openInPopup(rowData.productid, rowData.variantid);
+                                }
+                            },
+                            {
+                                icon: 'edit',
+                                tooltip: 'Edit',
+                                onClick: (event, rowData) => {
+                                    setAction('Edit');
+                                    getEmployeeOptions();
+                                    openInPopup(rowData.productid, rowData.variantid);
+                                }
+                            }
+                        ]}
+                    />
                 </div>
                 <PopUp
                     openPopup={openPopup}
