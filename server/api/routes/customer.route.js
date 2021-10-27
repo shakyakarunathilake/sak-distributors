@@ -124,27 +124,18 @@ router.get("/get-all-customer-table-data", (req, res, next) => {
         .find()
         .exec()
         .then(doc => {
-            const thead = [
-                "Cus. ID",
-                "Store Name",
-                "Title",
-                "Customer Name",
-                "Shipping Address",
-                "Contact No."
-            ]
 
-            const tbody = doc.map(x => [
-                x.customerid,
-                x.storename,
-                x.title,
-                x.firstname + " " + x.lastname,
-                x.shippingaddress,
-                x.customercontactnumber,
-            ])
+            const tbody = doc.map(x => ({
+                "customerid": x.customerid,
+                "storename": x.storename,
+                "title": x.title,
+                "customername": x.firstname + " " + x.lastname,
+                "shippingaddress": x.shippingaddress,
+                "contactnumber": x.customercontactnumber,
+            }))
 
             res.status(201).json({
                 message: "Handeling GET requests to /get-all-customer-table-data",
-                thead: thead,
                 tbody: tbody,
             });
         })

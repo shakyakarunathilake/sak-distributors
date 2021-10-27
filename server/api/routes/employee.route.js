@@ -186,18 +186,19 @@ router.get("/get-all-employees-table-data", (req, res, next) => {
                 "Hired Date",
             ]
 
-            const tbody = doc.map(x => [
-                x.employeeid,
-                x.title,
-                x.firstname + " " + x.lastname,
-                x.designation,
-                x.employeestatus,
-                x.hireddate,
-            ])
+            const tbody = doc.map(x => ({
+                "employeeid": x.employeeid,
+                "title": x.title,
+                "name": x.firstname + " " + x.lastname,
+                "designation": x.designation,
+                "status": x.employeestatus,
+                "hireddate": x.hireddate,
+            }))
+
+            console.log("TBODY: ", tbody);
 
             res.status(200).json({
                 message: "Handeling GET requests to /get-all-employees-table-data",
-                thead: thead,
                 tbody: tbody,
                 defaultkey: 0,
             });
