@@ -198,7 +198,7 @@ export default function ManageEmployee() {
                             },
                             rowStyle: rowData => ({
                                 fontSize: "0.8em",
-                                backgroundColor: (rowData.tableData.id % 2 === 1) ? '#ebebeb' : '#ffffff'
+                                backgroundColor: (rowData.tableData.id % 2 === 0) ? '#ebebeb' : '#ffffff'
                             })
                         }}
                         actions={[
