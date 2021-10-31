@@ -116,6 +116,12 @@ const getPurchasingManagerListItems = [
         icon: <ReceiptIcon />
     },
     {
+        id: "Create Purchase Order",
+        title: "Create Purchase Order",
+        path: "http://localhost:3000/purchasing-manager/create-purchase-order",
+        icon: <AddCircleIcon />
+    },
+    {
         id: "Manage PO/Quotations",
         title: "Manage PO/Quotations",
         path: "http://localhost:3000/purchasing-manager/manage-po-quotation",
@@ -188,9 +194,9 @@ const getSalesRepresentativeListItems = [
         icon: <ViewListIcon />,
     },
     {
-        id: "Add New Order",
-        title: "Add New Order",
-        path: "http://localhost:3000/sales-representative/add-new-order",
+        id: "Create Order",
+        title: "Create Order",
+        path: "http://localhost:3000/sales-representative/create-order",
         icon: <AddCircleIcon />
     },
     {
@@ -202,23 +208,23 @@ const getSalesRepresentativeListItems = [
 
 ];
 
-export function drawerListItems(role) {
-    if (role === "Distributor") {
+export function drawerListItems(designation) {
+    if (designation === "Distributor") {
         return (getDistributorListItems)
     }
-    if (role === "Human Resources") {
+    if (designation === "Human Resources") {
         return (getHRListItems)
     }
-    if (role === "Manager") {
+    if (designation === "Manager") {
         return (getManagerListItems)
     }
-    if (role === "Purchasing Manager") {
+    if (designation === "Purchasing Manager") {
         return (getPurchasingManagerListItems)
     }
-    if (role === "Store Keeper") {
+    if (designation === "Store Keeper") {
         return (getStoreKeeperListItems)
     }
-    if (role === "Sales Representative") {
+    if (designation === "Sales Representative") {
         return (getSalesRepresentativeListItems)
     }
 }

@@ -37,7 +37,7 @@ const useStyles = makeStyles({
         paddingBottom: 15,
         textAlign: "center",
     },
-    role: {
+    designation: {
         fontSize: 14,
         letterSpacing: 1,
     },
@@ -103,7 +103,7 @@ export default function Page(props) {
 
     const [state, setState] = useState();
 
-    const role = JSON.parse(sessionStorage.getItem("Auth")).role;
+    const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
     const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
     const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
     const email = JSON.parse(sessionStorage.getItem("Auth")).email;
@@ -122,7 +122,7 @@ export default function Page(props) {
         <div onClick={toggleDrawer(false)} className={classes.list}>
             <List>
                 {
-                    drawerListItems.drawerListItems(role).map((listItem) => (
+                    drawerListItems.drawerListItems(designation).map((listItem) => (
                         <ListItem
                             button
                             className={classes.listItem}
@@ -148,7 +148,7 @@ export default function Page(props) {
             >
                 <div className={classes.userInfo}>
                     <Avatar alt={firstname} className={classes.avatar} src={`http://${employeeimage}`} />
-                    <div className={classes.role}>{role}</div>
+                    <div className={classes.designation}>{designation}</div>
                     <div className={classes.name}>{firstname} {lastname}</div>
                     <div className={classes.email}>{email}</div>
                 </div>

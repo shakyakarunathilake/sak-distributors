@@ -31,7 +31,7 @@ router.post("/signin", (req, res, next) => {
             const token = jwt.sign(
                 {
                     username: employee[0].employeeid,
-                    role: employee[0].designation,
+                    designation: employee[0].designation,
                     firstname: employee[0].firstname,
                     lastname: employee[0].lastname,
                     email: employee[0].email,
@@ -45,7 +45,7 @@ router.post("/signin", (req, res, next) => {
             res.status(200).json({
                 auth_status: "AUTHORIZED",
                 employeeid: employee[0].employeeid,
-                role: employee[0].designation,
+                designation: employee[0].designation,
                 firstname: employee[0].firstname,
                 lastname: employee[0].lastname,
                 email: employee[0].email,

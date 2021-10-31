@@ -20,7 +20,7 @@ export default function Dashboard() {
 
     const firsttimelogin = JSON.parse(sessionStorage.getItem("Auth")).firsttimelogin;
     const employeeimage = JSON.parse(sessionStorage.getItem("Auth")).employeeimage;
-    const role = JSON.parse(sessionStorage.getItem("Auth")).role;
+    const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
     const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
     const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
     const email = JSON.parse(sessionStorage.getItem("Auth")).email;
@@ -72,7 +72,7 @@ export default function Dashboard() {
                                         Role:
                                     </div>
                                     <div className={style.regulartext}>
-                                        {role}
+                                        {designation}
                                     </div>
                                 </div>
                                 <div className={style.text}>
@@ -166,7 +166,7 @@ export default function Dashboard() {
                                         Role:
                                     </div>
                                     <div className={style.regulartext}>
-                                        {role}
+                                        {designation}
                                     </div>
                                 </div>
                                 <div className={style.text}>
@@ -262,7 +262,7 @@ export default function Dashboard() {
                                             Role:
                                         </div>
                                         <div className={style.regulartext}>
-                                            {role}
+                                            {designation}
                                         </div>
                                     </div>
                                     <div className={style.text}>
