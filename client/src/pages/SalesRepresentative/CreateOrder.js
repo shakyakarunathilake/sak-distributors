@@ -10,7 +10,7 @@ import MenuItem from '@mui/material/MenuItem';
 // import MuiAlert from '@mui/material/Alert';
 
 //SCSS styles
-import style from './AddNewOrder.module.scss';
+import style from './CreateOrder.module.scss';
 
 //Material UI 
 import Button from '@material-ui/core/Button';
@@ -25,7 +25,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 //Connecting to backend
 import axios from 'axios';
 
-export default function AddNewOrder() {
+export default function CreateOrder() {
 
     const [nextInvoiceNo, setNextInvoiceNo] = useState("");
     const [customerInfo, setCustomerInfo] = useState([]);
@@ -69,7 +69,7 @@ export default function AddNewOrder() {
     var deliveryDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + (today.getDate() + 3);
 
     return (
-        <Page title="Add New Order">
+        <Page title="Create Order">
 
             <div className={style.container}>
 
