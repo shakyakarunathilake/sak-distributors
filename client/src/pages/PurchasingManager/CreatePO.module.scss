@@ -1,0 +1,94 @@
+@import "../../styles/variables";
+@import "../../styles/variables";
+
+.container {
+    width: 100vw;
+    height: calc(100vh - 126px);
+    box-sizing: border-box;
+    display: grid;
+    grid-template-rows: min-content min-content min-content;
+}
+
+.pagecontent {
+    height: 100%;
+    overflow: auto;
+    margin: 20px;
+    background-color: white;
+    border-radius: 15px;
+}
+
+.orderDetails {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    padding: 20px 30px;
+
+    .details {
+        table-layout: auto !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+
+        tr {
+            th {
+                width: 150px !important;
+                height: 30px;
+            }
+        }
+        .selectHeading {
+            vertical-align: middle;
+            text-align: left;
+        }
+    }
+}
+
+.table {
+    padding: 10px 20px;
+}
+
+.tablecontainer {
+    overflow: auto;
+    white-space: nowrap; //To get rid of the scroll and inline text
+    box-sizing: border-box;
+}
+
+.tablehead {
+    position: sticky;
+    top: 0;
+}
+
+.tableheadrow {
+    background-color: $primaryMain;
+    font-size: 1.3em;
+    .tablecell {
+        color: $inverseFontColor;
+        .splitcell {
+            margin: 0 15px;
+        }
+    }
+}
+
+.textfield {
+    padding: 0 10px !important;
+}
+
+.addItemBtn {
+    font-size: 0.7em;
+    background-color: $inverseFontColor;
+    color: $secondaryMain;
+    vertical-align: middle;
+
+    &:hover {
+        background-color: $inverseFontColor;
+        color: $secondaryMain;
+    }
+}
+
+.salesdetails {
+    margin: 20px 30px;
+    table-layout: fixed;
+    width: calc(100% - 60px);
+}
+
+.boldtext {
+    font-size: 1.4em;
+    color: $primaryMain;
+}

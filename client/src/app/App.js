@@ -32,6 +32,7 @@ import ManageSupplier from '../pages/Manager/ManageSupplier';
 import OrderHistory from '../pages/Manager/OrderHistory';
 
 //Purchasing Manager
+import CreatePO from '../pages/PurchasingManager/CreatePO';
 import ManagePOQuotation from '../pages/PurchasingManager/ManagePOQuotation';
 import ManageSales from '../pages/PurchasingManager/ManageSales';
 import SalesTrendAnalytics from '../pages/PurchasingManager/SalesTrendAnalytics';
@@ -43,7 +44,7 @@ import GRNGIN from '../pages/StoreKeeper/GRNGIN';
 //Sales Representative
 import PersonalOrderHistory from '../pages/SalesRepresentative/PersonalOrderHistory';
 import SalesAndInvoice from '../pages/SalesRepresentative/SalesAndInvoice';
-import AddNewOrder from '../pages/SalesRepresentative/AddNewOrder';
+import CreateOrder from '../pages/SalesRepresentative/CreateOrder';
 
 const theme = createTheme({
   palette: {
@@ -107,6 +108,7 @@ function App() {
             <Route exact path='/purchasing-manager/dashboard' component={Dashboard} />
             <Route exact path='/purchasing-manager/manage-products' component={ManageProduct} />
             <Route exact path='/purchasing-manager/manage-sales' component={ManageSales} />
+            <Route exact path='/purchasing-manager/create-purchase-order' component={CreatePO} />
             <Route exact path='/purchasing-manager/manage-po-quotation' component={ManagePOQuotation} />
             <Route exact path='/purchasing-manager/supplier-payment' component={SupplierPayment} />
 
@@ -120,7 +122,7 @@ function App() {
             <Route exact path='/sales-representative/manage-customers' component={ManageCustomer} />
             <Route exact path='/sales-representative/personal-order-history' component={PersonalOrderHistory} />
             <Route exact path='/sales-representative/sales-and-invoice' component={SalesAndInvoice} />
-            <Route exact path='/sales-representative/add-new-order' component={AddNewOrder} />
+            <Route exact path='/sales-representative/create-order' component={CreateOrder} />
           </Switch>
         </BrowserRouter>
       }
