@@ -116,15 +116,21 @@ const getPurchasingManagerListItems = [
         icon: <ReceiptIcon />
     },
     {
+        id: "Manage Purchase Order",
+        title: "Manage Purchase Order",
+        path: "http://localhost:3000/purchasing-manager/manage-purchase-orders",
+        icon: <ListAltIcon />
+    },
+    {
         id: "Create Purchase Order",
         title: "Create Purchase Order",
         path: "http://localhost:3000/purchasing-manager/create-purchase-order",
         icon: <AddCircleIcon />
     },
     {
-        id: "Manage PO/Quotations",
-        title: "Manage PO/Quotations",
-        path: "http://localhost:3000/purchasing-manager/manage-po-quotation",
+        id: "Manage Quotations",
+        title: "Manage Quotations",
+        path: "http://localhost:3000/purchasing-manager/manage-quotations",
         icon: <ListAltIcon />
     },
     {

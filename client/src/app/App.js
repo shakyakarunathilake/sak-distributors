@@ -32,8 +32,9 @@ import ManageSupplier from '../pages/Manager/ManageSupplier';
 import OrderHistory from '../pages/Manager/OrderHistory';
 
 //Purchasing Manager
-import CreatePO from '../pages/PurchasingManager/CreatePO';
-import ManagePOQuotation from '../pages/PurchasingManager/ManagePOQuotation';
+import CreatePurchaseOrder from '../pages/PurchasingManager/CreatePurchaseOrder';
+import ManagePurchaseOrder from '../pages/PurchasingManager/ManagePurchaseOrder';
+import ManageQuotations from '../pages/PurchasingManager/ManageQuotations';
 import ManageSales from '../pages/PurchasingManager/ManageSales';
 import SalesTrendAnalytics from '../pages/PurchasingManager/SalesTrendAnalytics';
 import SupplierPayment from '../pages/PurchasingManager/SupplierPayment';
@@ -53,6 +54,9 @@ const theme = createTheme({
     },
     secondary: {
       main: '#000b4f'
+    },
+    neutral: {
+      main: '#ACA9BB',
     },
     warning: {
       main: '#f44336',
@@ -108,8 +112,9 @@ function App() {
             <Route exact path='/purchasing-manager/dashboard' component={Dashboard} />
             <Route exact path='/purchasing-manager/manage-products' component={ManageProduct} />
             <Route exact path='/purchasing-manager/manage-sales' component={ManageSales} />
-            <Route exact path='/purchasing-manager/create-purchase-order' component={CreatePO} />
-            <Route exact path='/purchasing-manager/manage-po-quotation' component={ManagePOQuotation} />
+            <Route exact path='/purchasing-manager/create-purchase-order' component={CreatePurchaseOrder} />
+            <Route exact path='/purchasing-manager/manage-purchase-orders' component={ManagePurchaseOrder} />
+            <Route exact path='/purchasing-manager/manage-quotations' component={ManageQuotations} />
             <Route exact path='/purchasing-manager/supplier-payment' component={SupplierPayment} />
 
             {/* Store Keeper */}
