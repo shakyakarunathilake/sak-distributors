@@ -17,23 +17,23 @@ import style from './ViewProduct.module.scss';
 
 export default function ViewProduct(props) {
 
-    const { setOpenPopup, productRecords } = props;
+    const { handleClosePopUp, productRecords } = props;
 
     const { handleSubmit, control, setValue } = useForm();
 
 
     useEffect(() => {
-        setValue("productid", productRecords.productid);
-        setValue("name", productRecords.name);
-        setValue("supplier", productRecords.supplier);
-        setValue("productimage", productRecords.productimage);
-        setValue("addeddate", productRecords.addeddate);
-        setValue("addedby", productRecords.addedby);
+        setValue("productid", productRecords?.productid);
+        setValue("name", productRecords?.name);
+        setValue("supplier", productRecords?.supplier);
+        setValue("productimage", productRecords?.productimage);
+        setValue("addeddate", productRecords?.addeddate);
+        setValue("addedby", productRecords?.addedby);
 
     }, [productRecords, setValue])
 
     const onSubmit = () => {
-        setOpenPopup(false);
+        handleClosePopUp();
     };
 
     return (
@@ -45,7 +45,7 @@ export default function ViewProduct(props) {
                     <div>
                         <HighlightOffIcon
                             className={style.icon}
-                            onClick={() => { setOpenPopup(false) }}
+                            onClick={() => { handleClosePopUp() }}
                         />
                     </div>
                 </div>

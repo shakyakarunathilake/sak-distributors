@@ -16,7 +16,7 @@ import Button from '@material-ui/core/Button';
 import Divider from '@mui/material/Divider';
 import { InputAdornment } from '@material-ui/core';
 import Autocomplete from '@mui/material/Autocomplete';
-import { TextField as MuiTextField } from '@mui/material';
+import { TextField as MuiTextField } from '@material-ui/core';
 
 //Material UI Icons
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
@@ -30,7 +30,7 @@ import style from './VariantForm.module.scss';
 
 export default function VariantForm(props) {
 
-    const { setOpenPopup, addVariant, productOptions, employeeOptions, productRecords } = props;
+    const { handleClosePopUp, addVariant, productOptions, employeeOptions, productRecords } = props;
 
     const { handleSubmit, formState: { errors }, control, reset, setValue } = useForm();
 
@@ -41,6 +41,8 @@ export default function VariantForm(props) {
         if (productRecords != null) {
             setFile(`http://${productRecords.productimage}`);
 
+            console.log(productRecords);
+
             setValue("productid", productRecords.productid);
             setValue("name", productRecords.name);
             setValue("supplier", productRecords.supplier);
@@ -48,7 +50,7 @@ export default function VariantForm(props) {
             setValue("addeddate", productRecords.addeddate);
             setValue("addedby", productRecords.addedby);
             setValue("productstatus", productRecords.status);
-            setValue("variantid", productRecords.variant["variantid"]);
+            setValue("variantid", productRecords.variant.variantid);
             setValue("type", productRecords.variant.type);
             setValue("bulkprice", productRecords.variant.bulkprice);
             setValue("mrp", productRecords.variant.mrp);
@@ -143,7 +145,7 @@ export default function VariantForm(props) {
                 <div>
                     <HighlightOffIcon
                         className={style.icon}
-                        onClick={() => { setOpenPopup(false) }}
+                        onClick={() => { handleClosePopUp() }}
                     />
                 </div>
             </div>

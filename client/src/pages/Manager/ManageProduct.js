@@ -76,6 +76,13 @@ export default function ManageProduct() {
             })
     }, [reRender]);
 
+    useEffect(() => {
+        if (productRecords != null) {
+            console.log('Action: ', action);
+            setOpenPopup(true);
+        }
+    }, [productRecords])
+
     const addOrEdit = (product, productid) => {
         for (let [key, value] of product.entries()) {
             console.log(key, value);
@@ -151,7 +158,8 @@ export default function ManageProduct() {
     }
 
     const openInPopup = (productid, variantid) => {
-        console.log("Variant ID: ", variantid,
+        console.log(
+            "Variant ID: ", variantid,
             "Product ID: ", productid
         );
 
@@ -161,7 +169,6 @@ export default function ManageProduct() {
                 .get(`http://localhost:8080/products/${productid}`)
                 .then(res => {
                     setProductRecords(res.data.product);
-                    setOpenPopup(true);
                 })
                 .catch(err => {
                     console.log(err);
@@ -173,7 +180,6 @@ export default function ManageProduct() {
                 .get(`http://localhost:8080/products/${productid}/${variantid}`)
                 .then(res => {
                     setProductRecords(res.data.product);
-                    setOpenPopup(true);
                 })
                 .catch(err => {
                     console.log(err);
@@ -217,6 +223,13 @@ export default function ManageProduct() {
             .catch(err => {
                 console.log(err);
             });
+    }
+
+    const handleClosePopUp = () => {
+        setOpenPopup(false)
+        setProductRecords(null)
+        setFormType('')
+        setAction('');
     }
 
     return (
@@ -340,6 +353,9 @@ export default function ManageProduct() {
                     />
                 </div>
                 <PopUp
+                    disableEnforceFocus={true}
+                    hideBackDrop={true}
+                    disableBackDropClick={true}
                     openPopup={openPopup}
                     setOpenPopup={setOpenPopup}
                 >
@@ -348,35 +364,27 @@ export default function ManageProduct() {
                         formType === "Product" && action === 'View' ?
                             <ViewProduct
                                 productRecords={productRecords}
-                                setOpenPopup={setOpenPopup}
-                                setAction={setAction}
-                                setFormType={setFormType}
+                                handleClosePopUp={handleClosePopUp}
                             />
-                            : formType === "Product" && (action === 'Create' || 'Edit') ?
+                            : formType === "Product" && (action === 'Create' || action === 'Edit') ?
                                 <ProductForm
                                     addOrEdit={addOrEdit}
                                     productRecords={productRecords}
                                     employeeOptions={employeeOptions}
-                                    setOpenPopup={setOpenPopup}
+                                    handleClosePopUp={handleClosePopUp}
                                     nextId={nextId}
-                                    setFormType={setFormType}
-                                    setAction={setAction}
-                                /> : formType === "Variant" && (action === 'Create' || 'Edit') ?
+                                /> : formType === "Variant" && (action === 'Create' || action === 'Edit') ?
                                     <VariantForm
+                                        productRecords={productRecords}
                                         addVariant={addVariant}
                                         productOptions={productOptions}
                                         employeeOptions={employeeOptions}
-                                        setOpenPopup={setOpenPopup}
-                                        setAction={setAction}
-                                        setFormType={setFormType}
-                                        productRecords={productRecords}
-                                    /> :
-                                    <ViewProductVariant
-                                        productRecords={productRecords}
-                                        setOpenPopup={setOpenPopup}
-                                        setAction={setAction}
-                                        setFormType={setFormType}
-                                    />
+                                        handleClosePopUp={handleClosePopUp}
+                                    /> : formType === "Variant" && action === 'View' ?
+                                        <ViewProductVariant
+                                            productRecords={productRecords}
+                                            handleClosePopUp={handleClosePopUp}
+                                        /> : ''
 
                     }
                 </PopUp>

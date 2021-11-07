@@ -17,7 +17,7 @@ import style from './ViewProduct.module.scss';
 
 export default function ViewProductVariant(props) {
 
-    const { setOpenPopup, productRecords } = props;
+    const { handleClosePopUp, productRecords } = props;
 
     const { handleSubmit, control, setValue } = useForm();
 
@@ -47,7 +47,7 @@ export default function ViewProductVariant(props) {
     // }, [productRecords, setValue])
 
     const onSubmit = () => {
-        setOpenPopup(false);
+        handleClosePopUp();
     };
 
     return (
@@ -59,7 +59,7 @@ export default function ViewProductVariant(props) {
                     <div>
                         <HighlightOffIcon
                             className={style.icon}
-                            onClick={() => { setOpenPopup(false) }}
+                            onClick={() => { handleClosePopUp() }}
                         />
                     </div>
                 </div>

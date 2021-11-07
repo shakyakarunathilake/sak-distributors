@@ -28,7 +28,7 @@ import style from './ProductForm.module.scss';
 
 export default function ProductsForm(props) {
 
-    const { setOpenPopup, addOrEdit, productRecords, nextId, employeeOptions } = props;
+    const { handleClosePopUp, addOrEdit, productRecords, nextId, employeeOptions } = props;
 
     const { handleSubmit, formState: { errors }, control, reset, setValue, getValues } = useForm();
 
@@ -94,7 +94,7 @@ export default function ProductsForm(props) {
                 <div>
                     <HighlightOffIcon
                         className={style.icon}
-                        onClick={() => { setOpenPopup(false) }}
+                        onClick={() => { handleClosePopUp() }}
                     />
                 </div>
             </div>
