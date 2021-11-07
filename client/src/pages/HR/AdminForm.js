@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { useForm, Controller } from 'react-hook-form';
-import formData from 'form-data';
+import { useForm } from 'react-hook-form';
 
 //Material UI Icons
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
@@ -13,12 +12,12 @@ export default function AdminForm(props) {
 
     const { setOpenPopup, employeeRecords } = props;
 
-    const { handleSubmit, formState: { errors }, control, reset, setValue, getValues, clearErrors } = useForm();
+    const { handleSubmit } = useForm();
 
     const onSubmit = () => {
 
     }
-    
+
     return (
         <div className={style.container}>
 
