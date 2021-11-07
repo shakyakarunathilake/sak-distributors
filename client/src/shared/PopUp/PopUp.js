@@ -1,11 +1,7 @@
 import React from 'react';
 
-import Draggable from 'react-draggable';
-
 //Material UI Components
 import { Dialog, DialogContent } from '@material-ui/core';
-import DialogTitle from '@mui/material/DialogTitle';
-import Paper from '@mui/material/Paper';
 
 //Material UI Styling
 import { makeStyles } from '@material-ui/core/styles';
@@ -29,13 +25,12 @@ const useStyles = makeStyles({
         "&:first-child": {
             paddingTop: "12px"
         }
-    },
+    }
 });
-
 
 export default function PopUp(props) {
 
-    const { children, openPopup, setOpenPopup, fullScreen, disableBackdropClick, hideBackdrop, disableEnforceFocus } = props;
+    const { children, openPopup, setOpenPopup } = props;
     const classes = useStyles();
 
     const handleClose = () => {
