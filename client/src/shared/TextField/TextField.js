@@ -4,13 +4,17 @@ import { TextField as MuiTextField } from '@material-ui/core';
 
 export default function Input(props) {
 
-    const { name, label, value, onChange, placeholder, helperText, InputProps, disabled, fullWidth, error = null, type, color, focused, size, other } = props;
+    const { name, label, value, onChange, placeholder, helperText, 
+        InputProps, disabled, fullWidth, error = null, type, color, 
+        focused, size, multiline, rows, other } = props;
 
     // const windowHeight = window.innerHeight;
 
     return (
         <MuiTextField
             {...other}
+            rows={rows}
+            multiline={multiline}
             focused={focused}
             color={color}
             fullWidth={fullWidth}
