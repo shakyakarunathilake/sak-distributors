@@ -289,8 +289,6 @@ export default function ManageProduct() {
                                     )
                                 }
                             },
-                            { title: "Name", field: "name" },
-                            { title: "Supplier", field: "supplier" },
                             {
                                 title: "Variant ID", field: "variantid", render: rowData => {
                                     return (
@@ -298,6 +296,8 @@ export default function ManageProduct() {
                                     )
                                 }
                             },
+                            { title: "Name", field: "name" },
+                            { title: "Supplier", field: "supplier" },
                             { title: "Type", field: "type" },
                             {
                                 title: "Status", field: "status", render: rowData => {
@@ -353,9 +353,6 @@ export default function ManageProduct() {
                     />
                 </div>
                 <PopUp
-                    disableEnforceFocus={true}
-                    hideBackDrop={true}
-                    disableBackDropClick={true}
                     openPopup={openPopup}
                     setOpenPopup={setOpenPopup}
                 >
