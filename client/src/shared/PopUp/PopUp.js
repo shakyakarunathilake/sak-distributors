@@ -1,6 +1,8 @@
 import React from 'react';
+import Draggable from 'react-draggable';
 
 //Material UI Components
+import Paper from '@mui/material/Paper';
 import { Dialog, DialogContent } from '@material-ui/core';
 
 //Material UI Styling
@@ -28,9 +30,16 @@ const useStyles = makeStyles({
     }
 });
 
+function PaperComponent(props) {
+    return (
+        <Paper {...props} style={{ margin: 0, maxHeight: '100%' }} />
+    );
+}
+
+
 export default function PopUp(props) {
 
-    const { children, openPopup, setOpenPopup } = props;
+    const { children, openPopup, setOpenPopup, disableEnforceFocus, hideBackdrop, style, disableBackdropClick } = props;
     const classes = useStyles();
 
     const handleClose = () => {
@@ -38,14 +47,33 @@ export default function PopUp(props) {
     };
 
     return (
-        <Dialog
-            onClose={handleClose}
-            open={openPopup}
-            maxWidth="lg"
-        >
-            <DialogContent className={classes.content}>
-                {children}
-            </DialogContent>
-        </Dialog>
+        <Draggable
+            handle={'[class*="MuiDialog-root"]'}
+            cancel={'[class*="MuiDialogContent-root"]'}>
+
+            <Dialog
+                onClose={handleClose}
+                open={openPopup}
+                maxWidth="lg"
+
+                disableEnforceFocus={disableEnforceFocus}
+                hideBackdrop={hideBackdrop}
+                disableBackdropClick={disableBackdropClick}
+                PaperComponent={PaperComponent}
+                style={style ? {
+                    top: '236px',
+                    left: 'calc(calc(100vw - 40px) - calc(40% - 40px)',
+                    height: 'calc(100vh - 336px)',
+                    width: 'calc(40% - 40px)',
+                } : ''}
+            >
+
+                <DialogContent className={classes.content}>
+                    {children}
+                </DialogContent>
+
+            </Dialog>
+
+        </Draggable >
     )
 }
