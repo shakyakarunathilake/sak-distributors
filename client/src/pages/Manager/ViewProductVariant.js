@@ -23,28 +23,28 @@ export default function ViewProductVariant(props) {
 
     const [show, setShow] = useState(false);
 
-    // useEffect(() => {
-    //     setValue("productid", productRecords.productid);
-    //     setValue("name", productRecords.name);
-    //     setValue("supplier", productRecords.supplier);
-    //     setValue("productimage", productRecords.productimage);
-    //     setValue("addeddate", productRecords.addeddate);
-    //     setValue("addedby", productRecords.addedby);
-    //     setValue("productstatus", productRecords.status);
-    //     setValue("variantid", productRecords.variant["variantid"]);
-    //     setValue("type", productRecords.variant.type);
-    //     setValue("bulkprice", productRecords.variant.bulkprice);
-    //     setValue("mrp", productRecords.variant.mrp);
-    //     setValue("sellingprice", productRecords.variant.sellingprice);
-    //     setValue("purchaseprice", productRecords.variant.purchaseprice);
-    //     setValue("offercaption", productRecords.variant.offercaption);
-    //     setValue("variantstatus", productRecords.variant.status);
-    //     setValue("variantaddeddate", productRecords.variant.addeddate);
-    //     setValue("variantaddedby", productRecords.variant.addedby);
+    useEffect(() => {
+        setValue("productid", productRecords?.productid);
+        setValue("name", productRecords?.name);
+        setValue("supplier", productRecords?.supplier);
+        setValue("productimage", productRecords?.productimage);
+        setValue("addeddate", productRecords?.addeddate);
+        setValue("addedby", productRecords?.addedby);
+        setValue("productstatus", productRecords?.status);
+        setValue("variantid", productRecords?.variant["variantid"]);
+        setValue("type", productRecords?.variant.type);
+        setValue("bulkprice", productRecords?.variant.bulkprice);
+        setValue("mrp", productRecords?.variant.mrp);
+        setValue("sellingprice", productRecords?.variant.sellingprice);
+        setValue("purchaseprice", productRecords?.variant.purchaseprice);
+        setValue("offercaption", productRecords?.variant.offercaption);
+        setValue("variantstatus", productRecords?.variant.status);
+        setValue("variantaddeddate", productRecords?.variant.addeddate);
+        setValue("variantaddedby", productRecords?.variant.addedby);
 
-    //     setShow(productRecords.offercaption ? true : false);
+        setShow(productRecords?.offercaption ? true : false);
 
-    // }, [productRecords, setValue])
+    }, [productRecords, setValue])
 
     const onSubmit = () => {
         handleClosePopUp();
@@ -268,7 +268,7 @@ export default function ViewProductVariant(props) {
                                             control={control}
                                             render={({ field: { value } }) => (
                                                 <Typography className={style.input}>
-                                                    {value}
+                                                    Rs. {value}
                                                 </Typography>
                                             )}
                                         />
@@ -285,7 +285,7 @@ export default function ViewProductVariant(props) {
                                             control={control}
                                             render={({ field: { value } }) => (
                                                 <Typography className={style.input}>
-                                                    {value}
+                                                    Rs. {value}
                                                 </Typography>
                                             )}
                                         />
@@ -302,7 +302,7 @@ export default function ViewProductVariant(props) {
                                             control={control}
                                             render={({ field: { value } }) => (
                                                 <Typography className={style.input}>
-                                                    {value}
+                                                    Rs. {value}
                                                 </Typography>
                                             )}
                                         />
@@ -319,7 +319,7 @@ export default function ViewProductVariant(props) {
                                             control={control}
                                             render={({ field: { value } }) => (
                                                 <Typography className={style.input}>
-                                                    {value}
+                                                    Rs. {value}
                                                 </Typography>
                                             )}
                                         />
