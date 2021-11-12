@@ -24,6 +24,7 @@ export default function ViewEmployee(props) {
     useEffect(() => {
         setValue("employeeimage", employeeRecords.employeeimage);
         setValue("employeeid", employeeRecords.employeeid);
+        setValue("adminprivileges", employeeRecords.adminprivileges);
         setValue("fullname", employeeRecords.fullname);
         setValue("callingname", `${employeeRecords.title} ${employeeRecords.firstname} ${employeeRecords.lastname}`);
         setValue("email", employeeRecords.email);
@@ -92,7 +93,6 @@ export default function ViewEmployee(props) {
                                         )}
                                     />
                                 </div>
-
                             </div>
 
                             <div className={style.columnB}>
@@ -210,6 +210,23 @@ export default function ViewEmployee(props) {
                                             render={({ field: { value } }) => (
                                                 <Typography className={style.input}>
                                                     {value}
+                                                </Typography>
+                                            )}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className={style.row}>
+                                    <div className={style.boldText}>
+                                        Admin Privileges
+                                    </div>
+                                    <div className={style.employeeData}>
+                                        <Controller
+                                            name={"adminprivileges"}
+                                            control={control}
+                                            render={({ field: { value } }) => (
+                                                <Typography className={style.input}>
+                                                    {value ? "Given" : "Not Given"}
                                                 </Typography>
                                             )}
                                         />
