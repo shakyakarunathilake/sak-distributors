@@ -14,6 +14,41 @@ router.get("/", (req, res, next) => {
     });
 });
 
+
+//Get PO product options
+router.get("/product-options-for-purchase-order", (req, res, next) => {
+
+    Product
+        .find()
+        .exec()
+        .then(doc => {
+            function pad(str, num, size) {
+                var matches = str.match(/\b(\w)/g);
+                var acronym = matches.join('');
+                while (num.length < size) num = "0" + num;
+                return acronym + num;
+            }
+
+            const data = doc.filter(x => x.status === "Active");
+
+            const productOptions = data.map(x => ({
+                productid: x.productid,
+                name: x.name,
+                supplier: x.supplier,
+                variantid: pad(x.name, String(x.variants.length + 1), 4)
+            }))
+
+            res.status(200).json({
+                message: "Handeling GET requests to /product-options-for-purchase-order",
+                productOptions: productOptions,
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        })
+})
+
 //Get all product options
 router.get("/product-options", (req, res, next) => {
 
@@ -21,8 +56,6 @@ router.get("/product-options", (req, res, next) => {
         .find()
         .exec()
         .then(doc => {
-
-
             function pad(str, num, size) {
                 var matches = str.match(/\b(\w)/g);
                 var acronym = matches.join('');
@@ -68,6 +101,30 @@ router.get("/employee-options", (req, res, next) => {
 
             res.status(201).json({
                 message: "Handeling GET requests to /employee-options",
+                employeeOptions: employeeOptions,
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        })
+})
+
+//Get all employee options for admin
+router.get("/employee-options-for-admin", (req, res, next) => {
+
+    Employee
+        .find()
+        .exec()
+        .then(doc => {
+
+            const employeeOptions = doc.map(x => ({
+                title: `${x.employeeid} : ${x.firstname} ${x.lastname} (${x.designation})`,
+                id: x.employeeid
+            }))
+
+            res.status(201).json({
+                message: "Handeling GET requests to /employee-options-for-admin",
                 employeeOptions: employeeOptions,
             })
         })
