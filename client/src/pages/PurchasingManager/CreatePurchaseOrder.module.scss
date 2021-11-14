@@ -13,7 +13,7 @@
     }
 
     Button {
-        width: min-content;
+        width: max-content;
         height: 40px;
         font-size: 1em;
         white-space: nowrap;
@@ -40,7 +40,7 @@
                 .step {
                     margin: 5px 0 0 0;
                     color: $primaryLight;
-                    font-size: 0.5em;
+                    font-size: 0.6em;
                 }
             }
 
@@ -54,7 +54,7 @@
 
                     .btnRow {
                         display: grid;
-                        grid-template-columns: 250px auto min-content;
+                        grid-template-columns: 270px auto min-content;
                         margin: 15px 0;
                     }
 
@@ -155,10 +155,6 @@
                                 text-align: left;
                             }
                         }
-
-                        .quotationTable {
-                            width: 100%;
-                        }
                     }
                 }
             }
@@ -195,7 +191,7 @@
                 .nextBtn {
                     text-align: right;
                     Button {
-                        width: 100px;
+                        width: auto;
 
                         &:disabled {
                             background-color: hsl(230, 66%, 57%);

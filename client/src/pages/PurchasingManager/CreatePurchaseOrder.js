@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 
 //Development Stage
@@ -14,6 +14,9 @@ import PopUp from '../../shared/PopUp/PopUp';
 import { Button } from '@material-ui/core';
 import Divider from '@mui/material/Divider';
 import { Paper } from '@material-ui/core';
+import { TextField as MuiTextField } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
+import { Autocomplete } from '@mui/material';
 
 //Material UI Icons
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
@@ -23,32 +26,38 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 //Material Table
 import MaterialTable, { MTableAction, MTableToolbar } from 'material-table';
 
-//Material UI Icons
-import VisibilityIcon from '@material-ui/icons/Visibility';
-
 //Dialog Content
 import Quotations from './Quotations';
 
 //SCSS styles
 import style from './CreatePurchaseOrder.module.scss';
 
+//Connecting to Backend
+import axios from 'axios';
+
 export default function CreatePurchaseOrder(props) {
 
-    const { handleSubmit, formState: { errors, isValid }, control, reset, setValue, getValues, clearErrors } = useForm({ mode: "all" });
+    var today = new Date();
+    var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date + ' ' + time;
+
+    const { handleSubmit, formState: { errors }, control, reset, getValues, trigger } = useForm({ mode: "all" });
 
     const [formStep, setFormStep] = useState(0);
     const [data, setData] = useState([]);
-    const [quotations, setQuotations] = useState([]);
-
     const [openPopup, setOpenPopup] = useState(false);
-
-    // var today = new Date();
-    // var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    const [productOptions, setProductOptions] = useState([]);
+    const [disabled, setDisabled] = useState(false);
 
     const addActionRef = React.useRef();
 
     const completeFormStep = () => {
-        setFormStep(x => x + 1);
+        if (!data.length === 0) {
+            setFormStep(x => x + 1);
+        } else {
+            setDisabled(false);
+        }
     }
 
     const backFormStep = () => {
@@ -65,6 +74,28 @@ export default function CreatePurchaseOrder(props) {
     //         setValue("shipto", option.shipto);
     //     }
     // }
+
+    const handleAddNewItem = () => {
+        if (!!getValues('supplier')) {
+            setProductOptions(productOptions.filter(x => x.supplier === getValues('supplier')));
+            console.log("Product Options In HandleAddNewItem: ", productOptions);
+            addActionRef.current.click();
+        } else {
+            trigger('supplier', { shouldFocus: true });
+        }
+    }
+
+    useEffect(() => {
+        axios
+            .get("http://localhost:8080/options/product-options-for-purchase-order")
+            .then(res => {
+                console.log("Product Options In UseEffect: ", productOptions);
+                setProductOptions(res.data.productOptions);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }, []);
 
     const resetForm = () => {
         reset({
@@ -130,9 +161,7 @@ export default function CreatePurchaseOrder(props) {
                                                             size="small"
                                                             label="Supplier *"
                                                             value={value}
-
                                                         />
-
                                                     )}
                                                 />
 
@@ -141,7 +170,7 @@ export default function CreatePurchaseOrder(props) {
                                                 <Button
                                                     color="primary"
                                                     variant="contained"
-                                                    onClick={() => addActionRef.current.click()}
+                                                    onClick={() => handleAddNewItem()}
                                                 >
                                                     Add new item
                                                 </Button>
@@ -171,16 +200,52 @@ export default function CreatePurchaseOrder(props) {
                                                 }}
                                                 columns={[
                                                     {
+                                                        title: "Prod. ID",
+                                                        field: "productid",
+                                                        editComponent: props => (
+                                                            <Autocomplete
+                                                                options={productOptions || []}
+                                                                getOptionLabel={(option) => option.productid}
+                                                                renderInput={(params) =>
+                                                                    <MuiTextField
+                                                                        {...params}
+                                                                        helperText={props.helperText}
+                                                                        error={props.error}
+                                                                        onChange={e => props.onChange(e.target.value)}
+                                                                        variant="standard"
+                                                                    />
+                                                                }
+                                                            />
+                                                        ),
+                                                        validate: (rowData) => (
+                                                            rowData.productid === undefined
+                                                                ? { isValid: false, helperText: 'Required *' }
+                                                                : rowData.productid === ''
+                                                                    ? { isValid: false, helperText: 'Required *' }
+                                                                    : true
+                                                        ),
+                                                    },
+                                                    {
                                                         title: "Description",
                                                         field: "description",
-                                                        // editComponent: props => (
-                                                        //     <Autocomplete
-                                                        //         options={top100Films}
-                                                        //         getOptionLabel={(option) => option.title}
-                                                        //         style={{ width: 300 }}
-                                                        //         renderInput={(params) => <TextField {...params} label={props.title} variant="standard" />}
-                                                        //     />
-                                                        // ),
+                                                        editComponent: props => (
+                                                            <Autocomplete
+                                                                inputValue={props.value}
+                                                                options={productOptions || []}
+                                                                getOptionLabel={(option) => option.name}
+                                                                renderInput={(params) =>
+                                                                    <MuiTextField
+                                                                        {...params}
+                                                                        helperText={props.helperText}
+                                                                        error={props.error}
+                                                                        // onChange={e => props.onChange(e.target.value)}
+                                                                        value={props.value}
+                                                                        variant="standard"
+                                                                    />
+                                                                }
+                                                                onChange={e => props.onChange(e.target.innerText)}
+                                                            />
+                                                        ),
                                                         validate: (rowData) =>
                                                             rowData.description === undefined
                                                                 ? { isValid: false, helperText: 'Required *' }
@@ -378,55 +443,6 @@ export default function CreatePurchaseOrder(props) {
 
                                             <div className={style.quotationTable}>
 
-                                                <MaterialTable
-                                                    columns={[
-                                                        {
-                                                            title: "Quotaion ID",
-                                                            field: "quotationid",
-                                                            render: rowData => {
-                                                                return (
-                                                                    <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.productid}</p>
-                                                                )
-                                                            }
-                                                        },
-                                                        {
-                                                            title: "Valid Period",
-                                                            field: "validdate"
-                                                        },
-                                                    ]}
-                                                    data={quotations}
-                                                    options={{
-                                                        toolbar: false,
-                                                        filtering: false,
-                                                        search: false,
-                                                        paging: false,
-                                                        minBodyHeight: "calc(100vh - 399px)",
-                                                        maxBodyHeight: "calc(100vh - 399px)",
-                                                        actionsColumnIndex: -1,
-                                                        headerStyle: {
-                                                            position: "sticky",
-                                                            top: "0",
-                                                            backgroundColor: '#323232',
-                                                            color: '#FFF',
-                                                            fontSize: "0.8em"
-                                                        },
-                                                        rowStyle: rowData => ({
-                                                            fontSize: "0.8em",
-                                                            backgroundColor: (rowData.tableData.id % 2 === 0) ? '#ebebeb' : '#ffffff'
-                                                        })
-                                                    }}
-                                                    actions={[
-                                                        {
-                                                            icon: VisibilityIcon,
-                                                            tooltip: 'View',
-                                                            // onClick: (event, rowData) => {
-                                                            //     setAction('View');
-                                                            //     openInPopup(rowData.employeeid);
-                                                            // }
-                                                        }
-                                                    ]}
-                                                />
-
                                             </div>
 
                                         </div>
@@ -459,7 +475,17 @@ export default function CreatePurchaseOrder(props) {
                                                 <tbody>
                                                     <tr>
                                                         <th align="left">Name</th>
-                                                        <td align="left">S.A.K Distributors</td>
+                                                        <td align="left">
+                                                            <Controller
+                                                                name={"name"}
+                                                                control={control}
+                                                                render={({ field: { value } }) => (
+                                                                    <Typography className={style.input}>
+                                                                        {value}
+                                                                    </Typography>
+                                                                )}
+                                                            />
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <th align="left">Address</th>
@@ -480,7 +506,7 @@ export default function CreatePurchaseOrder(props) {
                                                     </tr>
                                                     <tr>
                                                         <th align="left">PO Created at</th>
-                                                        <td align="left">2021/11/7</td>
+                                                        <td align="left">{dateTime}</td>
                                                     </tr>
                                                     <tr>
                                                         <th align="left">Supplier</th>
@@ -494,33 +520,81 @@ export default function CreatePurchaseOrder(props) {
                                         <MaterialTable
                                             columns={[
                                                 {
-                                                    title: "Product ID", field: "productid", render: rowData => {
-                                                        return (
-                                                            <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.productid}</p>
-                                                        )
-                                                    }
+                                                    title: "Prod. ID",
+                                                    field: "productid",
+                                                    validate: (rowData) =>
+                                                        rowData.productid === undefined
+                                                            ? { isValid: false, helperText: 'Required *' }
+                                                            : rowData.productid === ''
+                                                                ? { isValid: false, helperText: 'Required *' }
+                                                                : true
+
                                                 },
-                                                { title: "Name", field: "name" },
-                                                { title: "Supplier", field: "supplier" },
                                                 {
-                                                    title: "Variant ID", field: "variantid", render: rowData => {
-                                                        return (
-                                                            <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.variantid}</p>
-                                                        )
-                                                    }
+                                                    title: "Description",
+                                                    field: "description",
+                                                    validate: (rowData) =>
+                                                        rowData.description === undefined
+                                                            ? { isValid: false, helperText: 'Required *' }
+                                                            : rowData.description === ''
+                                                                ? { isValid: false, helperText: 'Required *' }
+                                                                : true
+
                                                 },
-                                                { title: "Type", field: "type" },
                                                 {
-                                                    title: "Status", field: "status", render: rowData => {
-                                                        return (
-                                                            rowData.status === "Active" ?
-                                                                <p style={{ padding: "0", margin: "0", color: "#4cbb17", fontWeight: "700" }}>{rowData.status}</p> :
-                                                                <p style={{ padding: "0", margin: "0", color: "red", fontWeight: "700" }}>{rowData.status}</p>
-                                                        )
-                                                    }
+                                                    title: "Unit",
+                                                    field: "unit",
+                                                    lookup: { Case: 'Case', Pieces: 'Pieces' },
+                                                    width: 'min-content',
+                                                    validate: (rowData) =>
+                                                        rowData.unit === undefined
+                                                            ? { isValid: false, helperText: 'Required *' }
+                                                            : rowData.unit === ''
+                                                                ? { isValid: false, helperText: 'Required *' }
+                                                                : true
+
                                                 },
+                                                {
+                                                    title: "Quantity",
+                                                    field: "quantity",
+                                                    type: 'numeric',
+                                                    cellStyle: {
+                                                        cellWidth: 'min-content'
+                                                    },
+                                                    validate: (rowData) =>
+                                                        rowData.quantity === undefined
+                                                            ? { isValid: false, helperText: 'Required *' }
+                                                            : rowData.quantity === ''
+                                                                ? { isValid: false, helperText: 'Required *' }
+                                                                : true
+                                                },
+                                                {
+                                                    title: "List Price (Rs.)",
+                                                    field: "listprice",
+                                                    type: 'numeric',
+                                                    cellStyle: {
+                                                        cellWidth: 'min-content'
+                                                    },
+                                                    validate: (rowData) =>
+                                                        rowData.listprice === undefined
+                                                            ? { isValid: false, helperText: 'Required *' }
+                                                            : rowData.listprice === ''
+                                                                ? { isValid: false, helperText: 'Required *' }
+                                                                : true
+                                                },
+                                                {
+                                                    title: "Value (Rs.)",
+                                                    field: "value",
+                                                    type: 'numeric',
+                                                    cellStyle: {
+                                                        width: 'min-content'
+                                                    },
+                                                    editable: 'never',
+                                                    render: rowData => rowData.quantity * rowData.listprice,
+                                                    value: rowData => rowData.quantity * rowData.listprice,
+                                                }
                                             ]}
-                                            data={quotations}
+                                            data={data}
                                             options={{
                                                 toolbar: false,
                                                 filtering: true,
@@ -582,12 +656,13 @@ export default function CreatePurchaseOrder(props) {
 
                                 {
 
-                                    formStep == 0 &&
+                                    formStep === 0 &&
                                     <Button
                                         // disabled={formStep == 0 && !isValid}
                                         color="primary"
                                         variant="contained"
                                         onClick={completeFormStep}
+                                        disabled={disabled}
                                     >
                                         Next
                                     </Button>
@@ -595,7 +670,7 @@ export default function CreatePurchaseOrder(props) {
                                 }
 
                                 {
-                                    formStep == 1 &&
+                                    formStep === 1 &&
 
                                     <Button
                                         type="submit"
@@ -615,10 +690,6 @@ export default function CreatePurchaseOrder(props) {
                 </div >
 
                 <PopUp
-                    disableEnforceFocus={true}
-                    hideBackDrop={true}
-                    disableBackDropClick={true}
-                    style={true}
                     openPopup={openPopup}
                     setOpenPopup={setOpenPopup}
                 >
