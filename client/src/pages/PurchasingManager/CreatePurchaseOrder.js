@@ -211,10 +211,11 @@ export default function CreatePurchaseOrder(props) {
                                                                         {...params}
                                                                         helperText={props.helperText}
                                                                         error={props.error}
-                                                                        onChange={e => props.onChange(e.target.value)}
+                                                                        // onChange={e => props.onChange(e.target.value)}
                                                                         variant="standard"
                                                                     />
                                                                 }
+                                                                onChange={e => props.onChange(e.target.innerText)}
                                                             />
                                                         ),
                                                         validate: (rowData) => (
