@@ -42,7 +42,7 @@ app.use(express.static("uploads"));
 
 app.use("/auth", authRoutes);
 app.use("/password", passwordRoutes);
-app.use("/employees", checkAuth, employeeRoutes);
+app.use("/employees", employeeRoutes);
 app.use("/customers", customerRoutes);
 app.use("/products", productRoutes);
 app.use("/orders", orderRoutes);
