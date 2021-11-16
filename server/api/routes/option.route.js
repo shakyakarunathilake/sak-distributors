@@ -119,17 +119,12 @@ router.get("/employee-options-for-admin", (req, res, next) => {
         .then(doc => {
 
             const candidates = doc.filter(x =>
-                (x.designation === 'Distributor' && x.employeestatus === 'Active') ||
-                (x.designation === 'Manager' && x.employeestatus === 'Active') ||
-                (x.designation === 'Human Resources' && x.employeestatus === 'Active') ||
-                (x.designation === 'Purchasing Manager' && x.employeestatus === 'Active') ||
-                (x.designation === 'Store Keeper' && x.employeestatus === 'Active') ||
-                (x.designation === 'Sales Representative' && x.employeestatus === 'Active')
+                x.employeestatus === 'Active' && x.adminprivileges === false
             );
 
             const employeeOptions = candidates.map(x => ({
                 title: `${x.employeeid} : ${x.firstname} ${x.lastname} (${x.designation})`,
-                id: x.employeeid
+                employeeid: x.employeeid
             }))
 
             res.status(201).json({

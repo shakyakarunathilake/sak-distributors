@@ -16,11 +16,11 @@ import Button from '@material-ui/core/Button';
 
 //Material UI Icons
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import VisibilityIcon from '@material-ui/icons/Visibility';
+// import VisibilityIcon from '@material-ui/icons/Visibility';
 
 //Employee Form
 import AdminForm from './AdminForm.js';
-import ViewEmployee from './ViewEmployee';
+// import ViewEmployee from './ViewEmployee';
 
 //Connecting to Backend
 import axios from 'axios';
@@ -32,17 +32,19 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 export default function ManageAdmin() {
 
-    const [type, setType] = React.useState();
-    const [open, setOpen] = React.useState(false);
-    const [alert, setAlert] = React.useState();
+    const [type, setType] = useState();
+    const [open, setOpen] = useState(false);
+    const [alert, setAlert] = useState();
 
     const [records, setRecords] = useState([]);
 
-    const [employeeRecords, setEmployeeRecords] = useState(null);
+    const [employeeID, setEmployeeID] = useState('');
+    const [employeeName, setEmployeeName] = useState('');
     const [action, setAction] = useState('');
     const [openPopup, setOpenPopup] = useState(false);
 
-    const [nextEmpId, setNextEmpId] = useState();
+    const [employeeOptions, setEmployeeOptions] = useState(null);
+
     const [reRender, setReRender] = useState(null);
 
     const handleAlert = () => {
@@ -56,9 +58,15 @@ export default function ManageAdmin() {
         setOpen(false);
     };
 
+    const handleClosePopUp = () => {
+        setOpenPopup(false)
+        setEmployeeID('')
+        setAction('');
+    }
+
     useEffect(() => {
         axios
-            .get("http://localhost:8080/employees/get-all-employees-table-data")
+            .get("http://localhost:8080/admin/get-all-admin-table-data")
             .then(res => {
                 sessionStorage.setItem("EmployeesTableData", JSON.stringify(res.data));
                 setRecords(res.data.tbody);
@@ -69,16 +77,40 @@ export default function ManageAdmin() {
             })
     }, [reRender]);
 
-    const openInPopup = employeeid => {
+    const getEmployeeOptions = () => {
         axios
-            .get(`http://localhost:8080/employees/${employeeid}`)
+            .get("http://localhost:8080/options/employee-options-for-admin")
             .then(res => {
-                setEmployeeRecords(res.data.employee);
+                setEmployeeOptions(res.data.employeeOptions);
                 setOpenPopup(true);
             })
             .catch(err => {
                 console.log(err);
             })
+    }
+
+    const openInPopup = (employeeid, name) => {
+        setEmployeeID(employeeid);
+        setEmployeeName(name);
+        setOpenPopup(true);
+    }
+
+    const addAdmin = (admin, employeeid) => {
+        for (let [key, value] of admin.entries()) {
+            console.log(key, value);
+        }
+
+        axios
+            .post(`http://localhost:8080/admin/add-admin`, admin)
+            .then(res => {
+                setAlert(res.data.alert);
+                setType(res.data.type);
+                handleAlert();
+                setReRender(employeeid);
+            })
+            .catch(err => {
+                console.log(err);
+            });
     }
 
     return (
@@ -92,9 +124,10 @@ export default function ManageAdmin() {
                         variant="contained"
                         onClick={
                             () => {
-                                setAction('Create');
+                                setAction('Add');
                                 setOpenPopup(true);
-                                setEmployeeRecords(null);
+                                getEmployeeOptions();
+                                setEmployeeID(null);
                             }
                         }
                     >
@@ -151,12 +184,12 @@ export default function ManageAdmin() {
                         }}
                         actions={[
                             {
-                                icon: VisibilityIcon,
-                                tooltip: 'View',
+                                icon: 'delete',
+                                tooltip: 'Delete',
                                 onClick: (event, rowData) => {
-                                    setAction('View');
-                                    openInPopup(rowData.employeeid);
-                                }
+                                    setAction('Delete');
+                                    openInPopup(rowData.employeeid, rowData.name);
+                                },
                             }
                         ]}
                     />
@@ -165,17 +198,14 @@ export default function ManageAdmin() {
                     openPopup={openPopup}
                     setOpenPopup={setOpenPopup}
                 >
-                    {action === 'View' ?
-                        <ViewEmployee
-                            employeeRecords={employeeRecords}
-                            setOpenPopup={setOpenPopup}
-                            setAction={setAction}
-                        /> :
-                        <AdminForm
-                            employeeRecords={employeeRecords}
-                            setOpenPopup={setOpenPopup}
-                        />
-                    }
+                    <AdminForm
+                        employeeID={employeeID}
+                        employeeName={employeeName}
+                        handleClosePopUp={handleClosePopUp}
+                        employeeOptions={employeeOptions}
+                        addAdmin={addAdmin}
+                        action={action}
+                    />
                 </PopUp>
                 <Snackbar
                     open={open}
