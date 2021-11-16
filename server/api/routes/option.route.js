@@ -50,7 +50,7 @@ router.get("/product-options-for-purchase-order", (req, res, next) => {
 })
 
 //Get all product options
-router.get("/product-options", (req, res, next) => {
+router.get("/product-options-for-product", (req, res, next) => {
 
     Product
         .find()
@@ -87,7 +87,7 @@ router.get("/product-options", (req, res, next) => {
 })
 
 //Get all employee options
-router.get("/employee-options", (req, res, next) => {
+router.get("/employee-options-for-product", (req, res, next) => {
 
     Employee
         .find({ designation: "Purchasing Manager" })
@@ -118,7 +118,16 @@ router.get("/employee-options-for-admin", (req, res, next) => {
         .exec()
         .then(doc => {
 
-            const employeeOptions = doc.map(x => ({
+            const candidates = doc.filter(x =>
+                (x.designation === 'Distributor' && x.employeestatus === 'Active') ||
+                (x.designation === 'Manager' && x.employeestatus === 'Active') ||
+                (x.designation === 'Human Resources' && x.employeestatus === 'Active') ||
+                (x.designation === 'Purchasing Manager' && x.employeestatus === 'Active') ||
+                (x.designation === 'Store Keeper' && x.employeestatus === 'Active') ||
+                (x.designation === 'Sales Representative' && x.employeestatus === 'Active')
+            );
+
+            const employeeOptions = candidates.map(x => ({
                 title: `${x.employeeid} : ${x.firstname} ${x.lastname} (${x.designation})`,
                 id: x.employeeid
             }))

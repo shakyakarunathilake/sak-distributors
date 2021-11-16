@@ -189,7 +189,7 @@ export default function ManageProduct() {
 
     const getProductOptions = () => {
         axios
-            .get("http://localhost:8080/options/product-options")
+            .get("http://localhost:8080/options/product-options-for-product")
             .then(res => {
                 setProductOptions(res.data.productOptions);
                 setEmployeeOptions(res.data.employeeOptions);
@@ -204,7 +204,7 @@ export default function ManageProduct() {
 
     const getEmployeeOptions = () => {
         axios
-            .get("http://localhost:8080/options/employee-options")
+            .get("http://localhost:8080/options/employee-options-for-product")
             .then(res => {
                 setEmployeeOptions(res.data.employeeOptions);
                 setOpenPopup(true);
