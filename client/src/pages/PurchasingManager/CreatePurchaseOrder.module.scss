@@ -63,7 +63,9 @@
                     }
 
                     .deleteItemBtn {
-                        color: red;
+                        &:hover {
+                            color: red;
+                        }
                     }
 
                     .purcahseOrder {
