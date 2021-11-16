@@ -74,8 +74,8 @@ export default function VariantForm(props) {
             setValue("productimage", option.productimage);
             setValue("addeddate", option.addeddate);
             setValue("addedby", option.addedby);
-            setValue("variantid", option.variantid);;
-            setValue("productstatus", option.status);;
+            setValue("variantid", option.variantid);
+            setValue("productstatus", option.status);
         }
     }
 
