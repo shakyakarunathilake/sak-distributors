@@ -61,7 +61,7 @@ router.get("/get-next-regno", (req, res, next) => {
 router.post("/create-employee", uploads.single('employeeimage'), (req, res, next) => {
 
     console.log(req.body);
-    
+
     const dob = new Date(req.body.dob).toISOString().split('T')[0];
     const hireddate = new Date(req.body.hireddate).toISOString().split('T')[0];
 
@@ -83,7 +83,8 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
                     _id: new mongoose.Types.ObjectId(),
                     employeeid: req.body.employeeid,
                     employeeimage: `localhost:8080/${req.body.employeeid}.jpg`,
-                    admin: req.body.adminprivileges,
+                    analyticprivileges: req.body.analyticprivileges,
+                    adminprivileges: req.body.adminprivileges,
                     fullname: req.body.fullname,
                     title: req.body.title,
                     firstname: req.body.firstname,
@@ -135,7 +136,8 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
             _id: new mongoose.Types.ObjectId(),
             employeeid: req.body.employeeid,
             employeeimage: `localhost:8080/${req.body.employeeid}.jpg`,
-            admin: req.body.adminprivileges,
+            analyticprivileges: req.body.analyticprivileges,
+            adminprivileges: req.body.adminprivileges,
             fullname: req.body.fullname,
             title: req.body.title,
             firstname: req.body.firstname,
@@ -225,6 +227,7 @@ router.get("/:employeeid", (req, res, next) => {
             const employee = {
                 'employeeid': doc.employeeid,
                 'employeeimage': doc.employeeimage,
+                'analyticprivileges': doc.analyticprivileges,
                 'adminprivileges': doc.adminprivileges,
                 'fullname': doc.fullname,
                 'title': doc.title,
