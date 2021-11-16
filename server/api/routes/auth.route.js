@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const authConfig = require('../config/auth.config');
 
 const router = express.Router();
 
@@ -38,7 +39,7 @@ router.post("/signin", (req, res, next) => {
                     employeeimage: employee[0].employeeimage,
                     contactnumber: employee[0].contactnumber
                 },
-                "authconfig.secret",
+                authConfig.secret,
                 { expiresIn: 7200 }
             );
 
