@@ -41,7 +41,7 @@ export default function EmployeesForm(props) {
 
             setValue("employeeimage", employeeRecords.employeeimage);
             setValue("employeeid", employeeRecords.employeeid);
-            setValue("adminprivileges", employeeRecords.adminprivileges);
+            setValue("analyticprivileges", employeeRecords.analyticprivileges);
             setValue("fullname", employeeRecords.fullname);
             setValue("title", employeeRecords.title);
             setValue("firstname", employeeRecords.firstname);
@@ -80,7 +80,7 @@ export default function EmployeesForm(props) {
             employeeimage: '',
             fullname: '',
             title: '',
-            adminprivileges: false,
+            analyticprivileges: false,
             firstname: '',
             lastname: '',
             email: '',
@@ -115,7 +115,8 @@ export default function EmployeesForm(props) {
 
         employeeFormData.append('employeeid', values.employeeid);
         employeeFormData.append('employeeimage', values.employeeimage);
-        employeeFormData.append('adminprivileges', values.adminprivileges ? values.adminprivileges : false);
+        employeeFormData.append('analyticprivileges', values.analyticprivileges ? values.analyticprivileges : false);
+        employeeFormData.append('adminprivileges', false);
         employeeFormData.append('fullname', values.fullname);
         employeeFormData.append('title', values.title);
         employeeFormData.append('firstname', values.firstname);
@@ -212,10 +213,10 @@ export default function EmployeesForm(props) {
                                 />
                             </div>
                             {limitedAccess ? '' :
-                                <div className={style.adminPrivileges}>
+                                <div className={style.analyticsPrivileges}>
                                     <Controller
                                         defaultValue=''
-                                        name={"adminprivileges"}
+                                        name={"analyticprivileges"}
                                         control={control}
                                         render={({ field: { onChange, value } }) => (
                                             <FormGroup>
@@ -232,7 +233,7 @@ export default function EmployeesForm(props) {
                                                             checked={value}
                                                         />
                                                     }
-                                                    label="Admin Privileges" />
+                                                    label="View Analytics" />
                                             </FormGroup>
                                         )}
                                     />
