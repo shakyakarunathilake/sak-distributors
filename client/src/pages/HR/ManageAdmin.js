@@ -9,22 +9,20 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
 //SCSS styles
-import style from './ManageEmployee.module.scss';
+import style from './ManageAdmin.module.scss';
 
 //Material UI 
 import Button from '@material-ui/core/Button';
 
 //Material UI Icons
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-// import VisibilityIcon from '@material-ui/icons/Visibility';
+import RemoveModeratorSharpIcon from '@mui/icons-material/RemoveModeratorSharp';
 
-//Employee Form
+//Admin Form
 import AdminForm from './AdminForm.js';
-// import ViewEmployee from './ViewEmployee';
 
 //Connecting to Backend
 import axios from 'axios';
-// import ApproveSubmit from './ApproveSubmit';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -184,10 +182,10 @@ export default function ManageAdmin() {
                         }}
                         actions={[
                             {
-                                icon: 'delete',
-                                tooltip: 'Delete',
+                                icon: RemoveModeratorSharpIcon,
+                                tooltip: 'Remove',
                                 onClick: (event, rowData) => {
-                                    setAction('Delete');
+                                    setAction('Remove');
                                     openInPopup(rowData.employeeid, rowData.name);
                                 },
                             }

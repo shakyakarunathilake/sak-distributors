@@ -37,7 +37,7 @@ export default function AdminForm(props) {
             adminFormData.append("adminprivileges", values.adminprivileges);
         }
 
-        if (action === 'Delete') {
+        if (action === 'Remove') {
             adminFormData.append("employeeid", employeeID);
             adminFormData.append("adminprivileges", false);
         }
@@ -104,7 +104,7 @@ export default function AdminForm(props) {
                 </form>
             }
 
-            {action === 'Delete' &&
+            {action === 'Remove' &&
                 <form
                     className={style.form}
                     onSubmit={handleSubmit(onSubmit)}
