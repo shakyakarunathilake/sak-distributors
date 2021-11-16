@@ -24,7 +24,7 @@ export default function ViewEmployee(props) {
     useEffect(() => {
         setValue("employeeimage", employeeRecords.employeeimage);
         setValue("employeeid", employeeRecords.employeeid);
-        setValue("adminprivileges", employeeRecords.adminprivileges);
+        setValue("analyticprivileges", employeeRecords.analyticprivileges);
         setValue("fullname", employeeRecords.fullname);
         setValue("callingname", `${employeeRecords.title} ${employeeRecords.firstname} ${employeeRecords.lastname}`);
         setValue("email", employeeRecords.email);
@@ -222,7 +222,7 @@ export default function ViewEmployee(props) {
                                     </div>
                                     <div className={style.employeeData}>
                                         <Controller
-                                            name={"adminprivileges"}
+                                            name={"analyticprivileges"}
                                             control={control}
                                             render={({ field: { value } }) => (
                                                 <Typography className={style.input}>
