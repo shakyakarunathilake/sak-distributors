@@ -58,7 +58,6 @@ router.get("/get-all-admin-table-data", (req, res, next) => {
 
 //Update employee admin privileges by Employee ID
 router.post("/add-admin", formDataBody.fields([]), (req, res, next) => {
-    console.log("UPDATE: ", req.body);
 
     Employee
         .findOneAndUpdate(
@@ -73,9 +72,9 @@ router.post("/add-admin", formDataBody.fields([]), (req, res, next) => {
         .exec()
         .then(doc => {
             res.status(200).json({
-                message: "Handling POST requests to /employees/add-admin/:employeeid, ADMIN ADDED",
+                message: "Handling POST requests to /employees/add-admin/:employeeid, ADMIN CHANGES MADE",
                 type: 'success',
-                alert: `${doc.firstname} ${doc.lastname} added`,
+                alert: doc.adminprivileges !== true ? `${doc.firstname} ${doc.lastname} (${doc.employeeid}) added` : `${doc.firstname} ${doc.lastname} (${doc.employeeid}) removed`,
             });
         })
         .catch(err => {
