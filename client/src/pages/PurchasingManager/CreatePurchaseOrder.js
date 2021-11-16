@@ -21,7 +21,7 @@ import { Autocomplete } from '@mui/material';
 //Material UI Icons
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 //Material Table
 import MaterialTable, { MTableAction, MTableToolbar } from 'material-table';
@@ -42,22 +42,18 @@ export default function CreatePurchaseOrder(props) {
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     var dateTime = date + ' ' + time;
 
-    const { handleSubmit, formState: { errors }, control, reset, getValues, trigger } = useForm({ mode: "all" });
+    const { handleSubmit, formState: { errors }, control, getValues, isValid, trigger } = useForm({ mode: "all" });
 
     const [formStep, setFormStep] = useState(0);
     const [data, setData] = useState([]);
     const [openPopup, setOpenPopup] = useState(false);
     const [productOptions, setProductOptions] = useState([]);
-    const [disabled, setDisabled] = useState(false);
+    const [selectedProductOptions, setSelectedProductOptions] = useState([]);
 
     const addActionRef = React.useRef();
 
     const completeFormStep = () => {
-        if (!data.length === 0) {
-            setFormStep(x => x + 1);
-        } else {
-            setDisabled(false);
-        }
+        setFormStep(x => x + 1);
     }
 
     const backFormStep = () => {
@@ -77,8 +73,7 @@ export default function CreatePurchaseOrder(props) {
 
     const handleAddNewItem = () => {
         if (!!getValues('supplier')) {
-            setProductOptions(productOptions.filter(x => x.supplier === getValues('supplier')));
-            console.log("Product Options In HandleAddNewItem: ", productOptions);
+            setSelectedProductOptions(productOptions.filter(x => x.supplier === getValues('supplier')));
             addActionRef.current.click();
         } else {
             trigger('supplier', { shouldFocus: true });
@@ -87,9 +82,12 @@ export default function CreatePurchaseOrder(props) {
 
     useEffect(() => {
         axios
-            .get("http://localhost:8080/options/product-options-for-purchase-order")
+            .get("http://localhost:8080/options/product-options-for-purchase-order", {
+                headers: {
+                    Authorization: JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
-                console.log("Product Options In UseEffect: ", productOptions);
                 setProductOptions(res.data.productOptions);
             })
             .catch(err => {
@@ -97,19 +95,22 @@ export default function CreatePurchaseOrder(props) {
             })
     }, []);
 
-    const resetForm = () => {
-        reset({
-            supplier: '',
-            purchaseordernumber: '',
-            createddate: '',
-            customerid: '',
-            customername: '',
-            shipto: '',
-        });
-    }
+    // const resetForm = () => {
+    //     reset({
+    //         supplier: '',
+    //         purchaseordernumber: '',
+    //         createddate: '',
+    //         customerid: '',
+    //         customername: '',
+    //         shipto: '',
+    //     });
+    // }
 
     const onSubmit = (values) => {
+
     }
+
+    console.log("DATA: ", data);
 
     return (
         <Page title="Create Purchase Order">
@@ -204,18 +205,18 @@ export default function CreatePurchaseOrder(props) {
                                                         field: "productid",
                                                         editComponent: props => (
                                                             <Autocomplete
-                                                                options={productOptions || []}
+                                                                options={selectedProductOptions}
                                                                 getOptionLabel={(option) => option.productid}
+                                                                inputValue={props.value || ''}
+                                                                onChange={e => props.onChange(e.target.innerText)}
                                                                 renderInput={(params) =>
                                                                     <MuiTextField
                                                                         {...params}
                                                                         helperText={props.helperText}
                                                                         error={props.error}
-                                                                        // onChange={e => props.onChange(e.target.value)}
                                                                         variant="standard"
                                                                     />
                                                                 }
-                                                                onChange={e => props.onChange(e.target.innerText)}
                                                             />
                                                         ),
                                                         validate: (rowData) => (
@@ -231,20 +232,18 @@ export default function CreatePurchaseOrder(props) {
                                                         field: "description",
                                                         editComponent: props => (
                                                             <Autocomplete
-                                                                inputValue={props.value}
-                                                                options={productOptions || []}
+                                                                options={selectedProductOptions}
                                                                 getOptionLabel={(option) => option.name}
+                                                                onChange={e => props.onChange(e.target.innerText)}
+                                                                inputValue={props.value || ''}
                                                                 renderInput={(params) =>
                                                                     <MuiTextField
                                                                         {...params}
                                                                         helperText={props.helperText}
                                                                         error={props.error}
-                                                                        // onChange={e => props.onChange(e.target.value)}
-                                                                        value={props.value}
                                                                         variant="standard"
                                                                     />
                                                                 }
-                                                                onChange={e => props.onChange(e.target.innerText)}
                                                             />
                                                         ),
                                                         validate: (rowData) =>
@@ -304,8 +303,8 @@ export default function CreatePurchaseOrder(props) {
                                                             width: 'min-content'
                                                         },
                                                         editable: 'never',
+                                                        initialEditValue: 0,
                                                         render: rowData => rowData.quantity * rowData.listprice,
-                                                        value: rowData => rowData.quantity * rowData.listprice,
                                                     }
                                                 ]}
                                                 data={data}
@@ -344,11 +343,12 @@ export default function CreatePurchaseOrder(props) {
                                                 icons={{
                                                     Delete: () => (
                                                         <div>
-                                                            <DeleteForeverIcon className={style.deleteItemBtn} />
+                                                            <DeleteIcon className={style.deleteItemBtn} />
                                                         </div>
                                                     )
                                                 }}
                                                 options={{
+                                                    addRowPosition: "first",
                                                     toolbar: true,
                                                     filtering: true,
                                                     search: false,
@@ -389,7 +389,7 @@ export default function CreatePurchaseOrder(props) {
                                                 <div className={style.card}>
 
                                                     <div className={style.imageDiv}>
-                                                        <img src={itemImg} />
+                                                        <img src={itemImg} alt="" />
                                                     </div>
 
                                                     <div className={style.itemDetails}>
@@ -521,17 +521,6 @@ export default function CreatePurchaseOrder(props) {
                                         <MaterialTable
                                             columns={[
                                                 {
-                                                    title: "Prod. ID",
-                                                    field: "productid",
-                                                    validate: (rowData) =>
-                                                        rowData.productid === undefined
-                                                            ? { isValid: false, helperText: 'Required *' }
-                                                            : rowData.productid === ''
-                                                                ? { isValid: false, helperText: 'Required *' }
-                                                                : true
-
-                                                },
-                                                {
                                                     title: "Description",
                                                     field: "description",
                                                     validate: (rowData) =>
@@ -659,11 +648,10 @@ export default function CreatePurchaseOrder(props) {
 
                                     formStep === 0 &&
                                     <Button
-                                        // disabled={formStep == 0 && !isValid}
+                                        disabled={formStep === 0 && !isValid && data.length === 0}
                                         color="primary"
                                         variant="contained"
-                                        onClick={completeFormStep}
-                                        disabled={disabled}
+                                        onClick={() => completeFormStep()}
                                     >
                                         Next
                                     </Button>
