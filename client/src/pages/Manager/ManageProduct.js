@@ -81,7 +81,7 @@ export default function ManageProduct() {
             console.log('Action: ', action);
             setOpenPopup(true);
         }
-    }, [productRecords])
+    }, [productRecords, action])
 
     const addOrEdit = (product, productid) => {
         for (let [key, value] of product.entries()) {
