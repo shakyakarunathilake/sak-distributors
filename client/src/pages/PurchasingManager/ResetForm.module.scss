@@ -1,0 +1,46 @@
+@import "../../styles/variables";
+
+.container {
+    width: max-content;
+    box-sizing: border-box;
+    grid-template-columns: min-content auto;
+}
+
+.form {
+    .header {
+        display: grid;
+        grid-template-columns: auto min-content;
+        font-size: 1.8em;
+        font-weight: 600;
+
+        .icon {
+            color: red;
+            &:hover {
+                transform: scale(1.1);
+            }
+        }
+    }
+
+    .body {
+        .row {
+            padding: 40px 0px 8px 0px;
+            font-size: 1em;
+        }
+
+        .buttonRow {
+            text-align: right;
+
+            Button {
+                font-size: 1em;
+                margin: 20px 0px 5px 0px;
+                height: 45px;
+                width: auto;
+            }
+
+            .submitBtn {
+                background-color: $primaryMain;
+                color: $inverseFontColor;
+            }
+        }
+    }
+}
