@@ -6,6 +6,7 @@ const Employee = require("../models/employee.model");
 const Order = require("../models/order.model");
 const Product = require("../models/product.model");
 const Customer = require("../models/customer.model");
+const Supplier = require("../models/supplier.model");
 
 //Check whether the endpoint works
 router.get("/", (req, res, next) => {
@@ -22,12 +23,6 @@ router.get("/product-options-for-purchase-order", (req, res, next) => {
         .find()
         .exec()
         .then(doc => {
-            function pad(str, num, size) {
-                var matches = str.match(/\b(\w)/g);
-                var acronym = matches.join('');
-                while (num.length < size) num = "0" + num;
-                return acronym + num;
-            }
 
             const data = doc.filter(x => x.status === "Active");
 
@@ -35,7 +30,6 @@ router.get("/product-options-for-purchase-order", (req, res, next) => {
                 productid: x.productid,
                 name: x.name,
                 supplier: x.supplier,
-                variantid: pad(x.name, String(x.variants.length + 1), 4)
             }))
 
             res.status(200).json({
@@ -48,6 +42,32 @@ router.get("/product-options-for-purchase-order", (req, res, next) => {
             res.status(500).json({ "Error": err });
         })
 })
+
+//Get PO supplier options
+router.get("/supplier-options-for-purchase-order", (req, res, next) => {
+
+    Supplier
+        .find()
+        .exec()
+        .then(doc => {
+
+            const supplierOptions = doc.map(x => ({
+                id: x.supplierid,
+                title: x.name,
+                abbreviation: x.abbreviation
+            }))
+
+            res.status(200).json({
+                message: "Handeling GET requests to /product-options-for-purchase-order",
+                supplierOptions: supplierOptions
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        })
+})
+
 
 //Get all product options
 router.get("/product-options-for-product", (req, res, next) => {
