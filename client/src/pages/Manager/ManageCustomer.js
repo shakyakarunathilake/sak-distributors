@@ -24,7 +24,6 @@ import ViewCustomer from './ViewCustomer';
 
 //Connecting to Backend
 import axios from 'axios';
-// import ApproveSubmit from './ApproveSubmit';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -157,7 +156,7 @@ export default function ManageCustomer() {
                     <MaterialTable
                         columns={[
                             {
-                                title: "customer ID", field: "customerid", render: rowData => {
+                                title: "Customer ID", field: "customerid", render: rowData => {
                                     return (
                                         <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.customerid}</p>
                                     )
