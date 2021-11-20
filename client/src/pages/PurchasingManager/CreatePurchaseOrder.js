@@ -11,13 +11,12 @@ import Select from '../../shared/Select/Select';
 import PopUp from '../../shared/PopUp/PopUp';
 
 //Material UI 
-import { Button } from '@material-ui/core';
+import { Button, Grid, TablePagination } from '@material-ui/core';
 import Divider from '@mui/material/Divider';
 import { Paper } from '@material-ui/core';
 import { TextField as MuiTextField } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
 import { Autocomplete } from '@mui/material';
-import { TableFooter, TableRow, TableCell } from '@material-ui/core';
 
 //Material UI Icons
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
@@ -36,12 +35,14 @@ import style from './CreatePurchaseOrder.module.scss';
 //Connecting to Backend
 import axios from 'axios';
 
-export default function CreatePurchaseOrder(props) {
+export default function CreatePurchaseOrder() {
 
-    var today = new Date();
-    var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    var dateTime = date + ' ' + time;
+    const today = new Date();
+    const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    const dateTime = date + ' ' + time;
+
+    const podate = today.getFullYear().toString().substr(-2) + (today.getMonth() + 1) + today.getDate() + today.getHours() + today.getMinutes();
 
     const { handleSubmit, formState: { errors }, control, getValues, setValue, isValid, trigger, reset } = useForm({ mode: "all" });
 
@@ -49,8 +50,34 @@ export default function CreatePurchaseOrder(props) {
     const [formStep, setFormStep] = useState(0);
     const [data, setData] = useState([]);
     const [openPopup, setOpenPopup] = useState(false);
+    const [supplierOptions, setSupplierOptions] = useState([]);
     const [productOptions, setProductOptions] = useState([]);
     const [selectedProductOptions, setSelectedProductOptions] = useState([]);
+
+    useEffect(() => {
+        axios
+            .get("http://localhost:8080/options/product-options-for-purchase-order", {
+                headers: {
+                    Authorization: JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
+            .then(res => {
+                setProductOptions(res.data.productOptions);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+
+        axios
+            .get("http://localhost:8080/options/supplier-options-for-purchase-order")
+            .then(res => {
+                setSupplierOptions(res.data.supplierOptions);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+
+    }, []);
 
     const handleClosePopUp = () => {
         setOpenPopup(false)
@@ -66,16 +93,19 @@ export default function CreatePurchaseOrder(props) {
         setFormStep(x => x - 1);
     }
 
-    // const handleSupplierChange = (event, option) => {
-    //     if (option) {
-    //         setValue("supplier", option.supplier);
-    //         setValue("purchaseordernumber", option.purchaseordernumber);
-    //         setValue("createddate", option.createddate);
-    //         setValue("customerid", option.customerid);
-    //         setValue("customername", option.customername);
-    //         setValue("shipto", option.shipto);
-    //     }
-    // }
+    const handleDetails = () => {
+
+        const supplier = supplierOptions.filter(x => x.title === getValues("supplier"))
+
+        console.log(dateTime);
+
+        setValue("ponumber", supplier[0].abbreviation + podate)
+        setValue("createdat", dateTime);
+        // setValue("customerid", option.customerid);
+        setValue("customername", "S.A.K Distributors");
+        setValue("customeraddress", "No.233, Kiriwallapitiya, Rambukkana, Srilanka");
+        setValue("contactnumber", "0352264009")
+    }
 
     const handleAddNewItem = () => {
         if (!!getValues('supplier')) {
@@ -84,21 +114,6 @@ export default function CreatePurchaseOrder(props) {
             trigger('supplier', { shouldFocus: true });
         }
     }
-
-    useEffect(() => {
-        axios
-            .get("http://localhost:8080/options/product-options-for-purchase-order", {
-                headers: {
-                    Authorization: JSON.parse(sessionStorage.getItem("Auth")).accessToken
-                }
-            })
-            .then(res => {
-                setProductOptions(res.data.productOptions);
-            })
-            .catch(err => {
-                console.log(err);
-            })
-    }, []);
 
     const resetForm = () => {
         handleClosePopUp();
@@ -162,7 +177,7 @@ export default function CreatePurchaseOrder(props) {
                                                             fullWidth
                                                             helperText={errors.supplier && errors.supplier.message}
                                                             error={errors.supplier ? true : false}
-                                                            options={employeeservice.getSupplierOptions()}
+                                                            options={supplierOptions || []}
                                                             onChange={e => {
                                                                 onChange(e)
                                                                 setSelectedProductOptions(productOptions.filter(x => x.supplier === getValues('supplier')));
@@ -207,63 +222,21 @@ export default function CreatePurchaseOrder(props) {
                                                             <MTableToolbar {...props} />
                                                         </div>
                                                     ),
-                                                    Body: (props) => (
-                                                        <>
-                                                            <MTableBody {...props} />
-                                                            <TableFooter>
-                                                                <TableRow>
-                                                                    <TableCell
-                                                                        colSpan={4}
-                                                                        style={{
-                                                                            fontSize: "0.8em",
-                                                                            color: "black",
-                                                                            fontWeight: 600
-                                                                        }}
-                                                                    > Total </TableCell>
-                                                                    <TableCell
-                                                                        style={{
-                                                                            fontSize: "0.8em",
-                                                                            color: "black",
-                                                                            fontWeight: 600,
-                                                                            textAlign: "right"
-                                                                        }}
-                                                                    >
-                                                                        {total}
-                                                                    </TableCell>
-                                                                    <TableCell></TableCell>
-                                                                </TableRow>
-                                                            </TableFooter>
-                                                        </>
+                                                    Pagination: (props) => (
+                                                        <div>
+                                                            <Grid container style={{ background: "#f5f5f5", padding: 15 }}>
+                                                                <Grid item align="Left">
+                                                                    <Typography style={{ fontWeight: 600 }}> Total </Typography>
+                                                                </Grid>
+                                                                <Grid item align="Right" style={{ margin: "0px 102.56px 0px auto" }}>
+                                                                    <Typography style={{ fontWeight: 600 }}> {total} </Typography>
+                                                                </Grid>
+                                                            </Grid>
+                                                            <TablePagination {...props} />
+                                                        </div>
                                                     )
                                                 }}
                                                 columns={[
-                                                    // {
-                                                    //     title: "Prod. ID",
-                                                    //     field: "productid",
-                                                    //     editComponent: props => (
-                                                    //         <Autocomplete
-                                                    //             options={selectedProductOptions}
-                                                    //             getOptionLabel={(option) => option.productid}
-                                                    //             inputValue={props.value || ''}
-                                                    //             onChange={e => props.onChange(e.target.innerText)}
-                                                    //             renderInput={(params) =>
-                                                    //                 <MuiTextField
-                                                    //                     {...params}
-                                                    //                     helperText={props.helperText}
-                                                    //                     error={props.error}
-                                                    //                     variant="standard"
-                                                    //                 />
-                                                    //             }
-                                                    //         />
-                                                    //     ),
-                                                    //     validate: (rowData) => (
-                                                    //         rowData.productid === undefined
-                                                    //             ? { isValid: false, helperText: 'Required *' }
-                                                    //             : rowData.productid === ''
-                                                    //                 ? { isValid: false, helperText: 'Required *' }
-                                                    //                 : true
-                                                    //     ),
-                                                    // },
                                                     {
                                                         title: "Description",
                                                         field: "description",
@@ -316,7 +289,8 @@ export default function CreatePurchaseOrder(props) {
                                                         editComponent: props =>
                                                             <MuiTextField
                                                                 onChange={e => {
-                                                                    var data = { ...props.rowData };
+                                                                    console.log(props.rowData)
+                                                                    let data = { ...props.rowData };
                                                                     data.quantity = e.target.value;
                                                                     let quantity = isNaN(data.quantity) ? 0 : data.quantity;
                                                                     let listprice = isNaN(data.listprice) ? 0 : data.listprice;
@@ -345,7 +319,7 @@ export default function CreatePurchaseOrder(props) {
                                                         editComponent: props =>
                                                             <MuiTextField
                                                                 onChange={e => {
-                                                                    var data = { ...props.rowData };
+                                                                    let data = { ...props.rowData };
                                                                     data.listprice = e.target.value;
                                                                     let quantity = isNaN(data.quantity) ? 0 : data.quantity;
                                                                     let listprice = isNaN(data.listprice) ? 0 : data.listprice;
@@ -421,9 +395,8 @@ export default function CreatePurchaseOrder(props) {
                                                     toolbar: true,
                                                     filtering: true,
                                                     search: false,
-                                                    paging: false,
-                                                    minBodyHeight: "calc(100vh - 354px)",
-                                                    maxBodyHeight: "calc(100vh - 354px)",
+                                                    maxBodyHeight: "calc(100vh - 470px)",
+                                                    minBodyHeight: "calc(100vh - 470px)",
                                                     actionsColumnIndex: -1,
                                                     headerStyle: {
                                                         position: "sticky",
@@ -560,7 +533,6 @@ export default function CreatePurchaseOrder(props) {
                                                     <tr>
                                                         <th align="left">Address</th>
                                                         <td align="left">
-                                                            {/* No.233, Kiriwallapitiya, Rambukkana, Srilanka */}
                                                             <Controller
                                                                 name={"customeraddress"}
                                                                 control={control}
@@ -575,7 +547,6 @@ export default function CreatePurchaseOrder(props) {
                                                     <tr>
                                                         <th align="left">Contact No.</th>
                                                         <td align="left">
-                                                            {/* 071 2686790 */}
                                                             <Controller
                                                                 name={"contactnumber"}
                                                                 control={control}
@@ -612,7 +583,7 @@ export default function CreatePurchaseOrder(props) {
                                                         <td align="left">
                                                             {/* {dateTime} */}
                                                             <Controller
-                                                                name={"createat"}
+                                                                name={"createdat"}
                                                                 control={control}
                                                                 render={({ field: { value } }) => (
                                                                     <Typography className={style.input}>
@@ -743,15 +714,11 @@ export default function CreatePurchaseOrder(props) {
                             {
                                 formStep === 0 &&
 
-                                <div>
+                                <div className={style.resetBtn}>
                                     <Button
                                         disabled={formStep === 0 && !isValid && data.length === 0}
                                         variant="contained"
                                         onClick={e => setOpenPopup(true)}
-                                        style={{
-                                            backgroundColor: '#ACA9BB',
-                                            color: 'white'
-                                        }}
                                     >
                                         Reset
                                     </Button>
@@ -775,7 +742,6 @@ export default function CreatePurchaseOrder(props) {
                                 </div>
                             }
 
-
                             <div className={style.nextBtn}>
 
                                 {
@@ -785,7 +751,10 @@ export default function CreatePurchaseOrder(props) {
                                         disabled={formStep === 0 && !isValid && data.length === 0}
                                         color="primary"
                                         variant="contained"
-                                        onClick={() => completeFormStep()}
+                                        onClick={() => {
+                                            completeFormStep()
+                                            handleDetails()
+                                        }}
                                     >
                                         Next
                                     </Button>

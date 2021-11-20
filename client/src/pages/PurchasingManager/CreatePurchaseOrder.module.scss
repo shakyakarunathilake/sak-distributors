@@ -192,6 +192,19 @@
                 grid-template-columns: auto auto;
                 padding: 20px 0px 10px 0px;
 
+                .resetBtn {
+                    Button {
+                        width: auto;
+                        background-color: #aca9bb;
+                        color: $inverseFontColor;
+
+                        &:disabled {
+                            background-color: #c2c2c2;
+                            color: $inverseFontColor;
+                        }
+                    }
+                }
+
                 .nextBtn {
                     text-align: right;
                     Button {
