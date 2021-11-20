@@ -17,6 +17,7 @@ import { Paper } from '@material-ui/core';
 import { TextField as MuiTextField } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
 import { Autocomplete } from '@mui/material';
+import { TableFooter, TableRow, TableCell } from '@material-ui/core';
 
 //Material UI Icons
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
@@ -24,10 +25,10 @@ import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 //Material Table
-import MaterialTable, { MTableAction, MTableToolbar } from 'material-table';
+import MaterialTable, { MTableAction, MTableToolbar, MTableBody } from 'material-table';
 
 //Dialog Content
-import Quotations from './Quotations';
+import ResetForm from './ResetForm';
 
 //SCSS styles
 import style from './CreatePurchaseOrder.module.scss';
@@ -42,13 +43,18 @@ export default function CreatePurchaseOrder(props) {
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     var dateTime = date + ' ' + time;
 
-    const { handleSubmit, formState: { errors }, control, getValues, isValid, trigger } = useForm({ mode: "all" });
+    const { handleSubmit, formState: { errors }, control, getValues, setValue, isValid, trigger, reset } = useForm({ mode: "all" });
 
+    const [total, setTotal] = useState(0);
     const [formStep, setFormStep] = useState(0);
     const [data, setData] = useState([]);
     const [openPopup, setOpenPopup] = useState(false);
     const [productOptions, setProductOptions] = useState([]);
     const [selectedProductOptions, setSelectedProductOptions] = useState([]);
+
+    const handleClosePopUp = () => {
+        setOpenPopup(false)
+    }
 
     const addActionRef = React.useRef();
 
@@ -73,7 +79,6 @@ export default function CreatePurchaseOrder(props) {
 
     const handleAddNewItem = () => {
         if (!!getValues('supplier')) {
-            setSelectedProductOptions(productOptions.filter(x => x.supplier === getValues('supplier')));
             addActionRef.current.click();
         } else {
             trigger('supplier', { shouldFocus: true });
@@ -95,22 +100,22 @@ export default function CreatePurchaseOrder(props) {
             })
     }, []);
 
-    // const resetForm = () => {
-    //     reset({
-    //         supplier: '',
-    //         purchaseordernumber: '',
-    //         createddate: '',
-    //         customerid: '',
-    //         customername: '',
-    //         shipto: '',
-    //     });
-    // }
+    const resetForm = () => {
+        handleClosePopUp();
+        reset({
+            supplier: '',
+            purchaseordernumber: '',
+            createddate: '',
+            customerid: '',
+            customername: '',
+            shipto: '',
+        });
+        setData([]);
+    }
 
     const onSubmit = (values) => {
 
     }
-
-    console.log("DATA: ", data);
 
     return (
         <Page title="Create Purchase Order">
@@ -158,10 +163,14 @@ export default function CreatePurchaseOrder(props) {
                                                             helperText={errors.supplier && errors.supplier.message}
                                                             error={errors.supplier ? true : false}
                                                             options={employeeservice.getSupplierOptions()}
-                                                            onChange={onChange}
+                                                            onChange={e => {
+                                                                onChange(e)
+                                                                setSelectedProductOptions(productOptions.filter(x => x.supplier === getValues('supplier')));
+                                                            }}
                                                             size="small"
                                                             label="Supplier *"
                                                             value={value}
+                                                            disabled={data.length > 0 ? true : false}
                                                         />
                                                     )}
                                                 />
@@ -198,35 +207,63 @@ export default function CreatePurchaseOrder(props) {
                                                             <MTableToolbar {...props} />
                                                         </div>
                                                     ),
+                                                    Body: (props) => (
+                                                        <>
+                                                            <MTableBody {...props} />
+                                                            <TableFooter>
+                                                                <TableRow>
+                                                                    <TableCell
+                                                                        colSpan={4}
+                                                                        style={{
+                                                                            fontSize: "0.8em",
+                                                                            color: "black",
+                                                                            fontWeight: 600
+                                                                        }}
+                                                                    > Total </TableCell>
+                                                                    <TableCell
+                                                                        style={{
+                                                                            fontSize: "0.8em",
+                                                                            color: "black",
+                                                                            fontWeight: 600,
+                                                                            textAlign: "right"
+                                                                        }}
+                                                                    >
+                                                                        {total}
+                                                                    </TableCell>
+                                                                    <TableCell></TableCell>
+                                                                </TableRow>
+                                                            </TableFooter>
+                                                        </>
+                                                    )
                                                 }}
                                                 columns={[
-                                                    {
-                                                        title: "Prod. ID",
-                                                        field: "productid",
-                                                        editComponent: props => (
-                                                            <Autocomplete
-                                                                options={selectedProductOptions}
-                                                                getOptionLabel={(option) => option.productid}
-                                                                inputValue={props.value || ''}
-                                                                onChange={e => props.onChange(e.target.innerText)}
-                                                                renderInput={(params) =>
-                                                                    <MuiTextField
-                                                                        {...params}
-                                                                        helperText={props.helperText}
-                                                                        error={props.error}
-                                                                        variant="standard"
-                                                                    />
-                                                                }
-                                                            />
-                                                        ),
-                                                        validate: (rowData) => (
-                                                            rowData.productid === undefined
-                                                                ? { isValid: false, helperText: 'Required *' }
-                                                                : rowData.productid === ''
-                                                                    ? { isValid: false, helperText: 'Required *' }
-                                                                    : true
-                                                        ),
-                                                    },
+                                                    // {
+                                                    //     title: "Prod. ID",
+                                                    //     field: "productid",
+                                                    //     editComponent: props => (
+                                                    //         <Autocomplete
+                                                    //             options={selectedProductOptions}
+                                                    //             getOptionLabel={(option) => option.productid}
+                                                    //             inputValue={props.value || ''}
+                                                    //             onChange={e => props.onChange(e.target.innerText)}
+                                                    //             renderInput={(params) =>
+                                                    //                 <MuiTextField
+                                                    //                     {...params}
+                                                    //                     helperText={props.helperText}
+                                                    //                     error={props.error}
+                                                    //                     variant="standard"
+                                                    //                 />
+                                                    //             }
+                                                    //         />
+                                                    //     ),
+                                                    //     validate: (rowData) => (
+                                                    //         rowData.productid === undefined
+                                                    //             ? { isValid: false, helperText: 'Required *' }
+                                                    //             : rowData.productid === ''
+                                                    //                 ? { isValid: false, helperText: 'Required *' }
+                                                    //                 : true
+                                                    //     ),
+                                                    // },
                                                     {
                                                         title: "Description",
                                                         field: "description",
@@ -234,7 +271,9 @@ export default function CreatePurchaseOrder(props) {
                                                             <Autocomplete
                                                                 options={selectedProductOptions}
                                                                 getOptionLabel={(option) => option.name}
-                                                                onChange={e => props.onChange(e.target.innerText)}
+                                                                onChange={e => {
+                                                                    props.onChange(e.target.innerText)
+                                                                }}
                                                                 inputValue={props.value || ''}
                                                                 renderInput={(params) =>
                                                                     <MuiTextField
@@ -274,6 +313,21 @@ export default function CreatePurchaseOrder(props) {
                                                         cellStyle: {
                                                             cellWidth: 'min-content'
                                                         },
+                                                        editComponent: props =>
+                                                            <MuiTextField
+                                                                onChange={e => {
+                                                                    var data = { ...props.rowData };
+                                                                    data.quantity = e.target.value;
+                                                                    let quantity = isNaN(data.quantity) ? 0 : data.quantity;
+                                                                    let listprice = isNaN(data.listprice) ? 0 : data.listprice;
+                                                                    data.value = quantity * listprice;
+                                                                    props.onRowDataChange(data);
+                                                                }}
+                                                                helperText={props.helperText}
+                                                                error={props.error}
+                                                                variant="standard"
+                                                            />
+                                                        ,
                                                         validate: (rowData) =>
                                                             rowData.quantity === undefined
                                                                 ? { isValid: false, helperText: 'Required *' }
@@ -288,12 +342,29 @@ export default function CreatePurchaseOrder(props) {
                                                         cellStyle: {
                                                             cellWidth: 'min-content'
                                                         },
+                                                        editComponent: props =>
+                                                            <MuiTextField
+                                                                onChange={e => {
+                                                                    var data = { ...props.rowData };
+                                                                    data.listprice = e.target.value;
+                                                                    let quantity = isNaN(data.quantity) ? 0 : data.quantity;
+                                                                    let listprice = isNaN(data.listprice) ? 0 : data.listprice;
+                                                                    data.value = quantity * listprice;
+                                                                    props.onRowDataChange(data);
+                                                                }}
+                                                                helperText={props.helperText}
+                                                                error={props.error}
+                                                                variant="standard"
+                                                            />
+                                                        ,
                                                         validate: (rowData) =>
                                                             rowData.listprice === undefined
                                                                 ? { isValid: false, helperText: 'Required *' }
                                                                 : rowData.listprice === ''
                                                                     ? { isValid: false, helperText: 'Required *' }
                                                                     : true
+
+
                                                     },
                                                     {
                                                         title: "Value (Rs.)",
@@ -303,8 +374,6 @@ export default function CreatePurchaseOrder(props) {
                                                             width: 'min-content'
                                                         },
                                                         editable: 'never',
-                                                        initialEditValue: 0,
-                                                        render: rowData => rowData.quantity * rowData.listprice,
                                                     }
                                                 ]}
                                                 data={data}
@@ -478,7 +547,7 @@ export default function CreatePurchaseOrder(props) {
                                                         <th align="left">Name</th>
                                                         <td align="left">
                                                             <Controller
-                                                                name={"name"}
+                                                                name={"customername"}
                                                                 control={control}
                                                                 render={({ field: { value } }) => (
                                                                     <Typography className={style.input}>
@@ -490,11 +559,33 @@ export default function CreatePurchaseOrder(props) {
                                                     </tr>
                                                     <tr>
                                                         <th align="left">Address</th>
-                                                        <td align="left">No.233, Kiriwallapitiya, Rambukkana, Srilanka</td>
+                                                        <td align="left">
+                                                            {/* No.233, Kiriwallapitiya, Rambukkana, Srilanka */}
+                                                            <Controller
+                                                                name={"customeraddress"}
+                                                                control={control}
+                                                                render={({ field: { value } }) => (
+                                                                    <Typography className={style.input}>
+                                                                        {value}
+                                                                    </Typography>
+                                                                )}
+                                                            />
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <th align="left">Contact No.</th>
-                                                        <td align="left">071 2686790</td>
+                                                        <td align="left">
+                                                            {/* 071 2686790 */}
+                                                            <Controller
+                                                                name={"contactnumber"}
+                                                                control={control}
+                                                                render={({ field: { value } }) => (
+                                                                    <Typography className={style.input}>
+                                                                        {value}
+                                                                    </Typography>
+                                                                )}
+                                                            />
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -503,15 +594,47 @@ export default function CreatePurchaseOrder(props) {
                                                 <tbody>
                                                     <tr>
                                                         <th align="left">PO No.</th>
-                                                        <td align="left">PO2110/004</td>
+                                                        <td align="left">
+                                                            {/* PO2110/004 */}
+                                                            <Controller
+                                                                name={"ponumber"}
+                                                                control={control}
+                                                                render={({ field: { value } }) => (
+                                                                    <Typography className={style.input}>
+                                                                        {value}
+                                                                    </Typography>
+                                                                )}
+                                                            />
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <th align="left">PO Created at</th>
-                                                        <td align="left">{dateTime}</td>
+                                                        <td align="left">
+                                                            {/* {dateTime} */}
+                                                            <Controller
+                                                                name={"createat"}
+                                                                control={control}
+                                                                render={({ field: { value } }) => (
+                                                                    <Typography className={style.input}>
+                                                                        {value}
+                                                                    </Typography>
+                                                                )}
+                                                            />
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <th align="left">Supplier</th>
-                                                        <td align="left"> </td>
+                                                        <td align="left">
+                                                            <Controller
+                                                                name={"supplier"}
+                                                                control={control}
+                                                                render={({ field: { value } }) => (
+                                                                    <Typography className={style.input}>
+                                                                        {value}
+                                                                    </Typography>
+                                                                )}
+                                                            />
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -590,8 +713,8 @@ export default function CreatePurchaseOrder(props) {
                                                 filtering: true,
                                                 search: false,
                                                 paging: false,
-                                                minBodyHeight: "calc(100vh - 453px)",
-                                                maxBodyHeight: "calc(100vh - 453px)",
+                                                minBodyHeight: "calc(100vh - 405px)",
+                                                maxBodyHeight: "calc(100vh - 405px)",
                                                 headerStyle: {
                                                     position: "sticky",
                                                     top: "0",
@@ -621,6 +744,17 @@ export default function CreatePurchaseOrder(props) {
                                 formStep === 0 &&
 
                                 <div>
+                                    <Button
+                                        disabled={formStep === 0 && !isValid && data.length === 0}
+                                        variant="contained"
+                                        onClick={e => setOpenPopup(true)}
+                                        style={{
+                                            backgroundColor: '#ACA9BB',
+                                            color: 'white'
+                                        }}
+                                    >
+                                        Reset
+                                    </Button>
                                 </div>
                             }
 
@@ -682,7 +816,12 @@ export default function CreatePurchaseOrder(props) {
                     openPopup={openPopup}
                     setOpenPopup={setOpenPopup}
                 >
-                    <Quotations />
+
+                    <ResetForm
+                        handleClosePopUp={handleClosePopUp}
+                        resetForm={resetForm}
+                    />
+
                 </PopUp>
 
             </div >

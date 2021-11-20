@@ -70,6 +70,7 @@
 
                     .purcahseOrder {
                         max-width: inherit;
+                        height: calc(100vh - 215px);
                     }
 
                     .quotations {
@@ -163,6 +164,7 @@
 
             .two {
                 width: calc(100vw - 80px);
+                height: calc(100vh - 215px);
 
                 .orderDetails {
                     display: grid;
@@ -170,7 +172,7 @@
                     padding: 0px 20px;
 
                     .details {
-                        margin: 20px 0;
+                        margin: 5px 0 10px 0;
                         table-layout: auto !important;
                         width: 100% !important;
                         box-sizing: border-box !important;
@@ -188,7 +190,7 @@
             .footer {
                 display: grid;
                 grid-template-columns: auto auto;
-                padding: 20px 0px 20px 0px;
+                padding: 20px 0px 10px 0px;
 
                 .nextBtn {
                     text-align: right;
