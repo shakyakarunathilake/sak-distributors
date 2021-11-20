@@ -13,6 +13,7 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import style from './ViewCustomer.module.scss';
 
 export default function ViewCustomer(props) {
+
     const { setOpenPopup, setAction, customerRecords } = props;
 
     const { handleSubmit, control, setValue } = useForm();
@@ -40,7 +41,6 @@ export default function ViewCustomer(props) {
     };
 
     return (
-        <div>
             <div className={style.container}>
 
                 <div className={style.header}>
@@ -300,6 +300,5 @@ export default function ViewCustomer(props) {
                 </div>
             </div >
 
-        </div >
     )
 }
