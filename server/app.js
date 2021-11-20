@@ -16,6 +16,7 @@ const orderRoutes = require("./api/routes/order.route");
 const optionRoutes = require("./api/routes/option.route");
 const adminRoutes = require("./api/routes/admin.route");
 const supplierRoutes = require("./api/routes/supplier.route");
+const purchaseOrderRoutes = require("./api/routes/purchaseorder.route");
 
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -30,7 +31,6 @@ db.on('error', console.error.bind(console, 'Connection Error:'));
 db.once('open', () => {
     console.log("Successfully connected to MongoDB");
 });
-
 
 //Error Handling
 app.use((error, req, res, next) => {
@@ -50,5 +50,6 @@ app.use("/orders", orderRoutes);
 app.use("/options", optionRoutes);
 app.use("/admin", adminRoutes);
 app.use("/suppliers", supplierRoutes);
+app.use("/purchaseorder", purchaseOrderRoutes);
 
 module.exports = app;
