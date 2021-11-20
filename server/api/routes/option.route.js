@@ -90,7 +90,7 @@ router.get("/product-options-for-product", (req, res, next) => {
 router.get("/employee-options-for-product", (req, res, next) => {
 
     Employee
-        .find({ designation: "Purchasing Manager" })
+        .find({ designation: "Purchasing Manager" || "Manager" })
         .exec()
         .then(doc => {
 
@@ -129,6 +129,35 @@ router.get("/employee-options-for-admin", (req, res, next) => {
 
             res.status(201).json({
                 message: "Handeling GET requests to /employee-options-for-admin",
+                employeeOptions: employeeOptions,
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        })
+})
+
+
+//Get all employee options for admin
+router.get("/employee-options-for-supplier", (req, res, next) => {
+
+    Employee
+        .find()
+        .exec()
+        .then(doc => {
+
+            const candidates = doc.filter(x =>
+                x.designation === 'Manager' && x.employeestatus === 'Active'
+            );
+
+            const employeeOptions = candidates.map(x => ({
+                title: `${x.employeeid} : ${x.firstname} ${x.lastname} (${x.designation})`,
+                id: x.employeeid
+            }))
+
+            res.status(201).json({
+                message: "Handeling GET requests to /employee-options-for-supplier",
                 employeeOptions: employeeOptions,
             })
         })
