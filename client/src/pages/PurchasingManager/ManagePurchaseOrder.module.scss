@@ -11,20 +11,13 @@
     flex-direction: row-reverse;
     padding: 0 25px;
 
-    .qbutton {
-        width: 166.75px;
+    .button {
+        width: auto;
+        white-space: nowrap;
         height: 53.28px;
         color: $inverseFontColor;
-        font-size: 0.95em;
-        margin: 20px 0 20px 20px;
-    }
-
-    .pobutton {
-        width: 283.72px;
-        height: 53.28px;
-        color: $inverseFontColor;
-        font-size: 0.95em;
-        margin: 20px 0 20px 20px;
+        font-size: 1em;
+        margin: 20px 0 20px auto;
     }
 
     .icon {

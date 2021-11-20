@@ -21,7 +21,7 @@ export default function ManagePurchaseOrder() {
                 <div className={style.actionRow}>
 
                     <Button
-                        className={style.pobutton}
+                        className={style.button}
                         color="primary"
                         size="medium"
                         variant="contained"
