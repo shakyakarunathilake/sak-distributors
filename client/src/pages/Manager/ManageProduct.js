@@ -187,7 +187,7 @@ export default function ManageProduct() {
         }
     }
 
-    const getProductOptions = () => {
+    const getProductEmployeeOptions = () => {
         axios
             .get("http://localhost:8080/options/product-options-for-product")
             .then(res => {
@@ -267,7 +267,7 @@ export default function ManageProduct() {
                             () => {
                                 setAction('Create');
                                 setFormType('Variant')
-                                getProductOptions();
+                                getProductEmployeeOptions();
                                 getEmployeeOptions();
                                 setOpenPopup(true);
                             }
