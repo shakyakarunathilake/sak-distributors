@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useForm, Controller, get } from 'react-hook-form';
 
 //Development Stage
 import * as employeeservice from "../../services/employeeService";
@@ -46,13 +46,11 @@ export default function CreatePurchaseOrder() {
 
     const { handleSubmit, formState: { errors }, control, getValues, setValue, isValid, trigger, reset } = useForm({ mode: "all" });
 
-    const [total, setTotal] = useState(0);
     const [formStep, setFormStep] = useState(0);
     const [data, setData] = useState([]);
     const [openPopup, setOpenPopup] = useState(false);
     const [supplierOptions, setSupplierOptions] = useState([]);
     const [productOptions, setProductOptions] = useState([]);
-    const [selectedProductOptions, setSelectedProductOptions] = useState([]);
 
     useEffect(() => {
         axios
@@ -92,6 +90,27 @@ export default function CreatePurchaseOrder() {
     const backFormStep = () => {
         setFormStep(x => x - 1);
     }
+
+    const getTotal = () => {
+        let total = 0;
+        for (let i = 0; i < data.length; i++) {
+            total = total + data[i].value;
+        }
+        return total;
+    }
+
+    const getProductItemList = useMemo(() => {
+        const selectedDescriptions = data.map(x => x.description);
+        console.log("SELECTED DESCRIPTIONS: ", selectedDescriptions);
+
+        const supplierProducts = productOptions.filter(x => x.supplier === getValues('supplier'));
+        console.log("SUPPLIER PRODUCTS: ", supplierProducts);
+
+        const productItemList = supplierProducts.filter(x => selectedDescriptions.indexOf(x.name) === -1);
+        console.log("PRODUCT ITEM LIST: ", productItemList);
+
+        return productItemList;
+    }, [data, getValues('supplier')]);
 
     const handleDetails = () => {
 
@@ -180,7 +199,6 @@ export default function CreatePurchaseOrder() {
                                                             options={supplierOptions || []}
                                                             onChange={e => {
                                                                 onChange(e)
-                                                                setSelectedProductOptions(productOptions.filter(x => x.supplier === getValues('supplier')));
                                                             }}
                                                             size="small"
                                                             label="Supplier *"
@@ -222,18 +240,20 @@ export default function CreatePurchaseOrder() {
                                                             <MTableToolbar {...props} />
                                                         </div>
                                                     ),
-                                                    Pagination: (props) => (
-                                                        <div>
+                                                    Pagination: () => (
+                                                        <td style={{
+                                                            display: "flex",
+                                                            flexDirection: "column"
+                                                        }} >
                                                             <Grid container style={{ background: "#f5f5f5", padding: 15 }}>
                                                                 <Grid item align="Left">
                                                                     <Typography style={{ fontWeight: 600 }}> Total </Typography>
                                                                 </Grid>
                                                                 <Grid item align="Right" style={{ margin: "0px 102.56px 0px auto" }}>
-                                                                    <Typography style={{ fontWeight: 600 }}> {total} </Typography>
+                                                                    <Typography style={{ fontWeight: 600 }}> {getTotal()} </Typography>
                                                                 </Grid>
                                                             </Grid>
-                                                            <TablePagination {...props} />
-                                                        </div>
+                                                        </td>
                                                     )
                                                 }}
                                                 columns={[
@@ -242,7 +262,7 @@ export default function CreatePurchaseOrder() {
                                                         field: "description",
                                                         editComponent: props => (
                                                             <Autocomplete
-                                                                options={selectedProductOptions}
+                                                                options={getProductItemList}
                                                                 getOptionLabel={(option) => option.name}
                                                                 onChange={e => {
                                                                     props.onChange(e.target.innerText)
@@ -395,8 +415,8 @@ export default function CreatePurchaseOrder() {
                                                     toolbar: true,
                                                     filtering: true,
                                                     search: false,
-                                                    maxBodyHeight: "calc(100vh - 470px)",
-                                                    minBodyHeight: "calc(100vh - 470px)",
+                                                    maxBodyHeight: "calc(100vh - 425px)",
+                                                    minBodyHeight: "calc(100vh - 425px)",
                                                     actionsColumnIndex: -1,
                                                     headerStyle: {
                                                         position: "sticky",
@@ -613,6 +633,46 @@ export default function CreatePurchaseOrder() {
                                         </div>
 
                                         <MaterialTable
+
+                                            components={{
+                                                Pagination: () => (
+                                                    <td style={{
+                                                        display: "flex",
+                                                        flexDirection: "column"
+                                                    }} >
+                                                        <Grid container style={{ background: "#f5f5f5", padding: 15 }}>
+                                                            <Grid item align="Left">
+                                                                <Typography style={{ fontWeight: 600 }}> Gross Total </Typography>
+                                                            </Grid>
+                                                            <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
+                                                                <Typography style={{ fontWeight: 600 }}> {getTotal()} </Typography>
+                                                            </Grid>
+                                                        </Grid>
+                                                        <Grid container style={{ background: "#f5f5f5", padding: 15 }}>
+                                                            <Grid item align="Left">
+                                                                <Typography style={{ fontWeight: 600 }}> Deductions </Typography>
+                                                            </Grid>
+                                                            <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
+                                                                <Typography style={{ fontWeight: 600 }}>  </Typography>
+                                                            </Grid>
+                                                        </Grid><Grid container style={{ background: "#f5f5f5", padding: 15 }}>
+                                                            <Grid item align="Left">
+                                                                <Typography style={{ fontWeight: 600 }}> Other Deductions </Typography>
+                                                            </Grid>
+                                                            <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
+                                                                <Typography style={{ fontWeight: 600 }}>  </Typography>
+                                                            </Grid>
+                                                        </Grid><Grid container style={{ background: "#f5f5f5", padding: 15 }}>
+                                                            <Grid item align="Left">
+                                                                <Typography style={{ fontWeight: 600 }}> Total </Typography>
+                                                            </Grid>
+                                                            <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
+                                                                <Typography style={{ fontWeight: 600 }}> {getTotal()} </Typography>
+                                                            </Grid>
+                                                        </Grid>
+                                                    </td>
+                                                )
+                                            }}
                                             columns={[
                                                 {
                                                     title: "Description",
@@ -683,9 +743,8 @@ export default function CreatePurchaseOrder() {
                                                 toolbar: false,
                                                 filtering: true,
                                                 search: false,
-                                                paging: false,
-                                                minBodyHeight: "calc(100vh - 405px)",
-                                                maxBodyHeight: "calc(100vh - 405px)",
+                                                minBodyHeight: "calc(100vh - 620px)",
+                                                maxBodyHeight: "calc(100vh - 620px)",
                                                 headerStyle: {
                                                     position: "sticky",
                                                     top: "0",
