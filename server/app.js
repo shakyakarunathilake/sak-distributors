@@ -17,6 +17,7 @@ const optionRoutes = require("./api/routes/option.route");
 const adminRoutes = require("./api/routes/admin.route");
 const supplierRoutes = require("./api/routes/supplier.route");
 const purchaseOrderRoutes = require("./api/routes/purchaseorder.route");
+const grnRoutes = require("./api/routes/grn.route");
 
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -51,5 +52,6 @@ app.use("/options", optionRoutes);
 app.use("/admin", adminRoutes);
 app.use("/suppliers", supplierRoutes);
 app.use("/purchaseorder", purchaseOrderRoutes);
+app.use("/grn", grnRoutes);
 
 module.exports = app;
