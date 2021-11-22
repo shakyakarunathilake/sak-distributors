@@ -22,21 +22,31 @@ router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) =
 
     const createdat = new Date(req.body.createdat).toISOString().split('T')[0];
 
+    const requesteditems = JSON.parse(req.body.requesteditems);
+
     const purchaseorder = new PurchaseOrder({
         _id: new mongoose.Types.ObjectId(),
         ponumber: req.body.ponumber,
         supplier: req.body.supplier,
-        requesteditems: req.body.requesteditems,
-        createdat: createdat
+        status: req.body.status,
+        requesteditems: requesteditems,
+        createdat: createdat,
+        createdby: req.body.createdby,
+        approvedby: req.body.approvedby,
+        grosstotal: req.body.grosstotal,
+        receiveddiscounts: req.body.receiveddiscounts,
+        damagedexpireditems: req.body.damagedexpireditems,
+        total: req.body.total,
     });
 
     purchaseorder
         .save()
         .then(result => {
+            console.log("RESULT: ", result);
             res.status(201).json({
                 message: "Handeling POST requests to /purchaseorders/create-purchaseorder, PURCHASE ORDER CREATED",
                 type: 'success',
-                alert: `${result.ponumber} ${result.ponumber} added`,
+                alert: `${result.ponumber} added`,
             });
         })
         .catch(err => {
@@ -47,5 +57,41 @@ router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) =
             console.log("Error: ", err)
         })
 });
+
+
+//Get all table purchaseorder data
+router.get("/get-all-purchaseorder-table-data", (req, res, next) => {
+
+    PurchaseOrder
+        .find()
+        .exec()
+        .then(doc => {
+
+            const tbody = doc.map(x => ({
+                ponumber: x.ponumber,
+                supplier: x.supplier,
+                status: x.status,
+                requesteditems: x.requesteditems,
+                createdby: x.createdby,
+                createdat: x.createdat,
+                approvedby: x.approvedby,
+                grosstotal: x.grosstotal,
+                receiveddiscounts: x.receiveddiscounts,
+                damagedexpireditems: x.damagedexpireditems,
+                total: x.total,
+            }))
+
+            console.log("TBODY: ", tbody);
+
+            res.status(201).json({
+                message: "Handeling GET requests to /get-all-purchaseorder-table-data",
+                tbody: tbody,
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        })
+})
 
 module.exports = router;
