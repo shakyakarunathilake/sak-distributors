@@ -15,6 +15,10 @@ import MaterialTable from 'material-table';
 //SCSS styles
 import style from './GRN.module.scss';
 
+//Pop Up Forms
+import ViewGRN from './ViewGRN';
+import GRNForm from './GRNForm';
+
 //Connecting to Backend
 import axios from 'axios';
 
@@ -30,7 +34,7 @@ export default function GRN() {
 
     const [records, setRecords] = useState([]);
 
-    const [PORecords, setPORecords] = useState(null);
+    const [GRNRecords, setGRNRecords] = useState(null);
     const [action, setAction] = useState('');
     const [openPopup, setOpenPopup] = useState(false);
 
@@ -50,9 +54,9 @@ export default function GRN() {
 
     useEffect(() => {
         axios
-            .get("http://localhost:8080/purchaseorder/get-all-purchaseorder-table-data")
+            .get("http://localhost:8080/grn/get-all-grn-table-data")
             .then(res => {
-                sessionStorage.setItem("PurchaseOrderTableData", JSON.stringify(res.data));
+                sessionStorage.setItem("GRNTableData", JSON.stringify(res.data));
                 setRecords(res.data.tbody);
                 setReRender(null);
             })
@@ -61,11 +65,11 @@ export default function GRN() {
             })
     }, [reRender]);
 
-    const openInPopup = ponumber => {
+    const openInPopup = grnnumber => {
         axios
-            .get(`http://localhost:8080/purchaseorder/${ponumber}`)
+            .get(`http://localhost:8080/grn/${grnnumber}`)
             .then(res => {
-                setPORecords(res.data.purchaseorder);
+                setGRNRecords(res.data.grn);
                 setOpenPopup(true);
             })
             .catch(err => {
@@ -86,6 +90,13 @@ export default function GRN() {
                                 )
                             }
                         },
+                        {
+                            title: "GRN", field: "grnnumber", render: rowData => {
+                                return (
+                                    <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.grnnumber}</p>
+                                )
+                            }
+                        },
                         { title: "Supplier", field: "supplier" },
                         {
                             title: "Status", field: "status", render: rowData => {
@@ -98,9 +109,6 @@ export default function GRN() {
                                 )
                             }
                         },
-                        { title: "Created By", field: "createdby" },
-                        { title: "Created At", field: "createdat" },
-                        { title: "Approved By", field: "approvedby" },
                     ]}
                     data={records}
                     options={{
@@ -146,19 +154,17 @@ export default function GRN() {
                     openPopup={openPopup}
                     setOpenPopup={setOpenPopup}
                 >
-                    {/* {action === 'View' ?
-                        <ViewPurchaseOrder
-                            PORecords={PORecords}
+                    {action === 'View' ?
+                        <ViewGRN
+                            GRNRecords={GRNRecords}
                             setOpenPopup={setOpenPopup}
                             setAction={setAction}
                         /> :
-                        <PurchaseOrderForm
-                            addOrEdit={addOrEdit}
-                            PORecords={PORecords}
+                        <GRNForm
+                            GRNRecords={GRNRecords}
                             setOpenPopup={setOpenPopup}
-                            nextCusId={nextCusId}
                         />
-                    } */}
+                    }
                 </PopUp>
                 <Snackbar
                     open={open}
