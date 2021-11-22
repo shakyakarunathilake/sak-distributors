@@ -7,20 +7,20 @@ import { Dialog, DialogContent } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
-    // root: {
-    //     ".MuiDialogContent-root": {
-    //         padding: "0px 24px 8px 24px !important"
-    //     },
-    //     "& .MuiDialog-paperWidthLg": {
-    //         maxWidth: "none !important"
-    //     },
-    //     "& .MuiDialog-paper": {
-    //         margin: 0
-    //     },
-    //     "& .MuiDialogTitle-root": {
-    //         padding: "4px !important"
-    //     }
-    // },
+    root: {
+        ".MuiDialogContent-root": {
+            padding: "0px 24px 8px 24px !important"
+        },
+        "& .MuiDialog-paperWidthLg": {
+            maxWidth: "none !important"
+        },
+        "& .MuiDialog-paper": {
+            margin: 0
+        },
+        "& .MuiDialogTitle-root": {
+            padding: "4px !important"
+        }
+    },
     content: {
         "&:first-child": {
             paddingTop: "12px"

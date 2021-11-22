@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const multer = require("multer");
 
 const PurchaseOrder = require("../models/purchaseorder.model");
+const GRN = require("../models/grn.model");
 
 const formDataBody = multer();
 
@@ -21,14 +22,12 @@ router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) =
     console.log("Added Date: ", req.body.createdat);
 
     const createdat = new Date(req.body.createdat).toISOString().split('T')[0];
-
     const requesteditems = JSON.parse(req.body.requesteditems);
 
     const purchaseorder = new PurchaseOrder({
         _id: new mongoose.Types.ObjectId(),
         ponumber: req.body.ponumber,
         supplier: req.body.supplier,
-        status: req.body.status,
         requesteditems: requesteditems,
         createdat: createdat,
         createdby: req.body.createdby,
@@ -39,10 +38,23 @@ router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) =
         total: req.body.total,
     });
 
+    const grn = new GRN({
+        _id: new mongoose.Types.ObjectId(),
+        ponumber: req.body.ponumber,
+        grnnumber: `GRN/${req.body.ponumber}`,
+        supplier: req.body.supplier,
+        status: req.body.status,
+        requesteditems: requesteditems,
+        createdat: '',
+        createdby: '',
+        grosstotal: '',
+        damagedexpireditems: '',
+        total: '',
+    });
+
     purchaseorder
         .save()
         .then(result => {
-            console.log("RESULT: ", result);
             res.status(201).json({
                 message: "Handeling POST requests to /purchaseorders/create-purchaseorder, PURCHASE ORDER CREATED",
                 type: 'success',
@@ -50,11 +62,28 @@ router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) =
             });
         })
         .catch(err => {
+            console.log("ERROR: ", err);
+
             res.status(200).json({
                 type: 'error',
                 alert: `Something went wrong. Could not add purchaseorder`,
             });
-            console.log("Error: ", err)
+        })
+
+    grn
+        .save()
+        .then(result => {
+            res.status(201).json({
+                message: "Handeling POST requests to /purchaseorders/create-purchaseorder, GRN CREATED",
+            });
+        })
+        .catch(err => {
+            console.log("ERROR: ", err);
+
+            res.status(200).json({
+                type: 'error',
+                alert: `Something went wrong. Could not add purchaseorder`,
+            });
         })
 });
 
@@ -92,6 +121,7 @@ router.get("/get-all-purchaseorder-table-data", (req, res, next) => {
             console.log(err);
             res.status(500).json({ "Error": err });
         })
+
 })
 
 module.exports = router;
