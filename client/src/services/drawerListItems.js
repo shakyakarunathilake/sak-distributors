@@ -14,6 +14,8 @@ import DescriptionIcon from '@material-ui/icons/Description';
 import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import StoreIcon from '@mui/icons-material/Store';
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 
 const getDistributorListItems = [
     {
@@ -161,10 +163,22 @@ const getStoreKeeperListItems = [
         icon: <DashboardIcon />
     },
     {
-        id: "GRN/GIN",
-        title: "GRN/GIN",
-        path: "http://localhost:3000/store-keeper/grn-gin",
-        icon: <AssignmentIcon />,
+        id: "Store",
+        title: "Store",
+        path: "http://localhost:3000/store-keeper/store",
+        icon: <StoreIcon />,
+    },
+    {
+        id: "GRN",
+        title: "GRN",
+        path: "http://localhost:3000/store-keeper/grn",
+        icon: <InsertDriveFileIcon />,
+    },
+    {
+        id: "GIN",
+        title: "GIN",
+        path: "http://localhost:3000/store-keeper/gin",
+        icon: <InsertDriveFileIcon />,
     },
     {
         id: "Manage Products",

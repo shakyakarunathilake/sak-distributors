@@ -40,7 +40,9 @@ import SalesTrendAnalytics from '../pages/PurchasingManager/SalesTrendAnalytics'
 import SupplierPayment from '../pages/PurchasingManager/SupplierPayment';
 
 //Store Keeper
-import GRNGIN from '../pages/StoreKeeper/GRNGIN';
+import GRN from '../pages/StoreKeeper/GRN';
+import GIN from '../pages/StoreKeeper/GIN';
+import Store from '../pages/StoreKeeper/Store';
 
 //Sales Representative
 import PersonalOrderHistory from '../pages/SalesRepresentative/PersonalOrderHistory';
@@ -119,7 +121,9 @@ function App() {
 
             {/* Store Keeper */}
             <Route exact path='/store-keeper/dashboard' component={Dashboard} />
-            <Route exact path='/store-keeper/grn-gin' component={GRNGIN} />
+            <Route exact path='/store-keeper/grn' component={GRN} />
+            <Route exact path='/store-keeper/gin' component={GIN} />
+            <Route exact path='/store-keeper/store' component={Store} />
             <Route exact path='/store-keeper/manage-products' component={ManageProduct} />
 
             {/* Sales Representative */}
