@@ -1,17 +1,19 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { useForm, Controller, get } from 'react-hook-form';
+import React, { useState, useEffect } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import formData from 'form-data';
 
 //Development Stage
-import * as employeeservice from "../../services/employeeService";
 import itemImg from '../../images/itemImg.png'
 
 //Shared Components
 import Page from '../../shared/Page/Page';
 import Select from '../../shared/Select/Select';
 import PopUp from '../../shared/PopUp/PopUp';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 //Material UI 
-import { Button, Grid, TablePagination } from '@material-ui/core';
+import { Button, Grid } from '@material-ui/core';
 import Divider from '@mui/material/Divider';
 import { Paper } from '@material-ui/core';
 import { TextField as MuiTextField } from '@material-ui/core';
@@ -24,7 +26,7 @@ import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 //Material Table
-import MaterialTable, { MTableAction, MTableToolbar, MTableBody } from 'material-table';
+import MaterialTable, { MTableAction, MTableToolbar } from 'material-table';
 
 //Dialog Content
 import ResetForm from './ResetForm';
@@ -35,6 +37,10 @@ import style from './CreatePurchaseOrder.module.scss';
 //Connecting to Backend
 import axios from 'axios';
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 export default function CreatePurchaseOrder() {
 
     const today = new Date();
@@ -42,17 +48,31 @@ export default function CreatePurchaseOrder() {
     const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     const dateTime = date + ' ' + time;
 
-    const podate = today.getFullYear().toString().substr(-2) + (today.getMonth() + 1) + today.getDate() + today.getHours() + today.getMinutes();
+    const podate = today.getFullYear().toString().substr(-2) + (today.getMonth() + 1) + today.getDate();
 
     const { handleSubmit, formState: { errors }, control, getValues, setValue, isValid, trigger, reset } = useForm({ mode: "all" });
 
+    const [type, setType] = useState();
+    const [open, setOpen] = useState(false);
+    const [alert, setAlert] = useState();
     const [formStep, setFormStep] = useState(0);
     const [data, setData] = useState([]);
     const [openPopup, setOpenPopup] = useState(false);
     const [supplierOptions, setSupplierOptions] = useState([]);
     const [productOptions, setProductOptions] = useState([]);
+    const [selectedProductOptions, setSelectedProductOptions] = useState([]);
 
     useEffect(() => {
+
+        axios
+            .get("http://localhost:8080/options/supplier-options-for-purchase-order")
+            .then(res => {
+                setSupplierOptions(res.data.supplierOptions);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+
         axios
             .get("http://localhost:8080/options/product-options-for-purchase-order", {
                 headers: {
@@ -66,16 +86,18 @@ export default function CreatePurchaseOrder() {
                 console.log(err);
             })
 
-        axios
-            .get("http://localhost:8080/options/supplier-options-for-purchase-order")
-            .then(res => {
-                setSupplierOptions(res.data.supplierOptions);
-            })
-            .catch(err => {
-                console.log(err);
-            })
-
     }, []);
+
+    const handleAlert = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen(false);
+    };
 
     const handleClosePopUp = () => {
         setOpenPopup(false)
@@ -96,21 +118,24 @@ export default function CreatePurchaseOrder() {
         for (let i = 0; i < data.length; i++) {
             total = total + data[i].value;
         }
+        setValue("total", total);
+        setValue("receiveddiscounts", 0);
+        setValue("damagedexpireditems", 0);
         return total;
     }
 
-    const getProductItemList = useMemo(() => {
-        const selectedDescriptions = data.map(x => x.description);
-        console.log("SELECTED DESCRIPTIONS: ", selectedDescriptions);
+    // const getProductItemList = useMemo(() => {
+    //     const selectedDescriptions = data.map(x => x.description);
+    //     console.log("SELECTED DESCRIPTIONS: ", selectedDescriptions);
 
-        const supplierProducts = productOptions.filter(x => x.supplier === getValues('supplier'));
-        console.log("SUPPLIER PRODUCTS: ", supplierProducts);
+    //     const supplierProducts = productOptions.filter(x => x.supplier === getValues('supplier'));
+    //     console.log("SUPPLIER PRODUCTS: ", supplierProducts);
 
-        const productItemList = supplierProducts.filter(x => selectedDescriptions.indexOf(x.name) === -1);
-        console.log("PRODUCT ITEM LIST: ", productItemList);
+    //     const productItemList = supplierProducts.filter(x => selectedDescriptions.indexOf(x.name) === -1);
+    //     console.log("PRODUCT ITEM LIST: ", productItemList);
 
-        return productItemList;
-    }, [data, getValues('supplier')]);
+    //     return productItemList;
+    // }, [data, getValues('supplier')]);
 
     const handleDetails = () => {
 
@@ -137,17 +162,54 @@ export default function CreatePurchaseOrder() {
     const resetForm = () => {
         handleClosePopUp();
         reset({
+            ponumber: '',
+            createddat: '',
             supplier: '',
-            purchaseordernumber: '',
-            createddate: '',
-            customerid: '',
-            customername: '',
-            shipto: '',
+            grosstotal: '',
+            receiveddiscounts: '',
+            damagedexpireditems: '',
+            total: ''
         });
         setData([]);
     }
 
     const onSubmit = (values) => {
+
+        console.log(data);
+
+        const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
+        const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
+        const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
+
+        const purchaseOrderFormData = new formData();
+
+        purchaseOrderFormData.append('ponumber', values.ponumber);
+        purchaseOrderFormData.append('createdat', values.createdat);
+        purchaseOrderFormData.append('createdby', `${firstname} ${lastname} (${employeeid})`);
+        purchaseOrderFormData.append('supplier', values.supplier);
+        purchaseOrderFormData.append('requesteditems', JSON.stringify(data));
+        purchaseOrderFormData.append('grosstotal', values.total);
+        purchaseOrderFormData.append('receiveddiscounts', values.receiveddiscounts);
+        purchaseOrderFormData.append('damagedexpireditems', values.damagedexpireditems);
+        purchaseOrderFormData.append('total', values.total);
+
+        for (let [key, value] of purchaseOrderFormData.entries()) {
+            console.log(key, value);
+        }
+
+        axios
+            .post("http://localhost:8080/purchaseorder/create-purchaseorder", purchaseOrderFormData)
+            .then(res => {
+                setAlert(res.data.alert);
+                setType(res.data.type);
+                handleAlert();
+                resetForm();
+                setFormStep(0);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        ;
 
     }
 
@@ -198,7 +260,8 @@ export default function CreatePurchaseOrder() {
                                                             error={errors.supplier ? true : false}
                                                             options={supplierOptions || []}
                                                             onChange={e => {
-                                                                onChange(e)
+                                                                onChange(e);
+                                                                setSelectedProductOptions(productOptions.filter(x => x.supplier === getValues('supplier')));
                                                             }}
                                                             size="small"
                                                             label="Supplier *"
@@ -262,12 +325,13 @@ export default function CreatePurchaseOrder() {
                                                         field: "description",
                                                         editComponent: props => (
                                                             <Autocomplete
-                                                                options={getProductItemList}
+                                                                options={selectedProductOptions || []}
+                                                                // options={getProductItemList}
                                                                 getOptionLabel={(option) => option.name}
                                                                 onChange={e => {
                                                                     props.onChange(e.target.innerText)
                                                                 }}
-                                                                inputValue={props.value || ''}
+                                                                inputValue={props.value}
                                                                 renderInput={(params) =>
                                                                     <MuiTextField
                                                                         {...params}
@@ -289,7 +353,7 @@ export default function CreatePurchaseOrder() {
                                                     {
                                                         title: "Unit",
                                                         field: "unit",
-                                                        lookup: { Case: 'Case', Pieces: 'Pieces' },
+                                                        lookup: { Cases: 'Case(s)', Pieces: 'Piece(s)', FreeCases: 'Free Case(s)', FreePieces: 'Free Piece(s)' },
                                                         width: 'min-content',
                                                         validate: (rowData) =>
                                                             rowData.unit === undefined
@@ -309,7 +373,6 @@ export default function CreatePurchaseOrder() {
                                                         editComponent: props =>
                                                             <MuiTextField
                                                                 onChange={e => {
-                                                                    console.log(props.rowData)
                                                                     let data = { ...props.rowData };
                                                                     data.quantity = e.target.value;
                                                                     let quantity = isNaN(data.quantity) ? 0 : data.quantity;
@@ -320,6 +383,7 @@ export default function CreatePurchaseOrder() {
                                                                 helperText={props.helperText}
                                                                 error={props.error}
                                                                 variant="standard"
+                                                                value={props.value}
                                                             />
                                                         ,
                                                         validate: (rowData) =>
@@ -349,6 +413,7 @@ export default function CreatePurchaseOrder() {
                                                                 helperText={props.helperText}
                                                                 error={props.error}
                                                                 variant="standard"
+                                                                value={props.value}
                                                             />
                                                         ,
                                                         validate: (rowData) =>
@@ -650,17 +715,17 @@ export default function CreatePurchaseOrder() {
                                                         </Grid>
                                                         <Grid container style={{ background: "#f5f5f5", padding: 15 }}>
                                                             <Grid item align="Left">
-                                                                <Typography style={{ fontWeight: 600 }}> Deductions </Typography>
+                                                                <Typography style={{ fontWeight: 600 }}> Received Discounts </Typography>
                                                             </Grid>
                                                             <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
-                                                                <Typography style={{ fontWeight: 600 }}>  </Typography>
+                                                                <Typography style={{ fontWeight: 600 }}> {getValues("receiveddiscounts")} </Typography>
                                                             </Grid>
                                                         </Grid><Grid container style={{ background: "#f5f5f5", padding: 15 }}>
                                                             <Grid item align="Left">
-                                                                <Typography style={{ fontWeight: 600 }}> Other Deductions </Typography>
+                                                                <Typography style={{ fontWeight: 600 }}> Damaged / Expired Items </Typography>
                                                             </Grid>
                                                             <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
-                                                                <Typography style={{ fontWeight: 600 }}>  </Typography>
+                                                                <Typography style={{ fontWeight: 600 }}> {getValues("damagedexpireditems")} </Typography>
                                                             </Grid>
                                                         </Grid><Grid container style={{ background: "#f5f5f5", padding: 15 }}>
                                                             <Grid item align="Left">
@@ -852,6 +917,23 @@ export default function CreatePurchaseOrder() {
 
                 </PopUp>
 
+                <Snackbar
+                    open={open}
+                    autoHideDuration={1500}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center',
+                    }}
+                >
+                    <Alert
+                        onClose={handleClose}
+                        severity={type}
+                        sx={{ width: '100%' }}
+                    >
+                        {alert}
+                    </Alert>
+                </Snackbar>
             </div >
         </Page >
     );
