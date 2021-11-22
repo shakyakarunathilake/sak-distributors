@@ -9,14 +9,18 @@
     box-sizing: border-box;
     display: inline-flex;
     flex-direction: row-reverse;
-    padding: 0 25px;
+    padding: 20px 25px;
+
+    .hidden {
+        display: none;
+    }
 
     .variantbutton {
         width: 206.75px;
         height: 53.28px;
         color: $inverseFontColor;
         font-size: 0.95em;
-        margin: 20px 0 20px 20px;
+        margin: 0px 0px 0px 20px;
     }
 
     .productbutton {
@@ -24,7 +28,7 @@
         height: 53.28px;
         color: $inverseFontColor;
         font-size: 0.95em;
-        margin: 20px 0 20px 20px;
+        margin: 0px 0px 0px 20px;
     }
 
     .icon {

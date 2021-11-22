@@ -239,7 +239,7 @@ export default function ManageProduct() {
                 <div className={style.actionRow}>
 
                     <Button
-                        className={style.productbutton}
+                        className={JSON.parse(sessionStorage.getItem("Auth")).designation !== 'Purchasing Manager' ? style.hidden : style.productbutton}
                         color="primary"
                         size="medium"
                         variant="contained"
@@ -259,7 +259,7 @@ export default function ManageProduct() {
                     </Button>
 
                     <Button
-                        className={style.variantbutton}
+                        className={JSON.parse(sessionStorage.getItem("Auth")).designation !== 'Purchasing Manager' ? style.hidden : style.variantbutton}
                         color="primary"
                         size="medium"
                         variant="contained"
@@ -318,7 +318,7 @@ export default function ManageProduct() {
                             search: false,
                             paging: false,
                             actionsColumnIndex: -1,
-                            maxBodyHeight: "calc(100vh - 199.27px)",
+                            maxBodyHeight: JSON.parse(sessionStorage.getItem("Auth")).designation !== 'Purchasing Manager' ? "calc(100vh - 126px)" :"calc(100vh - 199.27px)",
                             headerStyle: {
                                 position: "sticky",
                                 top: "0",
@@ -341,6 +341,7 @@ export default function ManageProduct() {
                                 }
                             },
                             {
+                                disabled: JSON.parse(sessionStorage.getItem("Auth")).designation !== 'Purchasing Manager',
                                 icon: 'edit',
                                 tooltip: 'Edit',
                                 onClick: (event, rowData) => {
