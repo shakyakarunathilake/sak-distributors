@@ -31,9 +31,6 @@ export default function ViewGRN(props) {
         setValue("pocreatedby", GRNRecords.pocreatedby);
         setValue("createdat", GRNRecords.createdat);
         setValue("createdby", GRNRecords.createdby);
-        setValue("grosstotal", GRNRecords.grosstotal);
-        setValue("receiveddiscounts", GRNRecords.receiveddiscounts);
-        setValue("damagedexpireditems", GRNRecords.damagedexpireditems);
         setValue("total", GRNRecords.total);
         setValue("grntotal", GRNRecords.grntotal);
         setValue("customername", "S.A.K Distributors");
@@ -199,34 +196,9 @@ export default function ViewGRN(props) {
                                     display: "flex",
                                     flexDirection: "column"
                                 }} >
-                                    {/* style={{ margin: "0px 10px 0px auto" }} */}
                                     <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
                                         <Grid item align="Left" sm={9}>
-                                            <Typography style={{ fontWeight: 600 }}> Gross Total </Typography>
-                                        </Grid>
-                                        <Grid item align="Right" sm={3}>
-                                            <Typography style={{ fontWeight: 600 }}> {getValues("grosstotal")} </Typography>
-                                        </Grid>
-                                    </Grid>
-                                    <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
-                                        <Grid item align="Left" sm={9}>
-                                            <Typography style={{ fontWeight: 600 }}> Received Discounts </Typography>
-                                        </Grid>
-                                        <Grid item align="Right" sm={3}>
-                                            <Typography style={{ fontWeight: 600 }}> {getValues("receiveddiscounts")} </Typography>
-                                        </Grid>
-                                    </Grid>
-                                    <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
-                                        <Grid item align="Left" sm={9}>
-                                            <Typography style={{ fontWeight: 600 }}> Damaged / Expired Items </Typography>
-                                        </Grid>
-                                        <Grid item align="Right" sm={3}>
-                                            <Typography style={{ fontWeight: 600 }}> {getValues("damagedexpireditems")} </Typography>
-                                        </Grid>
-                                    </Grid>
-                                    <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
-                                        <Grid item align="Left" sm={9}>
-                                            <Typography style={{ fontWeight: 600 }}> Total </Typography>
+                                            <Typography style={{ fontWeight: 600 }}> PO Total </Typography>
                                         </Grid>
                                         <Grid item align="Right" sm={3}>
                                             <Typography style={{ fontWeight: 600 }}> {getValues("total")} </Typography>
@@ -275,13 +247,13 @@ export default function ViewGRN(props) {
                                 field: "value",
                             }
                         ]}
-                        data={GRNRecords.requesteditems}
+                        data={GRNRecords.items}
                         options={{
                             toolbar: false,
                             filtering: true,
                             search: false,
-                            minBodyHeight: "calc(100vh - 570px)",
-                            maxBodyHeight: "calc(100vh - 570px)",
+                            minBodyHeight: "calc(100vh - 460px)",
+                            maxBodyHeight: "calc(100vh - 460px)",
                             headerStyle: {
                                 position: "sticky",
                                 top: "0",

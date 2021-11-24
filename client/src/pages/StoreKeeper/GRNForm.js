@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
+import formData from 'form-data';
 
 //Material UI 
 import { Grid } from '@material-ui/core';
@@ -18,49 +19,72 @@ import style from './GRNForm.module.scss';
 
 export default function GRNForm(props) {
 
-    const { GRNRecords, handleClosePopUp } = props;
+    const { GRNRecords, handleClosePopUp, updateGRN } = props;
 
     const { control, getValues, setValue, handleSubmit } = useForm({ mode: "all" });
 
-    const [data, setData] = useState();
+    const [data, setData] = useState([]);
 
     useEffect(() => {
 
         setValue("ponumber", GRNRecords.ponumber);
         setValue("grnnumber", GRNRecords.grnnumber);
         setValue("supplier", GRNRecords.supplier);
-        setValue("status", GRNRecords.status);
         setValue("pocreatedat", GRNRecords.pocreatedat);
         setValue("pocreatedby", GRNRecords.pocreatedby);
-        setValue("createdat", GRNRecords.createdat);
         setValue("createdby", GRNRecords.createdby);
-        setValue("grosstotal", GRNRecords.grosstotal);
-        setValue("receiveddiscounts", GRNRecords.receiveddiscounts);
-        setValue("damagedexpireditems", GRNRecords.damagedexpireditems);
         setValue("total", GRNRecords.total);
-        setValue("grntotal", GRNRecords.grntotal);
         setValue("customername", "S.A.K Distributors");
         setValue("customeraddress", "No.233, Kiriwallapitiya, Rambukkana, Srilanka");
         setValue("contactnumber", "0352264009")
 
-        setData(GRNRecords.requesteditems);
+        setData(GRNRecords.items);
 
     }, [GRNRecords, setValue])
 
 
-    // const getTotal = () => {
-    //     let total = 0;
-    //     for (let i = 0; i < data.length; i++) {
-    //         total = total + data[i].value;
-    //     }
-    //     setValue("total", total);
-    //     setValue("receiveddiscounts", 0);
-    //     setValue("damagedexpireditems", 0);
-    //     return total;
-    // }
+    const getGRNTotal = () => {
 
-    const onSubmit = () => {
-        handleClosePopUp();
+        let total = 0;
+
+        for (let i = 0; i < data.length; i++) {
+            total = total + (isNaN(data[i].grnvalue) ? 0 : data[i].grnvalue);
+        }
+
+        console.log("grntotal", total);
+        console.log("data", data);
+
+
+        setValue("grntotal", total);
+        return total;
+    }
+
+    const getTime = () => {
+        const today = new Date();
+        const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+        const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        const dateTime = date + ' ' + time;
+
+        setValue("createdat", dateTime);
+
+        return dateTime;
+    }
+
+    const onSubmit = (values) => {
+
+        const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
+        const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
+        const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
+
+        const grnFormData = new formData();
+
+        grnFormData.append('status', "Complete");
+        grnFormData.append('items', JSON.stringify(data));
+        grnFormData.append('createdat', values.createdat);
+        grnFormData.append('createdby', `${firstname} ${lastname} (${employeeid})`);
+        grnFormData.append('grntotal', values.grntotal);
+
+        updateGRN(grnFormData, getValues("grnnumber"));
     };
 
     return (
@@ -192,17 +216,7 @@ export default function GRNForm(props) {
                                 <tr>
                                     <th align="left">GRN Created at</th>
                                     <td align="left">
-                                        <Controller
-                                            name={"createdat"}
-                                            control={control}
-                                            render={({ field: { value } }) => (
-                                                <Typography className={style.input}
-                                                    style={{ color: (value === "Pending" ? 'red' : 'black'), fontWeight: (value === "Pending" ? 600 : 500) }}
-                                                >
-                                                    {value}
-                                                </Typography>
-                                            )}
-                                        />
+                                        {getTime()}
                                     </td>
                                 </tr>
                             </tbody>
@@ -211,56 +225,6 @@ export default function GRNForm(props) {
                     </div>
 
                     <MaterialTable
-                        components={{
-                            Pagination: () => (
-                                <td style={{
-                                    display: "flex",
-                                    flexDirection: "column"
-                                }} >
-                                    {/* style={{ margin: "0px 10px 0px auto" }} */}
-                                    <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
-                                        <Grid item align="Left">
-                                            <Typography style={{ fontWeight: 600 }}> Gross Total </Typography>
-                                        </Grid>
-                                        <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
-                                            <Typography style={{ fontWeight: 600 }}> {getValues("grosstotal")} </Typography>
-                                        </Grid>
-                                    </Grid>
-                                    <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
-                                        <Grid item align="Left">
-                                            <Typography style={{ fontWeight: 600 }}> Received Discounts </Typography>
-                                        </Grid>
-                                        <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
-                                            <Typography style={{ fontWeight: 600 }}> {getValues("receiveddiscounts")} </Typography>
-                                        </Grid>
-                                    </Grid>
-                                    <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
-                                        <Grid item align="Left">
-                                            <Typography style={{ fontWeight: 600 }}> Damaged / Expired Items </Typography>
-                                        </Grid>
-                                        <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
-                                            <Typography style={{ fontWeight: 600 }}> {getValues("damagedexpireditems")} </Typography>
-                                        </Grid>
-                                    </Grid>
-                                    <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
-                                        <Grid item align="Left">
-                                            <Typography style={{ fontWeight: 600 }}> Total </Typography>
-                                        </Grid>
-                                        <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
-                                            <Typography style={{ fontWeight: 600 }}> {getValues("total")} </Typography>
-                                        </Grid>
-                                    </Grid>
-                                    <Grid container style={{ background: "#f5f5f5", padding: 7, color: 'red' }}>
-                                        <Grid item align="Left">
-                                            <Typography style={{ fontWeight: 600 }}> GRN Total </Typography>
-                                        </Grid>
-                                        <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
-                                            <Typography style={{ fontWeight: 600 }}> {getValues("grntotal")} </Typography>
-                                        </Grid>
-                                    </Grid>
-                                </td>
-                            )
-                        }}
                         columns={[
                             {
                                 title: "Description",
@@ -392,8 +356,8 @@ export default function GRNForm(props) {
                             filtering: true,
                             search: false,
                             actionsColumnIndex: -1,
-                            minBodyHeight: "calc(100vh - 570px)",
-                            maxBodyHeight: "calc(100vh - 570px)",
+                            minBodyHeight: "calc(100vh - 490px)",
+                            maxBodyHeight: "calc(100vh - 490px)",
                             headerStyle: {
                                 position: "sticky",
                                 top: "0",
@@ -407,6 +371,32 @@ export default function GRNForm(props) {
                             })
                         }}
 
+                        components={{
+                            Pagination: () => (
+                                <td style={{
+                                    display: "flex",
+                                    flexDirection: "column"
+                                }} >
+                                    {/* style={{ margin: "0px 10px 0px auto" }} */}
+                                    <Grid container style={{ background: "#f5f5f5", padding: 15 }}>
+                                        <Grid item align="Left">
+                                            <Typography style={{ fontWeight: 600 }}>PO Total </Typography>
+                                        </Grid>
+                                        <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
+                                            <Typography style={{ fontWeight: 600 }}> {getValues("total")} </Typography>
+                                        </Grid>
+                                    </Grid>
+                                    <Grid container style={{ background: "#f5f5f5", padding: 15, color: 'red' }}>
+                                        <Grid item align="Left">
+                                            <Typography style={{ fontWeight: 600 }}>GRN Total </Typography>
+                                        </Grid>
+                                        <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
+                                            <Typography style={{ fontWeight: 600 }}> {getGRNTotal()} </Typography>
+                                        </Grid>
+                                    </Grid>
+                                </td>
+                            )
+                        }}
                     />
 
                     <div >

@@ -53,20 +53,17 @@ router.get("/:grnnumber", (req, res, next) => {
         .then(doc => {
 
             const grn = {
-                'grnnumber': doc.grnnumber,
                 'ponumber': doc.ponumber,
-                'supplier': doc.supplier,
                 'status': doc.status,
-                'requesteditems': doc.requesteditems,
+                'grnnumber': doc.grnnumber,
+                'supplier': doc.supplier,
                 'pocreatedat': doc.pocreatedat,
                 'pocreatedby': doc.pocreatedby,
                 'createdat': doc.createdat,
                 'createdby': doc.createdby,
-                'grosstotal': doc.grosstotal,
-                'receiveddiscounts': doc.receiveddiscounts,
-                'damagedexpireditems': doc.damagedexpireditems,
                 'total': doc.total,
-                'grntotal': doc.grntotal,
+                'grntotal': doc.total,
+                'items': doc.items,
             }
 
             console.log("GRN RECORDS: ", grn);
@@ -81,5 +78,42 @@ router.get("/:grnnumber", (req, res, next) => {
             res.status(500).json({ "Error": err });
         })
 })
+
+//Update GRN by GRN Number
+router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, res, next) => {
+    console.log("UPDATE: ", req.body);
+
+    const items = JSON.parse(req.body.items);
+
+    GRN
+        .findOneAndUpdate(
+            { "grnnumber": req.params.grnnumber },
+            {
+                '$set': {
+                    'status': req.body.status,
+                    'createdat': req.body.createdat,
+                    'createdby': req.body.createdby,
+                    'grntotal': req.body.grntotal,
+                    'items': items,
+                }
+            },
+            { upsert: true }
+        )
+        .exec()
+        .then(doc => {
+            res.status(200).json({
+                message: "Handling POST requests to /grn/update-by-id/:grnnumber, GRN UPDATED",
+                type: 'success',
+                alert: `${doc.grnnumber} updated`,
+            });
+        })
+        .catch(err => {
+            res.status(200).json({
+                type: 'error',
+                alert: `Something went wrong. Could not update grn`,
+            });
+            console.log(err);
+        });
+});
 
 module.exports = router;

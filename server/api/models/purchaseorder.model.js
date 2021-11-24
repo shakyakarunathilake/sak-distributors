@@ -7,7 +7,7 @@ const purchaseOrderSchema = mongoose.Schema({
     createdat: { type: String, required: true },
     createdby: { type: String, requried: true },
     approvedby: { type: String, requried: false },
-    requesteditems: { type: Array, required: true },
+    items: { type: Array, required: true },
     grosstotal: { type: String, required: true },
     receiveddiscounts: { type: String, required: true },
     damagedexpireditems: { type: String, required: true },

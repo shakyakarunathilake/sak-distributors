@@ -51,7 +51,7 @@ export default function GRN() {
         setOpen(false);
     };
 
-    
+
     const handleClosePopUp = () => {
         setOpenPopup(false)
         setAction('');
@@ -80,6 +80,27 @@ export default function GRN() {
             .catch(err => {
                 console.log(err);
             })
+    }
+
+    const updateGRN = (grn, grnnumber,) => {
+
+        for (let [key, value] of grn.entries()) {
+            console.log(key, value);
+        }
+
+        axios
+            .post(`http://localhost:8080/grn/update-by-grnnumber/${grnnumber}`, grn)
+            .then(res => {
+                setAlert(res.data.alert);
+                setType(res.data.type);
+                handleAlert();
+                setReRender(grnnumber);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+
+        handleClosePopUp();
     }
 
     return (
@@ -169,6 +190,7 @@ export default function GRN() {
                             GRNRecords={GRNRecords}
                             handleClosePopUp={handleClosePopUp}
                             setAction={setAction}
+                            updateGRN={updateGRN}
                         />
                     }
                 </PopUp>

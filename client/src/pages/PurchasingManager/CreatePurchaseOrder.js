@@ -175,8 +175,6 @@ export default function CreatePurchaseOrder() {
 
     const onSubmit = (values) => {
 
-        console.log(data);
-
         const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
         const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
         const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
@@ -188,7 +186,7 @@ export default function CreatePurchaseOrder() {
         purchaseOrderFormData.append('createdat', values.createdat);
         purchaseOrderFormData.append('createdby', `${firstname} ${lastname} (${employeeid})`);
         purchaseOrderFormData.append('approvedby', '');
-        purchaseOrderFormData.append('requesteditems', JSON.stringify(data));
+        purchaseOrderFormData.append('items', JSON.stringify(data));
         purchaseOrderFormData.append('grosstotal', values.total);
         purchaseOrderFormData.append('receiveddiscounts', values.receiveddiscounts);
         purchaseOrderFormData.append('damagedexpireditems', values.damagedexpireditems);

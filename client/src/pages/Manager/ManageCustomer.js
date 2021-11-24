@@ -69,9 +69,11 @@ export default function ManageCustomer() {
     }, [reRender]);
 
     const addOrEdit = (customer, customerid) => {
+        
         for (let [key, value] of customer.entries()) {
             console.log(key, value);
         }
+
         if (action === "Create") {
             axios
                 .post("http://localhost:8080/customers/create-customer", customer)

@@ -22,7 +22,7 @@ router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) =
     console.log("Added Date: ", req.body.createdat);
 
     const createdat = new Date(req.body.createdat).toISOString().split('T')[0];
-    const requesteditems = JSON.parse(req.body.requesteditems);
+    const items = JSON.parse(req.body.items);
 
     const purchaseorder = new PurchaseOrder({
         _id: new mongoose.Types.ObjectId(),
@@ -30,7 +30,7 @@ router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) =
         supplier: req.body.supplier,
         createdat: createdat,
         createdby: req.body.createdby,
-        requesteditems: requesteditems,
+        items: items,
         approvedby: req.body.approvedby,
         grosstotal: req.body.grosstotal,
         receiveddiscounts: req.body.receiveddiscounts,
@@ -48,7 +48,7 @@ router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) =
                 grnnumber: `GRN-${result.ponumber}`,
                 supplier: result.supplier,
                 status: "Pending",
-                requesteditems: requesteditems,
+                items: items,
                 pocreatedat: createdat,
                 pocreatedby: result.createdby,
                 createdat: "Pending",
@@ -101,7 +101,7 @@ router.get("/get-all-purchaseorder-table-data", (req, res, next) => {
                 ponumber: x.ponumber,
                 supplier: x.supplier,
                 status: x.status,
-                requesteditems: x.requesteditems,
+                items: x.items,
                 createdby: x.createdby,
                 createdat: x.createdat,
                 approvedby: x.approvedby,
