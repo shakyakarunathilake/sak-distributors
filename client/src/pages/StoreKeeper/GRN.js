@@ -38,7 +38,6 @@ export default function GRN() {
     const [action, setAction] = useState('');
     const [openPopup, setOpenPopup] = useState(false);
 
-    const [nextCusId, setNextCusId] = useState();
     const [reRender, setReRender] = useState(null);
 
     const handleAlert = () => {
@@ -51,6 +50,12 @@ export default function GRN() {
         }
         setOpen(false);
     };
+
+    
+    const handleClosePopUp = () => {
+        setOpenPopup(false)
+        setAction('');
+    }
 
     useEffect(() => {
         axios
@@ -136,7 +141,7 @@ export default function GRN() {
                             tooltip: 'View',
                             onClick: (event, rowData) => {
                                 setAction('View');
-                                openInPopup(rowData.ponumber);
+                                openInPopup(rowData.grnnumber);
                             }
                         },
                         (rowData) => ({
@@ -145,7 +150,7 @@ export default function GRN() {
                             tooltip: 'Edit',
                             onClick: (event, rowData) => {
                                 setAction('Edit');
-                                openInPopup(rowData.ponumber);
+                                openInPopup(rowData.grnnumber);
                             }
                         })
                     ]}
@@ -157,12 +162,13 @@ export default function GRN() {
                     {action === 'View' ?
                         <ViewGRN
                             GRNRecords={GRNRecords}
-                            setOpenPopup={setOpenPopup}
+                            handleClosePopUp={handleClosePopUp}
                             setAction={setAction}
                         /> :
                         <GRNForm
                             GRNRecords={GRNRecords}
-                            setOpenPopup={setOpenPopup}
+                            handleClosePopUp={handleClosePopUp}
+                            setAction={setAction}
                         />
                     }
                 </PopUp>

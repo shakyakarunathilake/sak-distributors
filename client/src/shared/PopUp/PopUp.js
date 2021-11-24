@@ -41,8 +41,8 @@ export default function PopUp(props) {
 
     return (
 
-
         <Dialog
+            className={classes.root}
             onClose={handleClose}
             open={openPopup}
             maxWidth="lg"

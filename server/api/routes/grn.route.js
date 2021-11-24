@@ -43,4 +43,43 @@ router.get("/get-all-grn-table-data", (req, res, next) => {
 
 })
 
+//Get grn data by grnnumber
+router.get("/:grnnumber", (req, res, next) => {
+    const id = req.params.grnnumber;
+
+    GRN
+        .findOne({ grnnumber: id })
+        .exec()
+        .then(doc => {
+
+            const grn = {
+                'grnnumber': doc.grnnumber,
+                'ponumber': doc.ponumber,
+                'supplier': doc.supplier,
+                'status': doc.status,
+                'requesteditems': doc.requesteditems,
+                'pocreatedat': doc.pocreatedat,
+                'pocreatedby': doc.pocreatedby,
+                'createdat': doc.createdat,
+                'createdby': doc.createdby,
+                'grosstotal': doc.grosstotal,
+                'receiveddiscounts': doc.receiveddiscounts,
+                'damagedexpireditems': doc.damagedexpireditems,
+                'total': doc.total,
+                'grntotal': doc.grntotal,
+            }
+
+            console.log("GRN RECORDS: ", grn);
+
+            res.status(200).json({
+                message: "Handeling GET requests to /:grnnumber",
+                grn: grn
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        })
+})
+
 module.exports = router;

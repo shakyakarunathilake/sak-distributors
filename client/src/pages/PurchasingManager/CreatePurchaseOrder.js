@@ -147,7 +147,7 @@ export default function CreatePurchaseOrder() {
         setValue("createdat", dateTime);
         // setValue("customerid", option.customerid);
         setValue("customername", "S.A.K Distributors");
-        setValue("customeraddress", "No.233, Kiriwallapitiya, Rambukkana, Srilanka");
+        setValue("customeraddress", "No.233, Kiriwallapitiya, Rambukkana, Sri Lanka");
         setValue("contactnumber", "0352264009")
     }
 
@@ -184,9 +184,10 @@ export default function CreatePurchaseOrder() {
         const purchaseOrderFormData = new formData();
 
         purchaseOrderFormData.append('ponumber', values.ponumber);
+        purchaseOrderFormData.append('supplier', values.supplier);
         purchaseOrderFormData.append('createdat', values.createdat);
         purchaseOrderFormData.append('createdby', `${firstname} ${lastname} (${employeeid})`);
-        purchaseOrderFormData.append('supplier', values.supplier);
+        purchaseOrderFormData.append('approvedby', '');
         purchaseOrderFormData.append('requesteditems', JSON.stringify(data));
         purchaseOrderFormData.append('grosstotal', values.total);
         purchaseOrderFormData.append('receiveddiscounts', values.receiveddiscounts);
@@ -380,6 +381,7 @@ export default function CreatePurchaseOrder() {
                                                                     data.value = quantity * listprice;
                                                                     props.onRowDataChange(data);
                                                                 }}
+                                                                type="number"
                                                                 helperText={props.helperText}
                                                                 error={props.error}
                                                                 variant="standard"
@@ -410,6 +412,7 @@ export default function CreatePurchaseOrder() {
                                                                     data.value = quantity * listprice;
                                                                     props.onRowDataChange(data);
                                                                 }}
+                                                                type="number"
                                                                 helperText={props.helperText}
                                                                 error={props.error}
                                                                 variant="standard"
@@ -705,7 +708,7 @@ export default function CreatePurchaseOrder() {
                                                         display: "flex",
                                                         flexDirection: "column"
                                                     }} >
-                                                        <Grid container style={{ background: "#f5f5f5", padding: 15 }}>
+                                                        <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
                                                             <Grid item align="Left">
                                                                 <Typography style={{ fontWeight: 600 }}> Gross Total </Typography>
                                                             </Grid>
@@ -713,21 +716,23 @@ export default function CreatePurchaseOrder() {
                                                                 <Typography style={{ fontWeight: 600 }}> {getTotal()} </Typography>
                                                             </Grid>
                                                         </Grid>
-                                                        <Grid container style={{ background: "#f5f5f5", padding: 15 }}>
+                                                        <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
                                                             <Grid item align="Left">
                                                                 <Typography style={{ fontWeight: 600 }}> Received Discounts </Typography>
                                                             </Grid>
                                                             <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
                                                                 <Typography style={{ fontWeight: 600 }}> {getValues("receiveddiscounts")} </Typography>
                                                             </Grid>
-                                                        </Grid><Grid container style={{ background: "#f5f5f5", padding: 15 }}>
+                                                        </Grid>
+                                                        <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
                                                             <Grid item align="Left">
                                                                 <Typography style={{ fontWeight: 600 }}> Damaged / Expired Items </Typography>
                                                             </Grid>
                                                             <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
                                                                 <Typography style={{ fontWeight: 600 }}> {getValues("damagedexpireditems")} </Typography>
                                                             </Grid>
-                                                        </Grid><Grid container style={{ background: "#f5f5f5", padding: 15 }}>
+                                                        </Grid>
+                                                        <Grid container style={{ background: "#f5f5f5", padding: 7, color: 'red' }}>
                                                             <Grid item align="Left">
                                                                 <Typography style={{ fontWeight: 600 }}> Total </Typography>
                                                             </Grid>
@@ -753,7 +758,7 @@ export default function CreatePurchaseOrder() {
                                                 {
                                                     title: "Unit",
                                                     field: "unit",
-                                                    lookup: { Case: 'Case', Pieces: 'Pieces' },
+                                                    lookup: { Cases: 'Case(s)', Pieces: 'Piece(s)', FreeCases: 'Free Case(s)', FreePieces: 'Free Piece(s)' },
                                                     width: 'min-content',
                                                     validate: (rowData) =>
                                                         rowData.unit === undefined
@@ -808,8 +813,8 @@ export default function CreatePurchaseOrder() {
                                                 toolbar: false,
                                                 filtering: true,
                                                 search: false,
-                                                minBodyHeight: "calc(100vh - 620px)",
-                                                maxBodyHeight: "calc(100vh - 620px)",
+                                                minBodyHeight: "calc(100vh - 555px)",
+                                                maxBodyHeight: "calc(100vh - 555px)",
                                                 headerStyle: {
                                                     position: "sticky",
                                                     top: "0",
