@@ -13,7 +13,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import MaterialTable from 'material-table';
 
 //SCSS styles
-import style from './GRN.module.scss';
+import style from './ManageGRN.module.scss';
 
 //Pop Up Forms
 import ViewGRN from './ViewGRN';

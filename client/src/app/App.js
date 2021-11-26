@@ -40,9 +40,9 @@ import SalesTrendAnalytics from '../pages/PurchasingManager/SalesTrendAnalytics'
 import SupplierPayment from '../pages/PurchasingManager/SupplierPayment';
 
 //Store Keeper
-import GRN from '../pages/StoreKeeper/GRN';
-import GIN from '../pages/StoreKeeper/GIN';
-import Store from '../pages/StoreKeeper/Store';
+import ManageGRN from '../pages/StoreKeeper/ManageGRN';
+import ManageGIN from '../pages/StoreKeeper/ManageGIN';
+import ManageStore from '../pages/StoreKeeper/ManageStore';
 
 //Sales Representative
 import PersonalOrderHistory from '../pages/SalesRepresentative/PersonalOrderHistory';
@@ -121,9 +121,9 @@ function App() {
 
             {/* Store Keeper */}
             <Route exact path='/store-keeper/dashboard' component={Dashboard} />
-            <Route exact path='/store-keeper/grn' component={GRN} />
-            <Route exact path='/store-keeper/gin' component={GIN} />
-            <Route exact path='/store-keeper/store' component={Store} />
+            <Route exact path='/store-keeper/manage-grn' component={ManageGRN} />
+            <Route exact path='/store-keeper/manage-gin' component={ManageGIN} />
+            <Route exact path='/store-keeper/manage-store' component={ManageStore} />
             <Route exact path='/store-keeper/manage-products' component={ManageProduct} />
 
             {/* Sales Representative */}

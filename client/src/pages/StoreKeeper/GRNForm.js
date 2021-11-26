@@ -51,10 +51,6 @@ export default function GRNForm(props) {
             total = total + (isNaN(data[i].grnvalue) ? 0 : data[i].grnvalue);
         }
 
-        console.log("grntotal", total);
-        console.log("data", data);
-
-
         setValue("grntotal", total);
         return total;
     }
@@ -268,7 +264,7 @@ export default function GRNForm(props) {
                                         helperText={props.helperText}
                                         error={props.error}
                                         variant="standard"
-                                        value={props.value}
+                                        value={props.value || ''}
                                     />
                                 ,
                                 validate: (rowData) =>
@@ -299,7 +295,7 @@ export default function GRNForm(props) {
                                         type="number"
                                         error={props.error}
                                         variant="standard"
-                                        value={props.value}
+                                        value={props.value || ''}
                                     />
                                 ,
                                 validate: (rowData) =>

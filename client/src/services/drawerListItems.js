@@ -163,21 +163,21 @@ const getStoreKeeperListItems = [
         icon: <DashboardIcon />
     },
     {
-        id: "Store",
-        title: "Store",
-        path: "http://localhost:3000/store-keeper/store",
+        id: "Manage Store",
+        title: "Manage Store",
+        path: "http://localhost:3000/store-keeper/manage-store",
         icon: <StoreIcon />,
     },
     {
-        id: "GRN",
-        title: "GRN",
-        path: "http://localhost:3000/store-keeper/grn",
+        id: "Manage GRN",
+        title: "Manage GRN",
+        path: "http://localhost:3000/store-keeper/manage-grn",
         icon: <InsertDriveFileIcon />,
     },
     {
-        id: "GIN",
-        title: "GIN",
-        path: "http://localhost:3000/store-keeper/gin",
+        id: "Manage GIN",
+        title: "Manage GIN",
+        path: "http://localhost:3000/store-keeper/manage-gin",
         icon: <InsertDriveFileIcon />,
     },
     {

@@ -5,7 +5,7 @@ import Page from '../../shared/Page/Page';
 
 export default function STORE() {
     return (
-        <Page title="STORE">
+        <Page title="Manage Store">
 
         </Page>
     )
