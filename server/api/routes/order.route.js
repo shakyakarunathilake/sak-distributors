@@ -14,6 +14,31 @@ router.get("/", (req, res, next) => {
     });
 });
 
+//Get all table sales and invoice data
+router.get("/get-all-sales-and-invoice-table-data", (req, res, next) => {
+
+    Order
+        .find()
+        .exec()
+        .then(doc => {
+
+            const tbody = doc.map(x => ({
+                "orderid": x.orderid,
+                "storename": x.storename,
+                "status": x.status,
+            }))
+
+            res.status(201).json({
+                message: "Handeling GET requests to /get-all-sales-and-invoice-table-data",
+                tbody: tbody,
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        })
+})
+
 //Get next invoice number
 router.get("/get-next-invoiceno", (req, res, next) => {
 

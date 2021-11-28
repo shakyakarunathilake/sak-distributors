@@ -15,7 +15,6 @@ router.get("/", (req, res, next) => {
     });
 });
 
-
 //Get PO product options
 router.get("/product-options-for-purchase-order", (req, res, next) => {
 
@@ -67,7 +66,6 @@ router.get("/supplier-options-for-purchase-order", (req, res, next) => {
             res.status(500).json({ "Error": err });
         })
 })
-
 
 //Get all product options
 router.get("/product-options-for-product", (req, res, next) => {
@@ -158,7 +156,6 @@ router.get("/employee-options-for-admin", (req, res, next) => {
         })
 })
 
-
 //Get all employee options for admin
 router.get("/employee-options-for-supplier", (req, res, next) => {
 
@@ -179,6 +176,34 @@ router.get("/employee-options-for-supplier", (req, res, next) => {
             res.status(201).json({
                 message: "Handeling GET requests to /employee-options-for-supplier",
                 employeeOptions: employeeOptions,
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        })
+})
+
+//Get all customer options for create order
+router.get("/customer-options", (req, res, next) => {
+
+    Customer
+        .find()
+        .exec()
+        .then(doc => {
+
+            const customeroptions = doc.map(x => ({
+                "id": x.customerid,
+                "storename": x.storename,
+                "route": x.route,
+                "shippingaddress": x.shippingaddress,
+                "contactnumber": x.customercontactnumber,
+                "title": `${x.customerid} - ${x.storename}`
+            }))
+
+            res.status(201).json({
+                message: "Handeling GET requests to /customer-options",
+                customeroptions: customeroptions
             })
         })
         .catch(err => {

@@ -32,7 +32,7 @@ const useStyles = makeStyles({
 
 export default function PopUp(props) {
 
-    const { children, openPopup, setOpenPopup, } = props;
+    const { children, openPopup, setOpenPopup, fullScreen } = props;
     const classes = useStyles();
 
     const handleClose = () => {
@@ -46,6 +46,7 @@ export default function PopUp(props) {
             onClose={handleClose}
             open={openPopup}
             maxWidth="lg"
+            fullScreen={fullScreen}
         >
 
             <DialogContent className={classes.content}>

@@ -45,9 +45,7 @@ import ManageGIN from '../pages/StoreKeeper/ManageGIN';
 import ManageStore from '../pages/StoreKeeper/ManageStore';
 
 //Sales Representative
-import PersonalOrderHistory from '../pages/SalesRepresentative/PersonalOrderHistory';
 import SalesAndInvoice from '../pages/SalesRepresentative/SalesAndInvoice';
-import CreateOrder from '../pages/SalesRepresentative/CreateOrder';
 
 const theme = createTheme({
   palette: {
@@ -129,9 +127,7 @@ function App() {
             {/* Sales Representative */}
             <Route exact path='/sales-representative/dashboard' component={Dashboard} />
             <Route exact path='/sales-representative/manage-customers' component={ManageCustomer} />
-            <Route exact path='/sales-representative/personal-order-history' component={PersonalOrderHistory} />
             <Route exact path='/sales-representative/sales-and-invoice' component={SalesAndInvoice} />
-            <Route exact path='/sales-representative/create-order' component={CreateOrder} />
           </Switch>
         </BrowserRouter>
       }

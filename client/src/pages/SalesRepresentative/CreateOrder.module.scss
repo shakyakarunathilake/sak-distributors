@@ -1,114 +1,148 @@
 @import "../../styles/variables";
 
-.container {
-    width: 100vw;
-    height: calc(100vh - 126px);
+.form {
+    display: grid;
+    grid-template-rows: auto min-content;
+    width: calc(100vw - 60px);
+    height: calc(100vh - 90px);
     box-sizing: border-box;
-    display: grid;
-    grid-template-rows: min-content min-content min-content;
-}
 
-.pagecontent {
-    height: 100%;
-    overflow: auto;
-    margin: 20px;
-    background-color: white;
-    border-radius: 15px;
-}
+    .hidden {
+        display: none;
+    }
 
-.orderDetails {
-    display: grid;
-    grid-template-columns: 50% 50%;
-    padding: 20px 30px;
+    .header {
+        .title {
+            display: grid;
+            grid-template-columns: auto min-content;
+            font-size: 1.55em;
+            font-weight: 600;
+            .icon {
+                color: red;
+                &:hover {
+                    transform: scale(1.1);
+                }
+            }
+        }
 
-    .details {
-        table-layout: auto !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
+        .step {
+            margin: 5px 0 0 0;
+            color: $primaryLight;
+            font-size: 0.75em;
+        }
+    }
 
-        tr {
-            th {
-                width: 150px !important;
-                height: 30px;
+    .one {
+        display: grid;
+        grid-template-rows: min-content auto;
+
+        .body {
+            margin: auto 10vh;
+
+            .row {
+                display: grid;
+                grid-template-columns: 250px auto;
+                margin: 8px 0 0 0;
+
+                .label {
+                    margin: auto 20px auto 0;
+                    font-size: 1em;
+                    font-weight: 600;
+                }
+            }
+
+            .column {
+                display: grid;
+                grid-template-columns: 250px auto auto;
+
+                .label {
+                    margin: auto 20px auto 0;
+                    font-size: 1em;
+                    font-weight: 600;
+                }
+
+                .textfield {
+                    margin: 0 20px 0 0;
+                }
             }
         }
     }
-}
 
-.table {
-    padding: 10px 20px;
-}
+    .two {
+        display: grid;
+        grid-template-rows: min-content auto;
 
-.tablecontainer {
-    overflow: auto;
-    white-space: nowrap; //To get rid of the scroll and inline text
-    box-sizing: border-box;
-}
+        .body {
+            margin: auto 10vh;
 
-.tablehead {
-    position: sticky;
-    top: 0;
-}
+            .row {
+                display: grid;
+                grid-template-columns: 250px calc(100% - 250px);
+                padding: 15px 20px;
 
-.tableheadrow {
-    background-color: $primaryMain;
-    font-size: 1.3em;
-    .tablecell {
-        color: $inverseFontColor;
-        .splitcell {
-            margin: 0 15px;
+                .boldText {
+                    font-size: 1em;
+                    font-weight: 700;
+                }
+            }
         }
     }
-}
 
-.textfield {
-    padding: 0 10px !important;
-}
+    .three {
+        display: grid;
+        grid-template-rows: min-content auto;
 
-.greytablerow {
-    background-color: $secondaryLight;
-    &:hover {
-        background-color: #949494;
+        .body {
+            margin: 30px 0px 0px 0px;
+        }
+
+        .btndiv {
+            text-align: right;
+            Button {
+                font-size: 1em;
+                width: auto;
+                margin: 0 0 15px 0;
+            }
+        }
     }
-}
 
-.whitetablerow {
-    background-color: white;
-    &:hover {
-        background-color: #949494;
+    .four {
+        .body {
+            margin: 30px 0px 0px 0px;
+        }
     }
-}
 
-.actioncolumn {
-    white-space: nowrap;
-    background-color: inherit;
-}
+    .footer {
+        display: grid;
+        grid-template-columns: auto auto;
+        padding: 20px 0px 10px 0px;
 
-.deleteIcon {
-    color: red;
-    &:hover {
-        transform: scale(1.3);
+        .resetBtn {
+            Button {
+                font-size: 1em;
+                width: auto;
+                background-color: #aca9bb;
+                color: $inverseFontColor;
+
+                &:disabled {
+                    background-color: #c2c2c2;
+                    color: $inverseFontColor;
+                }
+            }
+        }
+
+        .nextBtn {
+            text-align: right;
+
+            Button {
+                font-size: 1em;
+                width: auto;
+
+                &:disabled {
+                    background-color: hsl(230, 66%, 57%);
+                    color: $inverseFontColor;
+                }
+            }
+        }
     }
-}
-
-.editIcon {
-    margin-right: 15px;
-    &:hover {
-        transform: scale(1.3);
-    }
-}
-
-.addBtn {
-    margin: 10px !important;
-}
-
-.salesdetails {
-    margin: 20px 20px 20px auto;
-    table-layout: auto;
-    width: 350px;
-}
-
-.boldtext {
-    font-size: 1.4em;
-    color: $primaryMain;
 }

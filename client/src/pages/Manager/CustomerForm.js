@@ -366,7 +366,6 @@ export default function CustomerForm(props) {
                             )}
                         />
                     </div>
-
                     <div className={style.row}>
                         <Controller
                             name={"email"}

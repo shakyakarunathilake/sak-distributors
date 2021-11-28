@@ -72,3 +72,8 @@ export const getProductStatusOptions = () => ([
     { id: "ps001", title: "Active" },
     { id: "ps002", title: "Inactive" },
 ])
+
+export const getCustomerTypeOptions = () => ([
+    { id: "ct01", title: "Registered Customer" },
+    { id: "ct02", title: "Unregistered Customer" },
+])

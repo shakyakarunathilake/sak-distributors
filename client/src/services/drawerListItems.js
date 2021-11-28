@@ -13,7 +13,6 @@ import PaymentIcon from '@material-ui/icons/Payment';
 import DescriptionIcon from '@material-ui/icons/Description';
 import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import ReceiptIcon from '@material-ui/icons/Receipt';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
 import StoreIcon from '@mui/icons-material/Store';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 
@@ -206,18 +205,6 @@ const getSalesRepresentativeListItems = [
         title: "Sales and Invoice",
         path: "http://localhost:3000/sales-representative/sales-and-invoice",
         icon: <DescriptionIcon />,
-    },
-    {
-        id: "Personal Order History",
-        title: "Personal Order History",
-        path: "http://localhost:3000/sales-representative/personal-order-history",
-        icon: <ViewListIcon />,
-    },
-    {
-        id: "Create Order",
-        title: "Create Order",
-        path: "http://localhost:3000/sales-representative/create-order",
-        icon: <AddCircleIcon />
     },
     {
         id: "Sales Rep. Analytics",
