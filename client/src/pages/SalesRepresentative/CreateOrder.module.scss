@@ -50,21 +50,6 @@
                     font-weight: 600;
                 }
             }
-
-            .column {
-                display: grid;
-                grid-template-columns: 250px auto auto;
-
-                .label {
-                    margin: auto 20px auto 0;
-                    font-size: 1em;
-                    font-weight: 600;
-                }
-
-                .textfield {
-                    margin: 0 20px 0 0;
-                }
-            }
         }
     }
 

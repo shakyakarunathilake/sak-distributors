@@ -16,13 +16,17 @@ import { Button, Grid } from '@material-ui/core';
 import { TextField as MuiTextField } from '@material-ui/core';
 import Autocomplete from '@mui/material/Autocomplete';
 import { Typography } from '@material-ui/core';
-import { TableCell, TableHead, TableRow } from "@material-ui/core";
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import { IconButton } from '@material-ui/core';
 
 //Material Table
 import MaterialTable, { MTableAction, MTableToolbar } from 'material-table';
 
 //Material UI Icons
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 //Material UI Styling
@@ -30,6 +34,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 //SCSS Styles
 import style from './CreateOrder.module.scss';
+import { textAlign } from '@mui/material/node_modules/@mui/system';
 
 const useStyles = makeStyles({
     row1: {
@@ -60,18 +65,25 @@ export default function CreateOrder(props) {
     const classes = useStyles();
 
     const [data, setData] = useState([]);
-    const [customerType, setCustomerType] = useState('');
+    const [customerType, setCustomerType] = useState('Registered Customer');
     // const [type, setType] = useState();
     // const [open, setOpen] = useState(false);
-    const [formStep, setFormStep] = useState(0);
+    const [formStep, setFormStep] = useState(2);
 
-    // const today = new Date();
-    // const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + (today.getDate() + 3);
+    const today = new Date();
+    const dateTime = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`) + 'T' + (today.getHours() > 9 ? today.getHours() : `0${today.getHours()}`) + ':' + (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`);
+
+    today.setDate(today.getDate() + 3);
+    const deliveryDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+
 
     useEffect(() => {
+        setValue('customertype', "Registered Customer");
         setValue('orderno', `${JSON.parse(sessionStorage.getItem("Auth")).employeeid} - ${nextOrderId}`);
+        setValue('orderplacedat', dateTime);
+        setValue('deliverydate', deliveryDate);
         setValue('salesrepresentative', `${JSON.parse(sessionStorage.getItem("Auth")).firstname} ${JSON.parse(sessionStorage.getItem("Auth")).lastname} (${JSON.parse(sessionStorage.getItem("Auth")).employeeid})`);
-    }, [nextOrderId, setValue]);
+    }, [nextOrderId, setValue, deliveryDate, dateTime]);
 
     // const handleAlert = () => {
     //     setOpen(true);
@@ -105,25 +117,8 @@ export default function CreateOrder(props) {
         return total;
     }
 
-    const onSubmit = () => { }
-
-    const resetForm = () => {
-        reset({
-            orderno: `${JSON.parse(sessionStorage.getItem("Auth")).employeeid} - ${nextOrderId}`,
-            customertype: '',
-            salesrepresentative: `${JSON.parse(sessionStorage.getItem("Auth")).firstname} ${JSON.parse(sessionStorage.getItem("Auth")).lastname} (${JSON.parse(sessionStorage.getItem("Auth")).employeeid})`,
-            customer: '',
-            storename: '',
-            customerid: '',
-            shippingaddress: '',
-            contactnumber: '',
-            route: ''
-        });
-    }
-
     const handleCustomerTypeChange = (event, option) => {
         setCustomerType(option.props.value);
-        resetForm();
     }
 
     const handleCustomerChange = (event, option) => {
@@ -135,6 +130,24 @@ export default function CreateOrder(props) {
             setValue("contactnumber", option.contactnumber);
         }
     }
+
+    const resetForm = () => {
+        reset({
+            customertype: '',
+            orderno: `${JSON.parse(sessionStorage.getItem("Auth")).employeeid} - ${nextOrderId}`,
+            orderplacedat: dateTime,
+            deliverydate: deliveryDate,
+            salesrepresentative: `${JSON.parse(sessionStorage.getItem("Auth")).firstname} ${JSON.parse(sessionStorage.getItem("Auth")).lastname} (${JSON.parse(sessionStorage.getItem("Auth")).employeeid})`,
+            customer: '',
+            storename: '',
+            customerid: '',
+            shippingaddress: '',
+            contactnumber: '',
+            route: ''
+        });
+    }
+
+    const onSubmit = () => { }
 
     return (
 
@@ -182,7 +195,7 @@ export default function CreateOrder(props) {
                                         <Select
                                             value={value || ''}
                                             onChange={(e, options) => {
-                                                onChange(e)
+                                                onChange(e.target.value)
                                                 handleCustomerTypeChange(e, options)
                                             }}
                                             options={employeeservice.getCustomerTypeOptions()}
@@ -238,35 +251,20 @@ export default function CreateOrder(props) {
                             </div>
                         </div>
 
-                        <div className={style.column}>
+                        <div className={style.row}>
                             <div className={style.label}>
                                 Delivery Date
                             </div>
                             <div className={style.textfield}>
                                 <Controller
-                                    name={"deliveryfrom"}
+                                    name={"deliverydate"}
                                     control={control}
                                     render={({ field: { onChange, value } }) => (
                                         <DatePicker
                                             value={value || ''}
                                             onChange={onChange}
-                                            error={errors.deliveryfrom ? true : false}
-                                            helperText={errors.deliveryfrom && errors.deliveryfrom.message}
-                                            margin="dense"
-                                        />
-                                    )}
-                                />
-                            </div>
-                            <div>
-                                <Controller
-                                    name={"deliveryto"}
-                                    control={control}
-                                    render={({ field: { onChange, value } }) => (
-                                        <DatePicker
-                                            value={value || ''}
-                                            onChange={onChange}
-                                            error={errors.deliveryto ? true : false}
-                                            helperText={errors.deliveryto && errors.deliveryto.message}
+                                            error={errors.deliverydate ? true : false}
+                                            helperText={errors.deliverydate && errors.deliverydate.message}
                                             margin="dense"
                                         />
                                     )}
@@ -444,6 +442,23 @@ export default function CreateOrder(props) {
                     </div>
 
                     <div className={style.body}>
+
+                        <div className={style.row}>
+                            <div className={style.boldText}>
+                                Order No.
+                            </div>
+                            <div className={style.customerData}>
+                                <Controller
+                                    name={"orderno"}
+                                    control={control}
+                                    render={({ field: { value } }) => (
+                                        <Typography className={style.input}>
+                                            {value}
+                                        </Typography>
+                                    )}
+                                />
+                            </div>
+                        </div>
 
                         {
                             customerType === "Registered Customer" &&
@@ -660,54 +675,83 @@ export default function CreateOrder(props) {
                                         </Grid>
                                     </td>
                                 ),
-                                Header: props => (
-                                    <TableHead {...props} >
-                                        <TableRow className={classes.row1}>
-                                            <TableCell width="30%" padding="none" rowSpan={2}>
-                                                <div style={{ padding: '0 10px' }}>
-                                                    Description
-                                                </div>
-                                            </TableCell>
-                                            <TableCell padding="none" colSpan={2} align="center">
-                                                Sales Qty.
-                                            </TableCell>
-                                            <TableCell padding="none" colSpan={2} align="center">
-                                                Free Qty.
-                                            </TableCell>
-                                            <TableCell padding="none" colspan={2} align="center">
-                                                Return Qty.
-                                            </TableCell>
-                                            <TableCell padding="none" width="11%" rowSpan={2} align="center">
-                                                <div style={{ padding: '0 10px' }}>
-                                                    Gross Amount
-                                                </div>
-                                            </TableCell>
-                                            <TableCell padding="none" width="11%" rowSpan={2} align="center">Action</TableCell>
-                                        </TableRow>
-                                        <TableRow className={classes.row2}>
-                                            <TableCell width="8%" padding="none" align="center">Cs</TableCell>
-                                            <TableCell width="8%" padding="none" align="center">Pcs</TableCell>
-                                            <TableCell width="8%" padding="none" align="center">Cs</TableCell>
-                                            <TableCell width="8%" padding="none" align="center">Pcs</TableCell>
-                                            <TableCell width="8%" padding="none" align="center">D</TableCell>
-                                            <TableCell width="8%" padding="none" align="center">R</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                ),
-                                Row: ({ data }) => (
-                                    <TableRow>
-                                        <TableCell padding="none" >{data.description}</TableCell>
-                                        <TableCell padding="none" align="center">{data.salesqtycases}</TableCell>
-                                        <TableCell padding="none" align="center">{data.salesqtypieces}</TableCell>
-                                        <TableCell padding="none" align="center">{data.freeqtycases}</TableCell>
-                                        <TableCell padding="none" align="center">{data.freeqtypieces}</TableCell>
-                                        <TableCell padding="none" align="center">{data.return}</TableCell>
-                                        <TableCell padding="none" align="center">{data.damaged}</TableCell>
-                                        <TableCell padding="none" align="center">{data.price}</TableCell>
-                                        <TableCell padding="none" align="center">{data.grossamount}</TableCell>
-                                        <TableCell padding="none" align="center">{data.retailprice}</TableCell>
-                                    </TableRow>
-                                ),
+                                //     Header: props => (
+                                //         <TableHead {...props} >
+                                //             <TableRow className={classes.row1}>
+                                //                 <TableCell width="25%" padding="none" rowSpan={2}>
+                                //                     <div style={{ padding: '0 10px' }}>
+                                //                         Description
+                                //                     </div>
+                                //                 </TableCell>
+                                //                 <TableCell width="8%" padding="none" rowSpan={2}>
+                                //                     <div style={{ padding: '0 10px' }}>
+                                //                         R. Price
+                                //                     </div>
+                                //                 </TableCell>
+                                //                 <TableCell padding="none" colSpan={2} align="center">
+                                //                     Sales Qty.
+                                //                 </TableCell>
+                                //                 <TableCell padding="none" colSpan={2} align="center">
+                                //                     Free Qty.
+                                //                 </TableCell>
+                                //                 <TableCell padding="none" colspan={2} align="center">
+                                //                     Return Qty.
+                                //                 </TableCell>
+                                //                 <TableCell padding="none" width="10%" rowSpan={2} align="center">
+                                //                     <div style={{ padding: '0 10px' }}>
+                                //                         Gross Amount
+                                //                     </div>
+                                //                 </TableCell>
+                                //                 <TableCell padding="none" width="12%" rowSpan={2} align="center">
+                                //                     Action
+                                //                 </TableCell>
+                                //             </TableRow>
+                                //             <TableRow className={classes.row2}>
+                                //                 <TableCell width="8%" padding="none" align="center">Cs</TableCell>
+                                //                 <TableCell width="8%" padding="none" align="center">Pcs</TableCell>
+                                //                 <TableCell width="8%" padding="none" align="center">Cs</TableCell>
+                                //                 <TableCell width="8%" padding="none" align="center">Pcs</TableCell>
+                                //                 <TableCell width="8%" padding="none" align="center">D</TableCell>
+                                //                 <TableCell width="8%" padding="none" align="center">R</TableCell>
+                                //             </TableRow>
+                                //         </TableHead>
+                                //     ),
+                                //     Row: props => (
+                                //         <TableRow>
+                                //             <TableCell >{props.data.description}</TableCell>
+                                //             <TableCell align="center">{props.data.retailprice}</TableCell>
+                                //             <TableCell align="center">{props.data.salesqtycases}</TableCell>
+                                //             <TableCell align="center">{props.data.salesqtypieces}</TableCell>
+                                //             <TableCell align="center">{props.data.freeqtycases}</TableCell>
+                                //             <TableCell align="center">{props.data.freeqtypieces}</TableCell>
+                                //             <TableCell align="center">{props.data.return}</TableCell>
+                                //             <TableCell align="center">{props.data.damaged}</TableCell>
+                                //             <TableCell align="center">{props.data.grossamount}</TableCell>
+                                //             <TableCell align="center" style={{ whiteSpace: "nowrap" }}>
+                                //                 <IconButton
+                                //                     color="inherit"
+                                //                     onClick={props.actions[0].onClick}
+                                //                 >
+                                //                     {console.log(props.actions)}
+                                //                     <EditIcon
+                                //                         sx={{
+                                //                             fontSize: "0.9em"
+                                //                         }}
+                                //                     />
+                                //                 </IconButton>
+                                //                 <IconButton
+                                //                     color="inherit"
+                                //                     onClick={props.actions[1].onClick}
+                                //                 >
+                                //                     <DeleteIcon
+                                //                         sx={{
+                                //                             fontSize: "0.9em"
+                                //                         }}
+                                //                     />
+                                //                 </IconButton>
+                                //             </TableCell>
+                                //         </TableRow>
+                                //     ),
                             }}
                             columns={[
                                 {
@@ -715,17 +759,17 @@ export default function CreateOrder(props) {
                                     field: "description",
                                     cellStyle: {
                                         padding: 10,
-                                        width: '30%'
+                                        width: '25%',
+                                        textAlign: 'left'
                                     },
                                     editComponent: props => (
                                         <Autocomplete
                                             options={productOptions || []}
-                                            // options={getProductItemList}
                                             getOptionLabel={(option) => option.name}
                                             onChange={e => {
                                                 props.onChange(e.target.innerText)
                                             }}
-                                            inputValue={props.value}
+                                            inputValue={props.value || ''}
                                             renderInput={(params) =>
                                                 <MuiTextField
                                                     {...params}
@@ -743,6 +787,17 @@ export default function CreateOrder(props) {
                                                 ? { isValid: false, helperText: 'Required *' }
                                                 : true
 
+                                },
+                                {
+                                    title: "R. Price",
+                                    field: "retailprice",
+                                    editable: 'never',
+                                    type: 'numeric',
+                                    cellStyle: {
+                                        width: '8%',
+                                        padding: 10,
+                                        textAlign: 'right'
+                                    },
                                 },
                                 {
                                     title: "Sales Cs",
@@ -764,9 +819,11 @@ export default function CreateOrder(props) {
                                     title: "Sales Pcs",
                                     field: "salesqtypieces",
                                     type: 'numeric',
+                                    initialEditValue: 0,
                                     cellStyle: {
                                         width: '8%',
-                                        padding: 10
+                                        padding: 10,
+                                        textAlign: 'right'
                                     },
                                     validate: (rowData) =>
                                         rowData.salesqtypieces === undefined
@@ -780,9 +837,11 @@ export default function CreateOrder(props) {
                                     title: "Free Cs",
                                     field: "freeqtycases",
                                     type: 'numeric',
+                                    initialEditValue: 0,
                                     cellStyle: {
                                         width: '8%',
-                                        padding: 10
+                                        padding: 10,
+                                        textAlign: 'right'
                                     },
                                     validate: (rowData) =>
                                         rowData.freeqtycases === undefined
@@ -796,9 +855,11 @@ export default function CreateOrder(props) {
                                     title: "Free Pcs",
                                     field: "freeqtypieces",
                                     type: 'numeric',
+                                    initialEditValue: 0,
                                     cellStyle: {
                                         width: '8%',
-                                        padding: 10
+                                        padding: 10,
+                                        textAlign: 'right'
                                     },
                                     validate: (rowData) =>
                                         rowData.freeqtypieces === undefined
@@ -812,9 +873,11 @@ export default function CreateOrder(props) {
                                     title: "Damaged",
                                     field: "damaged",
                                     type: 'numeric',
+                                    initialEditValue: 0,
                                     cellStyle: {
                                         width: '8%',
-                                        padding: 10
+                                        padding: 10,
+                                        textAlign: 'right'
                                     },
                                     validate: (rowData) =>
                                         rowData.damaged === undefined
@@ -828,9 +891,11 @@ export default function CreateOrder(props) {
                                     title: "Return",
                                     field: "return",
                                     type: 'numeric',
+                                    initialEditValue: 0,
                                     cellStyle: {
                                         width: '8%',
-                                        padding: 10
+                                        padding: 10,
+                                        textAlign: 'right'
                                     },
                                     validate: (rowData) =>
                                         rowData.return === undefined
@@ -847,15 +912,9 @@ export default function CreateOrder(props) {
                                     type: 'numeric',
                                     cellStyle: {
                                         width: '11%',
-                                        padding: 10
+                                        padding: 10,
+                                        textAlign: 'right'
                                     },
-                                    validate: (rowData) =>
-                                        rowData.grossamount === undefined
-                                            ? { isValid: false, helperText: 'Required *' }
-                                            : rowData.grossamount === ''
-                                                ? { isValid: false, helperText: 'Required *' }
-                                                : true
-
                                 }
                             ]}
                             data={data}
@@ -908,6 +967,10 @@ export default function CreateOrder(props) {
                                 headerStyle: {
                                     position: "sticky",
                                     top: "0",
+                                    backgroundColor: '#20369f',
+                                    color: '#FFF',
+                                    fontSize: "0.8em",
+                                    padding: "10px 0 10px 10px",
                                 },
                                 rowStyle: rowData => ({
                                     fontSize: "0.8em",
@@ -1008,16 +1071,16 @@ export default function CreateOrder(props) {
                                 ),
                                 Row: ({ data }) => (
                                     <TableRow>
-                                        <TableCell padding="none" >{data.description}</TableCell>
-                                        <TableCell padding="none" align="center">{data.retailprice}</TableCell>
-                                        <TableCell padding="none" align="center">{data.salesqtycases}</TableCell>
-                                        <TableCell padding="none" align="center">{data.salesqtypieces}</TableCell>
-                                        <TableCell padding="none" align="center">{data.freeqtycases}</TableCell>
-                                        <TableCell padding="none" align="center">{data.freeqtypieces}</TableCell>
-                                        <TableCell padding="none" align="center">{data.return}</TableCell>
-                                        <TableCell padding="none" align="center">{data.damaged}</TableCell>
-                                        <TableCell padding="none" align="center">{data.price}</TableCell>
-                                        <TableCell padding="none" align="center">{data.grossamount}</TableCell>
+                                        <TableCell >{data.description}</TableCell>
+                                        <TableCell align="center">{data.retailprice}</TableCell>
+                                        <TableCell align="center">{data.salesqtycases}</TableCell>
+                                        <TableCell align="center">{data.salesqtypieces}</TableCell>
+                                        <TableCell align="center">{data.freeqtycases}</TableCell>
+                                        <TableCell align="center">{data.freeqtypieces}</TableCell>
+                                        <TableCell align="center">{data.return}</TableCell>
+                                        <TableCell align="center">{data.damaged}</TableCell>
+                                        <TableCell align="center">{data.price}</TableCell>
+                                        <TableCell align="center">{data.grossamount}</TableCell>
                                     </TableRow>
                                 ),
                             }}
@@ -1202,13 +1265,6 @@ export default function CreateOrder(props) {
                                 }
                             ]}
                             data={data}
-                            icons={{
-                                Delete: () => (
-                                    <div>
-                                        <DeleteIcon className={style.deleteItemBtn} />
-                                    </div>
-                                )
-                            }}
                             options={{
                                 addRowPosition: "first",
                                 toolbar: false,

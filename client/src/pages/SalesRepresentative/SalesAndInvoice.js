@@ -36,6 +36,7 @@ export default function SalesAndInvoice() {
 
     const [orderRecords, setOrderRecords] = useState(null);
     const [customerOptions, setCustomerOptions] = useState([]);
+    const [productOptions, setProductOptions] = useState([]);
     const [action, setAction] = useState('');
     const [openPopup, setOpenPopup] = useState(false);
 
@@ -128,11 +129,21 @@ export default function SalesAndInvoice() {
             });
     }
 
-    const getCustomerOptions = () => {
+    const getOptions = () => {
+
         axios
             .get("http://localhost:8080/options/customer-options")
             .then(res => {
                 setCustomerOptions(res.data.customeroptions)
+            })
+            .catch(err => {
+                console.log(err);
+            })
+
+        axios
+            .get("http://localhost:8080/options/product-options")
+            .then(res => {
+                setProductOptions(res.data.productoptions)
             })
             .catch(err => {
                 console.log(err);
@@ -156,7 +167,7 @@ export default function SalesAndInvoice() {
                                 setAction('Create');
                                 setOrderRecords(null);
                                 getNextOrderId();
-                                getCustomerOptions();
+                                getOptions();
                                 setOpenPopup(true);
                             }
                         }
@@ -225,6 +236,7 @@ export default function SalesAndInvoice() {
                 >
                     <CreateOrder
                         setOpenPopup={setOpenPopup}
+                        productOptions={productOptions}
                         customerOptions={customerOptions}
                         nextOrderId={nextOrderId}
                     />

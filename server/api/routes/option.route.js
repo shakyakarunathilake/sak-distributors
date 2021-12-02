@@ -94,7 +94,7 @@ router.get("/product-options-for-product", (req, res, next) => {
             }))
 
             res.status(200).json({
-                message: "Handeling GET requests to /product-options",
+                message: "Handeling GET requests to /product-options-for-product",
                 productOptions: productOptions,
             })
         })
@@ -176,6 +176,32 @@ router.get("/employee-options-for-supplier", (req, res, next) => {
             res.status(201).json({
                 message: "Handeling GET requests to /employee-options-for-supplier",
                 employeeOptions: employeeOptions,
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        })
+})
+
+//Get all product options for create order 
+router.get("/product-options", (req, res, next) => {
+
+    Product
+        .find()
+        .exec()
+        .then(doc => {
+
+            const data = doc.filter(x => x.status === "Active");
+
+            const productoptions = data.map(x => ({
+                name: x.name,
+                id: x.productid
+            }))
+
+            res.status(200).json({
+                message: "Handeling GET requests to /product-options",
+                productoptions: productoptions,
             })
         })
         .catch(err => {

@@ -16,7 +16,7 @@ export default function Select(props) {
 
     // const classes = useStyles();
 
-    const { label, size, name, options, onChange, value, error = null, helperText, disabled } = props;
+    const { label, size, name, options, onChange, value, error = null, helperText, disabled, defaultValue } = props;
 
     return (
         <FormControl
@@ -27,6 +27,7 @@ export default function Select(props) {
         >
             <InputLabel>{label}</InputLabel>
             <MuiSelect
+                defaultValue={defaultValue}
                 disabled={disabled}
                 label={label}
                 onChange={onChange}
