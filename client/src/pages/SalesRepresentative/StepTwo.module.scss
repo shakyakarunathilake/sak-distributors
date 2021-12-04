@@ -1,0 +1,79 @@
+@import "../../styles/variables";
+
+.two {
+    display: grid;
+    grid-template-rows: min-content auto min-content;
+    width: calc(100vw - 60px);
+    height: calc(100vh - 20px);
+    box-sizing: border-box;
+
+    .header {
+        .title {
+            display: grid;
+            grid-template-columns: auto min-content;
+            font-size: 1.55em;
+            font-weight: 600;
+            .icon {
+                color: red;
+                &:hover {
+                    transform: scale(1.1);
+                }
+            }
+        }
+
+        .step {
+            margin: 5px 0 0 0;
+            color: $primaryLight;
+            font-size: 0.75em;
+        }
+    }
+
+    .body {
+        margin: auto 20vh;
+
+        .row {
+            display: grid;
+            grid-template-columns: 250px calc(100% - 250px);
+            padding: 15px 20px;
+
+            .boldText {
+                font-size: 1em;
+                font-weight: 700;
+            }
+        }
+    }
+
+    .footer {
+        display: grid;
+        grid-template-columns: auto auto;
+        padding: 20px 0px 10px 0px;
+
+        .backBtn {
+            Button {
+                font-size: 1em;
+                width: auto;
+                background-color: #aca9bb;
+                color: $inverseFontColor;
+
+                &:disabled {
+                    background-color: #c2c2c2;
+                    color: $inverseFontColor;
+                }
+            }
+        }
+
+        .confirmBtn {
+            text-align: right;
+
+            Button {
+                font-size: 1em;
+                width: auto;
+
+                &:disabled {
+                    background-color: hsl(230, 66%, 57%);
+                    color: $inverseFontColor;
+                }
+            }
+        }
+    }
+}
