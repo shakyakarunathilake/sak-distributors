@@ -23,7 +23,7 @@ import style from './StepOne.module.scss';
 export default function StepOne(props) {
 
     const { customerOptions, nextOrderId, getFormData, customerType, setCustomerType, setOpenPopup, data } = props;
-    const { formState: { errors }, control, setValue, isValid, reset, trigger } = useForm();
+    const { formState: { errors }, control, setValue, isValid, reset, trigger } = useForm({ mode: "onChange" });
 
     const today = new Date();
     const dateTime = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`) + 'T' + (today.getHours() > 9 ? today.getHours() : `0${today.getHours()}`) + ':' + (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`);
