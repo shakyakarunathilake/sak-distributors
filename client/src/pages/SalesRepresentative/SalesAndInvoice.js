@@ -233,6 +233,7 @@ export default function SalesAndInvoice() {
                 <PopUp
                     openPopup={openPopup}
                     setOpenPopup={setOpenPopup}
+                    fullScreen={true}
                 >
                     <CreateOrder
                         setOpenPopup={setOpenPopup}
