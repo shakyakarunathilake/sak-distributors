@@ -195,8 +195,8 @@ router.get("/product-options", (req, res, next) => {
             const data = doc.filter(x => x.status === "Active");
 
             const productoptions = data.map(x => ({
-                name: x.name,
-                id: x.productid
+                title: x.name,
+                id: x.productid,
             }))
 
             res.status(200).json({
