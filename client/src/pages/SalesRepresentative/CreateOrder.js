@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, useFormState } from 'react-hook-form';
 
 //Development Stage
 import * as employeeservice from "../../services/employeeService";
@@ -19,14 +19,12 @@ import { Typography } from '@material-ui/core';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { IconButton } from '@material-ui/core';
 
 //Material Table
 import MaterialTable, { MTableAction, MTableToolbar } from 'material-table';
 
 //Material UI Icons
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 //Material UI Styling
@@ -34,7 +32,6 @@ import { makeStyles } from '@material-ui/core/styles';
 
 //SCSS Styles
 import style from './CreateOrder.module.scss';
-import { textAlign } from '@mui/material/node_modules/@mui/system';
 
 const useStyles = makeStyles({
     row1: {
@@ -60,7 +57,7 @@ const useStyles = makeStyles({
 export default function CreateOrder(props) {
 
     const { setOpenPopup, customerOptions, productOptions, nextOrderId } = props;
-    const { handleSubmit, formState: { errors }, control, setValue, isValid, reset } = useForm({ mode: "all" });
+    const { handleSubmit, formState: { errors }, control, setValue, isValid, reset, trigger, getValues } = useForm({ mode: "all" });
 
     const classes = useStyles();
 
@@ -68,7 +65,7 @@ export default function CreateOrder(props) {
     const [customerType, setCustomerType] = useState('Registered Customer');
     // const [type, setType] = useState();
     // const [open, setOpen] = useState(false);
-    const [formStep, setFormStep] = useState(2);
+    const [formStep, setFormStep] = useState(0);
 
     const today = new Date();
     const dateTime = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`) + 'T' + (today.getHours() > 9 ? today.getHours() : `0${today.getHours()}`) + ':' + (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`);
@@ -98,6 +95,12 @@ export default function CreateOrder(props) {
 
     const addActionRef = React.useRef();
 
+    const getProductItemList = useMemo(() => {
+        const selectedDescriptions = data.map(x => x.description);
+        const productItemList = productOptions.filter(x => selectedDescriptions.indexOf(x.title) === -1);
+        return productItemList;
+    }, [data]);
+
     const completeFormStep = () => {
         setFormStep(x => x + 1);
     }
@@ -107,14 +110,14 @@ export default function CreateOrder(props) {
     }
 
     const getTotal = () => {
-        let total = 0;
-        for (let i = 0; i < data.length; i++) {
-            total = total + data[i].value;
-        }
-        setValue("total", total);
-        setValue("receiveddiscounts", 0);
-        setValue("damagedexpireditems", 0);
-        return total;
+        // let total = 0;
+        // for (let i = 0; i < data.length; i++) {
+        //     total = total + data[i].value;
+        // }
+        // setValue("total", total);
+        // setValue("receiveddiscounts", 0);
+        // setValue("damagedexpireditems", 0);
+        // return total;
     }
 
     const handleCustomerTypeChange = (event, option) => {
@@ -123,11 +126,13 @@ export default function CreateOrder(props) {
 
     const handleCustomerChange = (event, option) => {
         if (option) {
+            setValue("customer", `${option.id} - ${option.storename}`)
             setValue("customerid", option.id);
             setValue("storename", option.storename);
             setValue("shippingaddress", option.shippingaddress);
             setValue("route", option.route);
             setValue("contactnumber", option.contactnumber);
+            trigger();
         }
     }
 
@@ -137,7 +142,7 @@ export default function CreateOrder(props) {
             orderno: `${JSON.parse(sessionStorage.getItem("Auth")).employeeid} - ${nextOrderId}`,
             orderplacedat: dateTime,
             deliverydate: deliveryDate,
-            salesrepresentative: `${JSON.parse(sessionStorage.getItem("Auth")).firstname} ${JSON.parse(sessionStorage.getItem("Auth")).lastname} (${JSON.parse(sessionStorage.getItem("Auth")).employeeid})`,
+            salesrepresentative: `${JSON.parse(sessionStorage.getItem("Auth")).firstname} ${JSON.parse(sessionStorage.getItem("Auth")).lastname}(${JSON.parse(sessionStorage.getItem("Auth")).employeeid})`,
             customer: '',
             storename: '',
             customerid: '',
@@ -148,6 +153,8 @@ export default function CreateOrder(props) {
     }
 
     const onSubmit = () => { }
+
+    console.log(getValues(), errors);
 
     return (
 
@@ -216,6 +223,7 @@ export default function CreateOrder(props) {
                                 <Controller
                                     name={"orderno"}
                                     control={control}
+                                    rules={{ required: { value: true, message: "Order No. is required" } }}
                                     render={({ field: { onChange, value } }) => (
                                         <TextField
                                             fullWidth={true}
@@ -237,6 +245,7 @@ export default function CreateOrder(props) {
                                 <Controller
                                     name={"orderplacedat"}
                                     control={control}
+                                    rules={{ required: { value: true, message: "Order placed at is required" } }}
                                     render={({ field: { onChange, value } }) => (
                                         <DatePicker
                                             value={value || ''}
@@ -259,6 +268,7 @@ export default function CreateOrder(props) {
                                 <Controller
                                     name={"deliverydate"}
                                     control={control}
+                                    rules={{ required: { value: true, message: "Delivery date is required" } }}
                                     render={({ field: { onChange, value } }) => (
                                         <DatePicker
                                             value={value || ''}
@@ -280,7 +290,7 @@ export default function CreateOrder(props) {
                                 <Controller
                                     name={"salesrepresentative"}
                                     control={control}
-                                    rules={{ required: true }}
+                                    rules={{ required: true, message: "Sales Representative is required" }}
                                     render={({ field: { onChange, value } }) => (
                                         <TextField
                                             fullWidth={true}
@@ -304,7 +314,7 @@ export default function CreateOrder(props) {
                                         name={"customer"}
                                         control={control}
                                         rules={{ required: true, message: "Customer is required" }}
-                                        render={() => (
+                                        render={(onChange) => (
                                             <Autocomplete
                                                 className={classes.root}
                                                 options={customerOptions || []}
@@ -675,101 +685,63 @@ export default function CreateOrder(props) {
                                         </Grid>
                                     </td>
                                 ),
-                                //     Header: props => (
-                                //         <TableHead {...props} >
-                                //             <TableRow className={classes.row1}>
-                                //                 <TableCell width="25%" padding="none" rowSpan={2}>
-                                //                     <div style={{ padding: '0 10px' }}>
-                                //                         Description
-                                //                     </div>
-                                //                 </TableCell>
-                                //                 <TableCell width="8%" padding="none" rowSpan={2}>
-                                //                     <div style={{ padding: '0 10px' }}>
-                                //                         R. Price
-                                //                     </div>
-                                //                 </TableCell>
-                                //                 <TableCell padding="none" colSpan={2} align="center">
-                                //                     Sales Qty.
-                                //                 </TableCell>
-                                //                 <TableCell padding="none" colSpan={2} align="center">
-                                //                     Free Qty.
-                                //                 </TableCell>
-                                //                 <TableCell padding="none" colspan={2} align="center">
-                                //                     Return Qty.
-                                //                 </TableCell>
-                                //                 <TableCell padding="none" width="10%" rowSpan={2} align="center">
-                                //                     <div style={{ padding: '0 10px' }}>
-                                //                         Gross Amount
-                                //                     </div>
-                                //                 </TableCell>
-                                //                 <TableCell padding="none" width="12%" rowSpan={2} align="center">
-                                //                     Action
-                                //                 </TableCell>
-                                //             </TableRow>
-                                //             <TableRow className={classes.row2}>
-                                //                 <TableCell width="8%" padding="none" align="center">Cs</TableCell>
-                                //                 <TableCell width="8%" padding="none" align="center">Pcs</TableCell>
-                                //                 <TableCell width="8%" padding="none" align="center">Cs</TableCell>
-                                //                 <TableCell width="8%" padding="none" align="center">Pcs</TableCell>
-                                //                 <TableCell width="8%" padding="none" align="center">D</TableCell>
-                                //                 <TableCell width="8%" padding="none" align="center">R</TableCell>
-                                //             </TableRow>
-                                //         </TableHead>
-                                //     ),
-                                //     Row: props => (
-                                //         <TableRow>
-                                //             <TableCell >{props.data.description}</TableCell>
-                                //             <TableCell align="center">{props.data.retailprice}</TableCell>
-                                //             <TableCell align="center">{props.data.salesqtycases}</TableCell>
-                                //             <TableCell align="center">{props.data.salesqtypieces}</TableCell>
-                                //             <TableCell align="center">{props.data.freeqtycases}</TableCell>
-                                //             <TableCell align="center">{props.data.freeqtypieces}</TableCell>
-                                //             <TableCell align="center">{props.data.return}</TableCell>
-                                //             <TableCell align="center">{props.data.damaged}</TableCell>
-                                //             <TableCell align="center">{props.data.grossamount}</TableCell>
-                                //             <TableCell align="center" style={{ whiteSpace: "nowrap" }}>
-                                //                 <IconButton
-                                //                     color="inherit"
-                                //                     onClick={props.actions[0].onClick}
-                                //                 >
-                                //                     {console.log(props.actions)}
-                                //                     <EditIcon
-                                //                         sx={{
-                                //                             fontSize: "0.9em"
-                                //                         }}
-                                //                     />
-                                //                 </IconButton>
-                                //                 <IconButton
-                                //                     color="inherit"
-                                //                     onClick={props.actions[1].onClick}
-                                //                 >
-                                //                     <DeleteIcon
-                                //                         sx={{
-                                //                             fontSize: "0.9em"
-                                //                         }}
-                                //                     />
-                                //                 </IconButton>
-                                //             </TableCell>
-                                //         </TableRow>
-                                //     ),
+                                Header: props => (
+                                    <TableHead {...props} >
+                                        <TableRow className={classes.row1}>
+                                            <TableCell width="25%" padding="none" rowSpan={2}>
+                                                <div style={{ padding: '0 10px' }}>
+                                                    Description
+                                                </div>
+                                            </TableCell>
+                                            <TableCell width="8%" padding="none" rowSpan={2}>
+                                                <div style={{ padding: '0 10px' }}>
+                                                    R. Price
+                                                </div>
+                                            </TableCell>
+                                            <TableCell padding="none" colSpan={2} align="center">
+                                                Sales Qty.
+                                            </TableCell>
+                                            <TableCell padding="none" colSpan={2} align="center">
+                                                Free Qty.
+                                            </TableCell>
+                                            <TableCell padding="none" colspan={2} align="center">
+                                                Return Qty.
+                                            </TableCell>
+                                            <TableCell padding="none" width="10%" rowSpan={2} align="center">
+                                                <div style={{ padding: '0 10px' }}>
+                                                    Gross Amount
+                                                </div>
+                                            </TableCell>
+                                            <TableCell padding="none" width="12%" rowSpan={2} align="center">
+                                                Action
+                                            </TableCell>
+                                        </TableRow>
+                                        <TableRow className={classes.row2}>
+                                            <TableCell width="8%" padding="none" align="center">Cs</TableCell>
+                                            <TableCell width="8%" padding="none" align="center">Pcs</TableCell>
+                                            <TableCell width="8%" padding="none" align="center">Cs</TableCell>
+                                            <TableCell width="8%" padding="none" align="center">Pcs</TableCell>
+                                            <TableCell width="8%" padding="none" align="center">D</TableCell>
+                                            <TableCell width="8%" padding="none" align="center">R</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                ),
                             }}
                             columns={[
                                 {
                                     title: "Description",
                                     field: "description",
                                     cellStyle: {
-                                        padding: 10,
-                                        width: '25%',
+                                        padding: "10px 5px 10px 7px",
+                                        width: '20%',
                                         textAlign: 'left'
                                     },
                                     editComponent: props => (
-                                        <Autocomplete
-                                            options={productOptions || []}
-                                            getOptionLabel={(option) => option.name}
-                                            onChange={e => {
-                                                props.onChange(e.target.innerText)
-                                            }}
-                                            inputValue={props.value || ''}
+                                        < Autocomplete
+                                            options={getProductItemList}
+                                            getOptionLabel={(option) => option.title}
+                                            onChange={e => props.onChange(e.target.innerText)}
+                                            inputValue={props.value}
                                             renderInput={(params) =>
                                                 <MuiTextField
                                                     {...params}
@@ -784,18 +756,18 @@ export default function CreateOrder(props) {
                                         rowData.description === undefined
                                             ? { isValid: false, helperText: 'Required *' }
                                             : rowData.description === ''
-                                                ? { isValid: false, helperText: 'Required *' }
+                                                ? { isValid: false, helperText: 'Invalid *' }
                                                 : true
 
                                 },
                                 {
-                                    title: "R. Price",
+                                    title: "Retail Price",
                                     field: "retailprice",
                                     editable: 'never',
                                     type: 'numeric',
                                     cellStyle: {
-                                        width: '8%',
-                                        padding: 10,
+                                        width: '9%',
+                                        padding: "10px 5px 10px 7px",
                                         textAlign: 'right'
                                     },
                                 },
@@ -804,8 +776,8 @@ export default function CreateOrder(props) {
                                     field: "salesqtycases",
                                     type: 'numeric',
                                     cellStyle: {
-                                        padding: 10,
-                                        width: '8%',
+                                        padding: "10px 5px 10px 7px",
+                                        width: '9%',
                                     },
                                     validate: (rowData) =>
                                         rowData.salesqtycases === undefined
@@ -821,8 +793,8 @@ export default function CreateOrder(props) {
                                     type: 'numeric',
                                     initialEditValue: 0,
                                     cellStyle: {
-                                        width: '8%',
-                                        padding: 10,
+                                        width: '9%',
+                                        padding: "10px 5px 10px 7px",
                                         textAlign: 'right'
                                     },
                                     validate: (rowData) =>
@@ -839,8 +811,8 @@ export default function CreateOrder(props) {
                                     type: 'numeric',
                                     initialEditValue: 0,
                                     cellStyle: {
-                                        width: '8%',
-                                        padding: 10,
+                                        width: '9%',
+                                        padding: "10px 5px 10px 7px",
                                         textAlign: 'right'
                                     },
                                     validate: (rowData) =>
@@ -857,8 +829,8 @@ export default function CreateOrder(props) {
                                     type: 'numeric',
                                     initialEditValue: 0,
                                     cellStyle: {
-                                        width: '8%',
-                                        padding: 10,
+                                        width: '9%',
+                                        padding: "10px 5px 10px 7px",
                                         textAlign: 'right'
                                     },
                                     validate: (rowData) =>
@@ -876,7 +848,7 @@ export default function CreateOrder(props) {
                                     initialEditValue: 0,
                                     cellStyle: {
                                         width: '8%',
-                                        padding: 10,
+                                        padding: "10px 5px 10px 7px",
                                         textAlign: 'right'
                                     },
                                     validate: (rowData) =>
@@ -894,7 +866,7 @@ export default function CreateOrder(props) {
                                     initialEditValue: 0,
                                     cellStyle: {
                                         width: '8%',
-                                        padding: 10,
+                                        padding: "10px 5px 10px 7px",
                                         textAlign: 'right'
                                     },
                                     validate: (rowData) =>
@@ -912,7 +884,7 @@ export default function CreateOrder(props) {
                                     type: 'numeric',
                                     cellStyle: {
                                         width: '11%',
-                                        padding: 10,
+                                        padding: "10px 5px 10px 7px",
                                         textAlign: 'right'
                                     },
                                 }
@@ -922,7 +894,7 @@ export default function CreateOrder(props) {
                                 onRowAdd: newData =>
                                     new Promise((resolve, reject) => {
                                         setTimeout(() => {
-                                            setData([...data, newData]);
+                                            setData([newData, ...data]);
 
                                             resolve();
                                         }, 1)
@@ -961,8 +933,8 @@ export default function CreateOrder(props) {
                                 addRowPosition: "first",
                                 toolbar: true,
                                 search: false,
-                                maxBodyHeight: "calc(100vh - 360px)",
-                                minBodyHeight: "calc(100vh - 360px)",
+                                maxBodyHeight: "calc(100vh - 280px)",
+                                minBodyHeight: "calc(100vh - 280px)",
                                 actionsColumnIndex: -1,
                                 headerStyle: {
                                     position: "sticky",
@@ -1069,209 +1041,106 @@ export default function CreateOrder(props) {
                                         </TableRow>
                                     </TableHead>
                                 ),
-                                Row: ({ data }) => (
-                                    <TableRow>
-                                        <TableCell >{data.description}</TableCell>
-                                        <TableCell align="center">{data.retailprice}</TableCell>
-                                        <TableCell align="center">{data.salesqtycases}</TableCell>
-                                        <TableCell align="center">{data.salesqtypieces}</TableCell>
-                                        <TableCell align="center">{data.freeqtycases}</TableCell>
-                                        <TableCell align="center">{data.freeqtypieces}</TableCell>
-                                        <TableCell align="center">{data.return}</TableCell>
-                                        <TableCell align="center">{data.damaged}</TableCell>
-                                        <TableCell align="center">{data.price}</TableCell>
-                                        <TableCell align="center">{data.grossamount}</TableCell>
-                                    </TableRow>
-                                ),
                             }}
                             columns={[
                                 {
                                     title: "Description",
                                     field: "description",
                                     cellStyle: {
-                                        padding: 10,
-                                        width: '34%'
+                                        padding: "12px 5px 12px 7px",
+                                        width: '34%',
+                                        textAlign: 'left'
                                     },
-                                    editComponent: props => (
-                                        <Autocomplete
-                                            options={productOptions || []}
-                                            // options={getProductItemList}
-                                            getOptionLabel={(option) => option.name}
-                                            onChange={e => {
-                                                props.onChange(e.target.innerText)
-                                            }}
-                                            inputValue={props.value}
-                                            renderInput={(params) =>
-                                                <MuiTextField
-                                                    {...params}
-                                                    helperText={props.helperText}
-                                                    error={props.error}
-                                                    variant="standard"
-                                                />
-                                            }
-                                        />
-                                    ),
-                                    validate: (rowData) =>
-                                        rowData.description === undefined
-                                            ? { isValid: false, helperText: 'Required *' }
-                                            : rowData.description === ''
-                                                ? { isValid: false, helperText: 'Required *' }
-                                                : true
-
                                 },
                                 {
                                     title: "Retail Price",
                                     field: "retailprice",
-                                    editable: 'never',
-                                    type: 'numeric',
                                     cellStyle: {
                                         width: '10%',
-                                        padding: 10
+                                        padding: "12px 5px 12px 7px",
+                                        textAlign: 'right'
                                     },
-                                    validate: (rowData) =>
-                                        rowData.retailprice === undefined
-                                            ? { isValid: false, helperText: 'Required *' }
-                                            : rowData.retailprice === ''
-                                                ? { isValid: false, helperText: 'Required *' }
-                                                : true
                                 },
                                 {
                                     title: "Sales Cs",
                                     field: "salesqtycases",
-                                    type: 'numeric',
                                     cellStyle: {
-                                        padding: 10,
+                                        padding: "12px 5px 12px 7px",
                                         width: '6%',
+                                        textAlign: 'right'
                                     },
-                                    validate: (rowData) =>
-                                        rowData.salesqtycases === undefined
-                                            ? { isValid: false, helperText: 'Required *' }
-                                            : rowData.salesqtycases === ''
-                                                ? { isValid: false, helperText: 'Required *' }
-                                                : true
-
                                 },
                                 {
                                     title: "Sales Pcs",
                                     field: "salesqtypieces",
-                                    type: 'numeric',
                                     cellStyle: {
                                         width: '6%',
-                                        padding: 10
+                                        padding: "12px 5px 12px 7px",
+                                        textAlign: 'right'
                                     },
-                                    validate: (rowData) =>
-                                        rowData.salesqtypieces === undefined
-                                            ? { isValid: false, helperText: 'Required *' }
-                                            : rowData.salesqtypieces === ''
-                                                ? { isValid: false, helperText: 'Required *' }
-                                                : true
-
                                 },
                                 {
                                     title: "Free Cs",
                                     field: "freeqtycases",
-                                    type: 'numeric',
                                     cellStyle: {
                                         width: '6%',
-                                        padding: 10
+                                        padding: "12px 5px 12px 7px",
+                                        textAlign: 'right'
                                     },
-                                    validate: (rowData) =>
-                                        rowData.freeqtycases === undefined
-                                            ? { isValid: false, helperText: 'Required *' }
-                                            : rowData.freeqtycases === ''
-                                                ? { isValid: false, helperText: 'Required *' }
-                                                : true
-
                                 },
                                 {
                                     title: "Free Pcs",
                                     field: "freeqtypieces",
-                                    type: 'numeric',
                                     cellStyle: {
                                         width: '6%',
-                                        padding: 10
+                                        padding: "12px 5px 12px 7px",
+                                        textAlign: 'right'
                                     },
-                                    validate: (rowData) =>
-                                        rowData.freeqtypieces === undefined
-                                            ? { isValid: false, helperText: 'Required *' }
-                                            : rowData.freeqtypieces === ''
-                                                ? { isValid: false, helperText: 'Required *' }
-                                                : true
-
                                 },
                                 {
                                     title: "Damaged",
                                     field: "damaged",
-                                    type: 'numeric',
                                     cellStyle: {
                                         width: '6%',
-                                        padding: 10
+                                        padding: "12px 5px 12px 7px",
+                                        textAlign: 'right'
                                     },
-                                    validate: (rowData) =>
-                                        rowData.damaged === undefined
-                                            ? { isValid: false, helperText: 'Required *' }
-                                            : rowData.damaged === ''
-                                                ? { isValid: false, helperText: 'Required *' }
-                                                : true
-
                                 },
                                 {
                                     title: "Return",
                                     field: "return",
-                                    type: 'numeric',
                                     cellStyle: {
                                         width: '6%',
-                                        padding: 10
+                                        padding: "12px 5px 12px 7px",
+                                        textAlign: 'right'
                                     },
-                                    validate: (rowData) =>
-                                        rowData.return === undefined
-                                            ? { isValid: false, helperText: 'Required *' }
-                                            : rowData.return === ''
-                                                ? { isValid: false, helperText: 'Required *' }
-                                                : true
-
                                 },
                                 {
                                     title: "Price",
                                     field: "price",
-                                    editable: 'never',
-                                    type: 'numeric',
                                     cellStyle: {
                                         width: '10%',
-                                        padding: 10
+                                        padding: "12px 5px 12px 7px",
+                                        textAlign: 'right'
                                     },
-                                    validate: (rowData) =>
-                                        rowData.price === undefined
-                                            ? { isValid: false, helperText: 'Required *' }
-                                            : rowData.price === ''
-                                                ? { isValid: false, helperText: 'Required *' }
-                                                : true
                                 },
                                 {
                                     title: "Gross Amount",
                                     field: "grossamount",
-                                    editable: 'never',
-                                    type: 'numeric',
                                     cellStyle: {
                                         width: '10%',
-                                        padding: 10
+                                        padding: "12px 5px 12px 7px",
+                                        textAlign: 'right'
                                     },
-                                    validate: (rowData) =>
-                                        rowData.grossamount === undefined
-                                            ? { isValid: false, helperText: 'Required *' }
-                                            : rowData.grossamount === ''
-                                                ? { isValid: false, helperText: 'Required *' }
-                                                : true
                                 }
                             ]}
                             data={data}
                             options={{
-                                addRowPosition: "first",
                                 toolbar: false,
                                 search: false,
-                                maxBodyHeight: "calc(100vh - 305px)",
-                                minBodyHeight: "calc(100vh - 305px)",
-                                actionsColumnIndex: -1,
+                                filter: true,
+                                maxBodyHeight: "calc(100vh - 235px)",
+                                minBodyHeight: "calc(100vh - 235px)",
                                 headerStyle: {
                                     position: "sticky",
                                     top: "0",
@@ -1293,7 +1162,7 @@ export default function CreateOrder(props) {
                     formStep === 0 &&
                     <div className={style.resetBtn}>
                         <Button
-                            disabled={formStep === 1 && !isValid && data.length === 0}
+                            disabled={data.length > 0}
                             variant="contained"
                             onClick={() => resetForm()}
                         >
@@ -1319,16 +1188,15 @@ export default function CreateOrder(props) {
                 }
 
                 <div className={style.nextBtn}>
-
+                    {/* || (formStep === 2 && data.length === 0) */}
                     {
                         ((formStep === 0) || (formStep === 2)) &&
                         <Button
-                            // disabled={(formStep === 0 && !isValid) || (formStep === 2 && data.length === 0)}
+                            disabled={formStep === 0 && isValid}
                             color="primary"
                             variant="contained"
                             onClick={() => {
                                 completeFormStep()
-                                // handleDetails()
                             }}
                         >
                             Next
@@ -1342,7 +1210,6 @@ export default function CreateOrder(props) {
                             variant="contained"
                             onClick={() => {
                                 completeFormStep()
-                                // handleDetails()
                             }}
                         >
                             Confirm

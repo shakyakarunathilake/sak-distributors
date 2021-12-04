@@ -4,7 +4,7 @@
     display: grid;
     grid-template-rows: auto min-content;
     width: calc(100vw - 60px);
-    height: calc(100vh - 90px);
+    height: calc(100vh - 20px);
     box-sizing: border-box;
 
     .hidden {
@@ -58,7 +58,7 @@
         grid-template-rows: min-content auto;
 
         .body {
-            margin: auto 10vh;
+            margin: auto 20vh;
 
             .row {
                 display: grid;
@@ -78,9 +78,9 @@
         grid-template-rows: min-content auto;
 
         .body {
-            margin: 30px 0px 0px 0px;
+            margin: 20px 0px 0px 0px;
         }
-
+        
         .btndiv {
             text-align: right;
             Button {
