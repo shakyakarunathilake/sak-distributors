@@ -23,7 +23,7 @@ import style from './StepOne.module.scss';
 export default function StepOne(props) {
 
     const { customerOptions, nextOrderId, getFormData, customerType, setCustomerType, setOpenPopup, data } = props;
-    const { formState: { errors }, control, setValue, isValid, reset, trigger } = useForm({ mode: "onChange" });
+    const { formState: { errors }, control, setValue, isValid, reset, trigger } = useForm({ mode: "onBlur" });
 
     const today = new Date();
     const dateTime = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`) + 'T' + (today.getHours() > 9 ? today.getHours() : `0${today.getHours()}`) + ':' + (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`);
@@ -109,7 +109,7 @@ export default function StepOne(props) {
 
                 <div className={style.row}>
                     <div className={style.label}>
-                        Customer Type *
+                        Customer Type <span className={style.redFont}>*</span>
                     </div>
                     <div className={style.textfield}>
                         <Controller
@@ -134,7 +134,7 @@ export default function StepOne(props) {
 
                 <div className={style.row}>
                     <div className={style.label}>
-                        Order No. *
+                        Order No. <span className={style.redFont}>*</span>
                     </div>
                     <div className={style.textfield}>
                         <Controller
@@ -144,6 +144,8 @@ export default function StepOne(props) {
                             render={({ field: { onChange, value } }) => (
                                 <TextField
                                     fullWidth={true}
+                                    error={errors.orderno ? true : false}
+                                    helperText={errors.orderno && errors.orderno.message}
                                     value={value || ''}
                                     onChange={onChange}
                                     placeholder="Ex: ON00006211126001"
@@ -156,7 +158,7 @@ export default function StepOne(props) {
 
                 <div className={style.row}>
                     <div className={style.label}>
-                        Order placed at *
+                        Order placed at <span className={style.redFont}>*</span>
                     </div>
                     <div className={style.textfield}>
                         <Controller
@@ -179,7 +181,7 @@ export default function StepOne(props) {
 
                 <div className={style.row}>
                     <div className={style.label}>
-                        Delivery Date *
+                        Delivery Date <span className={style.redFont}>*</span>
                     </div>
                     <div className={style.textfield}>
                         <Controller
@@ -201,7 +203,7 @@ export default function StepOne(props) {
 
                 <div className={style.row}>
                     <div className={style.label}>
-                        Sales Representative *
+                        Sales Representative <span className={style.redFont}>*</span>
                     </div>
                     <div className={style.textfield}>
                         <Controller
@@ -212,6 +214,8 @@ export default function StepOne(props) {
                                 <TextField
                                     fullWidth={true}
                                     value={value || ''}
+                                    error={errors.salesrepresentative ? true : false}
+                                    helperText={errors.salesrepresentative && errors.salesrepresentative.message}
                                     onChange={onChange}
                                     placeholder="Ex: Buddhika Bandara (E00006)"
                                     margin="dense"
@@ -223,7 +227,7 @@ export default function StepOne(props) {
 
                 <div className={style.row}>
                     <div className={style.label}>
-                        Customer *
+                        Customer <span className={style.redFont}>*</span>
                     </div>
                     <div className={style.textfield}>
                         {customerType === "Registered Customer" ?
@@ -240,6 +244,8 @@ export default function StepOne(props) {
                                         renderInput={(params) => (
                                             <MuiTextField
                                                 {...params}
+                                                helperText={errors.customer && errors.customer.message}
+                                                error={errors.customer ? true : false}
                                                 variant="outlined"
                                                 margin="dense"
                                                 placeholder="Ex: C000001 - Champika Super Center and Pharmacy"
@@ -258,6 +264,8 @@ export default function StepOne(props) {
                                         fullWidth={true}
                                         value={value || ''}
                                         onChange={onChange}
+                                        error={errors.customer ? true : false}
+                                        helperText={errors.customer && errors.customer.message}
                                         placeholder="Ex: Champika Super Center and Pharmacy"
                                         margin="dense"
                                     />
@@ -265,13 +273,12 @@ export default function StepOne(props) {
                             />
 
                         }
-                        {/* {errors.customer && <div className={style.errormessage}>{errors.customer.message}</div>} */}
                     </div>
                 </div>
 
                 <div className={style.row}>
                     <div className={style.label}>
-                        Shipping  Address *
+                        Shipping  Address <span className={style.redFont}>*</span>
                     </div>
                     <div className={style.textfield}>
                         <Controller
@@ -283,19 +290,19 @@ export default function StepOne(props) {
                                     fullWidth={true}
                                     value={value || ''}
                                     onChange={onChange}
+                                    error={errors.shippingaddress ? true : false}
+                                    helperText={errors.shippingaddress && errors.shippingaddress.message}
                                     placeholder="Ex: Rambukkana-Katupitiya Rd, Rambukkana"
                                     margin="dense"
                                 />
                             )}
                         />
-                        {/* {errors.shippingaddress && <div className={style.errormessage}>{errors.shippingaddress.message}</div>} */}
-
                     </div>
                 </div>
 
                 <div className={style.row}>
                     <div className={style.label}>
-                        Contact No. *
+                        Contact No. <span className={style.redFont}>*</span>
                     </div>
                     <div className={style.textfield}>
                         <Controller
@@ -310,6 +317,8 @@ export default function StepOne(props) {
                                     fullWidth={true}
                                     value={value || ''}
                                     onChange={onChange}
+                                    error={errors.contactnumber ? true : false}
+                                    helperText={errors.contactnumber && errors.contactnumber.message}
                                     placeholder="Ex: 0352264589"
                                     margin="dense"
                                 />
@@ -320,7 +329,7 @@ export default function StepOne(props) {
 
                 <div className={style.row}>
                     <div className={style.label}>
-                        Route *
+                        Route <span className={style.redFont}>*</span>
                     </div>
                     <div className={style.textfield}>
                         <Controller
@@ -329,7 +338,6 @@ export default function StepOne(props) {
                             rules={{ required: { value: true, message: "Route is required" } }}
                             render={({ field: { onChange, value } }) => (
                                 <Select
-                                    label="Route *"
                                     value={value || ''}
                                     onChange={onChange}
                                     options={employeeservice.getRouteOptions()}
