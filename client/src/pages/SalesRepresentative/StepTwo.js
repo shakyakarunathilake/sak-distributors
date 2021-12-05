@@ -48,7 +48,9 @@ export default function StepTwo(props) {
                         Order No.
                     </div>
                     <div className={style.customerData}>
-                        {formData.orderno}
+                        <Typography className={style.input}>
+                            {formData.orderno}
+                        </Typography>
                     </div>
                 </div>
 
@@ -59,7 +61,9 @@ export default function StepTwo(props) {
                             Customer ID
                         </div>
                         <div className={style.customerData}>
-                            {formData.customerid}
+                            <Typography className={style.input}>
+                                {formData.customerid}
+                            </Typography>
                         </div>
                     </div>
 
@@ -70,7 +74,9 @@ export default function StepTwo(props) {
                         Customer Name
                     </div>
                     <div className={style.customerData}>
-                        {formData.storename}
+                        <Typography className={style.input}>
+                            {formData.storename}
+                        </Typography>
                     </div>
                 </div>
 
@@ -79,7 +85,9 @@ export default function StepTwo(props) {
                         Contact No.
                     </div>
                     <div className={style.customerData}>
-                        {formData.contactnumber}
+                        <Typography className={style.input}>
+                            {formData.contactnumber}
+                        </Typography>
                     </div>
                 </div>
 
@@ -88,7 +96,9 @@ export default function StepTwo(props) {
                         Shipping Address
                     </div>
                     <div className={style.customerData}>
-                        {formData.shippingaddress}
+                        <Typography className={style.input}>
+                            {formData.shippingaddress}
+                        </Typography>
                     </div>
                 </div>
 

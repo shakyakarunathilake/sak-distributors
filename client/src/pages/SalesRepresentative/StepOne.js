@@ -232,7 +232,7 @@ export default function StepOne(props) {
                                 name={"customer"}
                                 control={control}
                                 rules={{ required: "Customer is required" }}
-                                render={({ field: { onChange } }) => (
+                                render={({ field: { onChange, value } }) => (
                                     <Autocomplete
                                         options={customerOptions || []}
                                         fullWidth
@@ -241,6 +241,7 @@ export default function StepOne(props) {
                                             onChange(e, option)
                                             handleCustomerChange(e, option)
                                         }}
+                                        inputValue={value || ""}
                                         renderInput={(params) => (
                                             <MuiTextField
                                                 {...params}

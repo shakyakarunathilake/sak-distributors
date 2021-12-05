@@ -156,7 +156,7 @@ export default function StepThree(props) {
                                     <TableCell padding="none" colSpan={2} align="center">
                                         Free Qty.
                                     </TableCell>
-                                    <TableCell padding="none" colspan={2} align="center">
+                                    <TableCell padding="none" colSpan={2} align="center">
                                         Return Qty.
                                     </TableCell>
                                     <TableCell padding="none" width="14%" rowSpan={2} align="center">
