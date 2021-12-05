@@ -64,7 +64,6 @@ export default function CreateOrder(props) {
                         backFormStep={backFormStep}
                         completeFormStep={completeFormStep}
                     />
-
                 </section>
             }
 
@@ -87,7 +86,7 @@ export default function CreateOrder(props) {
                 <section className={formStep === 3 ? style.visible : style.hidden}>
                     <StepFour
                         data={data}
-                        setOpenPop={setOpenPopup}
+                        setOpenPopup={setOpenPopup}
                         backFormStep={backFormStep}
                         onSubmit={onSubmit}
                     />

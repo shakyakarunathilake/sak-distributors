@@ -107,7 +107,7 @@ export default function StepFour(props) {
                                     <TableCell padding="none" colSpan={2} align="center">
                                         Free Qty.
                                     </TableCell>
-                                    <TableCell padding="none" colspan={2} align="center">
+                                    <TableCell padding="none" colSpan={2} align="center">
                                         Return Qty.
                                     </TableCell>
                                     <TableCell padding="none" width="10%" rowSpan={2} align="center">
