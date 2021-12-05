@@ -224,7 +224,7 @@ router.get("/customer-options", (req, res, next) => {
                 "route": x.route,
                 "shippingaddress": x.shippingaddress,
                 "contactnumber": x.customercontactnumber,
-                "title": `${x.customerid} - ${x.storename}`
+                "title": `${x.storename} (${x.customerid})`
             }))
 
             res.status(201).json({

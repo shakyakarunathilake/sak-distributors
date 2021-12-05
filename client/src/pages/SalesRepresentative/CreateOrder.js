@@ -18,14 +18,8 @@ export default function CreateOrder(props) {
 
     const [data, setData] = useState([]);
     const [formStep, setFormStep] = useState(0);
-    const [customerType, setCustomerType] = useState('Registered Customer');
+    const [customerType, setCustomerType] = useState('');
     const [formData, setFormData] = useState({});
-
-    const getFormData = (values, type) => {
-        setCustomerType(type);
-        setFormData(values);
-        completeFormStep();
-    }
 
     const completeFormStep = () => {
         setFormStep(x => x + 1);
@@ -50,9 +44,10 @@ export default function CreateOrder(props) {
                     <StepOne
                         customerOptions={customerOptions}
                         nextOrderId={nextOrderId}
-                        getFormData={getFormData}
                         customerType={customerType}
                         setCustomerType={setCustomerType}
+                        completeFormStep={completeFormStep}
+                        setFormData={setFormData}
                         data={data}
                         setOpenPopup={setOpenPopup}
                     />
@@ -79,8 +74,9 @@ export default function CreateOrder(props) {
                     <StepThree
                         data={data}
                         setData={setData}
-                        setOpenPop={setOpenPopup}
+                        setOpenPopup={setOpenPopup}
                         productOptions={productOptions}
+                        backFormStep={backFormStep}
                         completeFormStep={completeFormStep}
                     />
                 </section>

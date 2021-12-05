@@ -45,7 +45,7 @@ const useStyles = makeStyles({
 
 export default function StepThree(props) {
 
-    const { data, setData, setOpenPopup, productOptions, completeFormStep } = props;
+    const { data, setData, setOpenPopup, productOptions, backFormStep, completeFormStep } = props;
 
     const classes = useStyles();
 
@@ -140,9 +140,14 @@ export default function StepThree(props) {
                         Header: props => (
                             <TableHead {...props} >
                                 <TableRow className={classes.row1}>
-                                    <TableCell width="25%" padding="none" rowSpan={2}>
+                                    <TableCell width="24%" padding="none" rowSpan={2}>
                                         <div style={{ padding: '0 10px' }}>
                                             Description
+                                        </div>
+                                    </TableCell>
+                                    <TableCell width="8%" padding="none" rowSpan={2} align="center">
+                                        <div style={{ padding: '0 10px' }}>
+                                            Retail Price
                                         </div>
                                     </TableCell>
                                     <TableCell padding="none" colSpan={2} align="center">
@@ -154,17 +159,12 @@ export default function StepThree(props) {
                                     <TableCell padding="none" colspan={2} align="center">
                                         Return Qty.
                                     </TableCell>
-                                    <TableCell width="8%" padding="none" rowSpan={2} align="center">
-                                        <div style={{ padding: '0 10px' }}>
-                                            Retail Price
-                                        </div>
-                                    </TableCell>
-                                    <TableCell padding="none" width="10%" rowSpan={2} align="center">
+                                    <TableCell padding="none" width="14%" rowSpan={2} align="center">
                                         <div style={{ padding: '0 10px' }}>
                                             Gross Amount
                                         </div>
                                     </TableCell>
-                                    <TableCell padding="none" width="12%" rowSpan={2} align="center">
+                                    <TableCell padding="none" width="11%" rowSpan={2} align="center">
                                         Action
                                     </TableCell>
                                 </TableRow>
@@ -173,8 +173,8 @@ export default function StepThree(props) {
                                     <TableCell width="8%" padding="none" align="center">Pcs</TableCell>
                                     <TableCell width="8%" padding="none" align="center">Cs</TableCell>
                                     <TableCell width="8%" padding="none" align="center">Pcs</TableCell>
-                                    <TableCell width="8%" padding="none" align="center">D</TableCell>
-                                    <TableCell width="8%" padding="none" align="center">R</TableCell>
+                                    <TableCell width="7%" padding="none" align="center">D</TableCell>
+                                    <TableCell width="7%" padding="none" align="center">R</TableCell>
                                 </TableRow>
                             </TableHead>
                         ),
@@ -185,7 +185,7 @@ export default function StepThree(props) {
                             field: "description",
                             cellStyle: {
                                 padding: "10px 5px 10px 7px",
-                                width: '20%',
+                                width: '24%',
                                 textAlign: 'left'
                             },
                             editComponent: props => (
@@ -213,12 +213,23 @@ export default function StepThree(props) {
 
                         },
                         {
+                            title: "Retail Price",
+                            field: "retailprice",
+                            editable: 'never',
+                            type: 'numeric',
+                            cellStyle: {
+                                width: '8%',
+                                padding: "10px 5px 10px 7px",
+                                textAlign: 'left'
+                            },
+                        },
+                        {
                             title: "Sales Cs",
                             field: "salesqtycases",
                             type: 'numeric',
                             cellStyle: {
                                 padding: "10px 5px 10px 7px",
-                                width: '9%',
+                                width: '8%',
                             },
                             validate: (rowData) =>
                                 rowData.salesqtycases === undefined
@@ -234,7 +245,7 @@ export default function StepThree(props) {
                             type: 'numeric',
                             initialEditValue: 0,
                             cellStyle: {
-                                width: '9%',
+                                width: '8%',
                                 padding: "10px 5px 10px 7px",
                                 textAlign: 'right'
                             },
@@ -252,7 +263,7 @@ export default function StepThree(props) {
                             type: 'numeric',
                             initialEditValue: 0,
                             cellStyle: {
-                                width: '9%',
+                                width: '8%',
                                 padding: "10px 5px 10px 7px",
                                 textAlign: 'right'
                             },
@@ -270,7 +281,7 @@ export default function StepThree(props) {
                             type: 'numeric',
                             initialEditValue: 0,
                             cellStyle: {
-                                width: '9%',
+                                width: '8%',
                                 padding: "10px 5px 10px 7px",
                                 textAlign: 'right'
                             },
@@ -288,7 +299,7 @@ export default function StepThree(props) {
                             type: 'numeric',
                             initialEditValue: 0,
                             cellStyle: {
-                                width: '8%',
+                                width: '7%',
                                 padding: "10px 5px 10px 7px",
                                 textAlign: 'right'
                             },
@@ -306,7 +317,7 @@ export default function StepThree(props) {
                             type: 'numeric',
                             initialEditValue: 0,
                             cellStyle: {
-                                width: '8%',
+                                width: '7%',
                                 padding: "10px 5px 10px 7px",
                                 textAlign: 'right'
                             },
@@ -319,23 +330,12 @@ export default function StepThree(props) {
 
                         },
                         {
-                            title: "Retail Price",
-                            field: "retailprice",
-                            editable: 'never',
-                            type: 'numeric',
-                            cellStyle: {
-                                width: '9%',
-                                padding: "10px 5px 10px 7px",
-                                textAlign: 'left'
-                            },
-                        },
-                        {
                             title: "Gross Amount",
                             field: "grossamount",
                             editable: 'never',
                             type: 'numeric',
                             cellStyle: {
-                                width: '11%',
+                                width: '14%',
                                 padding: "10px 5px 10px 7px",
                                 textAlign: 'right'
                             },
@@ -405,13 +405,30 @@ export default function StepThree(props) {
             </div>
 
             <div className={style.footer}>
-                <Button
-                    color="primary"
-                    variant="contained"
-                    onClick={() => completeFormStep()}
-                >
-                    Next
-                </Button>
+
+                <div className={style.backBtn}>
+                    <Button
+                        variant="contained"
+                        onClick={() => backFormStep()}
+                        style={{
+                            backgroundColor: '#ACA9BB',
+                            color: 'white'
+                        }}
+                    >
+                        Back
+                    </Button>
+                </div>
+
+                <div className={style.nextBtn}>
+                    <Button
+                        color="primary"
+                        variant="contained"
+                        onClick={() => completeFormStep()}
+                    >
+                        Next
+                    </Button>
+                </div>
+
             </div>
 
         </div>

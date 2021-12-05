@@ -22,8 +22,7 @@ import style from './StepOne.module.scss';
 
 export default function StepOne(props) {
 
-    const { customerOptions, nextOrderId, getFormData, customerType, setCustomerType, setOpenPopup, data } = props;
-    const { formState: { errors }, control, setValue, isValid, reset, trigger } = useForm({ mode: "onBlur" });
+    const { customerOptions, nextOrderId, completeFormStep, setFormData, customerType, setCustomerType, setOpenPopup, data } = props;
 
     const today = new Date();
     const dateTime = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`) + 'T' + (today.getHours() > 9 ? today.getHours() : `0${today.getHours()}`) + ':' + (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`);
@@ -32,13 +31,22 @@ export default function StepOne(props) {
     const deliveryDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
 
 
-    useEffect(() => {
-        setValue('customertype', "Registered Customer");
-        setValue('orderno', `${JSON.parse(sessionStorage.getItem("Auth")).employeeid} - ${nextOrderId}`);
-        setValue('orderplacedat', dateTime);
-        setValue('deliverydate', deliveryDate);
-        setValue('salesrepresentative', `${JSON.parse(sessionStorage.getItem("Auth")).firstname} ${JSON.parse(sessionStorage.getItem("Auth")).lastname} (${JSON.parse(sessionStorage.getItem("Auth")).employeeid})`);
-    }, [nextOrderId, setValue, deliveryDate, dateTime]);
+    const { formState: { isValid, errors }, control, setValue, getValues, reset, trigger } = useForm({
+        mode: "onChange",
+        defaultValues: {
+            customertype: '',
+            orderno: `${JSON.parse(sessionStorage.getItem("Auth")).employeeid}${nextOrderId}`,
+            orderplacedat: dateTime,
+            deliverydate: deliveryDate,
+            salesrepresentative: `${JSON.parse(sessionStorage.getItem("Auth")).firstname} ${JSON.parse(sessionStorage.getItem("Auth")).lastname} (${JSON.parse(sessionStorage.getItem("Auth")).employeeid})`,
+            customer: '',
+            storename: '',
+            customerid: '',
+            shippingaddress: '',
+            contactnumber: '',
+            route: '',
+        }
+    });
 
     const handleCustomerTypeChange = (event, option) => {
         setValue("customertype", option.props.value);
@@ -56,30 +64,18 @@ export default function StepOne(props) {
         }
     }
 
-    const resetForm = () => {
-        reset({
-            customertype: '',
-            orderno: `${JSON.parse(sessionStorage.getItem("Auth")).employeeid} - ${nextOrderId}`,
-            orderplacedat: dateTime,
-            deliverydate: deliveryDate,
-            salesrepresentative: `${JSON.parse(sessionStorage.getItem("Auth")).firstname} ${JSON.parse(sessionStorage.getItem("Auth")).lastname} (${JSON.parse(sessionStorage.getItem("Auth")).employeeid})`,
-            customer: '',
-            storename: '',
-            customerid: '',
-            shippingaddress: '',
-            contactnumber: '',
-            route: ''
-        });
-    }
-
-    const onSubmit = (values) => {
+    const onSubmit = () => {
 
         trigger();
 
-        console.log("ERRORS :", errors);
-        console.log("VALIDATION :", isValid);
+        // console.log("ERRORS :", errors);
+        // console.log("VALIDATION :", isValid);
+        // console.log("VALUES: ", getValues());
 
-        // getFormData(values, customerType)
+        if (isValid) {
+            setFormData(getValues());
+            completeFormStep();
+        }
     }
 
     return (
@@ -106,31 +102,6 @@ export default function StepOne(props) {
             </div>
 
             <div className={style.body}>
-
-                <div className={style.row}>
-                    <div className={style.label}>
-                        Customer Type <span className={style.redFont}>*</span>
-                    </div>
-                    <div className={style.textfield}>
-                        <Controller
-                            name={"customertype"}
-                            control={control}
-                            rules={{ required: { value: true, message: "Customer type is required" } }}
-                            render={({ field: { onChange, value } }) => (
-                                <Select
-                                    value={value || ''}
-                                    onChange={(e, options) =>
-                                        handleCustomerTypeChange(e, options)
-                                    }
-                                    options={employeeservice.getCustomerTypeOptions()}
-                                    error={errors.customertype ? true : false}
-                                    helperText={errors.customertype && errors.customertype.message}
-                                    size="small"
-                                />
-                            )}
-                        />
-                    </div>
-                </div>
 
                 <div className={style.row}>
                     <div className={style.label}>
@@ -227,6 +198,32 @@ export default function StepOne(props) {
 
                 <div className={style.row}>
                     <div className={style.label}>
+                        Customer Type <span className={style.redFont}>*</span>
+                    </div>
+                    <div className={style.textfield}>
+                        <Controller
+                            name={"customertype"}
+                            control={control}
+                            rules={{ required: { value: true, message: "Customer type is required" } }}
+                            render={({ field: { onChange, value } }) => (
+                                <Select
+                                    value={value || ''}
+                                    onChange={(e, option) => {
+                                        onChange(e, option)
+                                        handleCustomerTypeChange(e, option)
+                                    }}
+                                    options={employeeservice.getCustomerTypeOptions()}
+                                    error={errors.customertype ? true : false}
+                                    helperText={errors.customertype && errors.customertype.message}
+                                    size="small"
+                                />
+                            )}
+                        />
+                    </div>
+                </div>
+
+                <div className={style.row}>
+                    <div className={style.label}>
                         Customer <span className={style.redFont}>*</span>
                     </div>
                     <div className={style.textfield}>
@@ -235,12 +232,15 @@ export default function StepOne(props) {
                                 name={"customer"}
                                 control={control}
                                 rules={{ required: "Customer is required" }}
-                                render={(onChange) => (
+                                render={({ field: { onChange } }) => (
                                     <Autocomplete
                                         options={customerOptions || []}
                                         fullWidth
                                         getOptionLabel={(option) => option.title}
-                                        onChange={handleCustomerChange}
+                                        onChange={(e, option) => {
+                                            onChange(e, option)
+                                            handleCustomerChange(e, option)
+                                        }}
                                         renderInput={(params) => (
                                             <MuiTextField
                                                 {...params}
@@ -350,10 +350,6 @@ export default function StepOne(props) {
                     </div>
                 </div>
 
-                {/* <div className={style.redFont}>
-                    The fields with "*" are required
-                </div> */}
-
             </div>
 
 
@@ -363,7 +359,7 @@ export default function StepOne(props) {
                     <Button
                         disabled={data.length > 0}
                         variant="contained"
-                        onClick={() => resetForm()}
+                        onClick={() => reset()}
                     >
                         Reset
                     </Button>
