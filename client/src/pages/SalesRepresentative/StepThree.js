@@ -147,7 +147,7 @@ export default function StepThree(props) {
                                     </TableCell>
                                     <TableCell width="8%" padding="none" rowSpan={2} align="center">
                                         <div style={{ padding: '0 10px' }}>
-                                            Retail Price
+                                            MRP
                                         </div>
                                     </TableCell>
                                     <TableCell padding="none" colSpan={2} align="center">
@@ -213,8 +213,8 @@ export default function StepThree(props) {
 
                         },
                         {
-                            title: "Retail Price",
-                            field: "retailprice",
+                            title: "MRP",
+                            field: "mrp",
                             editable: 'never',
                             type: 'numeric',
                             cellStyle: {
@@ -328,6 +328,18 @@ export default function StepThree(props) {
                                         ? { isValid: false, helperText: 'Required *' }
                                         : true
 
+                        },
+                        {
+                            title: "Price",
+                            field: "price",
+                            editable: 'never',
+                            hidden: true,
+                            type: 'numeric',
+                            cellStyle: {
+                                width: '8%',
+                                padding: "10px 5px 10px 7px",
+                                textAlign: 'left'
+                            },
                         },
                         {
                             title: "Gross Amount",
