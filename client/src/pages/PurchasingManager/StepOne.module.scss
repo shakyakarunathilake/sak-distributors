@@ -1,0 +1,78 @@
+@import "../../styles/variables";
+
+.one {
+    display: grid;
+    grid-template-rows: min-content auto min-content;
+    width: calc(100vw - 40px);
+    margin: 10px 20px;
+
+    Button {
+        width: max-content;
+        height: 40px;
+        font-size: 1em;
+        white-space: nowrap;
+    }
+
+    .header {
+        .title {
+            display: grid;
+            grid-template-columns: auto min-content;
+            font-size: 1.55em;
+            font-weight: 600;
+            .icon {
+                color: red;
+                &:hover {
+                    transform: scale(1.1);
+                }
+            }
+        }
+
+        .step {
+            margin: 5px 0 0 0;
+            color: $primaryLight;
+            font-size: 0.75em;
+        }
+    }
+
+    .body {
+        display: grid;
+        grid-template-columns: calc(60% - 20px) min-content calc(40% - 20px);
+        text-align: right;
+        margin: 20px 0 0 0;
+        
+        .divider {
+            margin: 0 20px;
+        }
+    }
+
+    .footer {
+        display: grid;
+        grid-template-columns: auto auto;
+        padding: 20px 0px 10px 0px;
+
+        .resetBtn {
+            Button {
+                width: auto;
+                background-color: #aca9bb;
+                color: $inverseFontColor;
+
+                &:disabled {
+                    background-color: #c2c2c2;
+                    color: $inverseFontColor;
+                }
+            }
+        }
+
+        .nextBtn {
+            text-align: right;
+            Button {
+                width: auto;
+
+                &:disabled {
+                    background-color: hsl(230, 66%, 57%);
+                    color: $inverseFontColor;
+                }
+            }
+        }
+    }
+}
