@@ -2,7 +2,8 @@ import React, { useMemo } from 'react';
 
 //Material UI Components
 import { Paper } from '@material-ui/core';
-import { Button, Grid } from '@material-ui/core';
+import { Button, Grid } from '@mui/material';
+import Box from '@mui/material/Box';
 import { TextField as MuiTextField } from '@material-ui/core';
 import Autocomplete from '@mui/material/Autocomplete';
 import { Typography } from '@material-ui/core';
@@ -45,7 +46,9 @@ const useStyles = makeStyles({
 
 export default function StepThree(props) {
 
-    const { data, setData, setOpenPopup, productOptions, backFormStep, completeFormStep } = props;
+    const { data, setData, setOpenPopup, productOptions, backFormStep, completeFormStep, setTotal } = props;
+
+    const [inputValue, setInputValue] = React.useState('');
 
     const classes = useStyles();
 
@@ -58,14 +61,13 @@ export default function StepThree(props) {
     }, [data, productOptions]);
 
     const getTotal = () => {
-        // let total = 0;
-        // for (let i = 0; i < data.length; i++) {
-        //     total = total + data[i].value;
-        // }
-        // setValue("total", total);
-        // setValue("receiveddiscounts", 0);
-        // setValue("damagedexpireditems", 0);
-        // return total;
+        let total = 0;
+        for (let i = 0; i < data.length; i++) {
+            total = total + data[i].grossamount;
+        }
+
+        setTotal(total)
+        return total;
     }
 
     return (
@@ -95,7 +97,10 @@ export default function StepThree(props) {
 
                 <div className={style.btndiv}>
                     <Button
-                        color="primary"
+                        style={{
+                            backgroundColor: '#20369f',
+                            color: 'white'
+                        }}
                         variant="contained"
                         onClick={() => addActionRef.current.click()}
                     >
@@ -140,14 +145,14 @@ export default function StepThree(props) {
                         Header: props => (
                             <TableHead {...props} >
                                 <TableRow className={classes.row1}>
-                                    <TableCell width="24%" padding="none" rowSpan={2}>
+                                    <TableCell width="28%" padding="none" rowSpan={2}>
                                         <div style={{ padding: '0 10px' }}>
                                             Description
                                         </div>
                                     </TableCell>
                                     <TableCell width="8%" padding="none" rowSpan={2} align="center">
                                         <div style={{ padding: '0 10px' }}>
-                                            MRP
+                                            Price
                                         </div>
                                     </TableCell>
                                     <TableCell padding="none" colSpan={2} align="center">
@@ -169,10 +174,10 @@ export default function StepThree(props) {
                                     </TableCell>
                                 </TableRow>
                                 <TableRow className={classes.row2}>
-                                    <TableCell width="8%" padding="none" align="center">Cs</TableCell>
-                                    <TableCell width="8%" padding="none" align="center">Pcs</TableCell>
-                                    <TableCell width="8%" padding="none" align="center">Cs</TableCell>
-                                    <TableCell width="8%" padding="none" align="center">Pcs</TableCell>
+                                    <TableCell width="7%" padding="none" align="center">Cs</TableCell>
+                                    <TableCell width="7%" padding="none" align="center">Pcs</TableCell>
+                                    <TableCell width="7%" padding="none" align="center">Cs</TableCell>
+                                    <TableCell width="7%" padding="none" align="center">Pcs</TableCell>
                                     <TableCell width="7%" padding="none" align="center">D</TableCell>
                                     <TableCell width="7%" padding="none" align="center">R</TableCell>
                                 </TableRow>
@@ -185,23 +190,68 @@ export default function StepThree(props) {
                             field: "description",
                             cellStyle: {
                                 padding: "10px 5px 10px 7px",
-                                width: '24%',
+                                width: '28%',
                                 textAlign: 'left'
                             },
                             editComponent: props => (
-                                < Autocomplete
+                                <Autocomplete
                                     options={getProductItemList}
+                                    autoHighlight
                                     getOptionLabel={(option) => option.title}
-                                    onChange={e => props.onChange(e.target.innerText)}
-                                    inputValue={props.value || ''}
-                                    renderInput={(params) =>
+                                    renderOption={(props, option) => (
+                                        <Box
+                                            components="li"
+                                            {...props}
+                                            sx={{ borderBottom: "1px solid #c2c2c2" }}
+                                        >
+                                            <Grid container>
+                                                <Grid item xs={12}>
+                                                    <b>Prod. ID: </b> {option.productid}
+                                                </Grid>
+                                                <Grid item xs={12}>
+                                                    <b>Variant ID: </b> {option.variantid}
+                                                </Grid>
+                                                <Grid item xs={12}>
+                                                    <b>Name: </b> {option.name}
+                                                </Grid>
+                                                <Grid item xs={12}>
+                                                    <b> Type: </b>
+                                                    {option.type}
+                                                </Grid>
+                                                {option.type === "Promotion" ? <Grid item xs={12}>  <b> Offer Caption: </b> {option.offercaption}  </Grid> : ""}
+                                                <Grid item xs={12}>
+                                                    <b>MRP: </b> {option.mrp}
+                                                </Grid>
+                                                <Grid item xs={12}>
+                                                    <b> Selling Price: </b> {option.sellingprice}
+                                                </Grid>
+                                                <Grid item xs={12}>
+                                                    <b> Pcs/Cases: </b> {option.piecespercases}
+                                                </Grid>
+                                            </Grid>
+                                        </Box>
+                                    )}
+                                    // onChange={e => props.onChange(e.target.innerText)}
+                                    onChange={(e, option) => {
+                                        console.log(e);
+                                        console.log(option);
+                                        props.onChange(option.title)
+                                        let data = { ...props.rowData };
+                                        data.description = option.title;
+                                        data.price = option.sellingprice;
+                                        data.piecespercase = option.piecespercase;
+                                        data.mrp = option.mrp;
+                                        props.onRowDataChange(data);
+                                    }}
+                                    inputValue={props.value}
+                                    renderInput={(params) => (
                                         <MuiTextField
                                             {...params}
                                             helperText={props.helperText}
                                             error={props.error}
                                             variant="standard"
                                         />
-                                    }
+                                    )}
                                 />
                             ),
                             validate: (rowData) =>
@@ -213,15 +263,26 @@ export default function StepThree(props) {
 
                         },
                         {
-                            title: "MRP",
-                            field: "mrp",
+                            title: "Pieces Per Cases",
+                            field: "piecespercase",
+                            hidden: true,
+                        },
+                        {
+                            title: "Price",
+                            field: "price",
                             editable: 'never',
                             type: 'numeric',
                             cellStyle: {
                                 width: '8%',
                                 padding: "10px 5px 10px 7px",
-                                textAlign: 'left'
+                                textAlign: 'center'
                             },
+                        },
+                        {
+                            title: "MRP",
+                            field: "mrp",
+                            hidden: true,
+
                         },
                         {
                             title: "Sales Cs",
@@ -229,8 +290,29 @@ export default function StepThree(props) {
                             type: 'numeric',
                             cellStyle: {
                                 padding: "10px 5px 10px 7px",
-                                width: '8%',
+                                width: '7%',
+                                textAlign: 'center'
                             },
+                            editComponent: props =>
+                                <MuiTextField
+                                    onChange={e => {
+                                        let data = { ...props.rowData };
+                                        data.salesqtycases = e.target.value;
+                                        let salesqtycases = isNaN(data.salesqtycases) ? 0 : data.salesqtycases;
+                                        let freeqtycases = isNaN(data.freeqtycases) ? 0 : data.freeqtycases;
+                                        let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
+                                        let freeqtypieces = isNaN(data.freeqtypieces) ? 0 : data.freeqtypieces;
+                                        let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
+                                        data.grossamount = (((salesqtycases * piecespercase) + salesqtypieces) - ((freeqtycases * piecespercase) - freeqtypieces)) * data.price;
+                                        props.onRowDataChange(data);
+                                    }}
+                                    type="number"
+                                    helperText={props.helperText}
+                                    error={props.error}
+                                    variant="standard"
+                                    value={props.value}
+                                />
+                            ,
                             validate: (rowData) =>
                                 rowData.salesqtycases === undefined
                                     ? { isValid: false, helperText: 'Required *' }
@@ -245,10 +327,30 @@ export default function StepThree(props) {
                             type: 'numeric',
                             initialEditValue: 0,
                             cellStyle: {
-                                width: '8%',
+                                width: '7%',
                                 padding: "10px 5px 10px 7px",
-                                textAlign: 'right'
+                                textAlign: 'center'
                             },
+                            editComponent: props =>
+                                <MuiTextField
+                                    onChange={e => {
+                                        let data = { ...props.rowData };
+                                        data.salesqtypieces = e.target.value;
+                                        let salesqtycases = isNaN(data.salesqtycases) ? 0 : data.salesqtycases;
+                                        let freeqtycases = isNaN(data.freeqtycases) ? 0 : data.freeqtycases;
+                                        let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
+                                        let freeqtypieces = isNaN(data.freeqtypieces) ? 0 : data.freeqtypieces;
+                                        let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
+                                        data.grossamount = (((salesqtycases * piecespercase) + salesqtypieces) - ((freeqtycases * piecespercase) - freeqtypieces)) * data.price;
+                                        props.onRowDataChange(data);
+                                    }}
+                                    type="number"
+                                    helperText={props.helperText}
+                                    error={props.error}
+                                    variant="standard"
+                                    value={props.value}
+                                />
+                            ,
                             validate: (rowData) =>
                                 rowData.salesqtypieces === undefined
                                     ? { isValid: false, helperText: 'Required *' }
@@ -263,10 +365,30 @@ export default function StepThree(props) {
                             type: 'numeric',
                             initialEditValue: 0,
                             cellStyle: {
-                                width: '8%',
+                                width: '7%',
                                 padding: "10px 5px 10px 7px",
-                                textAlign: 'right'
+                                textAlign: 'center'
                             },
+                            editComponent: props =>
+                                <MuiTextField
+                                    onChange={e => {
+                                        let data = { ...props.rowData };
+                                        data.freeqtycases = e.target.value;
+                                        let salesqtycases = isNaN(data.salesqtycases) ? 0 : data.salesqtycases;
+                                        let freeqtycases = isNaN(data.freeqtycases) ? 0 : data.freeqtycases;
+                                        let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
+                                        let freeqtypieces = isNaN(data.freeqtypieces) ? 0 : data.freeqtypieces;
+                                        let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
+                                        data.grossamount = (((salesqtycases * piecespercase) + salesqtypieces) - ((freeqtycases * piecespercase) - freeqtypieces)) * data.price;
+                                        props.onRowDataChange(data);
+                                    }}
+                                    type="number"
+                                    helperText={props.helperText}
+                                    error={props.error}
+                                    variant="standard"
+                                    value={props.value}
+                                />
+                            ,
                             validate: (rowData) =>
                                 rowData.freeqtycases === undefined
                                     ? { isValid: false, helperText: 'Required *' }
@@ -281,10 +403,30 @@ export default function StepThree(props) {
                             type: 'numeric',
                             initialEditValue: 0,
                             cellStyle: {
-                                width: '8%',
+                                width: '7%',
                                 padding: "10px 5px 10px 7px",
-                                textAlign: 'right'
+                                textAlign: 'center'
                             },
+                            editComponent: props =>
+                                <MuiTextField
+                                    onChange={e => {
+                                        let data = { ...props.rowData };
+                                        data.freeqtypieces = e.target.value;
+                                        let salesqtycases = isNaN(data.salesqtycases) ? 0 : data.salesqtycases;
+                                        let freeqtycases = isNaN(data.freeqtycases) ? 0 : data.freeqtycases;
+                                        let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
+                                        let freeqtypieces = isNaN(data.freeqtypieces) ? 0 : data.freeqtypieces;
+                                        let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
+                                        data.grossamount = (((salesqtycases * piecespercase) + salesqtypieces) - ((freeqtycases * piecespercase) - freeqtypieces)) * data.price;
+                                        props.onRowDataChange(data);
+                                    }}
+                                    type="number"
+                                    helperText={props.helperText}
+                                    error={props.error}
+                                    variant="standard"
+                                    value={props.value}
+                                />
+                            ,
                             validate: (rowData) =>
                                 rowData.freeqtypieces === undefined
                                     ? { isValid: false, helperText: 'Required *' }
@@ -301,7 +443,7 @@ export default function StepThree(props) {
                             cellStyle: {
                                 width: '7%',
                                 padding: "10px 5px 10px 7px",
-                                textAlign: 'right'
+                                textAlign: 'center'
                             },
                             validate: (rowData) =>
                                 rowData.damaged === undefined
@@ -319,7 +461,7 @@ export default function StepThree(props) {
                             cellStyle: {
                                 width: '7%',
                                 padding: "10px 5px 10px 7px",
-                                textAlign: 'right'
+                                textAlign: 'center'
                             },
                             validate: (rowData) =>
                                 rowData.return === undefined
@@ -330,25 +472,13 @@ export default function StepThree(props) {
 
                         },
                         {
-                            title: "Price",
-                            field: "price",
-                            editable: 'never',
-                            hidden: true,
-                            type: 'numeric',
-                            cellStyle: {
-                                width: '8%',
-                                padding: "10px 5px 10px 7px",
-                                textAlign: 'left'
-                            },
-                        },
-                        {
                             title: "Gross Amount",
                             field: "grossamount",
                             editable: 'never',
                             type: 'numeric',
                             cellStyle: {
                                 width: '14%',
-                                padding: "10px 5px 10px 7px",
+                                padding: "10px 10px 10px 7px",
                                 textAlign: 'right'
                             },
                         }
@@ -433,9 +563,12 @@ export default function StepThree(props) {
 
                 <div className={style.nextBtn}>
                     <Button
-                        color="primary"
                         variant="contained"
                         onClick={() => completeFormStep()}
+                        style={{
+                            backgroundColor: '#20369f',
+                            color: 'white'
+                        }}
                     >
                         Next
                     </Button>

@@ -41,6 +41,7 @@ export default function SalesAndInvoice() {
     const [openPopup, setOpenPopup] = useState(false);
 
     const [nextOrderId, setNextOrderId] = useState();
+    const [total, setTotal] = useState();
     const [reRender, setReRender] = useState(null);
 
     // const handleAlert = () => {
@@ -240,6 +241,8 @@ export default function SalesAndInvoice() {
                         productOptions={productOptions}
                         customerOptions={customerOptions}
                         nextOrderId={nextOrderId}
+                        total={total}
+                        setTotal={setTotal}
                     />
                 </PopUp>
                 <Snackbar

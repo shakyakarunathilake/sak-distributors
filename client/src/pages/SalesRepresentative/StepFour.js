@@ -43,7 +43,7 @@ const useStyles = makeStyles({
 
 export default function StepFour(props) {
 
-    const { setOpenPopup, data, backFormStep, onSubmit } = props;
+    const { setOpenPopup, data, backFormStep, onSubmit, total } = props;
 
     const classes = useStyles();
 
@@ -83,7 +83,7 @@ export default function StepFour(props) {
                                         <Typography style={{ fontWeight: 600 }}> Total </Typography>
                                     </Grid>
                                     <Grid item align="Right" style={{ margin: "0px 0px 0px auto" }}>
-                                        <Typography style={{ fontWeight: 600 }}> </Typography>
+                                        <Typography style={{ fontWeight: 600 }}>{total}</Typography>
                                     </Grid>
                                 </Grid>
                             </td>
@@ -91,14 +91,24 @@ export default function StepFour(props) {
                         Header: props => (
                             <TableHead {...props} >
                                 <TableRow className={classes.row1}>
-                                    <TableCell width="34%" padding="none" rowSpan={2}>
+                                    <TableCell width="37%" padding="none" rowSpan={2}>
                                         <div style={{ padding: '0 10px' }}>
                                             Description
                                         </div>
                                     </TableCell>
-                                    <TableCell padding="none" width="10%" rowSpan={2} align="center">
+                                    <TableCell padding="none" width="6%" rowSpan={2} align="center">
                                         <div style={{ padding: '0 10px' }}>
-                                            Retail Price
+                                            Pcs/Case
+                                        </div>
+                                    </TableCell>
+                                    <TableCell padding="none" width="6%" rowSpan={2} align="center">
+                                        <div style={{ padding: '0 10px' }}>
+                                            Price
+                                        </div>
+                                    </TableCell>
+                                    <TableCell padding="none" width="6%" rowSpan={2} align="center">
+                                        <div style={{ padding: '0 10px' }}>
+                                            MRP
                                         </div>
                                     </TableCell>
                                     <TableCell padding="none" colSpan={2} align="center">
@@ -110,12 +120,7 @@ export default function StepFour(props) {
                                     <TableCell padding="none" colSpan={2} align="center">
                                         Return Qty.
                                     </TableCell>
-                                    <TableCell padding="none" width="10%" rowSpan={2} align="center">
-                                        <div style={{ padding: '0 10px' }}>
-                                            Price
-                                        </div>
-                                    </TableCell>
-                                    <TableCell padding="none" width="10%" rowSpan={2} align="center">
+                                    <TableCell padding="none" width="9%" rowSpan={2} align="center">
                                         <div style={{ padding: '0 10px' }}>
                                             Gross Amount
                                         </div>
@@ -138,17 +143,35 @@ export default function StepFour(props) {
                             field: "description",
                             cellStyle: {
                                 padding: "12px 5px 12px 7px",
-                                width: '34%',
+                                width: '37%',
                                 textAlign: 'left'
                             },
                         },
                         {
-                            title: "Retail Price",
-                            field: "retailprice",
+                            title: "Pieces Per Cases",
+                            field: "piecespercase",
                             cellStyle: {
-                                width: '10%',
+                                width: '6%',
                                 padding: "12px 5px 12px 7px",
-                                textAlign: 'right'
+                                textAlign: 'center'
+                            },
+                        },
+                        {
+                            title: "Price",
+                            field: "price",
+                            cellStyle: {
+                                width: '6%',
+                                padding: "12px 5px 12px 7px",
+                                textAlign: 'center'
+                            },
+                        },
+                        {
+                            title: "MRP",
+                            field: "mrp",
+                            cellStyle: {
+                                width: '6%',
+                                padding: "12px 5px 12px 7px",
+                                textAlign: 'center'
                             },
                         },
                         {
@@ -157,7 +180,7 @@ export default function StepFour(props) {
                             cellStyle: {
                                 padding: "12px 5px 12px 7px",
                                 width: '6%',
-                                textAlign: 'right'
+                                textAlign: 'center'
                             },
                         },
                         {
@@ -166,7 +189,7 @@ export default function StepFour(props) {
                             cellStyle: {
                                 width: '6%',
                                 padding: "12px 5px 12px 7px",
-                                textAlign: 'right'
+                                textAlign: 'center'
                             },
                         },
                         {
@@ -175,7 +198,7 @@ export default function StepFour(props) {
                             cellStyle: {
                                 width: '6%',
                                 padding: "12px 5px 12px 7px",
-                                textAlign: 'right'
+                                textAlign: 'center'
                             },
                         },
                         {
@@ -184,7 +207,7 @@ export default function StepFour(props) {
                             cellStyle: {
                                 width: '6%',
                                 padding: "12px 5px 12px 7px",
-                                textAlign: 'right'
+                                textAlign: 'center'
                             },
                         },
                         {
@@ -193,7 +216,7 @@ export default function StepFour(props) {
                             cellStyle: {
                                 width: '6%',
                                 padding: "12px 5px 12px 7px",
-                                textAlign: 'right'
+                                textAlign: 'center'
                             },
                         },
                         {
@@ -202,24 +225,15 @@ export default function StepFour(props) {
                             cellStyle: {
                                 width: '6%',
                                 padding: "12px 5px 12px 7px",
-                                textAlign: 'right'
-                            },
-                        },
-                        {
-                            title: "Price",
-                            field: "price",
-                            cellStyle: {
-                                width: '10%',
-                                padding: "12px 5px 12px 7px",
-                                textAlign: 'right'
+                                textAlign: 'center'
                             },
                         },
                         {
                             title: "Gross Amount",
                             field: "grossamount",
                             cellStyle: {
-                                width: '10%',
-                                padding: "12px 5px 12px 7px",
+                                width: '9%',
+                                padding: "12px 12px 12px 7px",
                                 textAlign: 'right'
                             },
                         }

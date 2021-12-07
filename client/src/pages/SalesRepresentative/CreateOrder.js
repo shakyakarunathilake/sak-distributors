@@ -12,7 +12,7 @@ import StepFour from './StepFour';
 
 export default function CreateOrder(props) {
 
-    const { setOpenPopup, customerOptions, productOptions, nextOrderId } = props;
+    const { setOpenPopup, customerOptions, productOptions, nextOrderId, total, setTotal } = props;
 
     const { handleSubmit } = useForm({ mode: "all" });
 
@@ -77,6 +77,7 @@ export default function CreateOrder(props) {
                         productOptions={productOptions}
                         backFormStep={backFormStep}
                         completeFormStep={completeFormStep}
+                        setTotal={setTotal}
                     />
                 </section>
             }
@@ -89,6 +90,7 @@ export default function CreateOrder(props) {
                         setOpenPopup={setOpenPopup}
                         backFormStep={backFormStep}
                         onSubmit={onSubmit}
+                        total={total}
                     />
                 </section>
             }

@@ -192,12 +192,28 @@ router.get("/product-options", (req, res, next) => {
         .exec()
         .then(doc => {
 
+            let productoptions = []
+
             const data = doc.filter(x => x.status === "Active");
 
-            const productoptions = data.map(x => ({
-                title: x.name,
-                id: x.productid,
-            }))
+            data.map(product => {
+
+                const activeVariants = product.variants.filter(x => x.status === "Active");
+
+                activeVariants.forEach(variant => {
+                    productoptions.push({
+                        productid: product.productid,
+                        variantid: variant.variantid,
+                        name: product.name,
+                        mrp: variant.mrp,
+                        sellingprice: variant.sellingprice,
+                        type: variant.type,
+                        offercaption: variant.offercaption,
+                        piecespercase: 24,
+                        title: `${product.productid}${variant.variantid}-${product.name}`,
+                    })
+                })
+            })
 
             res.status(200).json({
                 message: "Handeling GET requests to /product-options",

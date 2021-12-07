@@ -31,8 +31,8 @@ export default function StepOne(props) {
     const deliveryDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
 
 
-    const { formState: { isValid, errors }, control, setValue, getValues, reset, trigger } = useForm({
-        mode: "onChange",
+    const { formState: { isValid, errors }, control, setValue, getValues, reset, clearErrors, trigger } = useForm({
+        mode: "onBlur",
         defaultValues: {
             customertype: '',
             orderno: `${JSON.parse(sessionStorage.getItem("Auth")).employeeid}${nextOrderId}`,
@@ -61,6 +61,7 @@ export default function StepOne(props) {
             setValue("shippingaddress", option.shippingaddress);
             setValue("route", option.route);
             setValue("contactnumber", option.contactnumber);
+            clearErrors();
         }
     }
 
