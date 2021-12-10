@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-
 import MaterialTable from 'material-table';
 
 //Shared Components
