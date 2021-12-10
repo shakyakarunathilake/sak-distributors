@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import MaterialTable from 'material-table';
 
 //Shared Components
 import Page from '../../shared/Page/Page';
@@ -14,6 +15,7 @@ import MuiAlert from '@mui/material/Alert';
 
 //Material UI Icons
 import AddCircleIcon from '@material-ui/icons/AddCircle';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 
 //Form
 import CreatePurchaseOrder from './CreatePurchaseOrder';
@@ -31,8 +33,22 @@ export default function ManagePurchaseOrder() {
     const [open, setOpen] = useState(false);
     const [alert, setAlert] = useState();
     const [openPopup, setOpenPopup] = useState(false);
+    const [action, setAction] = useState('');
+    const [records, setRecords] = useState([]);
+    const [poRecords, setPORecords] = useState();
     const [supplierOptions, setSupplierOptions] = useState([]);
     const [productOptions, setProductOptions] = useState([]);
+
+    useEffect(() => {
+        axios
+            .get("http://localhost:8080/purchaseorder/get-all-purchaseorder-table-data")
+            .then(res => {
+                setRecords(res.data.purchaseorder);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }, [])
 
     const getOptions = () => {
         axios
@@ -88,6 +104,17 @@ export default function ManagePurchaseOrder() {
         ;
     }
 
+    const openInPopup = ponumber => {
+        axios
+            .get(`http://localhost:8080/purchaseorder/${ponumber}`)
+            .then(res => {
+                setPORecords(res.data.purchaseorder);
+                setOpenPopup(true);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
 
     return (
         <Page title="Manage Purchase Order">
@@ -114,6 +141,71 @@ export default function ManagePurchaseOrder() {
                 </div>
 
                 <div className={style.pagecontent}>
+                    <MaterialTable
+                        columns={[
+                            {
+                                title: "PO Number", field: "ponumber", render: rowData => {
+                                    return (
+                                        <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.ponumber}</p>
+                                    )
+                                }
+                            },
+                            { title: "Supplier", field: "supplier" },
+                            { title: "Created By", field: "createdby" },
+                            { title: "Approved By", field: "approvedby" },
+                            {
+                                title: "Status", field: "status", render: rowData => {
+                                    return (
+                                        rowData.status === "Delivered" ?
+                                            <p style={{ padding: "0", margin: "0", color: "#4cbb17", fontWeight: "700" }}>{rowData.status}</p> :
+                                            rowData.status === "Pending" ?
+                                                <p style={{ padding: "0", margin: "0", color: "red", fontWeight: "700" }}>{rowData.status}</p> :
+                                                <p style={{ padding: "0", margin: "0", color: "#eed202", fontWeight: "700" }}>{rowData.status}</p>
+
+                                    )
+                                }
+                            },
+                        ]}
+                        data={records}
+                        options={{
+                            toolbar: false,
+                            filtering: true,
+                            search: false,
+                            paging: false,
+                            actionsColumnIndex: -1,
+                            maxBodyHeight: "calc(100vh - 199.27px)",
+                            headerStyle: {
+                                position: "sticky",
+                                top: "0",
+                                backgroundColor: '#20369f',
+                                color: '#FFF',
+                                fontSize: "0.8em"
+                            },
+                            rowStyle: rowData => ({
+                                fontSize: "0.8em",
+                                backgroundColor: (rowData.tableData.id % 2 === 0) ? '#ebebeb' : '#ffffff'
+                            })
+                        }}
+                        actions={[
+                            {
+                                icon: VisibilityIcon,
+                                tooltip: 'View',
+                                onClick: (event, rowData) => {
+                                    setAction('View');
+                                    openInPopup(rowData.ponumber);
+                                }
+                            },
+                            {
+                                icon: 'edit',
+                                tooltip: 'Edit',
+                                onClick: (event, rowData) => {
+                                    setAction('Edit');
+                                    openInPopup(rowData.ponumber);
+                                }
+                            }
+                        ]}
+                    />
+
                 </div>
 
             </div>
