@@ -3,15 +3,6 @@ import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import './App.scss';
 
-//Development Stage
-import Page from '../shared/Page/Page.js';
-import EmployeeForm from '../pages/HR/EmployeeForm';
-import ViewEmployee from '../pages/HR/ViewEmployee';
-import ApproveSubmit from '../pages/HR/ApproveSubmit';
-import CustomerForm from '../pages/Manager/CustomerForm';
-import VariantForm from '../pages/Manager/VariantForm';
-import ViewProductVariant from '../pages/Manager/ViewProductVariant';
-
 import Login from '../pages/LoginPage/Login';
 import ForgotPassword from '../pages/ForgotPassword/ForgotPassword';
 
@@ -32,7 +23,6 @@ import ManageSupplier from '../pages/Manager/ManageSupplier';
 import OrderHistory from '../pages/Manager/OrderHistory';
 
 //Purchasing Manager
-import CreatePurchaseOrder from '../pages/PurchasingManager/CreatePurchaseOrder';
 import ManagePurchaseOrder from '../pages/PurchasingManager/ManagePurchaseOrder';
 import ManageQuotations from '../pages/PurchasingManager/ManageQuotations';
 import ManageSales from '../pages/PurchasingManager/ManageSales';
@@ -77,15 +67,6 @@ function App() {
       {
         <BrowserRouter>
           <Switch>
-            {/* Development Stage */}
-            <Route exact path='/page' component={Page} />
-            <Route exact path='/employee-form' component={EmployeeForm} />
-            <Route exact path='/view-employee' component={ViewEmployee} />
-            <Route exact path='/approve-submit' component={ApproveSubmit} />
-            <Route exact path='/customer-form' component={CustomerForm} />
-            <Route exact path='/add-new-variant' component={VariantForm} />
-            <Route exact path='/view-product-variant' component={ViewProductVariant} />
-
             <Route exact path='/' component={Login} />
             <Route exact path='/forgot-password' component={ForgotPassword} />
             <Route exact path='/change-password' component={ChangePassword} />
@@ -112,7 +93,6 @@ function App() {
             <Route exact path='/purchasing-manager/dashboard' component={Dashboard} />
             <Route exact path='/purchasing-manager/manage-products' component={ManageProduct} />
             <Route exact path='/purchasing-manager/manage-sales' component={ManageSales} />
-            <Route exact path='/purchasing-manager/create-purchase-order' component={CreatePurchaseOrder} />
             <Route exact path='/purchasing-manager/manage-purchase-orders' component={ManagePurchaseOrder} />
             <Route exact path='/purchasing-manager/manage-quotations' component={ManageQuotations} />
             <Route exact path='/purchasing-manager/supplier-payment' component={SupplierPayment} />
