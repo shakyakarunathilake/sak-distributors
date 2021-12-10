@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 
 //Shared Components
@@ -60,7 +60,8 @@ export default function StepOne(props) {
     const {
         data,
         setData,
-        setFormData,
+        setOrderFormData,
+        setConfirmation,
         handleClosePopUp,
         resetFormOpenPopup,
         setResetFormOpenPopup,
@@ -70,8 +71,6 @@ export default function StepOne(props) {
         productOptions,
     } = props;
 
-    const { getValues, setValue, reset, trigger, control, formState: { errors, isValid } } = useForm({ mode: "onChange" });
-
     const addActionRef = React.useRef();
 
     const today = new Date();
@@ -80,6 +79,23 @@ export default function StepOne(props) {
     const dateTime = date + ' ' + time;
 
     const podate = today.getFullYear().toString().substr(-2) + (today.getMonth() + 1) + today.getDate();
+
+    const { getValues, setValue, reset, trigger, control, formState: { errors, isValid } } = useForm({
+        mode: "onChange",
+        defaultValues: {
+            ponumber: '',
+            supplier: '',
+            grosstotal: 0,
+            receiveddiscounts: 0,
+            damagedexpireditems: 0,
+            total: 0,
+            // customerid: ,
+            customername: "S.A.K Distributors",
+            customeraddress: "No.233, Kiriwallapitiya, Rambukkana, Sri Lanka",
+            contactnumber: "0352264009",
+            createdat: dateTime,
+        }
+    });
 
     const getProductItemList = useMemo(() => {
         const selectedDescriptions = data.map(x => x.description);
@@ -92,31 +108,21 @@ export default function StepOne(props) {
         console.log("PRODUCT ITEM LIST: ", productItemList);
 
         return productItemList;
-    }, [data, getValues('supplier')]);
+    }, [data, getValues('supplier'), getValues, productOptions]);
 
     const resetForm = () => {
         handleResetFormClosePopUp();
-        reset({
-            ponumber: '',
-            createddat: '',
-            supplier: '',
-            grosstotal: '',
-            receiveddiscounts: '',
-            damagedexpireditems: '',
-            total: ''
-        });
+        reset();
         setData([]);
     }
 
-    const getTotal = () => {
-        let total = 0;
+    const getGrossTotal = () => {
+        let grosstotal = 0;
         for (let i = 0; i < data.length; i++) {
-            total = total + data[i].value;
+            grosstotal = grosstotal + data[i].value;
         }
-        setValue("total", total);
-        setValue("receiveddiscounts", 0);
-        setValue("damagedexpireditems", 0);
-        return total;
+        setValue("grosstotal", grosstotal);
+        return grosstotal;
     }
 
     const handleAddNewItem = () => {
@@ -132,13 +138,13 @@ export default function StepOne(props) {
         const supplier = supplierOptions.filter(x => x.title === getValues("supplier"))
 
         setValue("ponumber", supplier[0].abbreviation + podate)
-        setValue("createdat", dateTime);
-        // setValue("customerid", option.customerid);
-        setValue("customername", "S.A.K Distributors");
-        setValue("customeraddress", "No.233, Kiriwallapitiya, Rambukkana, Sri Lanka");
-        setValue("contactnumber", "0352264009")
+        setValue('total', getValues('grosstotal') - (getValues('receiveddiscounts') + getValues('damagedexpireditems')));
 
-        setFormData(getValues());
+        console.log("GET VALUES", getValues());
+
+
+        setOrderFormData(getValues());
+        setConfirmation(true);
         completeFormStep();
     }
 
@@ -235,10 +241,10 @@ export default function StepOne(props) {
                                 }} >
                                     <Grid container style={{ background: "#f5f5f5", padding: 15 }}>
                                         <Grid item align="Left">
-                                            <Typography style={{ fontWeight: 600 }}> Total </Typography>
+                                            <Typography style={{ fontWeight: 600 }}> Gross Total (Rs.) </Typography>
                                         </Grid>
                                         <Grid item align="Right" style={{ margin: "0px 102.56px 0px auto" }}>
-                                            <Typography style={{ fontWeight: 600 }}> {getTotal()} </Typography>
+                                            <Typography style={{ fontWeight: 600 }}> {getGrossTotal()} </Typography>
                                         </Grid>
                                     </Grid>
                                 </td>
@@ -246,12 +252,17 @@ export default function StepOne(props) {
                             Header: props => (
                                 <TableHead {...props} >
                                     <TableRow className={classes.row1}>
-                                        <TableCell width="28%" padding="none" rowSpan={2}>
+                                        <TableCell width="26%" padding="none" rowSpan={2}>
                                             <div style={{ padding: '0 10px' }}>
                                                 Description
                                             </div>
                                         </TableCell>
-                                        <TableCell width="8%" padding="none" rowSpan={2} align="center">
+                                        <TableCell width="7%" padding="none" rowSpan={2} align="center">
+                                            <div style={{ padding: '0 10px' }}>
+                                                Pieces per case
+                                            </div>
+                                        </TableCell>
+                                        <TableCell width="7%" padding="none" rowSpan={2} align="center">
                                             <div style={{ padding: '0 10px' }}>
                                                 List Price
                                             </div>
@@ -265,7 +276,7 @@ export default function StepOne(props) {
                                         <TableCell padding="none" colSpan={2} align="center">
                                             Return Qty.
                                         </TableCell>
-                                        <TableCell padding="none" width="14%" rowSpan={2} align="center">
+                                        <TableCell padding="none" width="10%" rowSpan={2} align="center">
                                             <div style={{ padding: '0 10px' }}>
                                                 Value
                                             </div>
@@ -294,8 +305,11 @@ export default function StepOne(props) {
                                         // options={selectedProductOptions || []}
                                         options={getProductItemList}
                                         getOptionLabel={(option) => option.name}
-                                        onChange={e => {
-                                            props.onChange(e.target.innerText)
+                                        onChange={(e, option) => {
+                                            let data = { ...props.rowData };
+                                            data.description = e.target.innerText;
+                                            data.piecespercase = option.piecespercase;
+                                            props.onRowDataChange(data);
                                         }}
                                         inputValue={props.value}
                                         renderInput={(params) =>
@@ -319,13 +333,20 @@ export default function StepOne(props) {
                             {
                                 title: "Pieces Per Cases",
                                 field: "piecespercase",
-                                hidden: true,
+                                editable: 'never',
+                                cellStyle: {
+                                    padding: "10px 5px 10px 7px",
+                                    width: '7%',
+                                    textAlign: 'center'
+                                },
                             },
                             {
                                 field: "listprice",
                                 type: 'numeric',
                                 cellStyle: {
-                                    cellWidth: 'min-content'
+                                    padding: "10px 5px 10px 7px",
+                                    width: '7%',
+                                    textAlign: 'center'
                                 },
                                 validate: (rowData) =>
                                     rowData.listprice === undefined

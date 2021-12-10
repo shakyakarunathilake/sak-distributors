@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 
 const Employee = require("../models/employee.model");
 const Order = require("../models/order.model");
+const PurchaseOrder = require("../models/purchaseorder.model");
 const Product = require("../models/product.model");
 const Customer = require("../models/customer.model");
 const Supplier = require("../models/supplier.model");

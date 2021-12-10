@@ -30,8 +30,10 @@ router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) =
         supplier: req.body.supplier,
         createdat: createdat,
         createdby: req.body.createdby,
-        items: items,
+        approvedat: req.body.approvedat,
         approvedby: req.body.approvedby,
+        status: 'Pending',
+        items: items,
         grosstotal: req.body.grosstotal,
         receiveddiscounts: req.body.receiveddiscounts,
         damagedexpireditems: req.body.damagedexpireditems,
@@ -42,35 +44,30 @@ router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) =
         .save()
         .then(result => {
 
-            const grn = new GRN({
-                _id: new mongoose.Types.ObjectId(),
-                ponumber: result.ponumber,
-                grnnumber: `GRN-${result.ponumber}`,
-                supplier: result.supplier,
-                status: "Pending",
-                items: items,
-                pocreatedat: createdat,
-                pocreatedby: result.createdby,
-                createdat: "Pending",
-                createdby: "Pending",
-                grosstotal: result.grosstotal,
-                receiveddiscounts: result.receiveddiscounts,
-                damagedexpireditems: result.damagedexpireditems,
-                total: result.total,
-                grntotal: "Pending",
-            });
+            // const grn = new GRN({
+            //     _id: new mongoose.Types.ObjectId(),
+            //     ponumber: result.ponumber,
+            //     grnnumber: `GRN-${result.ponumber}`,
+            //     status: "Pending",
+            //     items: items,
+            //     addedat: "Pending",
+            //     addedby: "Pending",
+            //     grosstotal: result.grosstotal,
+            //     damagedmissingitems: 0,
+            //     total: result.total,
+            // });
 
-            grn
-                .save()
-                .then(result => { console.log("GRN CREATED: ", result) })
-                .catch(err => {
-                    console.log("ERROR: ", err);
+            // grn
+            //     .save()
+            //     .then(result => { console.log("GRN CREATED: ", result) })
+            //     .catch(err => {
+            //         console.log("ERROR: ", err);
 
-                    res.status(200).json({
-                        type: 'error',
-                        alert: `Something went wrong. Could not add purchaseorder`,
-                    });
-                })
+            //         res.status(200).json({
+            //             type: 'error',
+            //             alert: `Something went wrong. Could not add purchaseorder`,
+            //         });
+            //     })
 
             res.status(201).json({
                 message: "Handeling POST requests to /purchaseorders/create-purchaseorder, PURCHASE ORDER CREATED",
@@ -97,25 +94,19 @@ router.get("/get-all-purchaseorder-table-data", (req, res, next) => {
         .exec()
         .then(doc => {
 
-            const tbody = doc.map(x => ({
+            const purchaseorder = doc.map(x => ({
                 ponumber: x.ponumber,
                 supplier: x.supplier,
-                status: x.status,
-                items: x.items,
                 createdby: x.createdby,
-                createdat: x.createdat,
                 approvedby: x.approvedby,
-                grosstotal: x.grosstotal,
-                receiveddiscounts: x.receiveddiscounts,
-                damagedexpireditems: x.damagedexpireditems,
-                total: x.total,
+                status: x.status,
             }))
 
-            console.log("TBODY: ", tbody);
+            console.log("PURCHASE ORDER: ", purchaseorder);
 
             res.status(201).json({
                 message: "Handeling GET requests to /get-all-purchaseorder-table-data",
-                tbody: tbody,
+                purchaseorder: purchaseorder,
             });
         })
         .catch(err => {
