@@ -22,7 +22,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import style from './StepThree.module.scss';
 import { makeStyles } from '@material-ui/core/styles';
 
-
 const useStyles = makeStyles({
     row1: {
         "& .MuiTableCell-head": {
@@ -47,8 +46,6 @@ const useStyles = makeStyles({
 export default function StepThree(props) {
 
     const { data, setData, setOpenPopup, productOptions, backFormStep, completeFormStep, setTotal } = props;
-
-    const [inputValue, setInputValue] = React.useState('');
 
     const classes = useStyles();
 
