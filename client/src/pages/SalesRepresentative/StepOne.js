@@ -24,29 +24,27 @@ export default function StepOne(props) {
 
     const { customerOptions, nextOrderId, completeFormStep, setFormData, customerType, setCustomerType, setOpenPopup, data } = props;
 
-    const today = new Date();
-    const dateTime = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`) + 'T' + (today.getHours() > 9 ? today.getHours() : `0${today.getHours()}`) + ':' + (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`);
+    const { formState: { isValid, errors }, control, setValue, getValues, reset, clearErrors, trigger } = useForm({ mode: "onBlur" });
 
-    today.setDate(today.getDate() + 3);
-    const deliveryDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+    useEffect(() => {
+        const today = new Date();
+        const dateTime = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`) + 'T' + (today.getHours() > 9 ? today.getHours() : `0${today.getHours()}`) + ':' + (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`);
 
+        today.setDate(today.getDate() + 3);
+        const deliveryDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
 
-    const { formState: { isValid, errors }, control, setValue, getValues, reset, clearErrors, trigger } = useForm({
-        mode: "onBlur",
-        defaultValues: {
-            customertype: '',
-            orderno: `${JSON.parse(sessionStorage.getItem("Auth")).employeeid}${nextOrderId}`,
-            orderplacedat: dateTime,
-            deliverydate: deliveryDate,
-            salesrepresentative: `${JSON.parse(sessionStorage.getItem("Auth")).firstname} ${JSON.parse(sessionStorage.getItem("Auth")).lastname} (${JSON.parse(sessionStorage.getItem("Auth")).employeeid})`,
-            customer: '',
-            storename: '',
-            customerid: '',
-            shippingaddress: '',
-            contactnumber: '',
-            route: '',
-        }
-    });
+        setValue("customertype", '');
+        setValue("orderno", `${JSON.parse(sessionStorage.getItem("Auth")).employeeid}${nextOrderId}`);
+        setValue("orderplacedat", dateTime);
+        setValue("deliverydate", deliveryDate);
+        setValue("salesrepresentative", `${JSON.parse(sessionStorage.getItem("Auth")).firstname} ${JSON.parse(sessionStorage.getItem("Auth")).lastname} (${JSON.parse(sessionStorage.getItem("Auth")).employeeid})`);
+        setValue("customer", '');
+        setValue("storename", '');
+        setValue("customerid", '');
+        setValue("shippingaddress", '');
+        setValue("contactnumber", '');
+        setValue("route", '');
+    }, [setValue, nextOrderId])
 
     const handleCustomerTypeChange = (event, option) => {
         setValue("customertype", option.props.value);

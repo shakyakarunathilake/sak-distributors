@@ -124,6 +124,7 @@ export default function SalesAndInvoice() {
             .get("http://localhost:8080/orders/get-next-invoiceno")
             .then(res => {
                 setNextOrderId(res.data.nextinvoiceno);
+                getOptions();
             })
             .catch(err => {
                 console.log(err);
@@ -149,6 +150,8 @@ export default function SalesAndInvoice() {
             .catch(err => {
                 console.log(err);
             })
+
+        setOpenPopup(true);
     }
 
     return (
@@ -168,8 +171,6 @@ export default function SalesAndInvoice() {
                                 setAction('Create');
                                 setOrderRecords(null);
                                 getNextOrderId();
-                                getOptions();
-                                setOpenPopup(true);
                             }
                         }
                     >
