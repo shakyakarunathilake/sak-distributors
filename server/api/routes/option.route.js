@@ -29,6 +29,7 @@ router.get("/product-options-for-purchase-order", (req, res, next) => {
                 productid: x.productid,
                 name: x.name,
                 supplier: x.supplier,
+                piecespercase: 24,
             }))
 
             res.status(200).json({
