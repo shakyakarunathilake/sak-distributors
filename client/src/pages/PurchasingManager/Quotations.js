@@ -11,8 +11,6 @@ import PurchaseOrderAnalytics from './PurchaseOrderAnalytics';
 
 export default function Quotations(props) {
 
-    const { } = props
-
     return (
 
         <div className={style.container}>
