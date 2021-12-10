@@ -13,12 +13,12 @@ export default function CreatePurchaseOrder(props) {
 
     const { setOpenPopup, productOptions, supplierOptions, addOrder, openPopup, handleClosePopUp } = props;
 
-    const { handleSubmit, setValue, reset } = useForm({ mode: "all" });
+    const { handleSubmit } = useForm({ mode: "all" });
 
-    const [formStep, setFormStep] = useState(1);
     const [data, setData] = useState([]);
-
-    const [selectedProductOptions, setSelectedProductOptions] = useState([]);
+    const [formStep, setFormStep] = useState(0);
+    const [formData, setFormData] = useState({});
+    const [resetFormOpenPopup, setResetFormOpenPopup] = useState(false);
 
     const completeFormStep = () => {
         setFormStep(x => x + 1);
@@ -28,43 +28,8 @@ export default function CreatePurchaseOrder(props) {
         setFormStep(x => x - 1);
     }
 
-    const getTotal = () => {
-        let total = 0;
-        for (let i = 0; i < data.length; i++) {
-            total = total + data[i].value;
-        }
-        setValue("total", total);
-        setValue("receiveddiscounts", 0);
-        setValue("damagedexpireditems", 0);
-        return total;
-    }
-
-    // const getProductItemList = useMemo(() => {
-    //     const selectedDescriptions = data.map(x => x.description);
-    //     console.log("SELECTED DESCRIPTIONS: ", selectedDescriptions);
-
-    //     const supplierProducts = productOptions.filter(x => x.supplier === getValues('supplier'));
-    //     console.log("SUPPLIER PRODUCTS: ", supplierProducts);
-
-    //     const productItemList = supplierProducts.filter(x => selectedDescriptions.indexOf(x.name) === -1);
-    //     console.log("PRODUCT ITEM LIST: ", productItemList);
-
-    //     return productItemList;
-    // }, [data, getValues('supplier')]);
-
-
-    const resetForm = () => {
-        handleClosePopUp();
-        reset({
-            ponumber: '',
-            createddat: '',
-            supplier: '',
-            grosstotal: '',
-            receiveddiscounts: '',
-            damagedexpireditems: '',
-            total: ''
-        });
-        setData([]);
+    const handleResetFormClosePopUp = () => {
+        setResetFormOpenPopup(false)
     }
 
     const onSubmit = (values) => {
@@ -101,17 +66,18 @@ export default function CreatePurchaseOrder(props) {
                 <section className={formStep === 0 ? style.visible : style.hidden}>
 
                     <StepOne
-                        supplierOptions={supplierOptions}
-                        setSelectedProductOptions={setSelectedProductOptions}
-                        productOptions={productOptions}
                         data={data}
                         setData={setData}
-                        completeFormStep={completeFormStep}
                         openPopup={openPopup}
+                        setFormData={setFormData}
                         setOpenPopup={setOpenPopup}
-                        selectedProductOptions={selectedProductOptions}
                         handleClosePopUp={handleClosePopUp}
-                        resetForm={resetForm}
+                        resetFormOpenPopup={resetFormOpenPopup}
+                        setResetFormOpenPopup={setResetFormOpenPopup}
+                        handleResetFormClosePopUp={handleResetFormClosePopUp}
+                        completeFormStep={completeFormStep}
+                        supplierOptions={supplierOptions}
+                        productOptions={productOptions}
                     />
 
                 </section>
@@ -123,7 +89,9 @@ export default function CreatePurchaseOrder(props) {
                 <section className={formStep === 1 ? style.visible : style.hidden}>
 
                     <StepTwo
-                        getTotal={getTotal}
+                        // getTotal={getTotal}
+                        formData={formData}
+                        handleClosePopUp={handleClosePopUp}
                         data={data}
                         backFormStep={backFormStep}
                     />

@@ -1,8 +1,10 @@
 @import "../../styles/variables";
 
 .two {
-    width: calc(100vw - 80px);
-    height: calc(100vh - 215px);
+    display: grid;
+    grid-template-rows: min-content auto min-content;
+    height: inherit;
+    // box-sizing: border-box;
 
     Button {
         width: max-content;
@@ -12,35 +14,43 @@
     }
 
     .header {
-        display: grid;
-        grid-template-rows: min-content min-content;
-        font-size: 1.3em;
-        font-weight: 600;
-        padding: 10px;
-        text-align: left;
+        .title {
+            display: grid;
+            grid-template-columns: auto min-content;
+            font-size: 1.55em;
+            font-weight: 600;
+            .icon {
+                color: red;
+                &:hover {
+                    transform: scale(1.1);
+                }
+            }
+        }
 
         .step {
             margin: 5px 0 0 0;
             color: $primaryLight;
-            font-size: 0.6em;
+            font-size: 0.75em;
         }
     }
 
-    .orderDetails {
-        display: grid;
-        grid-template-columns: 50% 50%;
-        padding: 0px 20px;
+    .body {
 
-        .details {
-            margin: 5px 0 10px 0;
-            table-layout: auto !important;
-            width: 100% !important;
-            box-sizing: border-box !important;
+        .orderDetails {
+            display: grid;
+            grid-template-columns: 50% 50%;
+            padding: 25px 20px;
 
-            tr {
-                th {
-                    width: 200px !important;
-                    height: 30px;
+            .details {
+                table-layout: auto !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+
+                tr {
+                    th {
+                        width: 200px !important;
+                        height: 30px;
+                    }
                 }
             }
         }

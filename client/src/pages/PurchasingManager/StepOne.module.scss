@@ -3,8 +3,8 @@
 .one {
     display: grid;
     grid-template-rows: min-content auto min-content;
-    width: calc(100vw - 40px);
-    margin: 10px 20px;
+    height: inherit;
+    // box-sizing: border-box;
 
     Button {
         width: max-content;
@@ -39,7 +39,24 @@
         grid-template-columns: calc(60% - 20px) min-content calc(40% - 20px);
         text-align: right;
         margin: 20px 0 0 0;
-        
+
+        .purchaseOrder {
+            max-width: inherit;
+            height: inherit;
+
+            .btnRow {
+                display: grid;
+                grid-template-columns: 270px auto min-content;
+                margin: 15px 0;
+            }
+
+            .deleteItemBtn {
+                &:hover {
+                    color: red;
+                }
+            }
+        }
+
         .divider {
             margin: 0 20px;
         }

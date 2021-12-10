@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 //Shared Components
 import Page from '../../shared/Page/Page';
@@ -34,8 +34,7 @@ export default function ManagePurchaseOrder() {
     const [supplierOptions, setSupplierOptions] = useState([]);
     const [productOptions, setProductOptions] = useState([]);
 
-    useEffect(() => {
-
+    const getOptions = () => {
         axios
             .get("http://localhost:8080/options/supplier-options-for-purchase-order")
             .then(res => {
@@ -58,7 +57,7 @@ export default function ManagePurchaseOrder() {
                 console.log(err);
             })
 
-    }, []);
+    }
 
     const handleAlert = () => {
         setOpen(true);
@@ -103,7 +102,8 @@ export default function ManagePurchaseOrder() {
                         variant="contained"
                         onClick={
                             () => {
-                                window.location.replace("http://localhost:3000/purchasing-manager/create-purchase-order")
+                                getOptions();
+                                setOpenPopup(true);
                             }
                         }
                     >
@@ -124,11 +124,9 @@ export default function ManagePurchaseOrder() {
                 fullScreen={true}
             >
                 <CreatePurchaseOrder
-                    setOpenPopup={setOpenPopup}
                     productOptions={productOptions}
                     supplierOptions={supplierOptions}
                     addOrder={addOrder}
-                    openPopup={openPopup}
                     handleClosePopUp={handleClosePopUp}
                 />
             </PopUp>

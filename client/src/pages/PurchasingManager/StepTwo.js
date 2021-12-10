@@ -1,34 +1,75 @@
 import React from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 //Material UI 
 import { Button, Grid } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+
+//Material UI Icons
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
 //Material Table
 import MaterialTable from 'material-table';
 
 //SCSS styles
 import style from './StepTwo.module.scss';
+import { makeStyles } from '@material-ui/core/styles';
 
+const useStyles = makeStyles({
+    row1: {
+        "& .MuiTableCell-head": {
+            color: "white",
+            backgroundColor: "#20369f",
+            fontSize: "0.8em",
+            border: "none",
+            padding: "5px 0 2.5px 0"
+        },
+    },
+    row2: {
+        "& .MuiTableCell-head": {
+            color: "white",
+            backgroundColor: "#20369f",
+            fontSize: "0.8em",
+            border: "none",
+            padding: "2.5px 0 5px 0"
+        },
+    }
+});
 
 export default function StepTwo(props) {
 
-    const { getTotal, data, backFormStep } = props;
+    const classes = useStyles();
 
-    const { control, getValues } = useForm({ mode: "all" });
+    const { data, backFormStep, handleClosePopUp, formData } = props;
+
+    const { getValues } = useForm({ mode: "all" });
 
     return (
         <div className={style.two}>
 
             <div className={style.header}>
-                <div>
-                    Confirm and Submit Purchase Order
+
+                <div className={style.title}>
+                    <div>
+                        Create Purchase Order
+                    </div>
+                    <div>
+                        <HighlightOffIcon
+                            className={style.icon}
+                            onClick={() => { handleClosePopUp() }}
+                        />
+                    </div>
                 </div>
+
                 <div className={style.step}>
                     Step 2 of 2
                 </div>
+
             </div>
+
 
             <div className={style.body}>
 
@@ -39,43 +80,25 @@ export default function StepTwo(props) {
                             <tr>
                                 <th align="left">Name</th>
                                 <td align="left">
-                                    <Controller
-                                        name={"customername"}
-                                        control={control}
-                                        render={({ field: { value } }) => (
-                                            <Typography className={style.input}>
-                                                {value}
-                                            </Typography>
-                                        )}
-                                    />
+                                    <Typography className={style.input}>
+                                        {formData.customername}
+                                    </Typography>
                                 </td>
                             </tr>
                             <tr>
                                 <th align="left">Address</th>
                                 <td align="left">
-                                    <Controller
-                                        name={"customeraddress"}
-                                        control={control}
-                                        render={({ field: { value } }) => (
-                                            <Typography className={style.input}>
-                                                {value}
-                                            </Typography>
-                                        )}
-                                    />
+                                    <Typography className={style.input}>
+                                        {formData.customeraddress}
+                                    </Typography>
                                 </td>
                             </tr>
                             <tr>
                                 <th align="left">Contact No.</th>
                                 <td align="left">
-                                    <Controller
-                                        name={"contactnumber"}
-                                        control={control}
-                                        render={({ field: { value } }) => (
-                                            <Typography className={style.input}>
-                                                {value}
-                                            </Typography>
-                                        )}
-                                    />
+                                    <Typography className={style.input}>
+                                        {formData.contactnumber}
+                                    </Typography>
                                 </td>
                             </tr>
                         </tbody>
@@ -87,44 +110,26 @@ export default function StepTwo(props) {
                                 <th align="left">PO No.</th>
                                 <td align="left">
                                     {/* PO2110/004 */}
-                                    <Controller
-                                        name={"ponumber"}
-                                        control={control}
-                                        render={({ field: { value } }) => (
-                                            <Typography className={style.input}>
-                                                {value}
-                                            </Typography>
-                                        )}
-                                    />
+                                    <Typography className={style.input}>
+                                        {formData.ponumber}
+                                    </Typography>
                                 </td>
                             </tr>
                             <tr>
                                 <th align="left">PO Created at</th>
                                 <td align="left">
                                     {/* {dateTime} */}
-                                    <Controller
-                                        name={"createdat"}
-                                        control={control}
-                                        render={({ field: { value } }) => (
-                                            <Typography className={style.input}>
-                                                {value}
-                                            </Typography>
-                                        )}
-                                    />
+                                    <Typography className={style.input}>
+                                        {formData.createdat}
+                                    </Typography>
                                 </td>
                             </tr>
                             <tr>
                                 <th align="left">Supplier</th>
                                 <td align="left">
-                                    <Controller
-                                        name={"supplier"}
-                                        control={control}
-                                        render={({ field: { value } }) => (
-                                            <Typography className={style.input}>
-                                                {value}
-                                            </Typography>
-                                        )}
-                                    />
+                                    <Typography className={style.input}>
+                                        {formData.supplier}
+                                    </Typography>
                                 </td>
                             </tr>
                         </tbody>
@@ -145,7 +150,7 @@ export default function StepTwo(props) {
                                         <Typography style={{ fontWeight: 600 }}> Gross Total </Typography>
                                     </Grid>
                                     <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
-                                        <Typography style={{ fontWeight: 600 }}> {getTotal()} </Typography>
+                                        <Typography style={{ fontWeight: 600 }}> { } </Typography>
                                     </Grid>
                                 </Grid>
                                 <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
@@ -169,75 +174,144 @@ export default function StepTwo(props) {
                                         <Typography style={{ fontWeight: 600 }}> Total </Typography>
                                     </Grid>
                                     <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
-                                        <Typography style={{ fontWeight: 600 }}> {getTotal()} </Typography>
+                                        <Typography style={{ fontWeight: 600 }}> { } </Typography>
                                     </Grid>
                                 </Grid>
                             </td>
-                        )
+                        ),
+                        Header: props => (
+                            <TableHead {...props} >
+                                <TableRow className={classes.row1}>
+                                    <TableCell width="34%" padding="none" rowSpan={2}>
+                                        <div style={{ padding: '0 10px' }}>
+                                            Description
+                                        </div>
+                                    </TableCell>
+                                    <TableCell width="8%" padding="none" rowSpan={2} align="center">
+                                        <div style={{ padding: '0 10px' }}>
+                                            List Price
+                                        </div>
+                                    </TableCell>
+                                    <TableCell padding="none" colSpan={2} align="center">
+                                        Sales Qty.
+                                    </TableCell>
+                                    <TableCell padding="none" colSpan={2} align="center">
+                                        Free Qty.
+                                    </TableCell>
+                                    <TableCell padding="none" colSpan={2} align="center">
+                                        Return Qty.
+                                    </TableCell>
+                                    <TableCell padding="none" width="14%" rowSpan={2} align="center">
+                                        <div style={{ padding: '0 10px' }}>
+                                            Value
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow className={classes.row2}>
+                                    <TableCell width="8%" padding="none" align="center">Cs</TableCell>
+                                    <TableCell width="8%" padding="none" align="center">Pcs</TableCell>
+                                    <TableCell width="8%" padding="none" align="center">Cs</TableCell>
+                                    <TableCell width="8%" padding="none" align="center">Pcs</TableCell>
+                                    <TableCell width="8%" padding="none" align="center">D</TableCell>
+                                    <TableCell width="8%" padding="none" align="center">R</TableCell>
+                                </TableRow>
+                            </TableHead>
+                        ),
                     }}
                     columns={[
                         {
                             title: "Description",
                             field: "description",
-                            validate: (rowData) =>
-                                rowData.description === undefined
-                                    ? { isValid: false, helperText: 'Required *' }
-                                    : rowData.description === ''
-                                        ? { isValid: false, helperText: 'Required *' }
-                                        : true
-
-                        },
-                        {
-                            title: "Unit",
-                            field: "unit",
-                            lookup: { Cases: 'Case(s)', Pieces: 'Piece(s)', FreeCases: 'Free Case(s)', FreePieces: 'Free Piece(s)' },
-                            width: 'min-content',
-                            validate: (rowData) =>
-                                rowData.unit === undefined
-                                    ? { isValid: false, helperText: 'Required *' }
-                                    : rowData.unit === ''
-                                        ? { isValid: false, helperText: 'Required *' }
-                                        : true
-
-                        },
-                        {
-                            title: "Quantity",
-                            field: "quantity",
-                            type: 'numeric',
                             cellStyle: {
-                                cellWidth: 'min-content'
+                                padding: "10px 5px 10px 7px",
+                                width: '34%',
+                                textAlign: 'left'
                             },
-                            validate: (rowData) =>
-                                rowData.quantity === undefined
-                                    ? { isValid: false, helperText: 'Required *' }
-                                    : rowData.quantity === ''
-                                        ? { isValid: false, helperText: 'Required *' }
-                                        : true
                         },
                         {
-                            title: "List Price (Rs.)",
+                            title: "Pieces Per Cases",
+                            field: "piecespercase",
+                            hidden: true,
+                        },
+                        {
                             field: "listprice",
                             type: 'numeric',
                             cellStyle: {
-                                cellWidth: 'min-content'
+                                padding: "10px 5px 10px 7px",
+                                width: '8%',
+                                textAlign: 'center'
                             },
-                            validate: (rowData) =>
-                                rowData.listprice === undefined
-                                    ? { isValid: false, helperText: 'Required *' }
-                                    : rowData.listprice === ''
-                                        ? { isValid: false, helperText: 'Required *' }
-                                        : true
+                        },
+                        {
+                            title: "Sales Cs",
+                            field: "salesqtycases",
+                            type: 'numeric',
+                            cellStyle: {
+                                padding: "10px 5px 10px 7px",
+                                width: '8%',
+                                textAlign: 'center'
+                            },
+                        },
+                        {
+                            title: "Sales Pcs",
+                            field: "salesqtypieces",
+                            type: 'numeric',
+                            cellStyle: {
+                                width: '8%',
+                                padding: "10px 5px 10px 7px",
+                                textAlign: 'center'
+                            },
+                        },
+                        {
+                            title: "Free Cs",
+                            field: "freeqtycases",
+                            type: 'numeric',
+                            cellStyle: {
+                                width: '8%',
+                                padding: "10px 5px 10px 7px",
+                                textAlign: 'center'
+                            },
+                        },
+                        {
+                            title: "Free Pcs",
+                            field: "freeqtypieces",
+                            type: 'numeric',
+                            cellStyle: {
+                                width: '8%',
+                                padding: "10px 5px 10px 7px",
+                                textAlign: 'center'
+                            },
+                        },
+                        {
+                            title: "Damaged",
+                            field: "damaged",
+                            type: 'numeric',
+                            cellStyle: {
+                                width: '8%',
+                                padding: "10px 5px 10px 7px",
+                                textAlign: 'center'
+                            },
+                        },
+                        {
+                            title: "Return",
+                            field: "return",
+                            type: 'numeric',
+                            cellStyle: {
+                                width: '8%',
+                                padding: "10px 5px 10px 7px",
+                                textAlign: 'center'
+                            },
                         },
                         {
                             title: "Value (Rs.)",
                             field: "value",
                             type: 'numeric',
                             cellStyle: {
-                                width: 'min-content'
+                                width: '12%',
+                                padding: "10px 15px 10px 12px",
+                                textAlign: 'right'
                             },
                             editable: 'never',
-                            render: rowData => rowData.quantity * rowData.listprice,
-                            value: rowData => rowData.quantity * rowData.listprice,
                         }
                     ]}
                     data={data}
@@ -245,8 +319,8 @@ export default function StepTwo(props) {
                         toolbar: false,
                         filtering: true,
                         search: false,
-                        minBodyHeight: "calc(100vh - 555px)",
-                        maxBodyHeight: "calc(100vh - 555px)",
+                        minBodyHeight: "calc(100vh - 455px)",
+                        maxBodyHeight: "calc(100vh - 455px)",
                         headerStyle: {
                             position: "sticky",
                             top: "0",
