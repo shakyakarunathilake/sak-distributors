@@ -47,7 +47,7 @@ export default function CreatePurchaseOrder(props) {
 
     const classes = useStyles();
 
-    const { setOpenPopup, productOptions, supplierOptions, addOrder, openPopup, handleClosePopUp } = props;
+    const { productOptions, supplierOptions, addOrEdit, handleClosePopUp, poRecords } = props;
 
     const { handleSubmit } = useForm({ mode: "all" });
 
@@ -56,6 +56,8 @@ export default function CreatePurchaseOrder(props) {
     const [confirmation, setConfirmation] = useState(false);
     const [orderFormData, setOrderFormData] = useState({});
     const [resetFormOpenPopup, setResetFormOpenPopup] = useState(false);
+
+    const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
 
     const completeFormStep = () => {
         setFormStep(x => x + 1);
@@ -71,31 +73,34 @@ export default function CreatePurchaseOrder(props) {
 
     const onSubmit = () => {
 
-        console.log("ORDER FORM DATA", orderFormData);
+        console.log("ORDER FORM DATA: ", orderFormData);
 
-        if (confirmation === true) {
+        const purchaseOrderFormData = new formData();
 
-            const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
-            const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
-            const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
-
-            const purchaseOrderFormData = new formData();
-
+        if (confirmation === true && poRecords === null) {
             purchaseOrderFormData.append('ponumber', orderFormData.ponumber);
             purchaseOrderFormData.append('supplier', orderFormData.supplier);
+            purchaseOrderFormData.append('customername', orderFormData.customername);
+            purchaseOrderFormData.append('customeraddress', orderFormData.customeraddress);
+            purchaseOrderFormData.append('contactnumber', orderFormData.contactnumber);
             purchaseOrderFormData.append('createdat', orderFormData.createdat);
-            purchaseOrderFormData.append('createdby', `${firstname} ${lastname} (${employeeid})`);
-            purchaseOrderFormData.append('approvedat', '');
-            purchaseOrderFormData.append('approvedby', '');
+            purchaseOrderFormData.append('createdby', orderFormData.createdby);
+            purchaseOrderFormData.append('status', orderFormData.status);
             purchaseOrderFormData.append('items', JSON.stringify(data));
-            purchaseOrderFormData.append('grosstotal', orderFormData.total);
+            purchaseOrderFormData.append('grosstotal', orderFormData.grosstotal);
             purchaseOrderFormData.append('receiveddiscounts', orderFormData.receiveddiscounts);
             purchaseOrderFormData.append('damagedexpireditems', orderFormData.damagedexpireditems);
             purchaseOrderFormData.append('total', orderFormData.total);
-
-            addOrder(purchaseOrderFormData);
-            handleClosePopUp()
         }
+
+        if (confirmation === true && poRecords != null) {
+            purchaseOrderFormData.append('items', JSON.stringify(data));
+            purchaseOrderFormData.append('approvedat', orderFormData.approvedat);
+            purchaseOrderFormData.append('approvedby', orderFormData.approvedby);
+            purchaseOrderFormData.append('status', orderFormData.status);
+        }
+
+        addOrEdit(purchaseOrderFormData, orderFormData.ponumber);
     }
 
     return (
@@ -112,10 +117,8 @@ export default function CreatePurchaseOrder(props) {
                     <StepOne
                         data={data}
                         setData={setData}
-                        openPopup={openPopup}
                         setConfirmation={setConfirmation}
                         setOrderFormData={setOrderFormData}
-                        setOpenPopup={setOpenPopup}
                         handleClosePopUp={handleClosePopUp}
                         resetFormOpenPopup={resetFormOpenPopup}
                         setResetFormOpenPopup={setResetFormOpenPopup}
@@ -123,6 +126,7 @@ export default function CreatePurchaseOrder(props) {
                         completeFormStep={completeFormStep}
                         supplierOptions={supplierOptions}
                         productOptions={productOptions}
+                        poRecords={poRecords}
                     />
 
                 </section>
@@ -184,6 +188,17 @@ export default function CreatePurchaseOrder(props) {
                                             </Typography>
                                         </td>
                                     </tr>
+                                    {poRecords &&
+                                        <tr>
+                                            <th align="left">Delivered at</th>
+                                            <td align="left">
+                                                {/* {dateTime} */}
+                                                <Typography className={style.input}>
+                                                    <p style={{ padding: "0", margin: "0", color: "#eed202", fontWeight: "700" }}>{poRecords.status}</p>
+                                                </Typography>
+                                            </td>
+                                        </tr>
+                                    }
                                 </tbody>
                             </table>
 
@@ -199,15 +214,6 @@ export default function CreatePurchaseOrder(props) {
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th align="left">PO Created at</th>
-                                        <td align="left">
-                                            {/* {dateTime} */}
-                                            <Typography className={style.input}>
-                                                {orderFormData.createdat}
-                                            </Typography>
-                                        </td>
-                                    </tr>
-                                    <tr>
                                         <th align="left">Supplier</th>
                                         <td align="left">
                                             <Typography className={style.input}>
@@ -215,13 +221,30 @@ export default function CreatePurchaseOrder(props) {
                                             </Typography>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <th align="left">Created By</th>
+                                        <td align="left">
+                                            <Typography className={style.input}>
+                                                {orderFormData.createdby} ({orderFormData.createdat})
+                                            </Typography>
+                                        </td>
+                                    </tr>
+                                    {poRecords &&
+                                        <tr>
+                                            <th align="left">Approved By</th>
+                                            <td align="left">
+                                                <Typography className={style.input}>
+                                                    <p style={{ padding: "0", margin: "0", color: "#eed202", fontWeight: "700" }}>{poRecords.status}</p>
+                                                </Typography>
+                                            </td>
+                                        </tr>
+                                    }
                                 </tbody>
                             </table>
 
                         </div>
 
                         <MaterialTable
-
                             components={{
                                 Pagination: () => (
                                     <td style={{
@@ -263,9 +286,14 @@ export default function CreatePurchaseOrder(props) {
                                     </td>
                                 ),
                                 Header: props => (
-                                    <TableHead {...props} >
+                                    <TableHead {...props} style={{ position: 'sticky', top: '0', zIndex: 99999 }}>
                                         <TableRow className={classes.row1}>
-                                            <TableCell width="34%" padding="none" rowSpan={2}>
+                                            <TableCell width="2%" padding="none" rowSpan={2} align="center">
+                                                <div style={{ padding: '0 10px' }}>
+                                                    #
+                                                </div>
+                                            </TableCell>
+                                            <TableCell width="32%" padding="none" rowSpan={2}>
                                                 <div style={{ padding: '0 10px' }}>
                                                     Description
                                                 </div>
@@ -303,11 +331,20 @@ export default function CreatePurchaseOrder(props) {
                             }}
                             columns={[
                                 {
+                                    title: "#",
+                                    field: "tableData.id",
+                                    cellStyle: {
+                                        padding: "10px 5px 10px 7px",
+                                        width: '2%',
+                                        textAlign: 'center'
+                                    },
+                                },
+                                {
                                     title: "Description",
                                     field: "description",
                                     cellStyle: {
                                         padding: "10px 5px 10px 7px",
-                                        width: '34%',
+                                        width: '32%',
                                         textAlign: 'left'
                                     },
                                 },
@@ -402,8 +439,9 @@ export default function CreatePurchaseOrder(props) {
                                 toolbar: false,
                                 filtering: true,
                                 search: false,
-                                minBodyHeight: "calc(100vh - 455px)",
-                                maxBodyHeight: "calc(100vh - 455px)",
+                                pageSize: 999,
+                                minBodyHeight: poRecords ? "calc(100vh - 480px)" : "calc(100vh - 455px)",
+                                maxBodyHeight: poRecords ? "calc(100vh - 480px)" : "calc(100vh - 455px)",
                                 headerStyle: {
                                     position: "sticky",
                                     top: "0",
@@ -443,7 +481,7 @@ export default function CreatePurchaseOrder(props) {
                                 color="primary"
                                 variant="contained"
                             >
-                                Confirm and Submit
+                                {designation === 'Distributor' ? 'Approve and Submit' : 'Confirm and Submit'}
                             </Button>
                         </div>
 
@@ -453,7 +491,7 @@ export default function CreatePurchaseOrder(props) {
 
             }
 
-        </form>
+        </form >
 
     );
 }
