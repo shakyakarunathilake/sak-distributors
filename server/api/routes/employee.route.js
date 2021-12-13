@@ -269,7 +269,6 @@ router.post("/update-by-id/:employeeid", uploads.single('employeeimage'), (req, 
                 message: "Handling POST requests to /employees/update-by-id/:employeeid, EMPLOYEE UPDATED",
                 type: 'success',
                 alert: `${doc.firstname} ${doc.lastname} updated`,
-                updatedEmployee: doc
             });
         })
         .catch(err => {
