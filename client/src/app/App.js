@@ -76,6 +76,7 @@ function App() {
 
             {/* Distributor */}
             <Route exact path='/distributor/dashboard' component={Dashboard} />
+            <Route exact path='/distributor/manage-purchase-orders' component={ManagePurchaseOrder} />
 
             {/* Human Resources */}
             <Route exact path='/human-resources/dashboard' component={Dashboard} />

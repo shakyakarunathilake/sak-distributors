@@ -24,6 +24,12 @@ const getDistributorListItems = [
         icon: <DashboardIcon />
     },
     {
+        id: "Manage Purchase Order",
+        title: "Manage Purchase Order",
+        path: "http://localhost:3000/distributor/manage-purchase-orders",
+        icon: <ListAltIcon />
+    },
+    {
         id: "Sales Report",
         title: "Sales Report",
         path: "http://localhost:3000/sales-report",
