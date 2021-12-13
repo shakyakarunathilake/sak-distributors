@@ -141,7 +141,7 @@ export default function CreatePurchaseOrder(props) {
 
                         <div className={style.title}>
                             <div>
-                                Create Purchase Order
+                                {designation === "Distributor" ? "Approve & Edit Purchase Order" : (poRecords ? "Edit Purchase Order" : "Create Purchase Order")}
                             </div>
                             <div>
                                 <HighlightOffIcon
