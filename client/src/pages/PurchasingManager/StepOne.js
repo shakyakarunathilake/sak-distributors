@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 
 //Shared Components
@@ -22,7 +22,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 //Dialog Content
 import ResetForm from './ResetForm';
-// import PurchaseOrder from './PurchaseOrder';
 import Quotations from './Quotations';
 
 //Material Table
@@ -60,6 +59,7 @@ export default function StepOne(props) {
     const {
         data,
         setData,
+        poRecords,
         setOrderFormData,
         setConfirmation,
         handleClosePopUp,
@@ -71,41 +71,54 @@ export default function StepOne(props) {
         productOptions,
     } = props;
 
-    const addActionRef = React.useRef();
+    const addActionRef = useRef();
 
     const today = new Date();
     const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
     const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     const dateTime = date + ' ' + time;
+    const podate = today.getFullYear().toString().substr(-2) + (today.getMonth() + 1) + today.getDate() + today.getHours() + today.getMinutes();
 
-    const podate = today.getFullYear().toString().substr(-2) + (today.getMonth() + 1) + today.getDate();
+    const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
+    const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
+    const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
+    const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
 
     const { getValues, setValue, reset, trigger, control, formState: { errors, isValid } } = useForm({
         mode: "onChange",
         defaultValues: {
-            ponumber: '',
-            supplier: '',
-            grosstotal: 0,
-            receiveddiscounts: 0,
-            damagedexpireditems: 0,
-            total: 0,
-            // customerid: ,
-            customername: "S.A.K Distributors",
-            customeraddress: "No.233, Kiriwallapitiya, Rambukkana, Sri Lanka",
-            contactnumber: "0352264009",
-            createdat: dateTime,
+            ponumber: poRecords ? poRecords.ponumber : '',
+            supplier: poRecords ? poRecords.supplier : '',
+            grosstotal: poRecords ? poRecords.grosstotal : 0,
+            receiveddiscounts: poRecords ? poRecords.receiveddiscounts : 0,
+            damagedexpireditems: poRecords ? poRecords.damagedexpireditems : 0,
+            total: poRecords ? poRecords.total : 0,
+            // customerid: poRecords ? poRecords.customerid : '',
+            customername: poRecords ? poRecords.customername : "S.A.K Distributors",
+            customeraddress: poRecords ? poRecords.customeraddress : "No.233, Kiriwallapitiya, Rambukkana, Sri Lanka",
+            contactnumber: poRecords ? poRecords.contactnumber : "0352264009",
+            status: poRecords ? poRecords.status : '',
+            createdby: poRecords ? poRecords.createdby : `${firstname} ${lastname} (${employeeid})`,
+            createdat: poRecords ? poRecords.createdat : '',
+            approvedby: poRecords ? poRecords.approvedby : '',
+            approvedat: poRecords ? poRecords.approvedat : '',
+            deliveredat: poRecords ? poRecords.deliveredat : '',
         }
     });
 
+    useEffect(() => {
+        if (poRecords != null) {
+            setData([...poRecords.items])
+        }
+    }, [setData, poRecords])
+
     const getProductItemList = useMemo(() => {
         const selectedDescriptions = data.map(x => x.description);
-        console.log("SELECTED DESCRIPTIONS: ", selectedDescriptions);
-
+        // console.log("SELECTED DESCRIPTIONS: ", selectedDescriptions);
         const supplierProducts = productOptions.filter(x => x.supplier === getValues('supplier'));
-        console.log("SUPPLIER PRODUCTS: ", supplierProducts);
-
+        // console.log("SUPPLIER PRODUCTS: ", supplierProducts);
         const productItemList = supplierProducts.filter(x => selectedDescriptions.indexOf(x.name) === -1);
-        console.log("PRODUCT ITEM LIST: ", productItemList);
+        // console.log("PRODUCT ITEM LIST: ", productItemList);
 
         return productItemList;
     }, [data, getValues('supplier'), getValues, productOptions]);
@@ -137,11 +150,20 @@ export default function StepOne(props) {
 
         const supplier = supplierOptions.filter(x => x.title === getValues("supplier"))
 
-        setValue("ponumber", supplier[0].abbreviation + podate)
+        if (poRecords === null) {
+            setValue("ponumber", supplier[0].abbreviation + podate);
+            setValue("createdat", dateTime);
+            setValue("status", 'Waiting For Approval');
+        }
+
+        if (designation === 'Distributor') {
+            setValue("approvedby", `${firstname} ${lastname} (${employeeid})`);
+            setValue("approvedat", dateTime);
+            setValue("status", 'Pending');
+        }
+
+
         setValue('total', getValues('grosstotal') - (getValues('receiveddiscounts') + getValues('damagedexpireditems')));
-
-        console.log("GET VALUES", getValues());
-
 
         setOrderFormData(getValues());
         setConfirmation(true);
@@ -250,19 +272,19 @@ export default function StepOne(props) {
                                 </td>
                             ),
                             Header: props => (
-                                <TableHead {...props} >
+                                <TableHead {...props} style={{ position: 'sticky', top: '0', zIndex: 99999 }}>
                                     <TableRow className={classes.row1}>
                                         <TableCell width="26%" padding="none" rowSpan={2}>
                                             <div style={{ padding: '0 10px' }}>
                                                 Description
                                             </div>
                                         </TableCell>
-                                        <TableCell width="7%" padding="none" rowSpan={2} align="center">
+                                        <TableCell width="6%" padding="none" rowSpan={2} align="center">
                                             <div style={{ padding: '0 10px' }}>
                                                 Pieces per case
                                             </div>
                                         </TableCell>
-                                        <TableCell width="7%" padding="none" rowSpan={2} align="center">
+                                        <TableCell width="6%" padding="none" rowSpan={2} align="center">
                                             <div style={{ padding: '0 10px' }}>
                                                 List Price
                                             </div>
@@ -286,12 +308,12 @@ export default function StepOne(props) {
                                         </TableCell>
                                     </TableRow>
                                     <TableRow className={classes.row2}>
-                                        <TableCell width="7%" padding="none" align="center">Cs</TableCell>
-                                        <TableCell width="7%" padding="none" align="center">Pcs</TableCell>
-                                        <TableCell width="7%" padding="none" align="center">Cs</TableCell>
-                                        <TableCell width="7%" padding="none" align="center">Pcs</TableCell>
-                                        <TableCell width="7%" padding="none" align="center">D</TableCell>
-                                        <TableCell width="7%" padding="none" align="center">R</TableCell>
+                                        <TableCell width="6%" padding="none" align="center">Cs</TableCell>
+                                        <TableCell width="6%" padding="none" align="center">Pcs</TableCell>
+                                        <TableCell width="6%" padding="none" align="center">Cs</TableCell>
+                                        <TableCell width="6%" padding="none" align="center">Pcs</TableCell>
+                                        <TableCell width="6%" padding="none" align="center">D</TableCell>
+                                        <TableCell width="6%" padding="none" align="center">R</TableCell>
                                     </TableRow>
                                 </TableHead>
                             ),
@@ -336,7 +358,7 @@ export default function StepOne(props) {
                                 editable: 'never',
                                 cellStyle: {
                                     padding: "10px 5px 10px 7px",
-                                    width: '7%',
+                                    width: '6%',
                                     textAlign: 'center'
                                 },
                             },
@@ -345,7 +367,7 @@ export default function StepOne(props) {
                                 type: 'numeric',
                                 cellStyle: {
                                     padding: "10px 5px 10px 7px",
-                                    width: '7%',
+                                    width: '6%',
                                     textAlign: 'center'
                                 },
                                 validate: (rowData) =>
@@ -363,7 +385,7 @@ export default function StepOne(props) {
                                 type: 'numeric',
                                 cellStyle: {
                                     padding: "10px 5px 10px 7px",
-                                    width: '7%',
+                                    width: '6%',
                                     textAlign: 'center'
                                 },
                                 editComponent: props =>
@@ -400,7 +422,7 @@ export default function StepOne(props) {
                                 field: "salesqtypieces",
                                 type: 'numeric',
                                 cellStyle: {
-                                    width: '7%',
+                                    width: '6%',
                                     padding: "10px 5px 10px 7px",
                                     textAlign: 'center'
                                 },
@@ -439,7 +461,7 @@ export default function StepOne(props) {
                                 type: 'numeric',
                                 initialEditValue: 0,
                                 cellStyle: {
-                                    width: '7%',
+                                    width: '6%',
                                     padding: "10px 5px 10px 7px",
                                     textAlign: 'center'
                                 },
@@ -478,7 +500,7 @@ export default function StepOne(props) {
                                 type: 'numeric',
                                 initialEditValue: 0,
                                 cellStyle: {
-                                    width: '7%',
+                                    width: '6%',
                                     padding: "10px 5px 10px 7px",
                                     textAlign: 'center'
                                 },
@@ -517,7 +539,7 @@ export default function StepOne(props) {
                                 type: 'numeric',
                                 initialEditValue: 0,
                                 cellStyle: {
-                                    width: '7%',
+                                    width: '6%',
                                     padding: "10px 5px 10px 7px",
                                     textAlign: 'center'
                                 },
@@ -535,7 +557,7 @@ export default function StepOne(props) {
                                 type: 'numeric',
                                 initialEditValue: 0,
                                 cellStyle: {
-                                    width: '7%',
+                                    width: '6%',
                                     padding: "10px 5px 10px 7px",
                                     textAlign: 'center'
                                 },
@@ -559,13 +581,13 @@ export default function StepOne(props) {
                         ]}
                         data={data}
                         editable={{
-                            onRowAdd: newData =>
+                            onRowAdd: (newData) =>
                                 new Promise((resolve, reject) => {
                                     setTimeout(() => {
-                                        setData([...data, newData]);
+                                        setData(prevData => [...prevData, newData]);
 
                                         resolve();
-                                    }, 1)
+                                    }, 100);
                                 }),
                             onRowUpdate: (newData, oldData) =>
                                 new Promise((resolve, reject) => {
@@ -602,6 +624,7 @@ export default function StepOne(props) {
                             toolbar: true,
                             filtering: true,
                             search: false,
+                            pageSize: 999,
                             maxBodyHeight: "calc(100vh - 300px)",
                             minBodyHeight: "calc(100vh - 300px)",
                             actionsColumnIndex: -1,
