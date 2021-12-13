@@ -18,6 +18,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 
 //Form
+import ViewPurchaseOrder from './ViewPurchaseOrder';
 import CreatePurchaseOrder from './CreatePurchaseOrder';
 
 //Connecting to Backend
@@ -32,6 +33,7 @@ export default function ManagePurchaseOrder() {
     const [type, setType] = useState();
     const [open, setOpen] = useState(false);
     const [alert, setAlert] = useState();
+    const [reRender, setReRender] = useState(null);
     const [openPopup, setOpenPopup] = useState(false);
     const [action, setAction] = useState('');
     const [records, setRecords] = useState([]);
@@ -39,16 +41,28 @@ export default function ManagePurchaseOrder() {
     const [supplierOptions, setSupplierOptions] = useState([]);
     const [productOptions, setProductOptions] = useState([]);
 
+    const handleAlert = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen(false);
+    };
+
     useEffect(() => {
         axios
             .get("http://localhost:8080/purchaseorder/get-all-purchaseorder-table-data")
             .then(res => {
                 setRecords(res.data.purchaseorder);
+                setReRender(null);
             })
             .catch(err => {
                 console.log(err);
             })
-    }, [])
+    }, [reRender])
 
     const getOptions = () => {
         axios
@@ -75,33 +89,61 @@ export default function ManagePurchaseOrder() {
 
     }
 
-    const handleAlert = () => {
-        setOpen(true);
-    };
-
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
+    const addOrEdit = (purchaseorder, ponumber) => {
+        for (let [key, value] of purchaseorder.entries()) {
+            console.log(key, value);
         }
-        setOpen(false);
-    };
+        if (action === "Create") {
+            axios
+                .post("http://localhost:8080/purchaseorder/create-purchaseorder", purchaseorder)
+                .then(res => {
+                    setAlert(res.data.alert);
+                    setType(res.data.type);
+                    handleAlert();
+                    setReRender(ponumber);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+            ;
+        }
+        if (action === "Edit") {
+            axios
+                .post(`http://localhost:8080/purchaseorder/update-by-ponumber/${ponumber}`, purchaseorder)
+                .then(res => {
+                    setAlert(res.data.alert);
+                    setType(res.data.type);
+                    handleAlert();
+                    setReRender(ponumber);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+            ;
+        }
+
+        if (JSON.parse(sessionStorage.getItem("Auth")).designation === 'Distributor' && action === "Edit") {
+            axios
+                .post(`http://localhost:8080/purchaseorder/approve-by-ponumber/${ponumber}`, purchaseorder)
+                .then(res => {
+                    setAlert(res.data.alert);
+                    setType(res.data.type);
+                    handleAlert();
+                    setReRender(ponumber);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+            ;
+        }
+
+        setPORecords(null);
+        handleClosePopUp()
+        setAction('');
+    }
 
     const handleClosePopUp = () => {
         setOpenPopup(false)
-    }
-
-    const addOrder = (purchaseOrderFormData) => {
-        axios
-            .post("http://localhost:8080/purchaseorder/create-purchaseorder", purchaseOrderFormData)
-            .then(res => {
-                setAlert(res.data.alert);
-                setType(res.data.type);
-                handleAlert();
-            })
-            .catch(err => {
-                console.log(err);
-            });
-        ;
     }
 
     const openInPopup = ponumber => {
@@ -110,6 +152,7 @@ export default function ManagePurchaseOrder() {
             .then(res => {
                 setPORecords(res.data.purchaseorder);
                 setOpenPopup(true);
+                // console.log(poRecords);
             })
             .catch(err => {
                 console.log(err);
@@ -129,8 +172,10 @@ export default function ManagePurchaseOrder() {
                         variant="contained"
                         onClick={
                             () => {
+                                setAction('Create');
                                 getOptions();
                                 setOpenPopup(true);
+                                setPORecords(null);
                             }
                         }
                     >
@@ -195,14 +240,16 @@ export default function ManagePurchaseOrder() {
                                     openInPopup(rowData.ponumber);
                                 }
                             },
-                            {
+                            rowData => ({
                                 icon: 'edit',
                                 tooltip: 'Edit',
                                 onClick: (event, rowData) => {
                                     setAction('Edit');
+                                    getOptions();
                                     openInPopup(rowData.ponumber);
-                                }
-                            }
+                                },
+                                disabled: rowData.status === 'Pending'
+                            })
                         ]}
                     />
 
@@ -215,12 +262,19 @@ export default function ManagePurchaseOrder() {
                 setOpenPopup={setOpenPopup}
                 fullScreen={true}
             >
-                <CreatePurchaseOrder
-                    productOptions={productOptions}
-                    supplierOptions={supplierOptions}
-                    addOrder={addOrder}
-                    handleClosePopUp={handleClosePopUp}
-                />
+                {action === 'View' ?
+                    <ViewPurchaseOrder
+                        handleClosePopUp={handleClosePopUp}
+                        poRecords={poRecords}
+                    /> :
+                    <CreatePurchaseOrder
+                        addOrEdit={addOrEdit}
+                        handleClosePopUp={handleClosePopUp}
+                        productOptions={productOptions}
+                        supplierOptions={supplierOptions}
+                        poRecords={poRecords}
+                    />
+                }
             </PopUp>
             <Snackbar
                 open={open}
