@@ -178,6 +178,7 @@ export default function GRN() {
                 />
                 <PopUp
                     openPopup={openPopup}
+                    fullScreen={true}
                     setOpenPopup={setOpenPopup}
                 >
                     {action === 'View' ?
