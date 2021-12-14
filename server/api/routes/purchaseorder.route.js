@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const multer = require("multer");
 
+const MetaData = require("../models/metadata.model")
 const PurchaseOrder = require("../models/purchaseorder.model");
 const GRN = require("../models/grn.model");
 
@@ -13,55 +14,6 @@ router.get("/", (req, res, next) => {
     res.status(200).json({
         message: "Handeling GET requests to /purchaseorders"
     });
-});
-
-//Create a purchaseorder
-router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) => {
-
-    console.log("PURCHASE ORDER Body: ", req.body);
-    console.log("Added Date: ", req.body.createdat);
-
-    const createdat = new Date(req.body.createdat).toISOString().split('T')[0];
-    const items = JSON.parse(req.body.items);
-
-    const purchaseorder = new PurchaseOrder({
-        _id: new mongoose.Types.ObjectId(),
-        ponumber: req.body.ponumber,
-        customername: req.body.customername,
-        customeraddress: req.body.customeraddress,
-        contactnumber: req.body.contactnumber,
-        supplier: req.body.supplier,
-        createdat: createdat,
-        createdby: req.body.createdby,
-        approvedat: req.body.approvedat,
-        approvedby: req.body.approvedby,
-        status: req.body.status,
-        deliveredat: '',
-        items: items,
-        grosstotal: req.body.grosstotal,
-        receiveddiscounts: req.body.receiveddiscounts,
-        damagedexpireditems: req.body.damagedexpireditems,
-        total: req.body.total,
-    });
-
-    purchaseorder
-        .save()
-        .then(result => {
-            res.status(201).json({
-                message: "Handeling POST requests to /purchaseorders/create-purchaseorder, PURCHASE ORDER CREATED",
-                type: 'success',
-                alert: `${result.ponumber} added`,
-            });
-        })
-        .catch(err => {
-
-            console.log("ERROR: ", err);
-
-            res.status(200).json({
-                type: 'error',
-                alert: `Something went wrong. Could not add purchaseorder`,
-            });
-        })
 });
 
 //Get all table purchaseorder data
@@ -93,6 +45,77 @@ router.get("/get-all-purchaseorder-table-data", (req, res, next) => {
         })
 
 })
+
+
+//Create a purchaseorder
+router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) => {
+
+    console.log("PURCHASE ORDER Body: ", req.body);
+    const items = JSON.parse(req.body.items);
+
+    const purchaseorder = new PurchaseOrder({
+        _id: new mongoose.Types.ObjectId(),
+        ponumber: req.body.ponumber,
+        customername: req.body.customername,
+        customeraddress: req.body.customeraddress,
+        contactnumber: req.body.contactnumber,
+        supplier: req.body.supplier,
+        createdat: req.body.createdat,
+        createdby: req.body.createdby,
+        approvedat: req.body.approvedat,
+        approvedby: req.body.approvedby,
+        status: req.body.status,
+        deliveredat: '',
+        items: items,
+        grosstotal: req.body.grosstotal,
+        receiveddiscounts: req.body.receiveddiscounts,
+        damagedexpireditems: req.body.damagedexpireditems,
+        total: req.body.total,
+    });
+
+    purchaseorder
+        .save()
+        .then(result => {
+
+            MetaData
+                .findOneAndUpdate(
+                    {},
+                    {
+                        $push: {
+                            'purchaseorderapprovaldata': {
+                                'ponumber': result.ponumber,
+                                'createdat': result.createdat,
+                                'createdby': result.createdby
+                            },
+                        },
+                    },
+                    { upsert: true }
+                )
+                .exec()
+                .then(result => { console.log("META DATA ADDED: ", result) })
+                .catch(err => {
+                    console.log(err);
+                    res.status(500).json({ "Error": err });
+                })
+
+            res.status(201).json({
+                message: "Handeling POST requests to /purchaseorders/create-purchaseorder, PURCHASE ORDER CREATED",
+                type: 'success',
+                alert: `${result.ponumber} added`,
+            });
+        })
+        .catch(err => {
+
+            console.log("ERROR: ", err);
+
+            res.status(200).json({
+                type: 'error',
+                alert: `Something went wrong. Could not add purchaseorder`,
+            });
+        })
+
+});
+
 
 //Get purchase order details by PO Number
 router.get("/:ponumber", (req, res, next) => {
@@ -169,7 +192,7 @@ router.post("/update-by-ponumber/:ponumber", formDataBody.fields([]), (req, res,
 //Update purchase order details by po number
 router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res, next) => {
 
-    console.log("UPDATE:", req.body);
+    console.log("APPROVE PURCHASE ORDER:", req.body);
 
     const items = JSON.parse(req.body.items);
 
@@ -191,6 +214,7 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
                 _id: new mongoose.Types.ObjectId(),
                 ponumber: result.ponumber,
                 grnnumber: `GRN-${result.ponumber}`,
+                supplier: result.supplier,
                 status: "Pending",
                 items: items,
                 addedat: "Pending",
@@ -202,16 +226,40 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
 
             grn
                 .save()
-                .then(result => { console.log("GRN CREATED: ", result) })
-                .catch(err => {
-                    console.log("ERROR: ", err);
+                .then(result => {
 
-                    res.status(200).json({
-                        type: 'error',
-                        alert: `Something went wrong. Could not add purchaseorder`,
-                    });
+                    console.log("GRN ADDED: ", result)
+
+                    MetaData
+                        .findOneAndUpdate(
+                            {},
+                            {
+                                $push: {
+                                    'awaitinggrndata': {
+                                        'ponumber': result.ponumber,
+                                        'grnnumber': result.grnnumber,
+                                        'status': result.status,
+                                    }
+                                },
+                                $pull: {
+                                    'purchaseorderapprovaldata': {
+                                        'ponumber': result.ponumber
+                                    }
+                                }
+                            },
+                            { upsert: true }
+                        )
+                        .exec()
+                        .then(result =>
+                            console.log("META DATA ADDED: ", result)
+                        )
+                        .catch(err =>
+                            console.log("META DATA ERROR: ", err)
+                        )
                 })
-
+                .catch(err => {
+                    console.log("GRN ERROR: ", err);
+                })
 
             res.status(200).json({
                 message: "Handling POST requests to /employees/approved-by-ponumber/:ponumber, PURCHASE ORDER APPROVED",
