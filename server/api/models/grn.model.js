@@ -5,6 +5,7 @@ const GRNSchema = mongoose.Schema({
     ponumber: { type: String, required: true },
     grnnumber: { type: String, required: true },
     status: { type: String, required: true },
+    supplier: { type: String, required: true },
     items: { type: Array, required: true },
     addedat: { type: String, required: false },
     addedby: { type: String, requried: false },
