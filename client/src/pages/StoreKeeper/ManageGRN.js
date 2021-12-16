@@ -17,7 +17,7 @@ import style from './ManageGRN.module.scss';
 
 //Pop Up Forms
 import ViewGRN from './ViewGRN';
-import GRNForm from './GRNForm';
+import CreateGRNForm from './CreateGRNForm';
 
 //Connecting to Backend
 import axios from 'axios';
@@ -187,7 +187,7 @@ export default function GRN() {
                             handleClosePopUp={handleClosePopUp}
                             setAction={setAction}
                         /> :
-                        <GRNForm
+                        <CreateGRNForm
                             GRNRecords={GRNRecords}
                             handleClosePopUp={handleClosePopUp}
                             setAction={setAction}
