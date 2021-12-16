@@ -57,13 +57,30 @@ router.get("/:grnnumber", (req, res, next) => {
                 'status': doc.status,
                 'grnnumber': doc.grnnumber,
                 'supplier': doc.supplier,
-                'pocreatedat': doc.pocreatedat,
-                'pocreatedby': doc.pocreatedby,
                 'createdat': doc.createdat,
                 'createdby': doc.createdby,
                 'total': doc.total,
                 'grntotal': doc.total,
-                'items': doc.items,
+                'items': [
+                    {
+                        "freeqtycases": doc.items[0].freeqtycases,
+                        "deliveredfreeqtycases": doc.items[0].freeqtycases,
+                        "freeqtypieces": doc.items[0].freeqtypieces,
+                        "deliveredfreeqtypieces": doc.items[0].freeqtypieces,
+                        "damaged": 0,
+                        "return": 0,
+                        "description": doc.items[0].description,
+                        "piecespercase": doc.items[0].piecespercase,
+                        "listprice": doc.items[0].listprice,
+                        "salesqtycases": doc.items[0].salesqtycases,
+                        "deliveredsalesqtycases": doc.items[0].salesqtycases,
+                        "value": doc.items[0].value,
+                        "grnvalue": doc.items[0].value,
+                        "salesqtypieces": doc.items[0].salesqtypieces,
+                        "deliveredsalesqtypieces": doc.items[0].salesqtypieces,
+                        "tableData": doc.items[0].tableData
+                    }
+                ]
             }
 
             console.log("GRN RECORDS: ", grn);
