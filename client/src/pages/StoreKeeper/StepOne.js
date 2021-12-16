@@ -1,0 +1,720 @@
+import React, { useEffect, useMemo, useRef } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+
+//Shared Components
+import PopUp from '../../shared/PopUp/PopUp';
+
+//Material UI 
+import Divider from '@mui/material/Divider';
+import Select from '../../shared/Select/Select';
+import { Button, Grid } from '@material-ui/core';
+import { Paper } from '@material-ui/core';
+import { TextField as MuiTextField } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
+import { Autocomplete } from '@mui/material';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+
+//Material UI Icons
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import DeleteIcon from '@mui/icons-material/Delete';
+
+//Material Table
+import MaterialTable, { MTableToolbar } from 'material-table';
+
+//SCSS styles
+import style from './StepOne.module.scss';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+    row1: {
+        "& .MuiTableCell-head": {
+            color: "white",
+            backgroundColor: "#20369f",
+            fontSize: "0.8em",
+            border: "none",
+            padding: "5px 0 2.5px 0"
+        },
+    },
+    row2: {
+        "& .MuiTableCell-head": {
+            color: "white",
+            backgroundColor: "#20369f",
+            fontSize: "0.8em",
+            border: "none",
+            padding: "2.5px 0 5px 0"
+        },
+    }
+});
+
+export default function StepOne(props) {
+
+    const classes = useStyles();
+
+    const {
+        data,
+        setData,
+        setConfirmation,
+        setOrderFormData,
+        handleClosePopUp,
+        completeFormStep,
+        GRNRecords,
+    } = props;
+
+    const { control, getValues, setValue, handleSubmit } = useForm();
+
+    const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
+    const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
+    const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
+
+    useEffect(() => {
+
+        setValue("ponumber", GRNRecords.ponumber);
+        setValue("grnnumber", GRNRecords.grnnumber);
+        setValue("supplier", GRNRecords.supplier);
+        setValue("createdby", `${firstname} ${lastname} (${employeeid})`);
+        setValue("createdat", getTime());
+        setValue("total", GRNRecords.total);
+        setValue("customername", "S.A.K Distributors");
+        setValue("customeraddress", "No.233, Kiriwallapitiya, Rambukkana, Srilanka");
+        setValue("contactnumber", "0352264009")
+
+        setData(GRNRecords.items);
+
+    }, [GRNRecords, setValue])
+
+    const getTime = () => {
+        const today = new Date();
+        const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+        const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        const dateTime = date + ' ' + time;
+
+        return dateTime;
+    }
+
+    const getGRNTotal = () => {
+
+        let total = 0;
+
+        for (let i = 0; i < data.length; i++) {
+            total = total + (isNaN(data[i].grnvalue) ? 0 : data[i].grnvalue);
+        }
+
+        setValue("grntotal", total);
+        return total;
+    }
+
+
+    const onSubmit = () => {
+        setOrderFormData(getValues());
+        setConfirmation(true);
+        completeFormStep();
+    }
+
+    return (
+        <div className={style.container}>
+
+            <div className={style.header}>
+
+                <div className={style.title}>
+                    <div>
+                        Create GRN Form
+                    </div>
+                    <div>
+                        <HighlightOffIcon
+                            className={style.icon}
+                            onClick={() => { handleClosePopUp() }}
+                        />
+                    </div>
+                </div>
+
+                <div className={style.step}>
+                    Step 1 of 2
+                </div>
+
+            </div>
+
+            <div className={style.body}>
+
+                <div className={style.orderDetails}>
+
+                    <table className={style.details}>
+                        <tbody>
+                            <tr>
+                                <th align="left">Name</th>
+                                <td align="left">
+                                    <Controller
+                                        name={"customername"}
+                                        control={control}
+                                        render={({ field: { value } }) => (
+                                            <Typography className={style.input}>
+                                                {value}
+                                            </Typography>
+                                        )}
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th align="left">Address</th>
+                                <td align="left">
+                                    <Controller
+                                        name={"customeraddress"}
+                                        control={control}
+                                        render={({ field: { value } }) => (
+                                            <Typography className={style.input}>
+                                                {value}
+                                            </Typography>
+                                        )}
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th align="left">Contact No.</th>
+                                <td align="left">
+                                    <Controller
+                                        name={"contactnumber"}
+                                        control={control}
+                                        render={({ field: { value } }) => (
+                                            <Typography className={style.input}>
+                                                {value}
+                                            </Typography>
+                                        )}
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th align="left">Supplier</th>
+                                <td align="left">
+                                    <Controller
+                                        name={"supplier"}
+                                        control={control}
+                                        render={({ field: { value } }) => (
+                                            <Typography className={style.input}>
+                                                {value}
+                                            </Typography>
+                                        )}
+                                    />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table className={style.details}>
+                        <tbody>
+                            <tr>
+                                <th align="left">PO No.</th>
+                                <td align="left">
+                                    <Controller
+                                        name={"ponumber"}
+                                        control={control}
+                                        render={({ field: { value } }) => (
+                                            <Typography className={style.input, style.blue}>
+                                                {value}
+                                            </Typography>
+                                        )}
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th align="left">GRN No.</th>
+                                <td align="left">
+                                    <Controller
+                                        name={"grnnumber"}
+                                        control={control}
+                                        render={({ field: { value } }) => (
+                                            <Typography className={style.input, style.blue}>
+                                                {value}
+                                            </Typography>
+                                        )}
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th align="left">GRN Created at</th>
+                                <td align="left">
+                                    <Controller
+                                        name={"createdat"}
+                                        control={control}
+                                        render={({ field: { value } }) => (
+                                            <Typography className={style.input}>
+                                                {value}
+                                            </Typography>
+                                        )}
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th align="left">GRN Created by</th>
+                                <td align="left">
+                                    <Controller
+                                        name={"createdby"}
+                                        control={control}
+                                        render={({ field: { value } }) => (
+                                            <Typography className={style.input}>
+                                                {value}
+                                            </Typography>
+                                        )}
+                                    />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <MaterialTable
+                    components={{
+                        Container: props => <Paper {...props} elevation={1} />,
+                        Toolbar: (props) => (
+                            <div
+                                style={{
+                                    height: "0px",
+                                }}
+                            >
+                                <MTableToolbar {...props} />
+                            </div>
+                        ),
+                        Pagination: () => (
+                            <td style={{
+                                display: "flex",
+                                flexDirection: "column"
+                            }} >
+                                <Grid container style={{ background: "#f5f5f5", padding: 15 }}>
+                                    <Grid item align="Left">
+                                        <Typography style={{ fontWeight: 600 }}> Gross Total (Rs.) </Typography>
+                                    </Grid>
+                                    <Grid item align="Right" style={{ margin: "0px 102.56px 0px auto" }}>
+                                        <Typography style={{ fontWeight: 600 }}> {getGRNTotal()} </Typography>
+                                    </Grid>
+                                </Grid>
+                            </td>
+                        ),
+                        Header: props => (
+                            <TableHead {...props} style={{ position: 'sticky', top: '0', zIndex: 99999 }}>
+                                <TableRow className={classes.row1}>
+                                    <TableCell width="26%" padding="none" rowSpan={2}>
+                                        <div style={{ padding: '0 10px' }}>
+                                            Description
+                                        </div>
+                                    </TableCell>
+                                    <TableCell width="5%" padding="none" rowSpan={2} align="center">
+                                        <div style={{ padding: '0 10px' }}>
+                                            List Price
+                                        </div>
+                                    </TableCell>
+                                    <TableCell padding="none" colSpan={2} align="center">
+                                        Sales Qty.
+                                    </TableCell>
+                                    <TableCell padding="none" colSpan={2} align="center">
+                                        Delivered Sales Qty.
+                                    </TableCell>
+                                    <TableCell padding="none" colSpan={2} align="center">
+                                        Free Qty.
+                                    </TableCell>
+                                    <TableCell padding="none" colSpan={2} align="center">
+                                        Delivered Free Qty.
+                                    </TableCell>
+                                    <TableCell padding="none" colSpan={2} align="center">
+                                        Return Qty.
+                                    </TableCell>
+                                    <TableCell padding="none" width="8%" rowSpan={2} align="center">
+                                        <div style={{ padding: '0 10px' }}>
+                                            GRN Value
+                                        </div>
+                                    </TableCell>
+                                    <TableCell padding="none" width="8%" rowSpan={2} align="center">
+                                        <div style={{ padding: '0 10px' }}>
+                                            PO Value
+                                        </div>
+                                    </TableCell>
+                                    <TableCell padding="none" width="1%" rowSpan={2} align="center">
+                                        Action
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow className={classes.row2}>
+                                    <TableCell width="5%" padding="none" align="center">Cs</TableCell>
+                                    <TableCell width="5%" padding="none" align="center">Pcs</TableCell>
+                                    <TableCell width="5%" padding="none" align="center">Cs</TableCell>
+                                    <TableCell width="5%" padding="none" align="center">Pcs</TableCell>
+                                    <TableCell width="5%" padding="none" align="center">Cs</TableCell>
+                                    <TableCell width="5%" padding="none" align="center">Pcs</TableCell>
+                                    <TableCell width="5%" padding="none" align="center">Cs</TableCell>
+                                    <TableCell width="5%" padding="none" align="center">Pcs</TableCell>
+                                    <TableCell width="5%" padding="none" align="center">D</TableCell>
+                                    <TableCell width="5%" padding="none" align="center">R</TableCell>
+                                </TableRow>
+                            </TableHead>
+                        ),
+                    }}
+                    columns={[
+                        {
+                            field: "description",
+                            editable: 'never',
+                            cellStyle: {
+                                padding: "10px 7px 10px 7px",
+                                width: '26%',
+                                textAlign: 'left'
+                            }
+                        },
+                        {
+                            field: "listprice",
+                            type: 'numeric',
+                            editable: 'never',
+                            cellStyle: {
+                                padding: "10px 7px 10px 7px",
+                                width: '5%',
+                                textAlign: 'right'
+                            }
+                        },
+                        {
+                            field: "salesqtycases",
+                            type: 'numeric',
+                            editable: 'never',
+                            cellStyle: {
+                                padding: "10px 7px 10px 7px",
+                                width: '5%',
+                                textAlign: 'right'
+                            }
+                        },
+                        {
+                            field: "salesqtypieces",
+                            type: 'numeric',
+                            editable: 'never',
+                            cellStyle: {
+                                width: '5%',
+                                padding: "10px 7px 10px 7px",
+                                textAlign: 'right'
+                            }
+                        },
+                        {
+                            field: "deliveredsalesqtycases",
+                            type: 'numeric',
+                            cellStyle: {
+                                padding: "10px 7px 10px 7px",
+                                width: '5%',
+                                textAlign: 'right'
+                            },
+                            editComponent: props =>
+                                <MuiTextField
+                                    onChange={e => {
+                                        let data = { ...props.rowData };
+                                        data.deliveredsalesqtycases = e.target.value;
+                                        let deliveredsalesqtycases = isNaN(data.deliveredsalesqtycases) ? 0 : data.deliveredsalesqtycases;
+                                        let deliveredfreeqtycases = isNaN(data.deliveredfreeqtycases) ? 0 : data.deliveredfreeqtycases;
+                                        let deliveredsalesqtypieces = isNaN(data.deliveredsalesqtypieces) ? 0 : data.deliveredsalesqtypieces;
+                                        let deliveredfreeqtypieces = isNaN(data.deliveredfreeqtypieces) ? 0 : data.deliveredfreeqtypieces;
+                                        let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
+                                        let listprice = isNaN(data.listprice) ? 0 : data.listprice;
+                                        data.grnvalue = (((deliveredsalesqtycases * piecespercase) + deliveredsalesqtypieces) - ((deliveredfreeqtycases * piecespercase) - deliveredfreeqtypieces)) * listprice;
+                                        props.onRowDataChange(data);
+                                    }}
+                                    type="number"
+                                    helperText={props.helperText}
+                                    error={props.error}
+                                    variant="standard"
+                                    value={props.value}
+                                    defaultValue={props.rowData.salesqtycases}
+                                />
+                            ,
+                            validate: (rowData) =>
+                                rowData.salesqtycases === undefined
+                                    ? { isValid: false, helperText: 'Required *' }
+                                    : rowData.salesqtycases === ''
+                                        ? { isValid: false, helperText: 'Required *' }
+                                        : true
+
+                        }, {
+                            field: "deliveredsalesqtypieces",
+                            type: 'numeric',
+                            cellStyle: {
+                                padding: "10px 7px 10px 7px",
+                                width: '5%',
+                                textAlign: 'right'
+                            },
+                            editComponent: props =>
+                                <MuiTextField
+                                    onChange={e => {
+                                        let data = { ...props.rowData };
+                                        data.deliveredsalesqtypieces = e.target.value;
+                                        let deliveredsalesqtycases = isNaN(data.deliveredsalesqtycases) ? 0 : data.deliveredsalesqtycases;
+                                        let deliveredfreeqtycases = isNaN(data.deliveredfreeqtycases) ? 0 : data.deliveredfreeqtycases;
+                                        let deliveredsalesqtypieces = isNaN(data.deliveredsalesqtypieces) ? 0 : data.deliveredsalesqtypieces;
+                                        let deliveredfreeqtypieces = isNaN(data.deliveredfreeqtypieces) ? 0 : data.deliveredfreeqtypieces;
+                                        let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
+                                        let listprice = isNaN(data.listprice) ? 0 : data.listprice;
+                                        data.grnvalue = (((deliveredsalesqtycases * piecespercase) + deliveredsalesqtypieces) - ((deliveredfreeqtycases * piecespercase) - deliveredfreeqtypieces)) * listprice;
+                                        props.onRowDataChange(data);
+                                    }}
+                                    type="number"
+                                    helperText={props.helperText}
+                                    error={props.error}
+                                    variant="standard"
+                                    value={props.value}
+                                    defaultValue={props.rowData.salesqtypieces}
+
+                                />
+                            ,
+                            validate: (rowData) =>
+                                rowData.salesqtycases === undefined
+                                    ? { isValid: false, helperText: 'Required *' }
+                                    : rowData.salesqtycases === ''
+                                        ? { isValid: false, helperText: 'Required *' }
+                                        : true
+
+                        },
+                        {
+                            title: "Free Cs",
+                            field: "freeqtycases",
+                            type: 'numeric',
+                            editable: 'never',
+                            cellStyle: {
+                                width: '5%',
+                                padding: "10px 7px 10px 7px",
+                                textAlign: 'right'
+                            }
+                        },
+                        {
+                            title: "Free Pcs",
+                            field: "freeqtypieces",
+                            type: 'numeric',
+                            editable: 'never',
+                            cellStyle: {
+                                width: '5%',
+                                padding: "10px 7px 10px 7px",
+                                textAlign: 'right'
+                            }
+                        },
+                        {
+                            field: "deliveredfreeqtycases",
+                            type: 'numeric',
+                            cellStyle: {
+                                padding: "10px 7px 10px 7px",
+                                width: '5%',
+                                textAlign: 'right'
+                            },
+                            editComponent: props =>
+                                <MuiTextField
+                                    onChange={e => {
+                                        let data = { ...props.rowData };
+                                        console.log(props.rowData)
+                                        data.deliveredfreeqtycases = e.target.value;
+                                        let deliveredsalesqtycases = isNaN(data.deliveredsalesqtycases) ? 0 : data.deliveredsalesqtycases;
+                                        let deliveredfreeqtycases = isNaN(data.deliveredfreeqtycases) ? 0 : data.deliveredfreeqtycases;
+                                        let deliveredsalesqtypieces = isNaN(data.deliveredsalesqtypieces) ? 0 : data.deliveredsalesqtypieces;
+                                        let deliveredfreeqtypieces = isNaN(data.deliveredfreeqtypieces) ? 0 : data.deliveredfreeqtypieces;
+                                        let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
+                                        let listprice = isNaN(data.listprice) ? 0 : data.listprice;
+                                        data.grnvalue = (((deliveredsalesqtycases * piecespercase) + deliveredsalesqtypieces) - ((deliveredfreeqtycases * piecespercase) - deliveredfreeqtypieces)) * listprice;
+                                        props.onRowDataChange(data);
+                                    }}
+                                    type="number"
+                                    helperText={props.helperText}
+                                    error={props.error}
+                                    variant="standard"
+                                    value={props.value}
+                                    defaultValue={props.rowData.freeqtycases}
+                                />
+                            ,
+                            validate: (rowData) =>
+                                rowData.salesqtycases === undefined
+                                    ? { isValid: false, helperText: 'Required *' }
+                                    : rowData.salesqtycases === ''
+                                        ? { isValid: false, helperText: 'Required *' }
+                                        : true
+
+                        }, {
+                            field: "deliveredfreeqtypieces",
+                            type: 'numeric',
+                            cellStyle: {
+                                padding: "10px 7px 10px 7px",
+                                width: '5%',
+                                textAlign: 'right'
+                            },
+                            editComponent: props =>
+                                <MuiTextField
+                                    onChange={e => {
+                                        let data = { ...props.rowData };
+                                        data.deliveredfreeqtypieces = e.target.value;
+                                        let deliveredsalesqtycases = isNaN(data.deliveredsalesqtycases) ? 0 : data.deliveredsalesqtycases;
+                                        let deliveredfreeqtycases = isNaN(data.deliveredfreeqtycases) ? 0 : data.deliveredfreeqtycases;
+                                        let deliveredsalesqtypieces = isNaN(data.deliveredsalesqtypieces) ? 0 : data.deliveredsalesqtypieces;
+                                        let deliveredfreeqtypieces = isNaN(data.deliveredfreeqtypieces) ? 0 : data.deliveredfreeqtypieces;
+                                        let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
+                                        let listprice = isNaN(data.listprice) ? 0 : data.listprice;
+                                        data.grnvalue = (((deliveredsalesqtycases * piecespercase) + deliveredsalesqtypieces) - ((deliveredfreeqtycases * piecespercase) - deliveredfreeqtypieces)) * listprice;
+                                        props.onRowDataChange(data);
+                                    }}
+                                    type="number"
+                                    helperText={props.helperText}
+                                    error={props.error}
+                                    variant="standard"
+                                    value={props.value}
+                                    defaultValue={props.rowData.freeqtypieces}
+                                />
+                            ,
+                            validate: (rowData) =>
+                                rowData.salesqtycases === undefined
+                                    ? { isValid: false, helperText: 'Required *' }
+                                    : rowData.salesqtycases === ''
+                                        ? { isValid: false, helperText: 'Required *' }
+                                        : true
+
+                        },
+                        {
+                            title: "Damaged",
+                            field: "damaged",
+                            type: 'numeric',
+                            initialEditValue: 0,
+                            cellStyle: {
+                                width: '5%',
+                                padding: "10px 7px 10px 7px",
+                                textAlign: 'right'
+                            },
+                            editComponent: props =>
+                                <MuiTextField
+                                    onChange={props.onChange}
+                                    type="number"
+                                    helperText={props.helperText}
+                                    error={props.error}
+                                    variant="standard"
+                                    value={props.value}
+                                />
+                            ,
+                            validate: (rowData) =>
+                                rowData.damaged === undefined
+                                    ? { isValid: false, helperText: 'Required *' }
+                                    : rowData.damaged === ''
+                                        ? { isValid: false, helperText: 'Required *' }
+                                        : true
+
+                        },
+                        {
+                            title: "Return",
+                            field: "return",
+                            type: 'numeric',
+                            initialEditValue: 0,
+                            cellStyle: {
+                                width: '5%',
+                                padding: "10px 7px 10px 7px",
+                                textAlign: 'right'
+                            },
+                            editComponent: props =>
+                                <MuiTextField
+                                    onChange={props.onChange}
+                                    type="number"
+                                    helperText={props.helperText}
+                                    error={props.error}
+                                    variant="standard"
+                                    value={props.value}
+                                />
+                            ,
+                            validate: (rowData) =>
+                                rowData.return === undefined
+                                    ? { isValid: false, helperText: 'Required *' }
+                                    : rowData.return === ''
+                                        ? { isValid: false, helperText: 'Required *' }
+                                        : true
+
+                        },
+                        {
+                            title: "GRN Value (Rs.)",
+                            field: "grnvalue",
+                            type: 'numeric',
+                            editable: 'never',
+                            cellStyle: {
+                                width: '8%',
+                                padding: "10px 7px 10px 7px",
+                                textAlign: 'right'
+                            }
+                        },
+                        {
+                            title: "PO Value (Rs.)",
+                            field: "value",
+                            type: 'numeric',
+                            editable: 'never',
+                            cellStyle: {
+                                width: '8%',
+                                padding: "10px 7px 10px 7px",
+                                textAlign: 'right'
+                            }
+                        }
+                    ]}
+                    data={data}
+                    editable={{
+                        onRowAdd: (newData) =>
+                            new Promise((resolve, reject) => {
+                                setTimeout(() => {
+                                    setData(prevData => [...prevData, newData]);
+
+                                    resolve();
+                                }, 100);
+                            }),
+                        onRowUpdate: (newData, oldData) =>
+                            new Promise((resolve, reject) => {
+                                setTimeout(() => {
+                                    const dataUpdate = [...data];
+                                    const index = oldData.tableData.id;
+                                    dataUpdate[index] = newData;
+                                    setData([...dataUpdate]);
+
+                                    resolve();
+                                }, 1)
+                            }),
+                        onRowDelete: oldData =>
+                            new Promise((resolve, reject) => {
+                                setTimeout(() => {
+                                    const dataDelete = [...data];
+                                    const index = oldData.tableData.id;
+                                    dataDelete.splice(index, 1);
+                                    setData([...dataDelete]);
+
+                                    resolve()
+                                }, 1)
+                            }),
+                    }}
+                    icons={{
+                        Delete: () => (
+                            <div>
+                                <DeleteIcon className={style.deleteItemBtn} />
+                            </div>
+                        )
+                    }}
+                    options={{
+                        addRowPosition: "first",
+                        toolbar: true,
+                        filtering: true,
+                        search: false,
+                        pageSize: 999,
+                        maxBodyHeight: "calc(100vh - 395px)",
+                        minBodyHeight: "calc(100vh - 395px)",
+                        actionsColumnIndex: -1,
+                        headerStyle: {
+                            position: "sticky",
+                            top: "0",
+                            backgroundColor: '#20369f',
+                            color: '#FFF',
+                            fontSize: "0.8em"
+                        },
+                        rowStyle: rowData => ({
+                            fontSize: "0.8em",
+                            backgroundColor: (rowData.tableData.id % 2 === 1) ? '#ebebeb' : '#ffffff'
+                        })
+                    }}
+                />
+
+            </div>
+
+            <div className={style.footer}>
+                <Button
+                    color="primary"
+                    variant="contained"
+                    onClick={onSubmit}
+                >
+                    Next
+                </Button>
+            </div>
+
+        </div>
+    )
+}

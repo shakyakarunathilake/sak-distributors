@@ -1,0 +1,67 @@
+@import "../../styles/variables";
+
+.container {
+    width: calc(100vw - 50px);
+    height: calc(100vh - 20px);
+    box-sizing: border-box;
+    grid-template-columns: min-content auto min-content;
+
+    .header {
+        .title {
+            display: grid;
+            grid-template-columns: auto min-content;
+            font-size: 1.55em;
+            font-weight: 600;
+            .icon {
+                color: red;
+                &:hover {
+                    transform: scale(1.1);
+                }
+            }
+        }
+
+        .step {
+            margin: 5px 0 0 0;
+            color: $primaryLight;
+            font-size: 0.75em;
+        }
+    }
+
+    .body {
+        .orderDetails {
+            display: grid;
+            grid-template-columns: 50% 50%;
+            padding: 25px 20px;
+
+            .details {
+                table-layout: auto !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+
+                tr {
+                    th {
+                        width: 200px !important;
+                        height: 30px;
+                    }
+
+                    .blue {
+                        color: $primaryMain;
+                        font-weight: 600;
+                    }
+                }
+            }
+        }
+    }
+
+    .footer {
+        text-align: right;
+        padding: 30px 0px 18px 0px;
+
+        Button {
+            font-size: 1em;
+            padding: 0 30px;
+            height: 40px;
+            width: auto;
+        }
+    }
+}
