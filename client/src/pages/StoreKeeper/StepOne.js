@@ -127,7 +127,7 @@ export default function StepOne(props) {
     }
 
     return (
-        <form className={style.container} onSubmit={handleSubmit(onSubmit)}>
+        <div className={style.container}>
 
             <div className={style.header}>
 
@@ -741,12 +741,12 @@ export default function StepOne(props) {
                 <Button
                     color="primary"
                     variant="contained"
-                    type="submit"
+                    onClick={onSubmit}
                 >
                     Next
                 </Button>
             </div>
 
-        </form>
+        </div>
     )
 }
