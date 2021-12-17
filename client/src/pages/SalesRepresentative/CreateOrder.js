@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import formData from 'form-data';
 
@@ -13,7 +13,7 @@ import StepFour from './StepFour';
 
 export default function CreateOrder(props) {
 
-    const { addOrEdit, setOpenPopup, customerOptions, productOptions, nextOrderNo, total, setTotal } = props;
+    const { addOrEdit, setOpenPopup, customerOptions, productOptions, orderRecords, nextOrderNo, total, setTotal } = props;
 
     const { handleSubmit } = useForm({ mode: "all" });
 
@@ -21,6 +21,12 @@ export default function CreateOrder(props) {
     const [formStep, setFormStep] = useState(0);
     const [customerType, setCustomerType] = useState('');
     const [orderFormData, setOrderFormData] = useState({});
+
+    // useEffect(() => {
+
+    //     setData(orderFormData.items);
+    // }, [orderRecords, setOrderFormData, setData]);
+
 
     const completeFormStep = () => {
         setFormStep(x => x + 1);
