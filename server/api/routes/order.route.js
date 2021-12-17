@@ -81,6 +81,79 @@ router.get("/get-next-invoiceno", (req, res, next) => {
 
 });
 
+//Get order details by order number
+router.get("/:orderno", (req, res, next) => {
+
+    Order
+        .findOne({ orderno: req.params.orderno })
+        .exec()
+        .then(doc => {
+
+            const order = {
+                'orderno': doc.orderno,
+                'contactnumber': doc.contactnumber,
+                'customer': doc.customer,
+                'customerid': doc.customerid,
+                'deliverydate': doc.deliverydate,
+                'orderno': doc.orderno,
+                'orderplacedat': doc.orderplacedat,
+                'route': doc.route,
+                'ordercreatedby': doc.ordercreatedby,
+                'shippingaddress': doc.shippingaddress,
+                'storename': doc.storename,
+                'items': doc.items,
+                'status': doc.status,
+            }
+
+            res.status(200).json({
+                message: "Handeling GET requests to  orders/:orderno",
+                order: order,
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        })
+
+})
+
+//Get order details by order number
+router.get("/update-by-id/:orderno", formDataBody.fields([]), (req, res, next) => {
+    console.log("UPDATE:", req.body);
+
+    const items = JSON.parse(req.body.items);
+
+    Order
+        .findOneAndUpdate(
+            { orderno: req.params.orderno },
+            {
+                'items': items,
+                'contactnumber': req.body.contactnumber,
+                'customer': req.body.customer,
+                'customerid': req.body.customerid,
+                'route': req.body.route,
+                'shippingaddress': req.body.shippingaddress,
+                'storename': req.body.storename,
+            },
+            { new: true }
+        )
+        .exec()
+        .then(doc => {
+            res.status(200).json({
+                message: "Handling POST requests to /orders/update-by-orderno/:orderno, ORDER UPDATED",
+                type: 'success',
+                alert: `${doc.orderno} updated`,
+            });
+        })
+        .catch(err => {
+            res.status(200).json({
+                type: 'error',
+                alert: `Something went wrong. Could not update order`,
+            });
+            console.log(err);
+        });
+});
+
 //Create a order
 router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
 
@@ -98,8 +171,8 @@ router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
         route: req.body.route,
         ordercreatedby: req.body.ordercreatedby,
         shippingaddress: req.body.shippingaddress,
-        items: items,
         storename: req.body.storename,
+        items: items,
         status: 'Pending',
     });
 
