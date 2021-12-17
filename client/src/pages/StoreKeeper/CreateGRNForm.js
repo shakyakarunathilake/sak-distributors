@@ -66,22 +66,20 @@ export default function GRNForm(props) {
         setFormStep(x => x - 1);
     }
 
-    const onSubmit = (values) => {
+    const onSubmit = () => {
 
         console.log("UPDATE GRN")
-        // const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
-        // const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
-        // const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
 
-        // const grnFormData = new formData();
+        const grnFormData = new formData();
 
-        // grnFormData.append('status', "Complete");
-        // grnFormData.append('items', JSON.stringify(data));
-        // grnFormData.append('createdat', values.createdat);
-        // grnFormData.append('createdby', `${ firstname } ${ lastname }(${ employeeid })`);
-        // grnFormData.append('grntotal', values.grntotal);
+        grnFormData.append('createdat', orderFormData.createdat);
+        grnFormData.append('createdby', orderFormData.createdby);
+        grnFormData.append('status', orderFormData.status);
+        grnFormData.append('items', JSON.stringify(data));
+        grnFormData.append('grntotal', orderFormData.grntotal);
+        grnFormData.append('damagedmissingitems', orderFormData.damagedmissingitems);
 
-        // updateGRN(grnFormData, getValues("grnnumber"));
+        updateGRN(grnFormData, orderFormData.grnnumber);
     };
 
     return (
@@ -232,15 +230,7 @@ export default function GRNForm(props) {
                                                 <Typography style={{ fontWeight: 600 }}> Gross Total (Rs.) </Typography>
                                             </Grid>
                                             <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
-                                                <Typography style={{ fontWeight: 600 }}> {orderFormData.grosstotal} </Typography>
-                                            </Grid>
-                                        </Grid>
-                                        <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
-                                            <Grid item align="Left">
-                                                <Typography style={{ fontWeight: 600 }}> Received Discounts (Rs.)</Typography>
-                                            </Grid>
-                                            <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
-                                                <Typography style={{ fontWeight: 600 }}> {orderFormData.receiveddiscounts} </Typography>
+                                                <Typography style={{ fontWeight: 600 }}> {GRNRecords.total} </Typography>
                                             </Grid>
                                         </Grid>
                                         <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
@@ -248,7 +238,7 @@ export default function GRNForm(props) {
                                                 <Typography style={{ fontWeight: 600 }}> Damaged / Expired Items (Rs.) </Typography>
                                             </Grid>
                                             <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
-                                                <Typography style={{ fontWeight: 600 }}> {orderFormData.damagedexpireditems} </Typography>
+                                                <Typography style={{ fontWeight: 600 }}> {orderFormData.damagedmissingitems} </Typography>
                                             </Grid>
                                         </Grid>
                                         <Grid container style={{ background: "#f5f5f5", padding: 7, color: 'red' }}>
@@ -256,7 +246,7 @@ export default function GRNForm(props) {
                                                 <Typography style={{ fontWeight: 600 }}> Total (Rs.) </Typography>
                                             </Grid>
                                             <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
-                                                <Typography style={{ fontWeight: 600 }}> {orderFormData.total} </Typography>
+                                                <Typography style={{ fontWeight: 600 }}> {orderFormData.grntotal} </Typography>
                                             </Grid>
                                         </Grid>
                                     </td>
@@ -264,7 +254,7 @@ export default function GRNForm(props) {
                                 Header: props => (
                                     <TableHead {...props} style={{ position: 'sticky', top: '0', zIndex: 99999 }}>
                                         <TableRow className={classes.row1}>
-                                            <TableCell width="29%" padding="none" rowSpan={2}>
+                                            <TableCell width="30%" padding="none" rowSpan={2}>
                                                 <div style={{ padding: '0 10px' }}>
                                                     Description
                                                 </div>
@@ -286,8 +276,10 @@ export default function GRNForm(props) {
                                             <TableCell padding="none" colSpan={2} align="center">
                                                 Delivered Free Qty.
                                             </TableCell>
-                                            <TableCell padding="none" colSpan={2} align="center">
-                                                Return Qty.
+                                            <TableCell width="5%" padding="none" rowSpan={2} align="center">
+                                                <div style={{ padding: '0 10px' }}>
+                                                    Damaged Qty.
+                                                </div>
                                             </TableCell>
                                             <TableCell padding="none" width="8%" rowSpan={2} align="center">
                                                 <div style={{ padding: '0 10px' }}>
@@ -309,8 +301,6 @@ export default function GRNForm(props) {
                                             <TableCell width="5%" padding="none" align="center">Pcs</TableCell>
                                             <TableCell width="5%" padding="none" align="center">Cs</TableCell>
                                             <TableCell width="5%" padding="none" align="center">Pcs</TableCell>
-                                            <TableCell width="5%" padding="none" align="center">D</TableCell>
-                                            <TableCell width="5%" padding="none" align="center">R</TableCell>
                                         </TableRow>
                                     </TableHead>
                                 ),
@@ -320,7 +310,7 @@ export default function GRNForm(props) {
                                     field: "description",
                                     cellStyle: {
                                         padding: "10px 7px 10px 7px",
-                                        width: '29%',
+                                        width: '30%',
                                         textAlign: 'left'
                                     }
                                 },
@@ -418,16 +408,6 @@ export default function GRNForm(props) {
                                     }
                                 },
                                 {
-                                    title: "Return",
-                                    field: "return",
-                                    type: 'numeric',
-                                    cellStyle: {
-                                        width: '5%',
-                                        padding: "10px 7px 10px 7px",
-                                        textAlign: 'right'
-                                    }
-                                },
-                                {
                                     title: "GRN Value (Rs.)",
                                     field: "grnvalue",
                                     type: 'numeric',
@@ -455,8 +435,8 @@ export default function GRNForm(props) {
                                 filtering: true,
                                 search: false,
                                 pageSize: 999,
-                                maxBodyHeight: "calc(100vh - 485px)",
-                                minBodyHeight: "calc(100vh - 485px)",
+                                maxBodyHeight: "calc(100vh - 450px)",
+                                minBodyHeight: "calc(100vh - 450px)",
                                 actionsColumnIndex: -1,
                                 headerStyle: {
                                     position: "sticky",

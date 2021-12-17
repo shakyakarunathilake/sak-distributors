@@ -69,7 +69,7 @@ router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) =
         items: items,
         grosstotal: req.body.grosstotal,
         receiveddiscounts: req.body.receiveddiscounts,
-        damagedexpireditems: req.body.damagedexpireditems,
+        damagedmissingitems: req.body.damagedmissingitems,
         total: req.body.total,
     });
 
@@ -140,7 +140,7 @@ router.get("/:ponumber", (req, res, next) => {
                 'items': doc.items,
                 'grosstotal': doc.grosstotal,
                 'receiveddiscounts': doc.receiveddiscounts,
-                'damagedexpireditems': doc.damagedexpireditems,
+                'damagedmissingitems': doc.damagedmissingitems,
                 'total': doc.total,
             }
 
@@ -217,8 +217,8 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
                 supplier: result.supplier,
                 status: "Pending",
                 items: items,
-                addedat: "Pending",
-                addedby: "Pending",
+                createdat: "Pending",
+                createdby: "Pending",
                 grosstotal: result.grosstotal,
                 damagedmissingitems: 0,
                 total: result.total,

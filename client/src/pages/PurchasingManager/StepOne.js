@@ -91,7 +91,7 @@ export default function StepOne(props) {
             supplier: poRecords ? poRecords.supplier : '',
             grosstotal: poRecords ? poRecords.grosstotal : 0,
             receiveddiscounts: poRecords ? poRecords.receiveddiscounts : 0,
-            damagedexpireditems: poRecords ? poRecords.damagedexpireditems : 0,
+            damagedmissingitems: poRecords ? poRecords.damagedmissingitems : 0,
             total: poRecords ? poRecords.total : 0,
             // customerid: poRecords ? poRecords.customerid : '',
             customername: poRecords ? poRecords.customername : "S.A.K Distributors",
@@ -163,7 +163,7 @@ export default function StepOne(props) {
         }
 
 
-        setValue('total', getValues('grosstotal') - (getValues('receiveddiscounts') + getValues('damagedexpireditems')));
+        setValue('total', getValues('grosstotal') - (getValues('receiveddiscounts') + getValues('damagedmissingitems')));
 
         setOrderFormData(getValues());
         setConfirmation(true);
@@ -394,12 +394,10 @@ export default function StepOne(props) {
                                             let data = { ...props.rowData };
                                             data.salesqtycases = e.target.value;
                                             let salesqtycases = isNaN(data.salesqtycases) ? 0 : data.salesqtycases;
-                                            let freeqtycases = isNaN(data.freeqtycases) ? 0 : data.freeqtycases;
                                             let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
-                                            let freeqtypieces = isNaN(data.freeqtypieces) ? 0 : data.freeqtypieces;
                                             let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
                                             let listprice = isNaN(data.listprice) ? 0 : data.listprice;
-                                            data.value = (((salesqtycases * piecespercase) + salesqtypieces) - ((freeqtycases * piecespercase) - freeqtypieces)) * listprice;
+                                            data.value = ((salesqtycases * piecespercase) + +salesqtypieces) * listprice;
                                             props.onRowDataChange(data);
                                         }}
                                         type="number"
@@ -432,12 +430,10 @@ export default function StepOne(props) {
                                             let data = { ...props.rowData };
                                             data.salesqtypieces = e.target.value;
                                             let salesqtycases = isNaN(data.salesqtycases) ? 0 : data.salesqtycases;
-                                            let freeqtycases = isNaN(data.freeqtycases) ? 0 : data.freeqtycases;
                                             let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
-                                            let freeqtypieces = isNaN(data.freeqtypieces) ? 0 : data.freeqtypieces;
                                             let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
                                             let listprice = isNaN(data.listprice) ? 0 : data.listprice;
-                                            data.value = (((salesqtycases * piecespercase) + salesqtypieces) - ((freeqtycases * piecespercase) - freeqtypieces)) * listprice;
+                                            data.value = ((salesqtycases * piecespercase) + +salesqtypieces) * listprice;
                                             props.onRowDataChange(data);
                                         }}
                                         type="number"
@@ -465,27 +461,6 @@ export default function StepOne(props) {
                                     padding: "10px 5px 10px 7px",
                                     textAlign: 'center'
                                 },
-                                editComponent: props =>
-                                    <MuiTextField
-                                        onChange={e => {
-                                            let data = { ...props.rowData };
-                                            data.freeqtycases = e.target.value;
-                                            let salesqtycases = isNaN(data.salesqtycases) ? 0 : data.salesqtycases;
-                                            let freeqtycases = isNaN(data.freeqtycases) ? 0 : data.freeqtycases;
-                                            let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
-                                            let freeqtypieces = isNaN(data.freeqtypieces) ? 0 : data.freeqtypieces;
-                                            let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
-                                            let listprice = isNaN(data.listprice) ? 0 : data.listprice;
-                                            data.value = (((salesqtycases * piecespercase) + salesqtypieces) - ((freeqtycases * piecespercase) - freeqtypieces)) * listprice;
-                                            props.onRowDataChange(data);
-                                        }}
-                                        type="number"
-                                        helperText={props.helperText}
-                                        error={props.error}
-                                        variant="standard"
-                                        value={props.value}
-                                    />
-                                ,
                                 validate: (rowData) =>
                                     rowData.freeqtycases === undefined
                                         ? { isValid: false, helperText: 'Required *' }
@@ -504,27 +479,6 @@ export default function StepOne(props) {
                                     padding: "10px 5px 10px 7px",
                                     textAlign: 'center'
                                 },
-                                editComponent: props =>
-                                    <MuiTextField
-                                        onChange={e => {
-                                            let data = { ...props.rowData };
-                                            data.freeqtypieces = e.target.value;
-                                            let salesqtycases = isNaN(data.salesqtycases) ? 0 : data.salesqtycases;
-                                            let freeqtycases = isNaN(data.freeqtycases) ? 0 : data.freeqtycases;
-                                            let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
-                                            let freeqtypieces = isNaN(data.freeqtypieces) ? 0 : data.freeqtypieces;
-                                            let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
-                                            let listprice = isNaN(data.listprice) ? 0 : data.listprice;
-                                            data.value = (((salesqtycases * piecespercase) + salesqtypieces) - ((freeqtycases * piecespercase) - freeqtypieces)) * listprice;
-                                            props.onRowDataChange(data);
-                                        }}
-                                        type="number"
-                                        helperText={props.helperText}
-                                        error={props.error}
-                                        variant="standard"
-                                        value={props.value}
-                                    />
-                                ,
                                 validate: (rowData) =>
                                     rowData.freeqtypieces === undefined
                                         ? { isValid: false, helperText: 'Required *' }

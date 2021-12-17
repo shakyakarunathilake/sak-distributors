@@ -89,7 +89,7 @@ export default function CreatePurchaseOrder(props) {
             purchaseOrderFormData.append('items', JSON.stringify(data));
             purchaseOrderFormData.append('grosstotal', orderFormData.grosstotal);
             purchaseOrderFormData.append('receiveddiscounts', orderFormData.receiveddiscounts);
-            purchaseOrderFormData.append('damagedexpireditems', orderFormData.damagedexpireditems);
+            purchaseOrderFormData.append('damagedmissingitems', orderFormData.damagedmissingitems);
             purchaseOrderFormData.append('total', orderFormData.total);
         }
 
@@ -272,7 +272,7 @@ export default function CreatePurchaseOrder(props) {
                                                 <Typography style={{ fontWeight: 600 }}> Damaged / Expired Items (Rs.) </Typography>
                                             </Grid>
                                             <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
-                                                <Typography style={{ fontWeight: 600 }}> {orderFormData.damagedexpireditems} </Typography>
+                                                <Typography style={{ fontWeight: 600 }}> {orderFormData.damagedmissingitems} </Typography>
                                             </Grid>
                                         </Grid>
                                         <Grid container style={{ background: "#f5f5f5", padding: 7, color: 'red' }}>

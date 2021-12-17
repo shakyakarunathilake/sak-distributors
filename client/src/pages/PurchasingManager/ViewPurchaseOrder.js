@@ -112,7 +112,11 @@ export default function ViewPurchaseOrder(props) {
                                                 poRecords.deliveredat : (
                                                     poRecords.status === "Waiting For Approval" ?
                                                         <p style={{ padding: "0", margin: "0", color: "#eed202", fontWeight: "700" }}>{poRecords.status}</p> :
-                                                        <p style={{ padding: "0", margin: "0", color: "red", fontWeight: "700" }}>{poRecords.status}</p>
+                                                        (
+                                                            poRecords.status === "Pending" ?
+                                                                <p style={{ padding: "0", margin: "0", color: "red", fontWeight: "700" }}>{poRecords.status}</p> :
+                                                                <p style={{ padding: "0", margin: "0", color: "#4caf50", fontWeight: "700" }}>{poRecords.status}</p>
+                                                        )
                                                 )
                                         }
                                     </Typography>
@@ -189,7 +193,7 @@ export default function ViewPurchaseOrder(props) {
                                         <Typography style={{ fontWeight: 600 }}> Damaged / Expired Items (Rs.) </Typography>
                                     </Grid>
                                     <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
-                                        <Typography style={{ fontWeight: 600 }}> {poRecords.damagedexpireditems} </Typography>
+                                        <Typography style={{ fontWeight: 600 }}> {poRecords.damagedmissingitems} </Typography>
                                     </Grid>
                                 </Grid>
                                 <Grid container style={{ background: "#f5f5f5", padding: 7, color: 'red' }}>

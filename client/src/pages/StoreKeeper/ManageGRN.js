@@ -181,12 +181,15 @@ export default function GRN() {
                     fullScreen={true}
                     setOpenPopup={setOpenPopup}
                 >
-                    {action === 'View' ?
+                    {
+                        action === 'View' &&
                         <ViewGRN
                             GRNRecords={GRNRecords}
                             handleClosePopUp={handleClosePopUp}
                             setAction={setAction}
-                        /> :
+                        />}
+                    {
+                        action === 'Edit' &&
                         <CreateGRNForm
                             GRNRecords={GRNRecords}
                             handleClosePopUp={handleClosePopUp}
@@ -194,6 +197,7 @@ export default function GRN() {
                             updateGRN={updateGRN}
                         />
                     }
+
                 </PopUp>
                 <Snackbar
                     open={open}

@@ -248,7 +248,7 @@ export default function ManagePurchaseOrder() {
                                     getOptions();
                                     openInPopup(rowData.ponumber);
                                 },
-                                disabled: rowData.status === 'Pending'
+                                disabled: rowData.status != 'Waiting For Approval'
                             })
                         ]}
                     />

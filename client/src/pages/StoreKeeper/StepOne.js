@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, get } from 'react-hook-form';
 
 //Shared Components
 import PopUp from '../../shared/PopUp/PopUp';
@@ -73,12 +73,13 @@ export default function StepOne(props) {
         setValue("ponumber", GRNRecords.ponumber);
         setValue("grnnumber", GRNRecords.grnnumber);
         setValue("supplier", GRNRecords.supplier);
-        setValue("createdby", `${firstname} ${lastname} (${employeeid})`);
-        setValue("createdat", getTime());
         setValue("total", GRNRecords.total);
+        setValue("createdat", GRNRecords.createdat);
+        setValue("createdby", GRNRecords.createdby);
         setValue("customername", "S.A.K Distributors");
         setValue("customeraddress", "No.233, Kiriwallapitiya, Rambukkana, Srilanka");
-        setValue("contactnumber", "0352264009")
+        setValue("contactnumber", "0352264009");
+        setValue("status", "Complete");
 
         setData(GRNRecords.items);
 
@@ -94,7 +95,6 @@ export default function StepOne(props) {
     }
 
     const getGRNTotal = () => {
-
         let total = 0;
 
         for (let i = 0; i < data.length; i++) {
@@ -105,8 +105,28 @@ export default function StepOne(props) {
         return total;
     }
 
+    const getDamagedMissingItems = () => {
+
+        let pototal = 0;
+        let grntotal = 0;
+
+        for (let i = 0; i < data.length; i++) {
+            pototal = pototal + (isNaN(data[i].value) ? 0 : data[i].value);
+            grntotal = grntotal + (isNaN(data[i].grnvalue) ? 0 : data[i].grnvalue);
+
+        }
+
+        let damagedmissingitems = pototal - grntotal;
+
+        setValue("damagedmissingitems", damagedmissingitems);
+        return damagedmissingitems;
+    }
 
     const onSubmit = () => {
+
+        setValue("createdat", getTime());
+        setValue("createdby", `${firstname} ${lastname} (${employeeid})`);
+
         setOrderFormData(getValues());
         setConfirmation(true);
         completeFormStep();
@@ -237,7 +257,7 @@ export default function StepOne(props) {
                                         name={"createdat"}
                                         control={control}
                                         render={({ field: { value } }) => (
-                                            <Typography className={style.input}>
+                                            <Typography className={value === 'Pending' ? style.red : style.input}>
                                                 {value}
                                             </Typography>
                                         )}
@@ -251,7 +271,7 @@ export default function StepOne(props) {
                                         name={"createdby"}
                                         control={control}
                                         render={({ field: { value } }) => (
-                                            <Typography className={style.input}>
+                                            <Typography className={value === 'Pending' ? style.red : style.input}>
                                                 {value}
                                             </Typography>
                                         )}
@@ -280,9 +300,25 @@ export default function StepOne(props) {
                                 display: "flex",
                                 flexDirection: "column"
                             }} >
-                                <Grid container style={{ background: "#f5f5f5", padding: 15 }}>
+                                <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
                                     <Grid item align="Left">
-                                        <Typography style={{ fontWeight: 600 }}> Gross Total (Rs.) </Typography>
+                                        <Typography style={{ fontWeight: 600 }}> Purchase Order Total (Rs.) </Typography>
+                                    </Grid>
+                                    <Grid item align="Right" style={{ margin: "0px 102.56px 0px auto" }}>
+                                        <Typography style={{ fontWeight: 600 }}> {getValues("total")} </Typography>
+                                    </Grid>
+                                </Grid>
+                                <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
+                                    <Grid item align="Left">
+                                        <Typography style={{ fontWeight: 600 }}> Damaged Expired Items (Rs.) </Typography>
+                                    </Grid>
+                                    <Grid item align="Right" style={{ margin: "0px 102.56px 0px auto" }}>
+                                        <Typography style={{ fontWeight: 600 }}> {getDamagedMissingItems()} </Typography>
+                                    </Grid>
+                                </Grid>
+                                <Grid container style={{ background: "#f5f5f5", padding: 7, color: 'red' }}>
+                                    <Grid item align="Left">
+                                        <Typography style={{ fontWeight: 600 }}> GRN Total (Rs.) </Typography>
                                     </Grid>
                                     <Grid item align="Right" style={{ margin: "0px 102.56px 0px auto" }}>
                                         <Typography style={{ fontWeight: 600 }}> {getGRNTotal()} </Typography>
@@ -293,9 +329,14 @@ export default function StepOne(props) {
                         Header: props => (
                             <TableHead {...props} style={{ position: 'sticky', top: '0', zIndex: 99999 }}>
                                 <TableRow className={classes.row1}>
-                                    <TableCell width="26%" padding="none" rowSpan={2}>
+                                    <TableCell width="25%" padding="none" rowSpan={2}>
                                         <div style={{ padding: '0 10px' }}>
                                             Description
+                                        </div>
+                                    </TableCell>
+                                    <TableCell width="5%" padding="none" rowSpan={2}>
+                                        <div style={{ padding: '0 10px' }}>
+                                            Pieces per Case
                                         </div>
                                     </TableCell>
                                     <TableCell width="5%" padding="none" rowSpan={2} align="center">
@@ -315,8 +356,10 @@ export default function StepOne(props) {
                                     <TableCell padding="none" colSpan={2} align="center">
                                         Delivered Free Qty.
                                     </TableCell>
-                                    <TableCell padding="none" colSpan={2} align="center">
-                                        Return Qty.
+                                    <TableCell width="5%" padding="none" rowSpan={2} align="center">
+                                        <div style={{ padding: '0 10px' }}>
+                                            Damaged Qty.
+                                        </div>
                                     </TableCell>
                                     <TableCell padding="none" width="8%" rowSpan={2} align="center">
                                         <div style={{ padding: '0 10px' }}>
@@ -328,7 +371,7 @@ export default function StepOne(props) {
                                             PO Value
                                         </div>
                                     </TableCell>
-                                    <TableCell padding="none" width="1%" rowSpan={2} align="center">
+                                    <TableCell padding="none" width="2%" rowSpan={2} align="center">
                                         Action
                                     </TableCell>
                                 </TableRow>
@@ -341,8 +384,6 @@ export default function StepOne(props) {
                                     <TableCell width="5%" padding="none" align="center">Pcs</TableCell>
                                     <TableCell width="5%" padding="none" align="center">Cs</TableCell>
                                     <TableCell width="5%" padding="none" align="center">Pcs</TableCell>
-                                    <TableCell width="5%" padding="none" align="center">D</TableCell>
-                                    <TableCell width="5%" padding="none" align="center">R</TableCell>
                                 </TableRow>
                             </TableHead>
                         ),
@@ -353,7 +394,16 @@ export default function StepOne(props) {
                             editable: 'never',
                             cellStyle: {
                                 padding: "10px 7px 10px 7px",
-                                width: '26%',
+                                width: '30%',
+                                textAlign: 'left'
+                            }
+                        },
+                        {
+                            field: "piecespercase",
+                            editable: 'never',
+                            cellStyle: {
+                                padding: "10px 7px 10px 7px",
+                                width: '5%',
                                 textAlign: 'left'
                             }
                         },
@@ -401,12 +451,13 @@ export default function StepOne(props) {
                                         let data = { ...props.rowData };
                                         data.deliveredsalesqtycases = e.target.value;
                                         let deliveredsalesqtycases = isNaN(data.deliveredsalesqtycases) ? 0 : data.deliveredsalesqtycases;
-                                        let deliveredfreeqtycases = isNaN(data.deliveredfreeqtycases) ? 0 : data.deliveredfreeqtycases;
                                         let deliveredsalesqtypieces = isNaN(data.deliveredsalesqtypieces) ? 0 : data.deliveredsalesqtypieces;
-                                        let deliveredfreeqtypieces = isNaN(data.deliveredfreeqtypieces) ? 0 : data.deliveredfreeqtypieces;
+                                        let damaged = isNaN(data.damaged) ? 0 : data.damaged;
                                         let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
                                         let listprice = isNaN(data.listprice) ? 0 : data.listprice;
-                                        data.grnvalue = (((deliveredsalesqtycases * piecespercase) + deliveredsalesqtypieces) - ((deliveredfreeqtycases * piecespercase) - deliveredfreeqtypieces)) * listprice;
+                                        let numberofpieces = ((deliveredsalesqtycases * piecespercase) + +deliveredsalesqtypieces)
+                                        data.grnvalue = (numberofpieces - damaged) * listprice;
+                                        
                                         props.onRowDataChange(data);
                                     }}
                                     type="number"
@@ -438,12 +489,13 @@ export default function StepOne(props) {
                                         let data = { ...props.rowData };
                                         data.deliveredsalesqtypieces = e.target.value;
                                         let deliveredsalesqtycases = isNaN(data.deliveredsalesqtycases) ? 0 : data.deliveredsalesqtycases;
-                                        let deliveredfreeqtycases = isNaN(data.deliveredfreeqtycases) ? 0 : data.deliveredfreeqtycases;
                                         let deliveredsalesqtypieces = isNaN(data.deliveredsalesqtypieces) ? 0 : data.deliveredsalesqtypieces;
-                                        let deliveredfreeqtypieces = isNaN(data.deliveredfreeqtypieces) ? 0 : data.deliveredfreeqtypieces;
+                                        let damaged = isNaN(data.damaged) ? 0 : data.damaged;
                                         let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
                                         let listprice = isNaN(data.listprice) ? 0 : data.listprice;
-                                        data.grnvalue = (((deliveredsalesqtycases * piecespercase) + deliveredsalesqtypieces) - ((deliveredfreeqtycases * piecespercase) - deliveredfreeqtypieces)) * listprice;
+                                        let numberofpieces = ((deliveredsalesqtycases * piecespercase) + +deliveredsalesqtypieces)
+                                        data.grnvalue = (numberofpieces - damaged) * listprice;
+                                        
                                         props.onRowDataChange(data);
                                     }}
                                     type="number"
@@ -500,12 +552,13 @@ export default function StepOne(props) {
                                         console.log(props.rowData)
                                         data.deliveredfreeqtycases = e.target.value;
                                         let deliveredsalesqtycases = isNaN(data.deliveredsalesqtycases) ? 0 : data.deliveredsalesqtycases;
-                                        let deliveredfreeqtycases = isNaN(data.deliveredfreeqtycases) ? 0 : data.deliveredfreeqtycases;
                                         let deliveredsalesqtypieces = isNaN(data.deliveredsalesqtypieces) ? 0 : data.deliveredsalesqtypieces;
-                                        let deliveredfreeqtypieces = isNaN(data.deliveredfreeqtypieces) ? 0 : data.deliveredfreeqtypieces;
+                                        let damaged = isNaN(data.damaged) ? 0 : data.damaged;
                                         let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
                                         let listprice = isNaN(data.listprice) ? 0 : data.listprice;
-                                        data.grnvalue = (((deliveredsalesqtycases * piecespercase) + deliveredsalesqtypieces) - ((deliveredfreeqtycases * piecespercase) - deliveredfreeqtypieces)) * listprice;
+                                        let numberofpieces = ((deliveredsalesqtycases * piecespercase) + +deliveredsalesqtypieces)
+                                        data.grnvalue = (numberofpieces - damaged) * listprice;
+                                        
                                         props.onRowDataChange(data);
                                     }}
                                     type="number"
@@ -537,12 +590,13 @@ export default function StepOne(props) {
                                         let data = { ...props.rowData };
                                         data.deliveredfreeqtypieces = e.target.value;
                                         let deliveredsalesqtycases = isNaN(data.deliveredsalesqtycases) ? 0 : data.deliveredsalesqtycases;
-                                        let deliveredfreeqtycases = isNaN(data.deliveredfreeqtycases) ? 0 : data.deliveredfreeqtycases;
                                         let deliveredsalesqtypieces = isNaN(data.deliveredsalesqtypieces) ? 0 : data.deliveredsalesqtypieces;
-                                        let deliveredfreeqtypieces = isNaN(data.deliveredfreeqtypieces) ? 0 : data.deliveredfreeqtypieces;
+                                        let damaged = isNaN(data.damaged) ? 0 : data.damaged;
                                         let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
                                         let listprice = isNaN(data.listprice) ? 0 : data.listprice;
-                                        data.grnvalue = (((deliveredsalesqtycases * piecespercase) + deliveredsalesqtypieces) - ((deliveredfreeqtycases * piecespercase) - deliveredfreeqtypieces)) * listprice;
+                                        let numberofpieces = ((deliveredsalesqtycases * piecespercase) + +deliveredsalesqtypieces)
+                                        data.grnvalue = (numberofpieces - damaged) * listprice;
+
                                         props.onRowDataChange(data);
                                     }}
                                     type="number"
@@ -573,7 +627,19 @@ export default function StepOne(props) {
                             },
                             editComponent: props =>
                                 <MuiTextField
-                                    onChange={props.onChange}
+                                    onChange={e => {
+                                        let data = { ...props.rowData };
+                                        data.damaged = e.target.value;
+                                        let deliveredsalesqtycases = isNaN(data.deliveredsalesqtycases) ? 0 : data.deliveredsalesqtycases;
+                                        let deliveredsalesqtypieces = isNaN(data.deliveredsalesqtypieces) ? 0 : data.deliveredsalesqtypieces;
+                                        let damaged = isNaN(data.damaged) ? 0 : data.damaged;
+                                        let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
+                                        let listprice = isNaN(data.listprice) ? 0 : data.listprice;
+                                        let numberofpieces = ((deliveredsalesqtycases * piecespercase) + +deliveredsalesqtypieces)
+                                        data.grnvalue = (numberofpieces - damaged) * listprice;
+
+                                        props.onRowDataChange(data);
+                                    }}
                                     type="number"
                                     helperText={props.helperText}
                                     error={props.error}
@@ -585,34 +651,6 @@ export default function StepOne(props) {
                                 rowData.damaged === undefined
                                     ? { isValid: false, helperText: 'Required *' }
                                     : rowData.damaged === ''
-                                        ? { isValid: false, helperText: 'Required *' }
-                                        : true
-
-                        },
-                        {
-                            title: "Return",
-                            field: "return",
-                            type: 'numeric',
-                            initialEditValue: 0,
-                            cellStyle: {
-                                width: '5%',
-                                padding: "10px 7px 10px 7px",
-                                textAlign: 'right'
-                            },
-                            editComponent: props =>
-                                <MuiTextField
-                                    onChange={props.onChange}
-                                    type="number"
-                                    helperText={props.helperText}
-                                    error={props.error}
-                                    variant="standard"
-                                    value={props.value}
-                                />
-                            ,
-                            validate: (rowData) =>
-                                rowData.return === undefined
-                                    ? { isValid: false, helperText: 'Required *' }
-                                    : rowData.return === ''
                                         ? { isValid: false, helperText: 'Required *' }
                                         : true
 
@@ -686,8 +724,8 @@ export default function StepOne(props) {
                         filtering: true,
                         search: false,
                         pageSize: 999,
-                        maxBodyHeight: "calc(100vh - 395px)",
-                        minBodyHeight: "calc(100vh - 395px)",
+                        maxBodyHeight: "calc(100vh - 450px)",
+                        minBodyHeight: "calc(100vh - 450px)",
                         actionsColumnIndex: -1,
                         headerStyle: {
                             position: "sticky",
