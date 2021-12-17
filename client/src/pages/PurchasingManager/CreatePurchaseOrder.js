@@ -73,8 +73,6 @@ export default function CreatePurchaseOrder(props) {
 
     const onSubmit = () => {
 
-        console.log("ORDER FORM DATA: ", orderFormData);
-
         const purchaseOrderFormData = new formData();
 
         if (confirmation === true && poRecords === null) {

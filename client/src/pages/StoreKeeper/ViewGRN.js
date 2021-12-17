@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
-import formData from 'form-data';
 
 //Material UI 
 import { Grid } from '@material-ui/core';
@@ -115,7 +114,7 @@ export default function ViewGRN(props) {
                             <tr>
                                 <th align="left">PO No.</th>
                                 <td align="left">
-                                    <Typography className={style.input, style.blue}>
+                                    <Typography className={style.input && style.blue}>
                                         {GRNRecords.ponumber}
                                     </Typography>
                                 </td>
@@ -123,7 +122,7 @@ export default function ViewGRN(props) {
                             <tr>
                                 <th align="left">GRN No.</th>
                                 <td align="left">
-                                    <Typography className={style.input, style.blue}>
+                                    <Typography className={style.input && style.blue}>
                                         {GRNRecords.grnnumber}
                                     </Typography>
                                 </td>

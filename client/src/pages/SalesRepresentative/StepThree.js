@@ -296,11 +296,13 @@ export default function StepThree(props) {
                                         let data = { ...props.rowData };
                                         data.salesqtycases = e.target.value;
                                         let salesqtycases = isNaN(data.salesqtycases) ? 0 : data.salesqtycases;
-                                        let freeqtycases = isNaN(data.freeqtycases) ? 0 : data.freeqtycases;
                                         let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
-                                        let freeqtypieces = isNaN(data.freeqtypieces) ? 0 : data.freeqtypieces;
                                         let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
-                                        data.grossamount = (((salesqtycases * piecespercase) + salesqtypieces) - ((freeqtycases * piecespercase) - freeqtypieces)) * data.price;
+                                        let damaged = isNaN(data.damaged) ? 0 : data.damaged;
+                                        let returns = isNaN(data.returns) ? 0 : data.returns;
+                                        let numberofpieces = (salesqtycases * piecespercase) + +salesqtypieces;
+                                         let damagedreturnpieces = parseInt(damaged) + parseInt(returns);
+                                        data.grossamount = (numberofpieces - damagedreturnpieces) * data.price;
                                         props.onRowDataChange(data);
                                     }}
                                     type="number"
@@ -322,7 +324,6 @@ export default function StepThree(props) {
                             title: "Sales Pcs",
                             field: "salesqtypieces",
                             type: 'numeric',
-                            initialEditValue: 0,
                             cellStyle: {
                                 width: '7%',
                                 padding: "10px 5px 10px 7px",
@@ -334,11 +335,13 @@ export default function StepThree(props) {
                                         let data = { ...props.rowData };
                                         data.salesqtypieces = e.target.value;
                                         let salesqtycases = isNaN(data.salesqtycases) ? 0 : data.salesqtycases;
-                                        let freeqtycases = isNaN(data.freeqtycases) ? 0 : data.freeqtycases;
                                         let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
-                                        let freeqtypieces = isNaN(data.freeqtypieces) ? 0 : data.freeqtypieces;
                                         let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
-                                        data.grossamount = (((salesqtycases * piecespercase) + salesqtypieces) - ((freeqtycases * piecespercase) - freeqtypieces)) * data.price;
+                                        let damaged = isNaN(data.damaged) ? 0 : data.damaged;
+                                        let returns = isNaN(data.returns) ? 0 : data.returns;
+                                        let numberofpieces = (salesqtycases * piecespercase) + +salesqtypieces;
+                                         let damagedreturnpieces = parseInt(damaged) + parseInt(returns);
+                                        data.grossamount = (numberofpieces - damagedreturnpieces) * data.price;
                                         props.onRowDataChange(data);
                                     }}
                                     type="number"
@@ -366,26 +369,6 @@ export default function StepThree(props) {
                                 padding: "10px 5px 10px 7px",
                                 textAlign: 'center'
                             },
-                            editComponent: props =>
-                                <MuiTextField
-                                    onChange={e => {
-                                        let data = { ...props.rowData };
-                                        data.freeqtycases = e.target.value;
-                                        let salesqtycases = isNaN(data.salesqtycases) ? 0 : data.salesqtycases;
-                                        let freeqtycases = isNaN(data.freeqtycases) ? 0 : data.freeqtycases;
-                                        let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
-                                        let freeqtypieces = isNaN(data.freeqtypieces) ? 0 : data.freeqtypieces;
-                                        let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
-                                        data.grossamount = (((salesqtycases * piecespercase) + salesqtypieces) - ((freeqtycases * piecespercase) - freeqtypieces)) * data.price;
-                                        props.onRowDataChange(data);
-                                    }}
-                                    type="number"
-                                    helperText={props.helperText}
-                                    error={props.error}
-                                    variant="standard"
-                                    value={props.value}
-                                />
-                            ,
                             validate: (rowData) =>
                                 rowData.freeqtycases === undefined
                                     ? { isValid: false, helperText: 'Required *' }
@@ -404,26 +387,6 @@ export default function StepThree(props) {
                                 padding: "10px 5px 10px 7px",
                                 textAlign: 'center'
                             },
-                            editComponent: props =>
-                                <MuiTextField
-                                    onChange={e => {
-                                        let data = { ...props.rowData };
-                                        data.freeqtypieces = e.target.value;
-                                        let salesqtycases = isNaN(data.salesqtycases) ? 0 : data.salesqtycases;
-                                        let freeqtycases = isNaN(data.freeqtycases) ? 0 : data.freeqtycases;
-                                        let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
-                                        let freeqtypieces = isNaN(data.freeqtypieces) ? 0 : data.freeqtypieces;
-                                        let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
-                                        data.grossamount = (((salesqtycases * piecespercase) + salesqtypieces) - ((freeqtycases * piecespercase) - freeqtypieces)) * data.price;
-                                        props.onRowDataChange(data);
-                                    }}
-                                    type="number"
-                                    helperText={props.helperText}
-                                    error={props.error}
-                                    variant="standard"
-                                    value={props.value}
-                                />
-                            ,
                             validate: (rowData) =>
                                 rowData.freeqtypieces === undefined
                                     ? { isValid: false, helperText: 'Required *' }
@@ -442,6 +405,28 @@ export default function StepThree(props) {
                                 padding: "10px 5px 10px 7px",
                                 textAlign: 'center'
                             },
+                            editComponent: props =>
+                                <MuiTextField
+                                    onChange={e => {
+                                        let data = { ...props.rowData };
+                                        data.damaged = e.target.value;
+                                        let salesqtycases = isNaN(data.salesqtycases) ? 0 : data.salesqtycases;
+                                        let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
+                                        let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
+                                        let damaged = isNaN(data.damaged) ? 0 : data.damaged;
+                                        let returns = isNaN(data.returns) ? 0 : data.returns;
+                                        let numberofpieces = (salesqtycases * piecespercase) + +salesqtypieces;
+                                         let damagedreturnpieces = parseInt(damaged) + parseInt(returns);
+                                        data.grossamount = (numberofpieces - damagedreturnpieces) * data.price;
+                                        props.onRowDataChange(data);
+                                    }}
+                                    type="number"
+                                    helperText={props.helperText}
+                                    error={props.error}
+                                    variant="standard"
+                                    value={props.value}
+                                />
+                            ,
                             validate: (rowData) =>
                                 rowData.damaged === undefined
                                     ? { isValid: false, helperText: 'Required *' }
@@ -451,8 +436,8 @@ export default function StepThree(props) {
 
                         },
                         {
-                            title: "Return",
-                            field: "return",
+                            title: "Returns",
+                            field: "returns",
                             type: 'numeric',
                             initialEditValue: 0,
                             cellStyle: {
@@ -460,10 +445,34 @@ export default function StepThree(props) {
                                 padding: "10px 5px 10px 7px",
                                 textAlign: 'center'
                             },
+                            editComponent: props =>
+                                <MuiTextField
+                                    onChange={e => {
+                                        let data = { ...props.rowData };
+                                        data.returns = e.target.value;
+                                        let salesqtycases = isNaN(data.salesqtycases) ? 0 : data.salesqtycases;
+                                        let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
+                                        let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
+                                        let damaged = isNaN(data.damaged) ? 0 : data.damaged;
+                                        let returns = isNaN(data.returns) ? 0 : data.returns;
+                                        let numberofpieces = (salesqtycases * piecespercase) + +salesqtypieces;
+                                        let damagedreturnpieces = parseInt(damaged) + parseInt(returns);
+                                        console.log("DAMAGED RETURN PIECES: ", damagedreturnpieces);
+                                        console.log("NUMBER OF PIECES: ", numberofpieces);
+                                        data.grossamount = (numberofpieces - damagedreturnpieces) * data.price;
+                                        props.onRowDataChange(data);
+                                    }}
+                                    type="number"
+                                    helperText={props.helperText}
+                                    error={props.error}
+                                    variant="standard"
+                                    value={props.value}
+                                />
+                            ,
                             validate: (rowData) =>
-                                rowData.return === undefined
+                                rowData.returns === undefined
                                     ? { isValid: false, helperText: 'Required *' }
-                                    : rowData.return === ''
+                                    : rowData.returns === ''
                                         ? { isValid: false, helperText: 'Required *' }
                                         : true
 

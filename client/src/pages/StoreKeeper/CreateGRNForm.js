@@ -67,19 +67,19 @@ export default function GRNForm(props) {
     }
 
     const onSubmit = () => {
+        if (confirmation === true) {
 
-        console.log("UPDATE GRN")
+            const grnFormData = new formData();
 
-        const grnFormData = new formData();
+            grnFormData.append('createdat', orderFormData.createdat);
+            grnFormData.append('createdby', orderFormData.createdby);
+            grnFormData.append('status', orderFormData.status);
+            grnFormData.append('items', JSON.stringify(data));
+            grnFormData.append('grntotal', orderFormData.grntotal);
+            grnFormData.append('damagedmissingitems', orderFormData.damagedmissingitems);
 
-        grnFormData.append('createdat', orderFormData.createdat);
-        grnFormData.append('createdby', orderFormData.createdby);
-        grnFormData.append('status', orderFormData.status);
-        grnFormData.append('items', JSON.stringify(data));
-        grnFormData.append('grntotal', orderFormData.grntotal);
-        grnFormData.append('damagedmissingitems', orderFormData.damagedmissingitems);
-
-        updateGRN(grnFormData, orderFormData.grnnumber);
+            updateGRN(grnFormData, orderFormData.grnnumber);
+        }
     };
 
     return (
@@ -174,7 +174,7 @@ export default function GRNForm(props) {
                                     <tr>
                                         <th align="left">PO No.</th>
                                         <td align="left">
-                                            <Typography className={style.input, style.blue}>
+                                            <Typography className={style.input && style.blue}>
                                                 {orderFormData.ponumber}
                                             </Typography>
                                         </td>
@@ -182,7 +182,7 @@ export default function GRNForm(props) {
                                     <tr>
                                         <th align="left">GRN No.</th>
                                         <td align="left">
-                                            <Typography className={style.input, style.blue}>
+                                            <Typography className={style.input && style.blue}>
                                                 {orderFormData.grnnumber}
                                             </Typography>
                                         </td>

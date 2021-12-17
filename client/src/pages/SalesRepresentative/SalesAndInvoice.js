@@ -40,13 +40,13 @@ export default function SalesAndInvoice() {
     const [action, setAction] = useState('');
     const [openPopup, setOpenPopup] = useState(false);
 
-    const [nextOrderId, setNextOrderId] = useState();
+    const [nextOrderNo, setNextOrderNo] = useState();
     const [total, setTotal] = useState();
     const [reRender, setReRender] = useState(null);
 
-    // const handleAlert = () => {
-    //     setOpen(true);
-    // };
+    const handleAlert = () => {
+        setOpen(true);
+    };
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -68,48 +68,48 @@ export default function SalesAndInvoice() {
             })
     }, [reRender]);
 
-    // const addOrEdit = (order, orderid) => {
+    const addOrEdit = (order, orderno) => {
 
-    //     for (let [key, value] of order.entries()) {
-    //         console.log(key, value);
-    //     }
+        for (let [key, value] of order.entries()) {
+            console.log(key, value);
+        }
 
-    //     if (action === "Create") {
-    //         axios
-    //             .post("http://localhost:8080/orders/create-order", order)
-    //             .then(res => {
-    //                 setAlert(res.data.alert);
-    //                 setType(res.data.type);
-    //                 handleAlert();
-    //                 setReRender(orderid);
-    //             })
-    //             .catch(err => {
-    //                 console.log(err);
-    //             });
-    //         ;
-    //     } if (action === "Edit") {
-    //         axios
-    //             .post(`http://localhost:8080/orders/update-by-id/${orderid}`, order)
-    //             .then(res => {
-    //                 setAlert(res.data.alert);
-    //                 setType(res.data.type);
-    //                 handleAlert();
-    //                 setReRender(orderid);
-    //             })
-    //             .catch(err => {
-    //                 console.log(err);
-    //             });
-    //         ;
-    //     }
+        if (action === "Create") {
+            axios
+                .post("http://localhost:8080/orders/create-order", order)
+                .then(res => {
+                    setAlert(res.data.alert);
+                    setType(res.data.type);
+                    handleAlert();
+                    setReRender(orderno);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+            ;
+        } if (action === "Edit") {
+            axios
+                .post(`http://localhost:8080/orders/update-by-id/${orderno}`, order)
+                .then(res => {
+                    setAlert(res.data.alert);
+                    setType(res.data.type);
+                    handleAlert();
+                    setReRender(orderno);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+            ;
+        }
 
-    //     setOrderRecords(null)
-    //     setOpenPopup(false);
-    //     setAction('');
-    // }
+        setOrderRecords(null)
+        setOpenPopup(false);
+        setAction('');
+    }
 
-    const openInPopup = orderid => {
+    const openInPopup = orderno => {
         axios
-            .get(`http://localhost:8080/orders/${orderid}`)
+            .get(`http://localhost:8080/orders/${orderno}`)
             .then(res => {
                 setOrderRecords(res.data.order);
                 setOpenPopup(true);
@@ -119,11 +119,11 @@ export default function SalesAndInvoice() {
             })
     }
 
-    const getNextOrderId = () => {
+    const getNextOrderNo = () => {
         axios
             .get("http://localhost:8080/orders/get-next-invoiceno")
             .then(res => {
-                setNextOrderId(res.data.nextinvoiceno);
+                setNextOrderNo(res.data.nextinvoiceno);
                 getOptions();
             })
             .catch(err => {
@@ -170,7 +170,7 @@ export default function SalesAndInvoice() {
                             () => {
                                 setAction('Create');
                                 setOrderRecords(null);
-                                getNextOrderId();
+                                getNextOrderNo();
                             }
                         }
                     >
@@ -183,14 +183,22 @@ export default function SalesAndInvoice() {
                     <MaterialTable
                         columns={[
                             {
-                                title: "Order ID", field: "orderid", render: rowData => {
+                                title: "Order ID", field: "orderno", render: rowData => {
                                     return (
-                                        <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.orderid}</p>
+                                        <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.orderno}</p>
                                     )
                                 }
                             },
                             { title: "Customer Name", field: "storename" },
-                            { title: "Status", field: "status" },
+                            {
+                                title: "Status", field: "status", render: rowData => {
+                                    return (
+                                        rowData.status === "Delivered" ?
+                                            <p style={{ padding: "0", margin: "0", color: "#4cbb17", fontWeight: "700" }}>{rowData.status}</p> :
+                                            <p style={{ padding: "0", margin: "0", color: "red", fontWeight: "700" }}>{rowData.status}</p>
+                                    )
+                                }
+                            },
                         ]}
                         data={records}
                         options={{
@@ -218,7 +226,7 @@ export default function SalesAndInvoice() {
                                 tooltip: 'View',
                                 onClick: (event, rowData) => {
                                     setAction('View');
-                                    openInPopup(rowData.orderid);
+                                    openInPopup(rowData.orderno);
                                 }
                             },
                             {
@@ -226,7 +234,7 @@ export default function SalesAndInvoice() {
                                 tooltip: 'Edit',
                                 onClick: (event, rowData) => {
                                     setAction('Edit');
-                                    openInPopup(rowData.orderid);
+                                    openInPopup(rowData.orderno);
                                 }
                             }
                         ]}
@@ -239,9 +247,10 @@ export default function SalesAndInvoice() {
                 >
                     <CreateOrder
                         setOpenPopup={setOpenPopup}
+                        addOrEdit={addOrEdit}
                         productOptions={productOptions}
                         customerOptions={customerOptions}
-                        nextOrderId={nextOrderId}
+                        nextOrderNo={nextOrderNo}
                         total={total}
                         setTotal={setTotal}
                     />

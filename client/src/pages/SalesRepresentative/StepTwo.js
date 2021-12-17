@@ -12,7 +12,7 @@ import style from './StepTwo.module.scss';
 
 export default function StepTwo(props) {
 
-    const { customerType, setOpenPopup, formData, backFormStep, completeFormStep } = props;
+    const { customerType, setOpenPopup, orderFormData, backFormStep, completeFormStep } = props;
 
     const onSubmit = () => {
         completeFormStep();
@@ -49,7 +49,7 @@ export default function StepTwo(props) {
                     </div>
                     <div className={style.customerData}>
                         <Typography className={style.input}>
-                            {formData.orderno}
+                            {orderFormData.orderno}
                         </Typography>
                     </div>
                 </div>
@@ -62,7 +62,7 @@ export default function StepTwo(props) {
                         </div>
                         <div className={style.customerData}>
                             <Typography className={style.input}>
-                                {formData.customerid}
+                                {orderFormData.customerid}
                             </Typography>
                         </div>
                     </div>
@@ -75,7 +75,7 @@ export default function StepTwo(props) {
                     </div>
                     <div className={style.customerData}>
                         <Typography className={style.input}>
-                            {formData.storename}
+                            {orderFormData.storename}
                         </Typography>
                     </div>
                 </div>
@@ -86,7 +86,7 @@ export default function StepTwo(props) {
                     </div>
                     <div className={style.customerData}>
                         <Typography className={style.input}>
-                            {formData.contactnumber}
+                            {orderFormData.contactnumber}
                         </Typography>
                     </div>
                 </div>
@@ -97,7 +97,7 @@ export default function StepTwo(props) {
                     </div>
                     <div className={style.customerData}>
                         <Typography className={style.input}>
-                            {formData.shippingaddress}
+                            {orderFormData.shippingaddress}
                         </Typography>
                     </div>
                 </div>
@@ -108,7 +108,7 @@ export default function StepTwo(props) {
                     </div>
                     <div className={style.customerData}>
                         <Typography className={style.input}>
-                            {formData.route}
+                            {orderFormData.route}
                         </Typography>
                     </div>
                 </div>
@@ -119,7 +119,7 @@ export default function StepTwo(props) {
                     </div>
                     <div className={style.customerData}>
                         <Typography className={style.input}>
-                            {formData.orderplacedat}
+                            {orderFormData.orderplacedat}
                         </Typography>
                     </div>
                 </div>
@@ -130,7 +130,7 @@ export default function StepTwo(props) {
                     </div>
                     <div className={style.customerData}>
                         <Typography className={style.input}>
-                            {formData.deliverydate}
+                            {orderFormData.deliverydate}
                         </Typography>
                     </div>
                 </div>
@@ -141,7 +141,7 @@ export default function StepTwo(props) {
                     </div>
                     <div className={style.customerData}>
                         <Typography className={style.input}>
-                            {formData.salesrepresentative}
+                            {orderFormData.ordercreatedby}
                         </Typography>
                     </div>
                 </div>

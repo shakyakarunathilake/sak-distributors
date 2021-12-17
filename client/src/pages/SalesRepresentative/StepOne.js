@@ -22,7 +22,7 @@ import style from './StepOne.module.scss';
 
 export default function StepOne(props) {
 
-    const { customerOptions, nextOrderId, completeFormStep, setFormData, customerType, setCustomerType, setOpenPopup, data } = props;
+    const { customerOptions, nextOrderNo, completeFormStep, setOrderFormData, customerType, setCustomerType, setOpenPopup, data } = props;
 
     const { formState: { isValid, errors }, control, setValue, getValues, reset, clearErrors, trigger } = useForm({ mode: "onBlur" });
 
@@ -34,17 +34,17 @@ export default function StepOne(props) {
         const deliveryDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
 
         setValue("customertype", '');
-        setValue("orderno", `${JSON.parse(sessionStorage.getItem("Auth")).employeeid}${nextOrderId}`);
+        setValue("orderno", `${JSON.parse(sessionStorage.getItem("Auth")).employeeid}${nextOrderNo}`);
         setValue("orderplacedat", dateTime);
         setValue("deliverydate", deliveryDate);
-        setValue("salesrepresentative", `${JSON.parse(sessionStorage.getItem("Auth")).firstname} ${JSON.parse(sessionStorage.getItem("Auth")).lastname} (${JSON.parse(sessionStorage.getItem("Auth")).employeeid})`);
+        setValue("ordercreatedby", `${JSON.parse(sessionStorage.getItem("Auth")).firstname} ${JSON.parse(sessionStorage.getItem("Auth")).lastname} (${JSON.parse(sessionStorage.getItem("Auth")).employeeid})`);
         setValue("customer", '');
         setValue("storename", '');
         setValue("customerid", '');
         setValue("shippingaddress", '');
         setValue("contactnumber", '');
         setValue("route", '');
-    }, [setValue, nextOrderId])
+    }, [setValue, nextOrderNo])
 
     const handleCustomerTypeChange = (event, option) => {
         setValue("customertype", option.props.value);
@@ -72,7 +72,7 @@ export default function StepOne(props) {
         // console.log("VALUES: ", getValues());
 
         if (isValid) {
-            setFormData(getValues());
+            setOrderFormData(getValues());
             completeFormStep();
         }
     }
@@ -177,15 +177,15 @@ export default function StepOne(props) {
                     </div>
                     <div className={style.textfield}>
                         <Controller
-                            name={"salesrepresentative"}
+                            name={"ordercreatedby"}
                             control={control}
                             rules={{ required: true, message: "Sales Representative is required" }}
                             render={({ field: { onChange, value } }) => (
                                 <TextField
                                     fullWidth={true}
                                     value={value || ''}
-                                    error={errors.salesrepresentative ? true : false}
-                                    helperText={errors.salesrepresentative && errors.salesrepresentative.message}
+                                    error={errors.ordercreatedby ? true : false}
+                                    helperText={errors.ordercreatedby && errors.ordercreatedby.message}
                                     onChange={onChange}
                                     placeholder="Ex: Buddhika Bandara (E00006)"
                                     margin="dense"

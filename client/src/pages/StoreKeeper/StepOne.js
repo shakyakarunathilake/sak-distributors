@@ -1,17 +1,11 @@
-import React, { useEffect, useMemo, useRef } from 'react';
-import { useForm, Controller, get } from 'react-hook-form';
-
-//Shared Components
-import PopUp from '../../shared/PopUp/PopUp';
+import React, { useEffect } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 
 //Material UI 
-import Divider from '@mui/material/Divider';
-import Select from '../../shared/Select/Select';
 import { Button, Grid } from '@material-ui/core';
 import { Paper } from '@material-ui/core';
 import { TextField as MuiTextField } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
-import { Autocomplete } from '@mui/material';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
@@ -83,7 +77,7 @@ export default function StepOne(props) {
 
         setData(GRNRecords.items);
 
-    }, [GRNRecords, setValue])
+    }, [GRNRecords, setValue, setData])
 
     const getTime = () => {
         const today = new Date();
@@ -133,7 +127,7 @@ export default function StepOne(props) {
     }
 
     return (
-        <div className={style.container}>
+        <form className={style.container} onSubmit={handleSubmit(onSubmit)}>
 
             <div className={style.header}>
 
@@ -229,7 +223,7 @@ export default function StepOne(props) {
                                         name={"ponumber"}
                                         control={control}
                                         render={({ field: { value } }) => (
-                                            <Typography className={style.input, style.blue}>
+                                            <Typography className={style.input && style.blue}>
                                                 {value}
                                             </Typography>
                                         )}
@@ -243,7 +237,7 @@ export default function StepOne(props) {
                                         name={"grnnumber"}
                                         control={control}
                                         render={({ field: { value } }) => (
-                                            <Typography className={style.input, style.blue}>
+                                            <Typography className={style.input && style.blue}>
                                                 {value}
                                             </Typography>
                                         )}
@@ -457,7 +451,7 @@ export default function StepOne(props) {
                                         let listprice = isNaN(data.listprice) ? 0 : data.listprice;
                                         let numberofpieces = ((deliveredsalesqtycases * piecespercase) + +deliveredsalesqtypieces)
                                         data.grnvalue = (numberofpieces - damaged) * listprice;
-                                        
+
                                         props.onRowDataChange(data);
                                     }}
                                     type="number"
@@ -495,7 +489,7 @@ export default function StepOne(props) {
                                         let listprice = isNaN(data.listprice) ? 0 : data.listprice;
                                         let numberofpieces = ((deliveredsalesqtycases * piecespercase) + +deliveredsalesqtypieces)
                                         data.grnvalue = (numberofpieces - damaged) * listprice;
-                                        
+
                                         props.onRowDataChange(data);
                                     }}
                                     type="number"
@@ -558,7 +552,7 @@ export default function StepOne(props) {
                                         let listprice = isNaN(data.listprice) ? 0 : data.listprice;
                                         let numberofpieces = ((deliveredsalesqtycases * piecespercase) + +deliveredsalesqtypieces)
                                         data.grnvalue = (numberofpieces - damaged) * listprice;
-                                        
+
                                         props.onRowDataChange(data);
                                     }}
                                     type="number"
@@ -747,12 +741,12 @@ export default function StepOne(props) {
                 <Button
                     color="primary"
                     variant="contained"
-                    onClick={onSubmit}
+                    type="submit"
                 >
                     Next
                 </Button>
             </div>
 
-        </div>
+        </form>
     )
 }
