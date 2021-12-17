@@ -175,7 +175,7 @@ router.post("/update-by-ponumber/:ponumber", formDataBody.fields([]), (req, res,
         .exec()
         .then(doc => {
             res.status(200).json({
-                message: "Handling POST requests to /employees/update-by-ponumber/:ponumber, PURCHASE ORDER UPDATED",
+                message: "Handling POST requests to /purchaseorders/update-by-ponumber/:ponumber, PURCHASE ORDER UPDATED",
                 type: 'success',
                 alert: `${doc.ponumber} updated`,
             });
