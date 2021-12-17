@@ -20,7 +20,10 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 
 //Connecting to Backend
 import axios from 'axios';
+
+//Forms
 import CreateOrder from './CreateOrder';
+import ViewOrder from './ViewOrder';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -240,21 +243,31 @@ export default function SalesAndInvoice() {
                         ]}
                     />
                 </div>
+
                 <PopUp
                     openPopup={openPopup}
                     setOpenPopup={setOpenPopup}
                     fullScreen={true}
                 >
-                    <CreateOrder
-                        setOpenPopup={setOpenPopup}
-                        addOrEdit={addOrEdit}
-                        productOptions={productOptions}
-                        customerOptions={customerOptions}
-                        nextOrderNo={nextOrderNo}
-                        total={total}
-                        setTotal={setTotal}
-                    />
+                    {
+                        (action === "Create" || action === "Edit") &&
+                        <CreateOrder
+                            setOpenPopup={setOpenPopup}
+                            addOrEdit={addOrEdit}
+                            productOptions={productOptions}
+                            customerOptions={customerOptions}
+                            nextOrderNo={nextOrderNo}
+                            total={total}
+                            orderRecords={orderRecords}
+                            setTotal={setTotal}
+                        />
+                    }
+                    {
+                        action === "View" &&
+                        <ViewOrder />
+                    }
                 </PopUp>
+
                 <Snackbar
                     open={open}
                     autoHideDuration={2500}
@@ -272,6 +285,7 @@ export default function SalesAndInvoice() {
                         {alert}
                     </Alert>
                 </Snackbar>
+
             </div>
         </Page>
     )
