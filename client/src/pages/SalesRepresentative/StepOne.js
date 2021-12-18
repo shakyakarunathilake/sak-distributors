@@ -236,11 +236,7 @@ export default function StepOne(props) {
                                         options={customerOptions || []}
                                         fullWidth
                                         getOptionLabel={(option) => option.title}
-                                        onChange={(e, option) => {
-                                            onChange(e, option)
-                                            handleCustomerChange(e, option)
-                                        }}
-                                        inputValue={value || ""}
+                                        onChange={handleCustomerChange}
                                         renderInput={(params) => (
                                             <MuiTextField
                                                 {...params}
