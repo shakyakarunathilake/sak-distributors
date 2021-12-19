@@ -13,6 +13,9 @@ import DatePicker from '../../shared/DatePicker/DatePicker';
 
 //Material UI Components
 import Button from '@material-ui/core/Button';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 
 //Material UI Icons
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
@@ -38,6 +41,7 @@ export default function EmployeesForm(props) {
 
             setValue("employeeimage", employeeRecords.employeeimage);
             setValue("employeeid", employeeRecords.employeeid);
+            setValue("analyticprivileges", employeeRecords.analyticprivileges);
             setValue("fullname", employeeRecords.fullname);
             setValue("title", employeeRecords.title);
             setValue("firstname", employeeRecords.firstname);
@@ -55,23 +59,16 @@ export default function EmployeesForm(props) {
         } else {
             setValue("employeeid", nextEmpId);
         };
-    }, [employeeRecords, nextEmpId])
+    }, [employeeRecords, nextEmpId, setValue])
 
 
     const handleDesignationChange = e => {
-        if (e === "Driver") {
+        if ((e === "Driver") || (e === "Product Handler") || (e === "Warehouse Worker")) {
             setLimitedAccess(true);
             setValue("employeestatus", "Limited Access");
             clearErrors("employeestatus");
-        } else if (e === "Product Handler") {
-            setLimitedAccess(true);
-            setValue("employeestatus", "Limited Access");
-            clearErrors("employeestatus");
-        } else if (e === "Warehouse Worker") {
-            setLimitedAccess(true);
-            setValue("employeestatus", "Limited Access");
-            clearErrors("employeestatus");
-        } else {
+        }
+        else {
             setLimitedAccess(false);
             setValue("employeestatus", "");
         }
@@ -83,6 +80,7 @@ export default function EmployeesForm(props) {
             employeeimage: '',
             fullname: '',
             title: '',
+            analyticprivileges: false,
             firstname: '',
             lastname: '',
             email: '',
@@ -117,6 +115,8 @@ export default function EmployeesForm(props) {
 
         employeeFormData.append('employeeid', values.employeeid);
         employeeFormData.append('employeeimage', values.employeeimage);
+        employeeFormData.append('analyticprivileges', values.analyticprivileges ? values.analyticprivileges : false);
+        employeeFormData.append('adminprivileges', false);
         employeeFormData.append('fullname', values.fullname);
         employeeFormData.append('title', values.title);
         employeeFormData.append('firstname', values.firstname);
@@ -212,7 +212,33 @@ export default function EmployeesForm(props) {
                                     )}
                                 />
                             </div>
-
+                            {limitedAccess ? '' :
+                                <div className={style.analyticsPrivileges}>
+                                    <Controller
+                                        defaultValue=''
+                                        name={"analyticprivileges"}
+                                        control={control}
+                                        render={({ field: { onChange, value } }) => (
+                                            <FormGroup>
+                                                <FormControlLabel
+                                                    control={
+                                                        <Checkbox
+                                                            sx={{
+                                                                color: "#20369f",
+                                                                '&.Mui-checked': {
+                                                                    color: "#20369f",
+                                                                },
+                                                            }}
+                                                            onChange={onChange}
+                                                            checked={value}
+                                                        />
+                                                    }
+                                                    label="View Analytics" />
+                                            </FormGroup>
+                                        )}
+                                    />
+                                </div>
+                            }
                         </div>
 
                         <div className={style.columnB}>

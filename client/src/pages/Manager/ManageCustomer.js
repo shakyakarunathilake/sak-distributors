@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import classnames from 'classnames';
+
+import MaterialTable from 'material-table';
 
 //Shared Components
 import Page from '../../shared/Page/Page';
-import useTable from '../../components/useTable.js';
-import TextField from '../../shared/TextField/TextField';
 import PopUp from '../../shared/PopUp/PopUp';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
@@ -14,14 +13,9 @@ import style from './ManageCustomer.module.scss';
 
 //Material UI 
 import Button from '@material-ui/core/Button';
-import { InputAdornment } from '@material-ui/core';
-import { TableBody, TableRow, TableCell } from '@material-ui/core';
-import Tooltip from '@mui/material/Tooltip';
 
 //Material UI Icons
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import SearchIcon from '@material-ui/icons/Search';
-import EditIcon from '@material-ui/icons/Edit';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 
 //Customer Form
@@ -30,7 +24,6 @@ import ViewCustomer from './ViewCustomer';
 
 //Connecting to Backend
 import axios from 'axios';
-// import ApproveSubmit from './ApproveSubmit';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -43,7 +36,6 @@ export default function ManageCustomer() {
     const [alert, setAlert] = React.useState();
 
     const [records, setRecords] = useState([]);
-    const [headCells, setHeadCells] = useState([]);
 
     const [customerRecords, setCustomerRecords] = useState(null);
     const [action, setAction] = useState('');
@@ -68,7 +60,6 @@ export default function ManageCustomer() {
             .get("http://localhost:8080/customers/get-all-customer-table-data")
             .then(res => {
                 sessionStorage.setItem("CustomerTableData", JSON.stringify(res.data));
-                setHeadCells(res.data.thead);
                 setRecords(res.data.tbody);
                 setReRender(null);
             })
@@ -78,9 +69,11 @@ export default function ManageCustomer() {
     }, [reRender]);
 
     const addOrEdit = (customer, customerid) => {
+        
         for (let [key, value] of customer.entries()) {
             console.log(key, value);
         }
+
         if (action === "Create") {
             axios
                 .post("http://localhost:8080/customers/create-customer", customer)
@@ -137,29 +130,11 @@ export default function ManageCustomer() {
             });
     }
 
-    const { TableContainer, TableHead } = useTable(headCells, records);
-
     return (
         <Page title="Manage Customers">
             <div className={style.container}>
 
                 <div className={style.actionRow}>
-                    <div className={style.search}>
-                        <TextField
-                            // onChange={e => setSearchVal(e.target.value)}
-                            color="primary"
-                            fullWidth={true}
-                            className={style.searchtextfield}
-                            placeholder="Search"
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <SearchIcon />
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
-                    </div>
                     <Button
                         className={style.button}
                         color="primary"
@@ -180,54 +155,60 @@ export default function ManageCustomer() {
                 </div>
 
                 <div className={style.pagecontent}>
-                    <TableContainer >
-                        <TableHead />
-                        <TableBody className={style.tablebody}>
+                    <MaterialTable
+                        columns={[
                             {
-                                records.map((row, i) => (
-                                    <TableRow
-                                        className={classnames(
-                                            { [style.greytablerow]: i % 2 === 1 },
-                                            { [style.whitetablerow]: i % 2 === 0 },
-                                        )}
-                                        key={i}
-                                    >
-                                        {
-                                            row.map((cell, i) => (
-                                                <TableCell key={i}>
-                                                    {cell}
-                                                </TableCell>
-                                            ))
-                                        }
-                                        <TableCell
-                                            align="center"
-                                            className={style.actioncolumn}
-                                        >
-                                            <Tooltip title="View" arrow>
-                                                <VisibilityIcon
-                                                    className={style.visibilityIcon}
-                                                    onClick={() => {
-                                                        setAction('View');
-                                                        openInPopup(row[0]);
-                                                    }}
-                                                />
-                                            </Tooltip>
-                                            <Tooltip title="Edit" arrow>
-                                                <EditIcon
-                                                    className={style.editIcon}
-                                                    onClick={() => {
-                                                        setAction('Edit');
-                                                        openInPopup(row[0]);
-                                                    }}
-                                                />
-                                            </Tooltip>
-                                        </TableCell>
-                                    </TableRow>
-
-                                ))
+                                title: "Customer ID", field: "customerid", render: rowData => {
+                                    return (
+                                        <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.customerid}</p>
+                                    )
+                                }
+                            },
+                            { title: "Store Name", field: "storename" },
+                            { title: "Title", field: "title" },
+                            { title: "Customer Name", field: "customername" },
+                            { title: "Shipping Address", field: "shippingaddress" },
+                            { title: "Contact No.", field: "contactnumber" },
+                        ]}
+                        data={records}
+                        options={{
+                            toolbar: false,
+                            filtering: true,
+                            search: false,
+                            paging: false,
+                            actionsColumnIndex: -1,
+                            maxBodyHeight: "calc(100vh - 199.27px)",
+                            headerStyle: {
+                                position: "sticky",
+                                top: "0",
+                                backgroundColor: '#20369f',
+                                color: '#FFF',
+                                fontSize: "0.8em"
+                            },
+                            rowStyle: rowData => ({
+                                fontSize: "0.8em",
+                                backgroundColor: (rowData.tableData.id % 2 === 0) ? '#ebebeb' : '#ffffff'
+                            })
+                        }}
+                        actions={[
+                            {
+                                icon: VisibilityIcon,
+                                tooltip: 'View',
+                                onClick: (event, rowData) => {
+                                    setAction('View');
+                                    openInPopup(rowData.customerid);
+                                }
+                            },
+                            {
+                                icon: 'edit',
+                                tooltip: 'Edit',
+                                onClick: (event, rowData) => {
+                                    setAction('Edit');
+                                    openInPopup(rowData.customerid);
+                                }
                             }
-                        </TableBody>
-                    </TableContainer>
+                        ]}
+                    />
                 </div>
                 <PopUp
                     openPopup={openPopup}

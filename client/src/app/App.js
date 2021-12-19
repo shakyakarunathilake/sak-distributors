@@ -3,14 +3,6 @@ import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import './App.scss';
 
-//Development Stage
-import Page from '../shared/Page/Page.js';
-import EmployeeForm from '../pages/HR/EmployeeForm';
-import ViewEmployee from '../pages/HR/ViewEmployee';
-import ApproveSubmit from '../pages/HR/ApproveSubmit';
-import CustomerForm from '../pages/Manager/CustomerForm';
-import AddNewVariant from '../pages/Manager/AddNewVariant';
-
 import Login from '../pages/LoginPage/Login';
 import ForgotPassword from '../pages/ForgotPassword/ForgotPassword';
 
@@ -31,18 +23,19 @@ import ManageSupplier from '../pages/Manager/ManageSupplier';
 import OrderHistory from '../pages/Manager/OrderHistory';
 
 //Purchasing Manager
-import ManagePOQuotation from '../pages/PurchasingManager/ManagePOQuotation';
+import ManagePurchaseOrder from '../pages/PurchasingManager/ManagePurchaseOrder';
+import ManageQuotations from '../pages/PurchasingManager/ManageQuotations';
 import ManageSales from '../pages/PurchasingManager/ManageSales';
 import SalesTrendAnalytics from '../pages/PurchasingManager/SalesTrendAnalytics';
 import SupplierPayment from '../pages/PurchasingManager/SupplierPayment';
 
 //Store Keeper
-import GRNGIN from '../pages/StoreKeeper/GRNGIN';
+import ManageGRN from '../pages/StoreKeeper/ManageGRN';
+import ManageGIN from '../pages/StoreKeeper/ManageGIN';
+import ManageStore from '../pages/StoreKeeper/ManageStore';
 
 //Sales Representative
-import PersonalOrderHistory from '../pages/SalesRepresentative/PersonalOrderHistory';
 import SalesAndInvoice from '../pages/SalesRepresentative/SalesAndInvoice';
-import AddNewOrder from '../pages/SalesRepresentative/AddNewOrder';
 
 const theme = createTheme({
   palette: {
@@ -50,7 +43,10 @@ const theme = createTheme({
       main: '#20369f'
     },
     secondary: {
-      main: '#000b4f'
+      main: '#323232'
+    },
+    neutral: {
+      main: '#ACA9BB',
     },
     warning: {
       main: '#f44336',
@@ -71,14 +67,6 @@ function App() {
       {
         <BrowserRouter>
           <Switch>
-            {/* Development Stage */}
-            <Route exact path='/page' component={Page} />
-            <Route exact path='/employee-form' component={EmployeeForm} />
-            <Route exact path='/view-employee' component={ViewEmployee} />
-            <Route exact path='/approve-submit' component={ApproveSubmit} />
-            <Route exact path='/customer-form' component={CustomerForm} />
-            <Route exact path='/add-new-variant' component={AddNewVariant} />
-
             <Route exact path='/' component={Login} />
             <Route exact path='/forgot-password' component={ForgotPassword} />
             <Route exact path='/change-password' component={ChangePassword} />
@@ -88,6 +76,7 @@ function App() {
 
             {/* Distributor */}
             <Route exact path='/distributor/dashboard' component={Dashboard} />
+            <Route exact path='/distributor/manage-purchase-orders' component={ManagePurchaseOrder} />
 
             {/* Human Resources */}
             <Route exact path='/human-resources/dashboard' component={Dashboard} />
@@ -105,20 +94,21 @@ function App() {
             <Route exact path='/purchasing-manager/dashboard' component={Dashboard} />
             <Route exact path='/purchasing-manager/manage-products' component={ManageProduct} />
             <Route exact path='/purchasing-manager/manage-sales' component={ManageSales} />
-            <Route exact path='/purchasing-manager/manage-po-quotation' component={ManagePOQuotation} />
+            <Route exact path='/purchasing-manager/manage-purchase-orders' component={ManagePurchaseOrder} />
+            <Route exact path='/purchasing-manager/manage-quotations' component={ManageQuotations} />
             <Route exact path='/purchasing-manager/supplier-payment' component={SupplierPayment} />
 
             {/* Store Keeper */}
             <Route exact path='/store-keeper/dashboard' component={Dashboard} />
-            <Route exact path='/store-keeper/grn-gin' component={GRNGIN} />
+            <Route exact path='/store-keeper/manage-grn' component={ManageGRN} />
+            <Route exact path='/store-keeper/manage-gin' component={ManageGIN} />
+            <Route exact path='/store-keeper/manage-store' component={ManageStore} />
             <Route exact path='/store-keeper/manage-products' component={ManageProduct} />
 
             {/* Sales Representative */}
             <Route exact path='/sales-representative/dashboard' component={Dashboard} />
             <Route exact path='/sales-representative/manage-customers' component={ManageCustomer} />
-            <Route exact path='/sales-representative/personal-order-history' component={PersonalOrderHistory} />
             <Route exact path='/sales-representative/sales-and-invoice' component={SalesAndInvoice} />
-            <Route exact path='/sales-representative/add-new-order' component={AddNewOrder} />
           </Switch>
         </BrowserRouter>
       }

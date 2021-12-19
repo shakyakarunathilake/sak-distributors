@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const authConfig = require('../config/auth.config');
 
 const router = express.Router();
 
@@ -31,21 +32,21 @@ router.post("/signin", (req, res, next) => {
             const token = jwt.sign(
                 {
                     username: employee[0].employeeid,
-                    role: employee[0].designation,
+                    designation: employee[0].designation,
                     firstname: employee[0].firstname,
                     lastname: employee[0].lastname,
                     email: employee[0].email,
                     employeeimage: employee[0].employeeimage,
                     contactnumber: employee[0].contactnumber
                 },
-                "authconfig.secret",
+                authConfig.secret,
                 { expiresIn: 7200 }
             );
 
             res.status(200).json({
                 auth_status: "AUTHORIZED",
                 employeeid: employee[0].employeeid,
-                role: employee[0].designation,
+                designation: employee[0].designation,
                 firstname: employee[0].firstname,
                 lastname: employee[0].lastname,
                 email: employee[0].email,

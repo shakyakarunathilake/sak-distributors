@@ -1,0 +1,33 @@
+@import "../../styles/variables";
+
+.container {
+    box-sizing: border-box;
+}
+
+.actionRow {
+    width: 100vw;
+    box-sizing: border-box;
+    display: inline-flex;
+    flex-direction: row-reverse;
+    padding: 0 25px;
+
+    .button {
+        width: auto;
+        white-space: nowrap;
+        height: 53.28px;
+        color: $inverseFontColor;
+        font-size: 1em;
+        margin: 20px 0 20px auto;
+    }
+
+    .icon {
+        margin-right: 10px;
+    }
+}
+
+.pagecontent {
+    width: 100vw;
+    height: calc(100vh - 199.27px);
+    box-sizing: border-box;
+    padding: 0px 20px;
+}

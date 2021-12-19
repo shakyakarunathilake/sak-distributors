@@ -71,9 +71,9 @@ export default function Login() {
                     setAlert(res.data.message);
                     handleAlert();
                 } else {
-                    const role = JSON.parse(sessionStorage.getItem("Auth")).role;
+                    const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
 
-                    switch (role) {
+                    switch (designation) {
                         case "Distributor": window.location.replace("http://localhost:3000/distributor/dashboard");
                             break;
                         case "Human Resources": window.location.replace("http://localhost:3000/human-resources/dashboard");

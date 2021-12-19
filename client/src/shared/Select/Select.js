@@ -1,18 +1,33 @@
 import React from 'react';
 import { FormControl, FormHelperText, InputLabel, MenuItem, Select as MuiSelect } from '@material-ui/core';
 
+// //Material UI Styling
+// import { makeStyles } from '@material-ui/core/styles';
+
+// const useStyles = makeStyles({
+//     select: {
+//         "& .MuiOutlinedInput-input": {
+//             padding: "11.86px 14px !important"
+//         }
+//     }
+// });
+
 export default function Select(props) {
 
-    const { label, name, options, onChange, value, error = null, helperText, disabled } = props;
+    // const classes = useStyles();
+
+    const { label, size, name, options, onChange, value, error = null, helperText, disabled, defaultValue } = props;
 
     return (
         <FormControl
             fullWidth
+            size={size}
             variant="outlined"
             {...(error && { error: true })}
         >
             <InputLabel>{label}</InputLabel>
             <MuiSelect
+                defaultValue={defaultValue}
                 disabled={disabled}
                 label={label}
                 onChange={onChange}

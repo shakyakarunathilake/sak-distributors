@@ -60,6 +60,8 @@ router.get("/get-next-regno", (req, res, next) => {
 //Create an employee
 router.post("/create-employee", uploads.single('employeeimage'), (req, res, next) => {
 
+    console.log(req.body);
+
     const dob = new Date(req.body.dob).toISOString().split('T')[0];
     const hireddate = new Date(req.body.hireddate).toISOString().split('T')[0];
 
@@ -81,6 +83,8 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
                     _id: new mongoose.Types.ObjectId(),
                     employeeid: req.body.employeeid,
                     employeeimage: `localhost:8080/${req.body.employeeid}.jpg`,
+                    analyticprivileges: req.body.analyticprivileges,
+                    adminprivileges: req.body.adminprivileges,
                     fullname: req.body.fullname,
                     title: req.body.title,
                     firstname: req.body.firstname,
@@ -132,6 +136,8 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
             _id: new mongoose.Types.ObjectId(),
             employeeid: req.body.employeeid,
             employeeimage: `localhost:8080/${req.body.employeeid}.jpg`,
+            analyticprivileges: req.body.analyticprivileges,
+            adminprivileges: req.body.adminprivileges,
             fullname: req.body.fullname,
             title: req.body.title,
             firstname: req.body.firstname,
@@ -186,18 +192,19 @@ router.get("/get-all-employees-table-data", (req, res, next) => {
                 "Hired Date",
             ]
 
-            const tbody = doc.map(x => [
-                x.employeeid,
-                x.title,
-                x.firstname + " " + x.lastname,
-                x.designation,
-                x.employeestatus,
-                x.hireddate,
-            ])
+            const tbody = doc.map(x => ({
+                "employeeid": x.employeeid,
+                "title": x.title,
+                "name": x.firstname + " " + x.lastname,
+                "designation": x.designation,
+                "status": x.employeestatus,
+                "hireddate": x.hireddate,
+            }))
+
+            console.log("TBODY: ", tbody);
 
             res.status(200).json({
                 message: "Handeling GET requests to /get-all-employees-table-data",
-                thead: thead,
                 tbody: tbody,
                 defaultkey: 0,
             });
@@ -220,6 +227,8 @@ router.get("/:employeeid", (req, res, next) => {
             const employee = {
                 'employeeid': doc.employeeid,
                 'employeeimage': doc.employeeimage,
+                'analyticprivileges': doc.analyticprivileges,
+                'adminprivileges': doc.adminprivileges,
                 'fullname': doc.fullname,
                 'title': doc.title,
                 'firstname': doc.firstname,
@@ -260,7 +269,6 @@ router.post("/update-by-id/:employeeid", uploads.single('employeeimage'), (req, 
                 message: "Handling POST requests to /employees/update-by-id/:employeeid, EMPLOYEE UPDATED",
                 type: 'success',
                 alert: `${doc.firstname} ${doc.lastname} updated`,
-                updatedEmployee: doc
             });
         })
         .catch(err => {

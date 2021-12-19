@@ -13,7 +13,8 @@ import PaymentIcon from '@material-ui/icons/Payment';
 import DescriptionIcon from '@material-ui/icons/Description';
 import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import ReceiptIcon from '@material-ui/icons/Receipt';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
+import StoreIcon from '@mui/icons-material/Store';
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 
 const getDistributorListItems = [
     {
@@ -21,6 +22,12 @@ const getDistributorListItems = [
         title: "Dashboard",
         path: "http://localhost:3000/distributor/dashboard",
         icon: <DashboardIcon />
+    },
+    {
+        id: "Manage Purchase Order",
+        title: "Manage Purchase Order",
+        path: "http://localhost:3000/distributor/manage-purchase-orders",
+        icon: <ListAltIcon />
     },
     {
         id: "Sales Report",
@@ -116,9 +123,21 @@ const getPurchasingManagerListItems = [
         icon: <ReceiptIcon />
     },
     {
-        id: "Manage PO/Quotations",
-        title: "Manage PO/Quotations",
-        path: "http://localhost:3000/purchasing-manager/manage-po-quotation",
+        id: "Manage Purchase Order",
+        title: "Manage Purchase Order",
+        path: "http://localhost:3000/purchasing-manager/manage-purchase-orders",
+        icon: <ListAltIcon />
+    },
+    // {
+    //     id: "Create Purchase Order",
+    //     title: "Create Purchase Order",
+    //     path: "http://localhost:3000/purchasing-manager/create-purchase-order",
+    //     icon: <AddCircleIcon />
+    // },
+    {
+        id: "Manage Quotations",
+        title: "Manage Quotations",
+        path: "http://localhost:3000/purchasing-manager/manage-quotations",
         icon: <ListAltIcon />
     },
     {
@@ -149,10 +168,22 @@ const getStoreKeeperListItems = [
         icon: <DashboardIcon />
     },
     {
-        id: "GRN/GIN",
-        title: "GRN/GIN",
-        path: "http://localhost:3000/store-keeper/grn-gin",
-        icon: <AssignmentIcon />,
+        id: "Manage Store",
+        title: "Manage Store",
+        path: "http://localhost:3000/store-keeper/manage-store",
+        icon: <StoreIcon />,
+    },
+    {
+        id: "Manage GRN",
+        title: "Manage GRN",
+        path: "http://localhost:3000/store-keeper/manage-grn",
+        icon: <InsertDriveFileIcon />,
+    },
+    {
+        id: "Manage GIN",
+        title: "Manage GIN",
+        path: "http://localhost:3000/store-keeper/manage-gin",
+        icon: <InsertDriveFileIcon />,
     },
     {
         id: "Manage Products",
@@ -182,18 +213,6 @@ const getSalesRepresentativeListItems = [
         icon: <DescriptionIcon />,
     },
     {
-        id: "Personal Order History",
-        title: "Personal Order History",
-        path: "http://localhost:3000/sales-representative/personal-order-history",
-        icon: <ViewListIcon />,
-    },
-    {
-        id: "Add New Order",
-        title: "Add New Order",
-        path: "http://localhost:3000/sales-representative/add-new-order",
-        icon: <AddCircleIcon />
-    },
-    {
         id: "Sales Rep. Analytics",
         title: "Sales Rep. Analytics",
         path: "http://localhost:3000/sales-representative-analytics",
@@ -202,23 +221,23 @@ const getSalesRepresentativeListItems = [
 
 ];
 
-export function drawerListItems(role) {
-    if (role === "Distributor") {
+export function drawerListItems(designation) {
+    if (designation === "Distributor") {
         return (getDistributorListItems)
     }
-    if (role === "Human Resources") {
+    if (designation === "Human Resources") {
         return (getHRListItems)
     }
-    if (role === "Manager") {
+    if (designation === "Manager") {
         return (getManagerListItems)
     }
-    if (role === "Purchasing Manager") {
+    if (designation === "Purchasing Manager") {
         return (getPurchasingManagerListItems)
     }
-    if (role === "Store Keeper") {
+    if (designation === "Store Keeper") {
         return (getStoreKeeperListItems)
     }
-    if (role === "Sales Representative") {
+    if (designation === "Sales Representative") {
         return (getSalesRepresentativeListItems)
     }
 }

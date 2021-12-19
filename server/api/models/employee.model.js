@@ -4,6 +4,8 @@ const employeeSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     employeeid: { type: String, required: true },
     employeeimage: { type: Object, required: true },
+    analyticprivileges: { type: Boolean, required: true },
+    adminprivileges: { type: Boolean, required: true },
     fullname: { type: String, required: true },
     title: { type: String, required: true },
     firstname: { type: String, required: true },

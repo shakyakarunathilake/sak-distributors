@@ -31,31 +31,40 @@ router.get("/get-all-product-table-data", (req, res, next) => {
         .find()
         .exec()
         .then(doc => {
-            const thead = [
-                "",
-                "Prod. ID",
-                "Name",
-                "Supplier",
-                "Status",
-            ]
 
-            const tbody = doc.map(x => ({
-                "productid": x.productid,
-                "name": x.name,
-                "supplier": x.supplier,
-                "status": x.status,
-                "variants": x.variants.map(y => ({
-                    "variantid": y.variantid,
-                    "type": y.type,
-                    "purchaseprice": y.purchaseprice,
-                    "sellingprice": y.sellingprice,
-                    "mrp": y.mrp,
-                }))
-            }))
+            let tbody = []
+            let rowid = 1;
+
+            doc.forEach(main => {
+                tbody.push({
+                    id: rowid,
+                    name: main.name,
+                    productid: main.productid,
+                    status: main.status,
+                    supplier: main.supplier
+                });
+
+                let parentid = rowid;
+                rowid++;
+
+                main.variants.forEach(sub => {
+                    tbody.push({
+                        id: rowid,
+                        parentid: parentid,
+                        productid: main.productid,
+                        name: main.name,
+                        supplier: main.supplier,
+                        variantid: sub.variantid,
+                        type: sub.type,
+                        status: sub.status,
+                    })
+
+                    rowid++;
+                })
+            });
 
             res.status(201).json({
                 message: "Handeling GET requests to /get-all-product-table-data",
-                thead: thead,
                 tbody: tbody,
             });
         })
@@ -80,7 +89,7 @@ router.get("/get-next-productid", (req, res, next) => {
         .then(doc => {
 
             let nextproductid;
-            
+
             if (doc.length === 0) {
                 nextproductid = "P000001"
             } else {
@@ -119,7 +128,6 @@ router.post("/create-product", uploads.single("productimage"), (req, res, next) 
         status: req.body.status,
         addeddate: addeddate,
         addedby: req.body.addedby,
-
     })
 
     product
@@ -162,7 +170,7 @@ router.post("/add-new-variant/:productid", uploads.single("productimage"), (req,
                         'sellingprice': req.body.sellingprice,
                         'purchaseprice': req.body.purchaseprice,
                         'offercaption': req.body.offercaption,
-                        'status': req.body.status,
+                        'status': req.body.variantstatus,
                         'addeddate': req.body.variantaddeddate,
                         'addedby': req.body.variantaddedby
                     }
@@ -207,7 +215,52 @@ router.get("/:productid", (req, res, next) => {
                 "status": doc.status,
             };
 
-            console.log(product);
+            res.status(200).json({
+                message: "Handeling GET requests to /:productid",
+                product: product
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error ": err });
+        })
+})
+
+//Get product data by Product ID and Variant ID
+router.get("/:productid/:variantid", (req, res, next) => {
+    const productid = req.params.productid;
+    const variantid = req.params.variantid;
+
+    Product
+        .findOne({ "productid": productid })
+        .exec()
+        .then(doc => {
+
+            let product = {
+                "productid": doc.productid,
+                "name": doc.name,
+                "supplier": doc.supplier,
+                "productimage": doc.productimage,
+                "addeddate": doc.addeddate,
+                "addedby": doc.addedby,
+                "status": doc.status,
+
+            };
+
+            let variant = doc.variants.filter(obj => {
+                return obj.variantid === variantid
+            })
+
+            variant = variant[0]
+
+            product = {
+                ...product,
+                variant
+            }
+
+            console.log("Document: ", doc);
+            console.log("Product: ", product);
+            console.log("Variant: ", variant);
 
             res.status(200).json({
                 message: "Handeling GET requests to /:productid",
@@ -221,6 +274,41 @@ router.get("/:productid", (req, res, next) => {
 })
 
 //Update product data by Product ID
+router.post("/update-by-id/:productid", uploads.single("productimage"), (req, res, next) => {
+
+    Product
+        .findOneAndUpdate(
+            { "productid": req.params.productid },
+            {
+                '$set': {
+                    'name': req.body.name,
+                    'status': req.body.status,
+                    'supplier': req.body.supplier,
+                    'productimage': req.body.productimage,
+                    'addeddate': req.body.addeddate,
+                    'addedby': req.body.addedby,
+                }
+            },
+            { upsert: true }
+        )
+        .exec()
+        .then(doc => {
+            res.status(200).json({
+                message: "Handling POST requests to /products/update-by-id/:productid, PRODUCT UPDATED",
+                type: 'success',
+                alert: `${doc.name} (${doc.productid}) Updated`,
+            });
+        })
+        .catch(err => {
+            res.status(200).json({
+                type: 'error',
+                alert: `Something went wrong. Could not update product`,
+            });
+            console.log(err);
+        });
+});
+
+//Update product data by Product ID and Variant ID
 router.post("/update-by-id/:productid/:variantid", uploads.single("productimage"), (req, res, next) => {
 
     Product
@@ -228,19 +316,14 @@ router.post("/update-by-id/:productid/:variantid", uploads.single("productimage"
             { "productid": req.params.productid, "variants.variantid": req.params.variantid },
             {
                 '$set': {
-                    'name': req.body.name,
                     'productid': req.body.productid,
-                    'name': req.body.name,
-                    'supplier': req.body.supplier,
-                    'productimage': req.body.productimage,
-                    'addeddate': req.body.addeddate,
-                    'addedby': req.body.addedby,
+                    'status': req.body.productstatus,
                     'variants.$.type': req.body.type,
                     'variants.$.bulkprice': req.body.bulkprice,
                     'variants.$.mrp': req.body.mrp,
                     'variants.$.price': req.body.price,
                     'variants.$.offercaption': req.body.offercaption,
-                    'variants.$.status': req.body.status,
+                    'variants.$.status': req.body.variantstatus,
                     'variants.$.variantaddeddate': req.body.variantaddeddate,
                     'variants.$.variantaddedby': req.body.variantaddedby
                 }

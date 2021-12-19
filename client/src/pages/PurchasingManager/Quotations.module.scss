@@ -1,0 +1,21 @@
+@import "../../styles/variables";
+
+.container {
+    display: grid;
+    grid-template-rows: min-content min-content auto;
+
+    .quotationHeader {
+        display: grid;
+        grid-template-columns: min-content auto min-content;
+        align-items: center;
+        margin: 10px 0 10px 0;
+        width: 100%;
+
+        .title {
+            font-size: 1.3em;
+            font-weight: 600;
+            padding: 10px;
+            text-align: left;
+        }
+    }
+}

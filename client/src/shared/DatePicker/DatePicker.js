@@ -1,13 +1,11 @@
 import React from 'react';
-// import classnames from 'classnames';
 
+//Material UI Components
 import TextField from '@material-ui/core/TextField';
 
 export default function DatePicker(props) {
 
-    const { name, label, value, onChange, error, helperText, disabled } = props;
-
-    // const windowHeight = window.innerHeight;
+    const { name, label, value, onChange, error, helperText, disabled, margin, type } = props;
 
     return (
         <TextField
@@ -17,13 +15,12 @@ export default function DatePicker(props) {
                 shrink: true,
             }}
             label={label}
+            margin={margin}
             name={name}
             onChange={onChange}
-            type="date"
+            type={type === "datetime-local" ? "datetime-local" : "date"}
             value={value}
             disabled={disabled}
-            // size={classnames(windowHeight < 900 ? "small" : "normal")}
-
             variant="outlined"
             {...(error && { error: true, helperText: helperText })}
         />

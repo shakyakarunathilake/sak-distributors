@@ -13,8 +13,6 @@ import DatePicker from '../../shared/DatePicker/DatePicker';
 
 //Material UI Components
 import Button from '@material-ui/core/Button';
-import { TextField as MuiTextField } from '@mui/material';
-import Autocomplete from '@mui/material/Autocomplete';
 
 //Material UI Icons
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
@@ -30,13 +28,11 @@ import style from './ProductForm.module.scss';
 
 export default function ProductsForm(props) {
 
-    const { setOpenPopup, addOrEdit, productRecords, nextId, employeeOptions } = props;
+    const { handleClosePopUp, addOrEdit, productRecords, nextId, employeeOptions } = props;
 
     const { handleSubmit, formState: { errors }, control, reset, setValue, getValues } = useForm();
 
     const [file, setFile] = useState("");
-
-    const [addedBy, setAddedBy] = useState();
 
     useEffect(() => {
         if (productRecords != null) {
@@ -54,7 +50,7 @@ export default function ProductsForm(props) {
         } else {
             setValue("productid", nextId);
         };
-    }, [productRecords, nextId])
+    }, [productRecords, nextId, setValue])
 
     const resetForm = () => {
         reset({
@@ -98,7 +94,7 @@ export default function ProductsForm(props) {
                 <div>
                     <HighlightOffIcon
                         className={style.icon}
-                        onClick={() => { setOpenPopup(false) }}
+                        onClick={() => { handleClosePopUp() }}
                     />
                 </div>
             </div>

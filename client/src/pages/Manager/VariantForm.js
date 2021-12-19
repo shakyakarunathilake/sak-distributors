@@ -16,7 +16,7 @@ import Button from '@material-ui/core/Button';
 import Divider from '@mui/material/Divider';
 import { InputAdornment } from '@material-ui/core';
 import Autocomplete from '@mui/material/Autocomplete';
-import { TextField as MuiTextField } from '@mui/material';
+import { TextField as MuiTextField } from '@material-ui/core';
 
 //Material UI Icons
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
@@ -25,23 +25,48 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import product from '../../images/product.svg';
 
 //SCSS Styles
-import style from './AddNewVariant.module.scss';
+import style from './VariantForm.module.scss';
 
 
-export default function AddNewVariant(props) {
+export default function VariantForm(props) {
 
-    const { setOpenPopup, addVariant, productOptions, employeeOptions } = props;
+    const { handleClosePopUp, addVariant, productOptions, employeeOptions, productRecords } = props;
 
-    const { handleSubmit, formState: { errors }, control, reset, setValue, getValues } = useForm();
+    const { handleSubmit, formState: { errors }, control, reset, setValue } = useForm();
 
     const [file, setFile] = useState();
     const [show, setShow] = useState(false);
 
-    const [productName, setProductName] = useState();
+    useEffect(() => {
+        if (productRecords != null) {
+            setFile(`http://${productRecords.productimage}`);
+
+            console.log(productRecords);
+
+            setValue("productid", productRecords.productid);
+            setValue("name", productRecords.name);
+            setValue("supplier", productRecords.supplier);
+            setValue("productimage", productRecords.productimage);
+            setValue("addeddate", productRecords.addeddate);
+            setValue("addedby", productRecords.addedby);
+            setValue("productstatus", productRecords.status);
+            setValue("variantid", productRecords.variant.variantid);
+            setValue("type", productRecords.variant.type);
+            setValue("bulkprice", productRecords.variant.bulkprice);
+            setValue("mrp", productRecords.variant.mrp);
+            setValue("sellingprice", productRecords.variant.sellingprice);
+            setValue("purchaseprice", productRecords.variant.purchaseprice);
+            setValue("offercaption", productRecords.variant.offercaption);
+            setValue("variantstatus", productRecords.variant.status);
+            setValue("variantaddeddate", productRecords.variant.addeddate);
+            setValue("variantaddedby", productRecords.variant.addedby);
+
+            setShow(productRecords.offercaption ? true : false);
+        }
+    }, [productRecords, setValue])
 
     const handleProductChange = (event, option) => {
         if (option) {
-            setProductName(option.title)
             setFile(`http://${option.productimage}`);
             setValue("productid", option.productid);
             setValue("name", option.name);
@@ -49,11 +74,8 @@ export default function AddNewVariant(props) {
             setValue("productimage", option.productimage);
             setValue("addeddate", option.addeddate);
             setValue("addedby", option.addedby);
-            setValue("variantid", option.variantid);;
-            setValue("productstatus", option.status);;
-
-        } else {
-            setProductName()
+            setValue("variantid", option.variantid);
+            setValue("productstatus", option.status);
         }
     }
 
@@ -78,6 +100,7 @@ export default function AddNewVariant(props) {
             productimage: '',
             addeddate: '',
             addedby: '',
+            productstatus: '',
             variantid: '',
             type: '',
             bulkprice: '',
@@ -111,18 +134,18 @@ export default function AddNewVariant(props) {
 
 
         resetForm();
-        addVariant(productFormData, values.productid);
+        addVariant(productFormData, values.productid, values.variantid);
     };
 
     return (
         <div className={style.container}>
 
             <div className={style.header}>
-                <div>Add New Variant </div>
+                <div> {productRecords ? "Edit Variant" : "Add New Variant"} </div>
                 <div>
                     <HighlightOffIcon
                         className={style.icon}
-                        onClick={() => { setOpenPopup(false) }}
+                        onClick={() => { handleClosePopUp() }}
                     />
                 </div>
             </div>
@@ -200,18 +223,48 @@ export default function AddNewVariant(props) {
                             </div>
 
                             <div className={style.row}>
-                                <Autocomplete
-                                    options={productOptions || []}
-                                    fullWidth
-                                    getOptionLabel={(option) => option.title}
-                                    onChange={handleProductChange}
-                                    renderInput={(params) => (
-                                        <MuiTextField
-                                            {...params}
-                                            label="Product"
-                                            variant="outlined" />
-                                    )}
-                                />
+                                {
+                                    productRecords ?
+                                        <Controller
+                                            name={"name"}
+                                            control={control}
+                                            rules={{
+                                                required: { value: true, message: "Product Name is required" },
+                                            }}
+                                            render={({ field: { onChange, value } }) => (
+                                                <TextField
+                                                    fullWidth={true}
+                                                    className={style.field}
+                                                    helperText={errors.name && errors.name.message}
+                                                    placeholder="Ex: Ice Cream – Butter Scotch"
+                                                    error={errors.name ? true : false}
+                                                    onChange={onChange}
+                                                    value={value || ''}
+                                                    label="Product Name *"
+                                                />
+                                            )}
+                                        />
+                                        :
+                                        <Controller
+                                            name={"autocomplete"}
+                                            control={control}
+                                            render={() => (
+                                                <Autocomplete
+                                                    options={productOptions || []}
+                                                    fullWidth
+                                                    getOptionLabel={(option) => option.title}
+                                                    onChange={handleProductChange}
+                                                    renderInput={(params) => (
+                                                        <MuiTextField
+                                                            {...params}
+                                                            label="Product"
+                                                            variant="outlined" />
+                                                    )}
+                                                />
+                                            )}
+                                        />
+                                }
+
                             </div>
 
                             <div className={style.row}>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import { useForm, Controller } from 'react-hook-form';
 
@@ -17,27 +17,23 @@ import style from './ViewProduct.module.scss';
 
 export default function ViewProduct(props) {
 
-    const { setOpenPopup, setAction, productRecords } = props;
+    const { handleClosePopUp, productRecords } = props;
 
     const { handleSubmit, control, setValue } = useForm();
 
-    const [show, setShow] = useState(false);
 
     useEffect(() => {
-        setValue("productid", productRecords.productid);
-        setValue("name", productRecords.name);
-        setValue("supplier", productRecords.supplier);
-        setValue("productimage", productRecords.productimage);
-        setValue("addeddate", productRecords.addeddate);
-        setValue("addedby", productRecords.addedby);
+        setValue("productid", productRecords?.productid);
+        setValue("name", productRecords?.name);
+        setValue("supplier", productRecords?.supplier);
+        setValue("productimage", productRecords?.productimage);
+        setValue("addeddate", productRecords?.addeddate);
+        setValue("addedby", productRecords?.addedby);
 
-        setShow(productRecords.offercaption ? true : false);
-
-    }, [productRecords])
+    }, [productRecords, setValue])
 
     const onSubmit = () => {
-        setOpenPopup(false);
-        setAction('');
+        handleClosePopUp();
     };
 
     return (
@@ -49,7 +45,7 @@ export default function ViewProduct(props) {
                     <div>
                         <HighlightOffIcon
                             className={style.icon}
-                            onClick={() => { setOpenPopup(false) }}
+                            onClick={() => { handleClosePopUp() }}
                         />
                     </div>
                 </div>
@@ -173,7 +169,7 @@ export default function ViewProduct(props) {
                                 Done
                             </Button>
                         </div>
-                        
+
                     </form>
                 </div>
             </div>

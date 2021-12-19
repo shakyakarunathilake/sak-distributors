@@ -48,7 +48,7 @@ export default function CustomerForm(props) {
         } else {
             setValue("customerid", nextCusId);
         };
-    }, [customerRecords, nextCusId])
+    }, [customerRecords, nextCusId, setValue])
 
     const resetForm = () => {
         reset({
@@ -366,7 +366,6 @@ export default function CustomerForm(props) {
                             )}
                         />
                     </div>
-
                     <div className={style.row}>
                         <Controller
                             name={"email"}

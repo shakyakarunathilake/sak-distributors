@@ -24,6 +24,7 @@ export default function ViewEmployee(props) {
     useEffect(() => {
         setValue("employeeimage", employeeRecords.employeeimage);
         setValue("employeeid", employeeRecords.employeeid);
+        setValue("analyticprivileges", employeeRecords.analyticprivileges);
         setValue("fullname", employeeRecords.fullname);
         setValue("callingname", `${employeeRecords.title} ${employeeRecords.firstname} ${employeeRecords.lastname}`);
         setValue("email", employeeRecords.email);
@@ -38,7 +39,7 @@ export default function ViewEmployee(props) {
         setValue("employeestatus", employeeRecords.employeestatus);
         setValue("hiredby", employeeRecords.hiredby);
 
-    }, [employeeRecords])
+    }, [employeeRecords, setValue])
 
 
     const onSubmit = () => {
@@ -92,7 +93,6 @@ export default function ViewEmployee(props) {
                                         )}
                                     />
                                 </div>
-
                             </div>
 
                             <div className={style.columnB}>
@@ -210,6 +210,23 @@ export default function ViewEmployee(props) {
                                             render={({ field: { value } }) => (
                                                 <Typography className={style.input}>
                                                     {value}
+                                                </Typography>
+                                            )}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className={style.row}>
+                                    <div className={style.boldText}>
+                                        Admin Privileges
+                                    </div>
+                                    <div className={style.employeeData}>
+                                        <Controller
+                                            name={"analyticprivileges"}
+                                            control={control}
+                                            render={({ field: { value } }) => (
+                                                <Typography className={style.input}>
+                                                    {value ? "Given" : "Not Given"}
                                                 </Typography>
                                             )}
                                         />
