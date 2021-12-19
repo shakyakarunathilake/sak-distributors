@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect, useRef } from 'react';
 
 //Material UI Components
 import { Paper } from '@material-ui/core';
@@ -45,16 +45,22 @@ const useStyles = makeStyles({
 
 export default function StepThree(props) {
 
-    const { data, setData, setOpenPopup, productOptions, backFormStep, completeFormStep, setTotal } = props;
+    const { data, setData, orderRecords, setOpenPopup, productOptions, completeFormStep, setTotal } = props;
 
     const classes = useStyles();
+    const addActionRef = useRef();
 
-    const addActionRef = React.useRef();
+    useEffect(() => {
+        if (orderRecords != null) {
+            setData(orderRecords.items);
+        }
+    }, [orderRecords, setData]);
 
     const getProductItemList = useMemo(() => {
         const selectedDescriptions = data.map(x => x.description);
         const productItemList = productOptions.filter(x => selectedDescriptions.indexOf(x.title) === -1);
         return productItemList;
+
     }, [data, productOptions]);
 
     const getTotal = () => {
@@ -230,8 +236,6 @@ export default function StepThree(props) {
                                     )}
                                     // onChange={e => props.onChange(e.target.innerText)}
                                     onChange={(e, option) => {
-                                        console.log(e);
-                                        console.log(option);
                                         props.onChange(option.title)
                                         let data = { ...props.rowData };
                                         data.description = option.title;
@@ -301,7 +305,7 @@ export default function StepThree(props) {
                                         let damaged = isNaN(data.damaged) ? 0 : data.damaged;
                                         let returns = isNaN(data.returns) ? 0 : data.returns;
                                         let numberofpieces = (salesqtycases * piecespercase) + +salesqtypieces;
-                                         let damagedreturnpieces = parseInt(damaged) + parseInt(returns);
+                                        let damagedreturnpieces = parseInt(damaged) + parseInt(returns);
                                         data.grossamount = (numberofpieces - damagedreturnpieces) * data.price;
                                         props.onRowDataChange(data);
                                     }}
@@ -340,7 +344,7 @@ export default function StepThree(props) {
                                         let damaged = isNaN(data.damaged) ? 0 : data.damaged;
                                         let returns = isNaN(data.returns) ? 0 : data.returns;
                                         let numberofpieces = (salesqtycases * piecespercase) + +salesqtypieces;
-                                         let damagedreturnpieces = parseInt(damaged) + parseInt(returns);
+                                        let damagedreturnpieces = parseInt(damaged) + parseInt(returns);
                                         data.grossamount = (numberofpieces - damagedreturnpieces) * data.price;
                                         props.onRowDataChange(data);
                                     }}
@@ -416,7 +420,7 @@ export default function StepThree(props) {
                                         let damaged = isNaN(data.damaged) ? 0 : data.damaged;
                                         let returns = isNaN(data.returns) ? 0 : data.returns;
                                         let numberofpieces = (salesqtycases * piecespercase) + +salesqtypieces;
-                                         let damagedreturnpieces = parseInt(damaged) + parseInt(returns);
+                                        let damagedreturnpieces = parseInt(damaged) + parseInt(returns);
                                         data.grossamount = (numberofpieces - damagedreturnpieces) * data.price;
                                         props.onRowDataChange(data);
                                     }}
@@ -553,33 +557,13 @@ export default function StepThree(props) {
             </div>
 
             <div className={style.footer}>
-
-                <div className={style.backBtn}>
-                    <Button
-                        variant="contained"
-                        onClick={() => backFormStep()}
-                        style={{
-                            backgroundColor: '#ACA9BB',
-                            color: 'white'
-                        }}
-                    >
-                        Back
-                    </Button>
-                </div>
-
-                <div className={style.nextBtn}>
-                    <Button
-                        variant="contained"
-                        onClick={() => completeFormStep()}
-                        style={{
-                            backgroundColor: '#20369f',
-                            color: 'white'
-                        }}
-                    >
-                        Next
-                    </Button>
-                </div>
-
+                <Button
+                    disabled={data.length === 0}
+                    variant="contained"
+                    onClick={() => completeFormStep()}
+                >
+                    Next
+                </Button>
             </div>
 
         </div>

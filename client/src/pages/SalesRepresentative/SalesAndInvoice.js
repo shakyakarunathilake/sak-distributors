@@ -37,7 +37,7 @@ export default function SalesAndInvoice() {
 
     const [records, setRecords] = useState([]);
 
-    const [orderRecords, setOrderRecords] = useState(null);
+    const [orderRecords, setOrderRecords] = useState({});
     const [customerOptions, setCustomerOptions] = useState([]);
     const [productOptions, setProductOptions] = useState([]);
     const [action, setAction] = useState('');
@@ -229,6 +229,7 @@ export default function SalesAndInvoice() {
                                 tooltip: 'View',
                                 onClick: (event, rowData) => {
                                     setAction('View');
+                                    getOptions();
                                     openInPopup(rowData.orderno);
                                 }
                             },
@@ -237,6 +238,7 @@ export default function SalesAndInvoice() {
                                 tooltip: 'Edit',
                                 onClick: (event, rowData) => {
                                     setAction('Edit');
+                                    getOptions();
                                     openInPopup(rowData.orderno);
                                 }
                             }
@@ -264,7 +266,11 @@ export default function SalesAndInvoice() {
                     }
                     {
                         action === "View" &&
-                        <ViewOrder />
+                        <ViewOrder
+                            setOpenPopup={setOpenPopup}
+                            total={total}
+                            orderRecords={orderRecords}
+                        />
                     }
                 </PopUp>
 

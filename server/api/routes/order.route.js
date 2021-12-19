@@ -118,7 +118,7 @@ router.get("/:orderno", (req, res, next) => {
 })
 
 //Get order details by order number
-router.get("/update-by-id/:orderno", formDataBody.fields([]), (req, res, next) => {
+router.post("/update-by-id/:orderno", formDataBody.fields([]), (req, res, next) => {
     console.log("UPDATE:", req.body);
 
     const items = JSON.parse(req.body.items);
@@ -128,12 +128,6 @@ router.get("/update-by-id/:orderno", formDataBody.fields([]), (req, res, next) =
             { orderno: req.params.orderno },
             {
                 'items': items,
-                'contactnumber': req.body.contactnumber,
-                'customer': req.body.customer,
-                'customerid': req.body.customerid,
-                'route': req.body.route,
-                'shippingaddress': req.body.shippingaddress,
-                'storename': req.body.storename,
             },
             { new: true }
         )

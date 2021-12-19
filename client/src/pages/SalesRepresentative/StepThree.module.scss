@@ -42,35 +42,18 @@
     }
 
     .footer {
-        display: grid;
-        grid-template-columns: auto auto;
         padding: 20px 0px 10px 0px;
+        text-align: right;
 
-        .backBtn {
-            Button {
-                font-size: 1em;
-                width: auto;
-                background-color: #aca9bb;
+        Button {
+            font-size: 1em;
+            width: auto;
+            background-color: $primaryMain;
+            color: $inverseFontColor;
+
+            &:disabled {
+                background-color: hsl(230, 66%, 55%);
                 color: $inverseFontColor;
-
-                &:disabled {
-                    background-color: #c2c2c2;
-                    color: $inverseFontColor;
-                }
-            }
-        }
-
-        .nextBtn {
-            text-align: right;
-
-            Button {
-                font-size: 1em;
-                width: auto;
-
-                &:disabled {
-                    background-color: hsl(230, 66%, 57%);
-                    color: $inverseFontColor;
-                }
             }
         }
     }

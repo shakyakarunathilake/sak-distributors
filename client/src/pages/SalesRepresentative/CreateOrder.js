@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import formData from 'form-data';
 
@@ -15,18 +15,12 @@ export default function CreateOrder(props) {
 
     const { addOrEdit, setOpenPopup, customerOptions, productOptions, orderRecords, nextOrderNo, total, setTotal } = props;
 
-    const { handleSubmit } = useForm({ mode: "all" });
+    const { formState: { isDirty, isValid, errors }, control, setValue, getValues, reset, clearErrors, trigger, handleSubmit } = useForm({ mode: "all" });
 
     const [data, setData] = useState([]);
     const [formStep, setFormStep] = useState(0);
     const [customerType, setCustomerType] = useState('');
     const [orderFormData, setOrderFormData] = useState({});
-
-    // useEffect(() => {
-
-    //     setData(orderFormData.items);
-    // }, [orderRecords, setOrderFormData, setData]);
-
 
     const completeFormStep = () => {
         setFormStep(x => x + 1);
@@ -67,13 +61,22 @@ export default function CreateOrder(props) {
                 <section className={formStep === 0 ? style.visible : style.hidden}>
                     <StepOne
                         customerOptions={customerOptions}
-                        nextOrderNo={nextOrderNo}
                         customerType={customerType}
                         setCustomerType={setCustomerType}
                         completeFormStep={completeFormStep}
                         setOrderFormData={setOrderFormData}
-                        data={data}
                         setOpenPopup={setOpenPopup}
+                        orderRecords={orderRecords}
+                        isDirty={isDirty}
+                        isValid={isValid}
+                        errors={errors}
+                        control={control}
+                        setValue={setValue}
+                        getValues={getValues}
+                        reset={reset}
+                        clearErrors={clearErrors}
+                        trigger={trigger}
+                        nextOrderNo={nextOrderNo}
                     />
                 </section>
             }
@@ -96,10 +99,10 @@ export default function CreateOrder(props) {
                 <section className={formStep === 2 ? style.visible : style.hidden}>
                     <StepThree
                         data={data}
+                        orderRecords={orderRecords}
                         setData={setData}
                         setOpenPopup={setOpenPopup}
                         productOptions={productOptions}
-                        backFormStep={backFormStep}
                         completeFormStep={completeFormStep}
                         setTotal={setTotal}
                     />

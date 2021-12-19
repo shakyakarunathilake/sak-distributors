@@ -56,7 +56,7 @@ export default function StepOne(props) {
         GRNRecords,
     } = props;
 
-    const { control, getValues, setValue, handleSubmit } = useForm();
+    const { control, getValues, setValue } = useForm();
 
     const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
     const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;

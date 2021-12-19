@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 
 //Material UI Components
 import { Button } from '@material-ui/core';
@@ -22,29 +22,81 @@ import style from './StepOne.module.scss';
 
 export default function StepOne(props) {
 
-    const { customerOptions, nextOrderNo, completeFormStep, setOrderFormData, customerType, setCustomerType, setOpenPopup, data } = props;
+    const {
+        customerOptions,
+        completeFormStep,
+        orderRecords,
+        setOrderFormData,
+        customerType,
+        setCustomerType,
+        setOpenPopup,
+        isDirty,
+        isValid,
+        errors,
+        control,
+        setValue,
+        getValues,
+        reset,
+        clearErrors,
+        trigger,
+        nextOrderNo
+    } = props;
 
-    const { formState: { isValid, errors }, control, setValue, getValues, reset, clearErrors, trigger } = useForm({ mode: "onBlur" });
+    const today = new Date();
+    const dateTime = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`) + 'T' + (today.getHours() > 9 ? today.getHours() : `0${today.getHours()}`) + ':' + (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`);
+
+    today.setDate(today.getDate() + 3);
+    const deliveryDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
 
     useEffect(() => {
-        const today = new Date();
-        const dateTime = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`) + 'T' + (today.getHours() > 9 ? today.getHours() : `0${today.getHours()}`) + ':' + (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`);
+        if (orderRecords != null) {
 
-        today.setDate(today.getDate() + 3);
-        const deliveryDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+            // setCustomerType(orderRecords.customerid ? 'Registered Customer' : 'Unregistered Customer');
+            setValue("customertype", orderRecords.customerid ? 'Registered Customer' : 'Unregistered Customer');
+            setValue("orderno", orderRecords.orderno);
+            setValue("orderplacedat", orderRecords.orderplacedat);
+            setValue("deliverydate", orderRecords.deliverydate);
+            setValue("ordercreatedby", orderRecords.ordercreatedby);
+            setValue("customer", orderRecords.customer);
+            setValue("storename", orderRecords.storename);
+            setValue("customerid", orderRecords.customerid);
+            setValue("shippingaddress", orderRecords.shippingaddress);
+            setValue("contactnumber", orderRecords.contactnumber);
+            setValue("route", orderRecords.route);
 
-        setValue("customertype", '');
-        setValue("orderno", `${JSON.parse(sessionStorage.getItem("Auth")).employeeid}${nextOrderNo}`);
-        setValue("orderplacedat", dateTime);
-        setValue("deliverydate", deliveryDate);
-        setValue("ordercreatedby", `${JSON.parse(sessionStorage.getItem("Auth")).firstname} ${JSON.parse(sessionStorage.getItem("Auth")).lastname} (${JSON.parse(sessionStorage.getItem("Auth")).employeeid})`);
-        setValue("customer", '');
-        setValue("storename", '');
-        setValue("customerid", '');
-        setValue("shippingaddress", '');
-        setValue("contactnumber", '');
-        setValue("route", '');
-    }, [setValue, nextOrderNo])
+        } else {
+
+            setValue("customertype", '');
+            setValue("orderno", `${JSON.parse(sessionStorage.getItem("Auth")).employeeid}${nextOrderNo}`);
+            setValue("orderplacedat", dateTime);
+            setValue("deliverydate", deliveryDate);
+            setValue("ordercreatedby", `${JSON.parse(sessionStorage.getItem("Auth")).firstname} ${JSON.parse(sessionStorage.getItem("Auth")).lastname} (${JSON.parse(sessionStorage.getItem("Auth")).employeeid})`);
+            setValue("customer", '');
+            setValue("storename", '');
+            setValue("customerid", '');
+            setValue("shippingaddress", '');
+            setValue("contactnumber", '');
+            setValue("route", '');
+
+        }
+
+    }, [setValue, nextOrderNo, orderRecords])
+
+    const handleReset = () => {
+        reset({
+            orderno: `${JSON.parse(sessionStorage.getItem("Auth")).employeeid}${nextOrderNo}`,
+            orderplacedat: dateTime,
+            deliverydate: deliveryDate,
+            ordercreatedby: `${JSON.parse(sessionStorage.getItem("Auth")).firstname} ${JSON.parse(sessionStorage.getItem("Auth")).lastname} (${JSON.parse(sessionStorage.getItem("Auth")).employeeid})`,
+            customertype: '',
+            customer: '',
+            storename: '',
+            customerid: '',
+            shippingaddress: '',
+            contactnumber: '',
+            route: '',
+        });
+    }
 
     const handleCustomerTypeChange = (event, option) => {
         setValue("customertype", option.props.value);
@@ -63,15 +115,13 @@ export default function StepOne(props) {
         }
     }
 
+
+
     const onSubmit = () => {
 
         trigger();
 
-        // console.log("ERRORS :", errors);
-        // console.log("VALIDATION :", isValid);
-        // console.log("VALUES: ", getValues());
-
-        if (isValid) {
+        if (isValid || (orderRecords != null && isDirty === false)) {
             setOrderFormData(getValues());
             completeFormStep();
         }
@@ -120,6 +170,7 @@ export default function StepOne(props) {
                                     onChange={onChange}
                                     placeholder="Ex: ON00006211126001"
                                     margin="dense"
+                                    disabled={orderRecords !== null}
                                 />
                             )}
                         />
@@ -143,6 +194,7 @@ export default function StepOne(props) {
                                     helperText={errors.orderplacedat && errors.orderplacedat.message}
                                     margin="dense"
                                     type="datetime-local"
+                                    disabled={orderRecords !== null}
                                 />
                             )}
                         />
@@ -165,6 +217,7 @@ export default function StepOne(props) {
                                     error={errors.deliverydate ? true : false}
                                     helperText={errors.deliverydate && errors.deliverydate.message}
                                     margin="dense"
+                                    disabled={orderRecords !== null}
                                 />
                             )}
                         />
@@ -189,6 +242,7 @@ export default function StepOne(props) {
                                     onChange={onChange}
                                     placeholder="Ex: Buddhika Bandara (E00006)"
                                     margin="dense"
+                                    disabled={orderRecords !== null}
                                 />
                             )}
                         />
@@ -215,6 +269,7 @@ export default function StepOne(props) {
                                     error={errors.customertype ? true : false}
                                     helperText={errors.customertype && errors.customertype.message}
                                     size="small"
+                                    disabled={orderRecords !== null}
                                 />
                             )}
                         />
@@ -245,6 +300,7 @@ export default function StepOne(props) {
                                                 variant="outlined"
                                                 margin="dense"
                                                 placeholder="Ex: C000001 - Champika Super Center and Pharmacy"
+                                                disabled={orderRecords !== null}
                                             />
                                         )}
                                     />
@@ -264,6 +320,7 @@ export default function StepOne(props) {
                                         helperText={errors.customer && errors.customer.message}
                                         placeholder="Ex: Champika Super Center and Pharmacy"
                                         margin="dense"
+                                        disabled={orderRecords !== null}
                                     />
                                 )}
                             />
@@ -290,6 +347,7 @@ export default function StepOne(props) {
                                     helperText={errors.shippingaddress && errors.shippingaddress.message}
                                     placeholder="Ex: Rambukkana-Katupitiya Rd, Rambukkana"
                                     margin="dense"
+                                    disabled={orderRecords !== null}
                                 />
                             )}
                         />
@@ -317,6 +375,7 @@ export default function StepOne(props) {
                                     helperText={errors.contactnumber && errors.contactnumber.message}
                                     placeholder="Ex: 0352264589"
                                     margin="dense"
+                                    disabled={orderRecords !== null}
                                 />
                             )}
                         />
@@ -340,6 +399,7 @@ export default function StepOne(props) {
                                     error={errors.route ? true : false}
                                     helperText={errors.route && errors.route.message}
                                     size="small"
+                                    disabled={orderRecords !== null}
                                 />
                             )}
                         />
@@ -353,9 +413,9 @@ export default function StepOne(props) {
 
                 <div className={style.resetBtn}>
                     <Button
-                        disabled={data.length > 0}
+                        disabled={orderRecords !== null}
                         variant="contained"
-                        onClick={() => reset()}
+                        onClick={handleReset}
                     >
                         Reset
                     </Button>

@@ -12,7 +12,7 @@ import style from './StepTwo.module.scss';
 
 export default function StepTwo(props) {
 
-    const { customerType, setOpenPopup, orderFormData, backFormStep, completeFormStep } = props;
+    const { setOpenPopup, orderFormData, backFormStep, completeFormStep } = props;
 
     const onSubmit = () => {
         completeFormStep();
@@ -55,7 +55,7 @@ export default function StepTwo(props) {
                 </div>
 
                 {
-                    customerType === "Registered Customer" &&
+                    orderFormData.customerid &&
                     <div className={style.row}>
                         <div className={style.boldText}>
                             Customer ID
