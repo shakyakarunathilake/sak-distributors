@@ -43,7 +43,7 @@ const useStyles = makeStyles({
 
 export default function ViewOrder(props) {
 
-    const { setOpenPopup, orderRecords, total } = props;
+    const { setOpenPopup, orderRecords } = props;
     const { handleSubmit } = useForm({ mode: "all" });
 
     const classes = useStyles();
@@ -257,7 +257,7 @@ export default function ViewOrder(props) {
                                                     <Typography style={{ fontWeight: 600 }}> Total </Typography>
                                                 </Grid>
                                                 <Grid item align="Right" style={{ margin: "0px 0px 0px auto" }}>
-                                                    <Typography style={{ fontWeight: 600 }}>{total}</Typography>
+                                                    <Typography style={{ fontWeight: 600 }}>{orderRecords.total}</Typography>
                                                 </Grid>
                                             </Grid>
                                         </td>

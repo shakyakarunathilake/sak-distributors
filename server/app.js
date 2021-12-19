@@ -18,6 +18,7 @@ const adminRoutes = require("./api/routes/admin.route");
 const supplierRoutes = require("./api/routes/supplier.route");
 const purchaseOrderRoutes = require("./api/routes/purchaseorder.route");
 const grnRoutes = require("./api/routes/grn.route");
+const ginRoutes = require("./api/routes/gin.route");
 const metaDataRoutes = require("./api/routes/metadata.route");
 
 app.use(morgan("dev"));
@@ -54,6 +55,7 @@ app.use("/admin", adminRoutes);
 app.use("/suppliers", supplierRoutes);
 app.use("/purchaseorder", purchaseOrderRoutes);
 app.use("/grn", grnRoutes);
+app.use("/gin", ginRoutes);
 app.use("/metadata", metaDataRoutes);
 
 module.exports = app;

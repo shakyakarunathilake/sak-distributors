@@ -13,6 +13,7 @@ const orderSchema = mongoose.Schema({
     shippingaddress: { type: String, required: true },
     status: { type: String, required: true },
     storename: { type: String, required: true },
+    total: { type: String, required: true },
     items: { type: Array, required: true },
 
 })

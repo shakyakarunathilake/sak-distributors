@@ -44,7 +44,6 @@ export default function SalesAndInvoice() {
     const [openPopup, setOpenPopup] = useState(false);
 
     const [nextOrderNo, setNextOrderNo] = useState();
-    const [total, setTotal] = useState();
     const [reRender, setReRender] = useState(null);
 
     const handleAlert = () => {
@@ -259,16 +258,13 @@ export default function SalesAndInvoice() {
                             productOptions={productOptions}
                             customerOptions={customerOptions}
                             nextOrderNo={nextOrderNo}
-                            total={total}
                             orderRecords={orderRecords}
-                            setTotal={setTotal}
                         />
                     }
                     {
                         action === "View" &&
                         <ViewOrder
                             setOpenPopup={setOpenPopup}
-                            total={total}
                             orderRecords={orderRecords}
                         />
                     }

@@ -13,11 +13,12 @@ import StepFour from './StepFour';
 
 export default function CreateOrder(props) {
 
-    const { addOrEdit, setOpenPopup, customerOptions, productOptions, orderRecords, nextOrderNo, total, setTotal } = props;
+    const { addOrEdit, setOpenPopup, customerOptions, productOptions, orderRecords, nextOrderNo } = props;
 
     const { formState: { isDirty, isValid, errors }, control, setValue, getValues, reset, clearErrors, trigger, handleSubmit } = useForm({ mode: "all" });
 
     const [data, setData] = useState([]);
+    const [total, setTotal] = useState();
     const [formStep, setFormStep] = useState(0);
     const [customerType, setCustomerType] = useState('');
     const [orderFormData, setOrderFormData] = useState({});
@@ -34,17 +35,23 @@ export default function CreateOrder(props) {
 
         const customerOrderFormData = new formData();
 
-        customerOrderFormData.append('contactnumber', orderFormData.contactnumber);
-        customerOrderFormData.append('customertype', orderFormData.customertype);
-        customerOrderFormData.append('customerid', orderFormData.customerid);
-        customerOrderFormData.append('storename', orderFormData.storename);
-        customerOrderFormData.append('deliverydate', orderFormData.deliverydate);
-        customerOrderFormData.append('orderno', orderFormData.orderno);
-        customerOrderFormData.append('orderplacedat', orderFormData.orderplacedat);
-        customerOrderFormData.append('route', orderFormData.route);
-        customerOrderFormData.append('ordercreatedby', orderFormData.ordercreatedby);
-        customerOrderFormData.append('shippingaddress', orderFormData.shippingaddress);
-        customerOrderFormData.append('items', JSON.stringify(data));
+        if (orderRecords !== null) {
+            customerOrderFormData.append('contactnumber', orderFormData.contactnumber);
+            customerOrderFormData.append('customertype', orderFormData.customertype);
+            customerOrderFormData.append('customerid', orderFormData.customerid);
+            customerOrderFormData.append('storename', orderFormData.storename);
+            customerOrderFormData.append('deliverydate', orderFormData.deliverydate);
+            customerOrderFormData.append('orderno', orderFormData.orderno);
+            customerOrderFormData.append('orderplacedat', orderFormData.orderplacedat);
+            customerOrderFormData.append('route', orderFormData.route);
+            customerOrderFormData.append('ordercreatedby', orderFormData.ordercreatedby);
+            customerOrderFormData.append('shippingaddress', orderFormData.shippingaddress);
+            customerOrderFormData.append('items', JSON.stringify(data));
+            customerOrderFormData.append('total', total);
+        } else {
+            customerOrderFormData.append('items', JSON.stringify(data));
+            customerOrderFormData.append('total', total);
+        }
 
         addOrEdit(customerOrderFormData, orderFormData.orderno);
     }

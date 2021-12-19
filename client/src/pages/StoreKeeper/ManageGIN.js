@@ -110,9 +110,9 @@ export default function ManageGIN() {
                 <MaterialTable
                     columns={[
                         {
-                            title: "PO Number", field: "ponumber", render: rowData => {
+                            title: "Order Number", field: "orderno", render: rowData => {
                                 return (
-                                    <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.ponumber}</p>
+                                    <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.orderno}</p>
                                 )
                             }
                         },
@@ -123,7 +123,7 @@ export default function ManageGIN() {
                                 )
                             }
                         },
-                        { title: "Supplier", field: "supplier" },
+                        { title: "Customer", field: "customer" },
                         {
                             title: "Status", field: "status", render: rowData => {
 
