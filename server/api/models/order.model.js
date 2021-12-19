@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 const orderSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     contactnumber: { type: Number, required: true },
-    customer: { type: String, required: true },
-    customerid: { type: String, required: true },
+    customerid: { type: String, required: false },
+    customertype: { type: String, required: true },
     deliverydate: { type: String, required: true },
     orderno: { type: String, required: true },
     orderplacedat: { type: String, required: true },

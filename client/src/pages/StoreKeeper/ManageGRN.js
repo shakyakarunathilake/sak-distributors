@@ -26,7 +26,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-export default function GRN() {
+export default function ManageGRN() {
 
     const [type, setType] = React.useState();
     const [open, setOpen] = React.useState(false);
@@ -104,7 +104,7 @@ export default function GRN() {
     }
 
     return (
-        <Page title="GRN">
+        <Page title="Manage GRN">
             <div className={style.container}>
 
                 <MaterialTable
