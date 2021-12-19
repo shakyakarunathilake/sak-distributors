@@ -71,7 +71,7 @@ export default function StepTwo(props) {
 
                 <div className={style.row}>
                     <div className={style.boldText}>
-                        Customer Name
+                        Store Name
                     </div>
                     <div className={style.customerData}>
                         <Typography className={style.input}>

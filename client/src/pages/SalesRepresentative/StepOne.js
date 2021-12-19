@@ -57,7 +57,6 @@ export default function StepOne(props) {
             setValue("orderplacedat", orderRecords.orderplacedat);
             setValue("deliverydate", orderRecords.deliverydate);
             setValue("ordercreatedby", orderRecords.ordercreatedby);
-            setValue("customer", orderRecords.customer);
             setValue("storename", orderRecords.storename);
             setValue("customerid", orderRecords.customerid);
             setValue("shippingaddress", orderRecords.shippingaddress);
@@ -276,9 +275,37 @@ export default function StepOne(props) {
                     </div>
                 </div>
 
+                {
+                    (orderRecords !== null && orderRecords.customerid !== '') &&
+                    <div className={style.row}>
+                        <div className={style.label}>
+                            Customer ID <span className={style.redFont}>*</span>
+                        </div>
+                        <div className={style.textfield}>
+                            <Controller
+                                name={"customerid"}
+                                control={control}
+                                rules={{ required: "Customer ID is required" }}
+                                render={({ field: { onChange, value } }) => (
+                                    <TextField
+                                        fullWidth={true}
+                                        value={value || ''}
+                                        onChange={onChange}
+                                        error={errors.customerid ? true : false}
+                                        helperText={errors.customerid && errors.customerid.message}
+                                        placeholder="Ex: C00001"
+                                        margin="dense"
+                                        disabled={orderRecords !== null}
+                                    />
+                                )}
+                            />
+                        </div>
+                    </div>
+                }
+
                 <div className={style.row}>
                     <div className={style.label}>
-                        Customer <span className={style.redFont}>*</span>
+                        Store Name <span className={style.redFont}>*</span>
                     </div>
                     <div className={style.textfield}>
                         {customerType === "Registered Customer" ?
@@ -308,16 +335,16 @@ export default function StepOne(props) {
                             />
                             :
                             <Controller
-                                name={"customer"}
+                                name={"storename"}
                                 control={control}
-                                rules={{ required: "Customer is required" }}
+                                rules={{ required: "Store Name is required" }}
                                 render={({ field: { onChange, value } }) => (
                                     <TextField
                                         fullWidth={true}
                                         value={value || ''}
                                         onChange={onChange}
-                                        error={errors.customer ? true : false}
-                                        helperText={errors.customer && errors.customer.message}
+                                        error={errors.storename ? true : false}
+                                        helperText={errors.storename && errors.storename.message}
                                         placeholder="Ex: Champika Super Center and Pharmacy"
                                         margin="dense"
                                         disabled={orderRecords !== null}

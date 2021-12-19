@@ -124,9 +124,9 @@ export default function SalesAndInvoice() {
 
     const getNextOrderNo = () => {
         axios
-            .get("http://localhost:8080/orders/get-next-invoiceno")
+            .get("http://localhost:8080/orders/get-next-orderno")
             .then(res => {
-                setNextOrderNo(res.data.nextinvoiceno);
+                setNextOrderNo(res.data.nextorderno);
                 getOptions();
             })
             .catch(err => {

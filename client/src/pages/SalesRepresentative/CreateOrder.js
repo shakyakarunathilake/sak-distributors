@@ -35,15 +35,15 @@ export default function CreateOrder(props) {
         const customerOrderFormData = new formData();
 
         customerOrderFormData.append('contactnumber', orderFormData.contactnumber);
-        customerOrderFormData.append('customer', orderFormData.customer);
+        customerOrderFormData.append('customertype', orderFormData.customertype);
         customerOrderFormData.append('customerid', orderFormData.customerid);
+        customerOrderFormData.append('storename', orderFormData.storename);
         customerOrderFormData.append('deliverydate', orderFormData.deliverydate);
         customerOrderFormData.append('orderno', orderFormData.orderno);
         customerOrderFormData.append('orderplacedat', orderFormData.orderplacedat);
         customerOrderFormData.append('route', orderFormData.route);
         customerOrderFormData.append('ordercreatedby', orderFormData.ordercreatedby);
         customerOrderFormData.append('shippingaddress', orderFormData.shippingaddress);
-        customerOrderFormData.append('storename', orderFormData.storename);
         customerOrderFormData.append('items', JSON.stringify(data));
 
         addOrEdit(customerOrderFormData, orderFormData.orderno);
