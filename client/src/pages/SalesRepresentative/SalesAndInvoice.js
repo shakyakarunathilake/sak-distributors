@@ -201,9 +201,12 @@ export default function SalesAndInvoice() {
                             {
                                 title: "Status", field: "status", render: rowData => {
                                     return (
-                                        rowData.status === "Delivered" ?
+                                        rowData.status === "Complete" ?
                                             <p style={{ padding: "0", margin: "0", color: "#4cbb17", fontWeight: "700" }}>{rowData.status}</p> :
-                                            <p style={{ padding: "0", margin: "0", color: "red", fontWeight: "700" }}>{rowData.status}</p>
+                                            rowData.status === "Pending" ?
+                                                <p style={{ padding: "0", margin: "0", color: "#E48F1B", fontWeight: "700" }}>{rowData.status}</p> :
+                                                <p style={{ padding: "0", margin: "0", color: "#2196f3", fontWeight: "700" }}>{rowData.status}</p>
+
                                     )
                                 }
                             },
