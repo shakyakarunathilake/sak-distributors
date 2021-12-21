@@ -302,11 +302,8 @@ export default function StepThree(props) {
                                         let salesqtycases = isNaN(data.salesqtycases) ? 0 : data.salesqtycases;
                                         let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
                                         let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
-                                        let damaged = isNaN(data.damaged) ? 0 : data.damaged;
-                                        let returns = isNaN(data.returns) ? 0 : data.returns;
                                         let numberofpieces = (salesqtycases * piecespercase) + +salesqtypieces;
-                                        let damagedreturnpieces = parseInt(damaged) + parseInt(returns);
-                                        data.grossamount = (numberofpieces - damagedreturnpieces) * data.price;
+                                        data.grossamount = numberofpieces * data.price;
                                         props.onRowDataChange(data);
                                     }}
                                     type="number"
@@ -341,11 +338,8 @@ export default function StepThree(props) {
                                         let salesqtycases = isNaN(data.salesqtycases) ? 0 : data.salesqtycases;
                                         let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
                                         let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
-                                        let damaged = isNaN(data.damaged) ? 0 : data.damaged;
-                                        let returns = isNaN(data.returns) ? 0 : data.returns;
                                         let numberofpieces = (salesqtycases * piecespercase) + +salesqtypieces;
-                                        let damagedreturnpieces = parseInt(damaged) + parseInt(returns);
-                                        data.grossamount = (numberofpieces - damagedreturnpieces) * data.price;
+                                        data.grossamount = numberofpieces * data.price;
                                         props.onRowDataChange(data);
                                     }}
                                     type="number"
@@ -417,11 +411,8 @@ export default function StepThree(props) {
                                         let salesqtycases = isNaN(data.salesqtycases) ? 0 : data.salesqtycases;
                                         let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
                                         let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
-                                        let damaged = isNaN(data.damaged) ? 0 : data.damaged;
-                                        let returns = isNaN(data.returns) ? 0 : data.returns;
                                         let numberofpieces = (salesqtycases * piecespercase) + +salesqtypieces;
-                                        let damagedreturnpieces = parseInt(damaged) + parseInt(returns);
-                                        data.grossamount = (numberofpieces - damagedreturnpieces) * data.price;
+                                        data.grossamount = numberofpieces * data.price;
                                         props.onRowDataChange(data);
                                     }}
                                     type="number"
@@ -457,13 +448,8 @@ export default function StepThree(props) {
                                         let salesqtycases = isNaN(data.salesqtycases) ? 0 : data.salesqtycases;
                                         let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
                                         let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
-                                        let damaged = isNaN(data.damaged) ? 0 : data.damaged;
-                                        let returns = isNaN(data.returns) ? 0 : data.returns;
                                         let numberofpieces = (salesqtycases * piecespercase) + +salesqtypieces;
-                                        let damagedreturnpieces = parseInt(damaged) + parseInt(returns);
-                                        console.log("DAMAGED RETURN PIECES: ", damagedreturnpieces);
-                                        console.log("NUMBER OF PIECES: ", numberofpieces);
-                                        data.grossamount = (numberofpieces - damagedreturnpieces) * data.price;
+                                        data.grossamount = numberofpieces * data.price;
                                         props.onRowDataChange(data);
                                     }}
                                     type="number"
