@@ -45,7 +45,7 @@ const useStyles = makeStyles({
 
 export default function StepThree(props) {
 
-    const { data, setData, orderRecords, setOpenPopup, productOptions, completeFormStep, setTotal } = props;
+    const { action, formStep, data, setData, orderRecords, handleClosePopUp, productOptions, backFormStep, completeFormStep, getTotal } = props;
 
     const classes = useStyles();
     const addActionRef = useRef();
@@ -63,16 +63,6 @@ export default function StepThree(props) {
 
     }, [data, productOptions]);
 
-    const getTotal = () => {
-        let total = 0;
-        for (let i = 0; i < data.length; i++) {
-            total = total + data[i].grossamount;
-        }
-
-        setTotal(total)
-        return total;
-    }
-
     return (
         <div className={style.three}>
 
@@ -85,14 +75,25 @@ export default function StepThree(props) {
                     <div>
                         <HighlightOffIcon
                             className={style.icon}
-                            onClick={() => { setOpenPopup(false) }}
+                            onClick={handleClosePopUp}
                         />
                     </div>
                 </div>
 
-                <div className={style.step}>
-                    Step 3 of 4
-                </div>
+                {
+                    action === "Create" && formStep === 2 &&
+                    <div className={style.step}>
+                        Step 3 of 4
+                    </div>
+                }
+
+                {
+                    action === "Edit" && formStep === 1 &&
+                    <div className={style.step}>
+                        Step 2 of 3
+                    </div>
+                }
+
 
             </div>
 
@@ -543,13 +544,32 @@ export default function StepThree(props) {
             </div>
 
             <div className={style.footer}>
-                <Button
-                    disabled={data.length === 0}
-                    variant="contained"
-                    onClick={() => completeFormStep()}
-                >
-                    Next
-                </Button>
+
+                <div className={action === "Create" ? style.hideBackBtn : style.backBtn}>
+                    <Button
+                        variant="contained"
+                        onClick={backFormStep}
+                        style={{
+                            backgroundColor: '#ACA9BB',
+                            color: 'white'
+                        }}
+                    >
+                        Back
+                    </Button>
+                </div>
+
+                <div className={style.submitBtn}>
+
+                    <Button
+                        disabled={data.length === 0}
+                        variant="contained"
+                        onClick={() => completeFormStep()}
+                    >
+                        Next
+                    </Button>
+
+                </div>
+
             </div>
 
         </div>

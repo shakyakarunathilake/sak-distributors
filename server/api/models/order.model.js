@@ -2,19 +2,19 @@ const mongoose = require("mongoose");
 
 const orderSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    contactnumber: { type: Number, required: true },
+    contactnumber: { type: Number, required: false},
     customerid: { type: String, required: false },
-    customertype: { type: String, required: true },
-    deliverydate: { type: String, required: true },
-    orderno: { type: String, required: true },
-    orderplacedat: { type: String, required: true },
-    route: { type: String, required: true },
-    ordercreatedby: { type: String, required: true },
-    shippingaddress: { type: String, required: true },
-    status: { type: String, required: true },
-    storename: { type: String, required: true },
-    total: { type: String, required: true },
-    items: { type: Array, required: true },
+    customertype: { type: String, required: false},
+    deliverydate: { type: String, required: false},
+    orderno: { type: String, required: false},
+    orderplacedat: { type: String, required: false},
+    route: { type: String, required: false},
+    ordercreatedby: { type: String, required: false},
+    shippingaddress: { type: String, required: false},
+    status: { type: String, required: false},
+    storename: { type: String, required: false},
+    total: { type: String, required: false},
+    items: { type: Array, required: false},
 
 })
 

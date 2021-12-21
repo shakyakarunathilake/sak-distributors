@@ -25,11 +25,10 @@ export default function StepOne(props) {
     const {
         customerOptions,
         completeFormStep,
-        orderRecords,
         setOrderFormData,
         customerType,
         setCustomerType,
-        setOpenPopup,
+        handleClosePopUp,
         isDirty,
         isValid,
         errors,
@@ -39,7 +38,9 @@ export default function StepOne(props) {
         reset,
         clearErrors,
         trigger,
-        nextOrderNo
+        nextOrderNo,
+        action,
+        formStep
     } = props;
 
     const today = new Date();
@@ -49,37 +50,34 @@ export default function StepOne(props) {
     const deliveryDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
 
     useEffect(() => {
-        if (orderRecords != null) {
 
-            // setCustomerType(orderRecords.customerid ? 'Registered Customer' : 'Unregistered Customer');
-            setValue("customertype", orderRecords.customerid ? 'Registered Customer' : 'Unregistered Customer');
-            setValue("orderno", orderRecords.orderno);
-            setValue("orderplacedat", orderRecords.orderplacedat);
-            setValue("deliverydate", orderRecords.deliverydate);
-            setValue("ordercreatedby", orderRecords.ordercreatedby);
-            setValue("storename", orderRecords.storename);
-            setValue("customerid", orderRecords.customerid);
-            setValue("shippingaddress", orderRecords.shippingaddress);
-            setValue("contactnumber", orderRecords.contactnumber);
-            setValue("route", orderRecords.route);
+        // setCustomerType(orderRecords.customerid ? 'Registered Customer' : 'Unregistered Customer');
+        // setValue("customertype", orderRecords.customerid ? 'Registered Customer' : 'Unregistered Customer');
+        // setValue("orderno", orderRecords.orderno);
+        // setValue("orderplacedat", orderRecords.orderplacedat);
+        // setValue("deliverydate", orderRecords.deliverydate);
+        // setValue("ordercreatedby", orderRecords.ordercreatedby);
+        // setValue("storename", orderRecords.storename);
+        // setValue("customerid", orderRecords.customerid);
+        // setValue("shippingaddress", orderRecords.shippingaddress);
+        // setValue("contactnumber", orderRecords.contactnumber);
+        // setValue("route", orderRecords.route);
 
-        } else {
 
-            setValue("customertype", '');
-            setValue("orderno", `${JSON.parse(sessionStorage.getItem("Auth")).employeeid}${nextOrderNo}`);
-            setValue("orderplacedat", dateTime);
-            setValue("deliverydate", deliveryDate);
-            setValue("ordercreatedby", `${JSON.parse(sessionStorage.getItem("Auth")).firstname} ${JSON.parse(sessionStorage.getItem("Auth")).lastname} (${JSON.parse(sessionStorage.getItem("Auth")).employeeid})`);
-            setValue("customer", '');
-            setValue("storename", '');
-            setValue("customerid", '');
-            setValue("shippingaddress", '');
-            setValue("contactnumber", '');
-            setValue("route", '');
+        setValue("customertype", '');
+        setValue("orderno", `${JSON.parse(sessionStorage.getItem("Auth")).employeeid}${nextOrderNo}`);
+        setValue("orderplacedat", dateTime);
+        setValue("deliverydate", deliveryDate);
+        setValue("ordercreatedby", `${JSON.parse(sessionStorage.getItem("Auth")).firstname} ${JSON.parse(sessionStorage.getItem("Auth")).lastname} (${JSON.parse(sessionStorage.getItem("Auth")).employeeid})`);
+        setValue("customer", '');
+        setValue("storename", '');
+        setValue("customerid", '');
+        setValue("shippingaddress", '');
+        setValue("contactnumber", '');
+        setValue("route", '');
 
-        }
 
-    }, [setValue, nextOrderNo, orderRecords])
+    }, [setValue, nextOrderNo])
 
     const handleReset = () => {
         reset({
@@ -120,7 +118,7 @@ export default function StepOne(props) {
 
         trigger();
 
-        if (isValid || (orderRecords != null && isDirty === false)) {
+        if (isValid) {
             setOrderFormData(getValues());
             completeFormStep();
         }
@@ -138,14 +136,18 @@ export default function StepOne(props) {
                     <div>
                         <HighlightOffIcon
                             className={style.icon}
-                            onClick={() => { setOpenPopup(false) }}
+                            onClick={handleClosePopUp}
                         />
                     </div>
                 </div>
 
-                <div className={style.step}>
-                    Step 1 of 4
-                </div>
+                {
+                    action === "Create" && formStep === 0 &&
+                    <div className={style.step}>
+                        Step 1 of 4
+                    </div>
+                }
+
 
             </div>
 
@@ -169,7 +171,6 @@ export default function StepOne(props) {
                                     onChange={onChange}
                                     placeholder="Ex: ON00006211126001"
                                     margin="dense"
-                                    disabled={orderRecords !== null}
                                 />
                             )}
                         />
@@ -193,7 +194,6 @@ export default function StepOne(props) {
                                     helperText={errors.orderplacedat && errors.orderplacedat.message}
                                     margin="dense"
                                     type="datetime-local"
-                                    disabled={orderRecords !== null}
                                 />
                             )}
                         />
@@ -216,7 +216,6 @@ export default function StepOne(props) {
                                     error={errors.deliverydate ? true : false}
                                     helperText={errors.deliverydate && errors.deliverydate.message}
                                     margin="dense"
-                                    disabled={orderRecords !== null}
                                 />
                             )}
                         />
@@ -241,7 +240,6 @@ export default function StepOne(props) {
                                     onChange={onChange}
                                     placeholder="Ex: Buddhika Bandara (E00006)"
                                     margin="dense"
-                                    disabled={orderRecords !== null}
                                 />
                             )}
                         />
@@ -268,40 +266,11 @@ export default function StepOne(props) {
                                     error={errors.customertype ? true : false}
                                     helperText={errors.customertype && errors.customertype.message}
                                     size="small"
-                                    disabled={orderRecords !== null}
                                 />
                             )}
                         />
                     </div>
                 </div>
-
-                {
-                    (orderRecords !== null && orderRecords.customerid !== '') &&
-                    <div className={style.row}>
-                        <div className={style.label}>
-                            Customer ID <span className={style.redFont}>*</span>
-                        </div>
-                        <div className={style.textfield}>
-                            <Controller
-                                name={"customerid"}
-                                control={control}
-                                rules={{ required: "Customer ID is required" }}
-                                render={({ field: { onChange, value } }) => (
-                                    <TextField
-                                        fullWidth={true}
-                                        value={value || ''}
-                                        onChange={onChange}
-                                        error={errors.customerid ? true : false}
-                                        helperText={errors.customerid && errors.customerid.message}
-                                        placeholder="Ex: C00001"
-                                        margin="dense"
-                                        disabled={orderRecords !== null}
-                                    />
-                                )}
-                            />
-                        </div>
-                    </div>
-                }
 
                 <div className={style.row}>
                     <div className={style.label}>
@@ -327,7 +296,6 @@ export default function StepOne(props) {
                                                 variant="outlined"
                                                 margin="dense"
                                                 placeholder="Ex: C000001 - Champika Super Center and Pharmacy"
-                                                disabled={orderRecords !== null}
                                             />
                                         )}
                                     />
@@ -347,7 +315,6 @@ export default function StepOne(props) {
                                         helperText={errors.storename && errors.storename.message}
                                         placeholder="Ex: Champika Super Center and Pharmacy"
                                         margin="dense"
-                                        disabled={orderRecords !== null}
                                     />
                                 )}
                             />
@@ -374,7 +341,6 @@ export default function StepOne(props) {
                                     helperText={errors.shippingaddress && errors.shippingaddress.message}
                                     placeholder="Ex: Rambukkana-Katupitiya Rd, Rambukkana"
                                     margin="dense"
-                                    disabled={orderRecords !== null}
                                 />
                             )}
                         />
@@ -402,7 +368,6 @@ export default function StepOne(props) {
                                     helperText={errors.contactnumber && errors.contactnumber.message}
                                     placeholder="Ex: 0352264589"
                                     margin="dense"
-                                    disabled={orderRecords !== null}
                                 />
                             )}
                         />
@@ -426,7 +391,6 @@ export default function StepOne(props) {
                                     error={errors.route ? true : false}
                                     helperText={errors.route && errors.route.message}
                                     size="small"
-                                    disabled={orderRecords !== null}
                                 />
                             )}
                         />
@@ -440,7 +404,6 @@ export default function StepOne(props) {
 
                 <div className={style.resetBtn}>
                     <Button
-                        disabled={orderRecords !== null}
                         variant="contained"
                         onClick={handleReset}
                     >

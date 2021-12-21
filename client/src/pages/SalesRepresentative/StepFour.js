@@ -43,7 +43,7 @@ const useStyles = makeStyles({
 
 export default function StepFour(props) {
 
-    const { setOpenPopup, data, backFormStep, onSubmit, total } = props;
+    const { action, formStep, handleClosePopUp, data, backFormStep, onSubmit, total } = props;
 
     const classes = useStyles();
 
@@ -58,14 +58,31 @@ export default function StepFour(props) {
                     <div>
                         <HighlightOffIcon
                             className={style.icon}
-                            onClick={() => { setOpenPopup(false) }}
+                            onClick={handleClosePopUp}
                         />
                     </div>
                 </div>
 
-                <div className={style.step}>
-                    Step 4 of 4
-                </div>
+                {
+                    action === "Create" && formStep === 3 &&
+                    <div className={style.step}>
+                        Step 4 of 4
+                    </div>
+                }
+
+                {
+                    action === "Edit" && formStep === 2 &&
+                    <div className={style.step}>
+                        Step 3 of 3
+                    </div>
+                }
+
+                {
+                    action === "View" && formStep === 1 &&
+                    <div className={style.step}>
+                        Step 2 of 2
+                    </div>
+                }
 
             </div>
 
@@ -279,7 +296,7 @@ export default function StepFour(props) {
                         color="primary"
                         variant="contained"
                     >
-                        Confirm and Submit
+                        {action === 'View' ? 'Done' : 'Confirm and Submit'}
                     </Button>
 
                 </div>

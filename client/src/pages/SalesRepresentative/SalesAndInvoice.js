@@ -22,8 +22,9 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import axios from 'axios';
 
 //Forms
-import CreateOrder from './CreateOrder';
 import ViewOrder from './ViewOrder';
+import EditOrder from './EditOrder';
+import CreateOrder from './CreateOrder';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -69,6 +70,11 @@ export default function SalesAndInvoice() {
                 console.log(error)
             })
     }, [reRender]);
+
+    const handleClosePopUp = () => {
+        setOpenPopup(false)
+        setAction('');
+    }
 
     const addOrEdit = (order, orderno) => {
 
@@ -250,22 +256,38 @@ export default function SalesAndInvoice() {
                     setOpenPopup={setOpenPopup}
                     fullScreen={true}
                 >
+
                     {
-                        (action === "Create" || action === "Edit") &&
+                        action === "Create" &&
                         <CreateOrder
-                            setOpenPopup={setOpenPopup}
+                            handleClosePopUp={handleClosePopUp}
                             addOrEdit={addOrEdit}
                             productOptions={productOptions}
                             customerOptions={customerOptions}
                             nextOrderNo={nextOrderNo}
                             orderRecords={orderRecords}
+                            action={action}
+                        />
+                    }
+
+                    {
+                        action === "Edit" &&
+                        <EditOrder
+                            handleClosePopUp={handleClosePopUp}
+                            addOrEdit={addOrEdit}
+                            productOptions={productOptions}
+                            customerOptions={customerOptions}
+                            nextOrderNo={nextOrderNo}
+                            orderRecords={orderRecords}
+                            action={action}
                         />
                     }
                     {
                         action === "View" &&
                         <ViewOrder
-                            setOpenPopup={setOpenPopup}
+                            handleClosePopUp={handleClosePopUp}
                             orderRecords={orderRecords}
+                            action={action}
                         />
                     }
                 </PopUp>

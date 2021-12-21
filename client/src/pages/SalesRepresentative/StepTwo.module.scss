@@ -62,6 +62,12 @@
             }
         }
 
+        .hideBackBtn {
+            Button {
+                display: none;
+            }
+        }
+
         .confirmBtn {
             text-align: right;
 

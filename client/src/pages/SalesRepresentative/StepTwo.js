@@ -1,4 +1,5 @@
 import React from 'react';
+import { Controller } from 'react-hook-form';
 
 //Material UI Components
 import { Button } from '@material-ui/core';
@@ -12,7 +13,7 @@ import style from './StepTwo.module.scss';
 
 export default function StepTwo(props) {
 
-    const { setOpenPopup, orderFormData, backFormStep, completeFormStep } = props;
+    const { action, formStep, handleClosePopUp, control, backFormStep, getValues, completeFormStep } = props;
 
     const onSubmit = () => {
         completeFormStep();
@@ -30,14 +31,31 @@ export default function StepTwo(props) {
                     <div>
                         <HighlightOffIcon
                             className={style.icon}
-                            onClick={() => { setOpenPopup(false) }}
+                            onClick={handleClosePopUp}
                         />
                     </div>
                 </div>
 
-                <div className={style.step}>
-                    Step 2 of 4
-                </div>
+                {
+                    action === "Create" && formStep === 1 &&
+                    <div className={style.step}>
+                        Step 2 of 4
+                    </div>
+                }
+
+                {
+                    action === "Edit" && formStep === 0 &&
+                    <div className={style.step}>
+                        Step 1 of 3
+                    </div>
+                }
+
+                {
+                    action === "View" && formStep === 0 &&
+                    <div className={style.step}>
+                        Step 1 of 2
+                    </div>
+                }
 
             </div>
 
@@ -48,22 +66,34 @@ export default function StepTwo(props) {
                         Order No.
                     </div>
                     <div className={style.customerData}>
-                        <Typography className={style.input}>
-                            {orderFormData.orderno}
-                        </Typography>
+                        <Controller
+                            name={"orderno"}
+                            control={control}
+                            render={({ field: { value } }) => (
+                                <Typography className={style.input}>
+                                    {value}
+                                </Typography>
+                            )}
+                        />
                     </div>
                 </div>
 
                 {
-                    orderFormData.customerid &&
+                    getValues('customerid') !== null &&
                     <div className={style.row}>
                         <div className={style.boldText}>
                             Customer ID
                         </div>
                         <div className={style.customerData}>
-                            <Typography className={style.input}>
-                                {orderFormData.customerid}
-                            </Typography>
+                            <Controller
+                                name={"customerid"}
+                                control={control}
+                                render={({ field: { value } }) => (
+                                    <Typography className={style.input}>
+                                        {value}
+                                    </Typography>
+                                )}
+                            />
                         </div>
                     </div>
 
@@ -74,9 +104,15 @@ export default function StepTwo(props) {
                         Store Name
                     </div>
                     <div className={style.customerData}>
-                        <Typography className={style.input}>
-                            {orderFormData.storename}
-                        </Typography>
+                        <Controller
+                            name={"storename"}
+                            control={control}
+                            render={({ field: { value } }) => (
+                                <Typography className={style.input}>
+                                    {value}
+                                </Typography>
+                            )}
+                        />
                     </div>
                 </div>
 
@@ -85,9 +121,15 @@ export default function StepTwo(props) {
                         Contact No.
                     </div>
                     <div className={style.customerData}>
-                        <Typography className={style.input}>
-                            {orderFormData.contactnumber}
-                        </Typography>
+                        <Controller
+                            name={"contactnumber"}
+                            control={control}
+                            render={({ field: { value } }) => (
+                                <Typography className={style.input}>
+                                    {value}
+                                </Typography>
+                            )}
+                        />
                     </div>
                 </div>
 
@@ -96,9 +138,15 @@ export default function StepTwo(props) {
                         Shipping Address
                     </div>
                     <div className={style.customerData}>
-                        <Typography className={style.input}>
-                            {orderFormData.shippingaddress}
-                        </Typography>
+                        <Controller
+                            name={"shippingaddress"}
+                            control={control}
+                            render={({ field: { value } }) => (
+                                <Typography className={style.input}>
+                                    {value}
+                                </Typography>
+                            )}
+                        />
                     </div>
                 </div>
 
@@ -107,9 +155,15 @@ export default function StepTwo(props) {
                         Route
                     </div>
                     <div className={style.customerData}>
-                        <Typography className={style.input}>
-                            {orderFormData.route}
-                        </Typography>
+                        <Controller
+                            name={"route"}
+                            control={control}
+                            render={({ field: { value } }) => (
+                                <Typography className={style.input}>
+                                    {value}
+                                </Typography>
+                            )}
+                        />
                     </div>
                 </div>
 
@@ -118,9 +172,15 @@ export default function StepTwo(props) {
                         Order Placed at
                     </div>
                     <div className={style.customerData}>
-                        <Typography className={style.input}>
-                            {orderFormData.orderplacedat}
-                        </Typography>
+                        <Controller
+                            name={"orderplacedat"}
+                            control={control}
+                            render={({ field: { value } }) => (
+                                <Typography className={style.input}>
+                                    {value}
+                                </Typography>
+                            )}
+                        />
                     </div>
                 </div>
 
@@ -129,9 +189,15 @@ export default function StepTwo(props) {
                         Delivery Date
                     </div>
                     <div className={style.customerData}>
-                        <Typography className={style.input}>
-                            {orderFormData.deliverydate}
-                        </Typography>
+                        <Controller
+                            name={"deliverydate"}
+                            control={control}
+                            render={({ field: { value } }) => (
+                                <Typography className={style.input}>
+                                    {value}
+                                </Typography>
+                            )}
+                        />
                     </div>
                 </div>
 
@@ -140,9 +206,15 @@ export default function StepTwo(props) {
                         Sales Representative
                     </div>
                     <div className={style.customerData}>
-                        <Typography className={style.input}>
-                            {orderFormData.ordercreatedby}
-                        </Typography>
+                        <Controller
+                            name={"ordercreatedby"}
+                            control={control}
+                            render={({ field: { value } }) => (
+                                <Typography className={style.input}>
+                                    {value}
+                                </Typography>
+                            )}
+                        />
                     </div>
                 </div>
 
@@ -150,7 +222,7 @@ export default function StepTwo(props) {
 
             <div className={style.footer}>
 
-                <div className={style.backBtn}>
+                <div className={action === "Create" ? style.backBtn : style.hideBackBtn}>
                     <Button
                         variant="contained"
                         onClick={backFormStep}
@@ -171,7 +243,7 @@ export default function StepTwo(props) {
                             onSubmit()
                         }}
                     >
-                        Confirm
+                        {action === "Create" ? 'Confirm' : 'Next'}
                     </Button>
                 </div>
 
