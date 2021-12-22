@@ -59,7 +59,11 @@ export default function ManageGIN() {
 
     useEffect(() => {
         axios
-            .get("http://localhost:8080/gin/get-all-gin-table-data")
+            .get("http://localhost:8080/gin/get-all-gin-table-data", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 sessionStorage.setItem("GINTableData", JSON.stringify(res.data));
                 setRecords(res.data.tbody);
@@ -72,7 +76,11 @@ export default function ManageGIN() {
 
     const openInPopup = ginnumber => {
         axios
-            .get(`http://localhost:8080/gin/${ginnumber}`)
+            .get(`http://localhost:8080/gin/${ginnumber}`, {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 setGINRecords(res.data.gin);
                 setOpenPopup(true);
@@ -89,7 +97,11 @@ export default function ManageGIN() {
         }
 
         axios
-            .post(`http://localhost:8080/gin/update-by-ginnumber/${ginnumber}`, gin)
+            .post(`http://localhost:8080/gin/update-by-ginnumber/${ginnumber}`, gin, {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 setAlert(res.data.alert);
                 setType(res.data.type);

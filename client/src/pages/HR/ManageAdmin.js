@@ -64,7 +64,11 @@ export default function ManageAdmin() {
 
     useEffect(() => {
         axios
-            .get("http://localhost:8080/admin/get-all-admin-table-data")
+            .get("http://localhost:8080/admin/get-all-admin-table-data", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 sessionStorage.setItem("EmployeesTableData", JSON.stringify(res.data));
                 setRecords(res.data.tbody);
@@ -77,7 +81,11 @@ export default function ManageAdmin() {
 
     const getEmployeeOptions = () => {
         axios
-            .get("http://localhost:8080/options/employee-options-for-admin")
+            .get("http://localhost:8080/options/employee-options-for-admin", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 setEmployeeOptions(res.data.employeeOptions);
                 setOpenPopup(true);
@@ -99,7 +107,11 @@ export default function ManageAdmin() {
         }
 
         axios
-            .post(`http://localhost:8080/admin/add-admin`, admin)
+            .post(`http://localhost:8080/admin/add-admin`, admin, {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 setAlert(res.data.alert);
                 setType(res.data.type);

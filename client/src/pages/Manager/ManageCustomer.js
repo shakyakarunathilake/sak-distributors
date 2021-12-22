@@ -57,7 +57,11 @@ export default function ManageCustomer() {
 
     useEffect(() => {
         axios
-            .get("http://localhost:8080/customers/get-all-customer-table-data")
+            .get("http://localhost:8080/customers/get-all-customer-table-data", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 sessionStorage.setItem("CustomerTableData", JSON.stringify(res.data));
                 setRecords(res.data.tbody);
@@ -69,14 +73,18 @@ export default function ManageCustomer() {
     }, [reRender]);
 
     const addOrEdit = (customer, customerid) => {
-        
+
         for (let [key, value] of customer.entries()) {
             console.log(key, value);
         }
 
         if (action === "Create") {
             axios
-                .post("http://localhost:8080/customers/create-customer", customer)
+                .post("http://localhost:8080/customers/create-customer", customer, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
                 .then(res => {
                     setAlert(res.data.alert);
                     setType(res.data.type);
@@ -89,7 +97,11 @@ export default function ManageCustomer() {
             ;
         } if (action === "Edit") {
             axios
-                .post(`http://localhost:8080/customers/update-by-id/${customerid}`, customer)
+                .post(`http://localhost:8080/customers/update-by-id/${customerid}`, customer, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
                 .then(res => {
                     setAlert(res.data.alert);
                     setType(res.data.type);
@@ -109,7 +121,11 @@ export default function ManageCustomer() {
 
     const openInPopup = customerid => {
         axios
-            .get(`http://localhost:8080/customers/${customerid}`)
+            .get(`http://localhost:8080/customers/${customerid}`, {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 setCustomerRecords(res.data.customer);
                 setOpenPopup(true);
@@ -121,7 +137,11 @@ export default function ManageCustomer() {
 
     const getNextCustomerId = () => {
         axios
-            .get("http://localhost:8080/customers/get-next-regno")
+            .get("http://localhost:8080/customers/get-next-regno", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 setNextCusId(res.data.nextcustomerid);
             })

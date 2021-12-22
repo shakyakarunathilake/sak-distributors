@@ -60,7 +60,11 @@ export default function SalesAndInvoice() {
 
     useEffect(() => {
         axios
-            .get(`http://localhost:8080/orders/get-all-sales-and-invoice-table-data`)
+            .get(`http://localhost:8080/orders/get-all-sales-and-invoice-table-data`, {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 sessionStorage.setItem("SalesAndInvoiceTableData", JSON.stringify(res.data));
                 setRecords(res.data.tbody);
@@ -84,7 +88,11 @@ export default function SalesAndInvoice() {
 
         if (action === "Create") {
             axios
-                .post("http://localhost:8080/orders/create-order", order)
+                .post("http://localhost:8080/orders/create-order", order, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
                 .then(res => {
                     setAlert(res.data.alert);
                     setType(res.data.type);
@@ -97,7 +105,11 @@ export default function SalesAndInvoice() {
             ;
         } if (action === "Edit") {
             axios
-                .post(`http://localhost:8080/orders/update-by-id/${orderno}`, order)
+                .post(`http://localhost:8080/orders/update-by-id/${orderno}`, order, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
                 .then(res => {
                     setAlert(res.data.alert);
                     setType(res.data.type);
@@ -117,7 +129,11 @@ export default function SalesAndInvoice() {
 
     const openInPopup = orderno => {
         axios
-            .get(`http://localhost:8080/orders/${orderno}`)
+            .get(`http://localhost:8080/orders/${orderno}`, {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 setOrderRecords(res.data.order);
                 setOpenPopup(true);
@@ -129,7 +145,11 @@ export default function SalesAndInvoice() {
 
     const getNextOrderNo = () => {
         axios
-            .get("http://localhost:8080/orders/get-next-orderno")
+            .get("http://localhost:8080/orders/get-next-orderno", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 setNextOrderNo(res.data.nextorderno);
                 getOptions();
@@ -142,7 +162,11 @@ export default function SalesAndInvoice() {
     const getOptions = () => {
 
         axios
-            .get("http://localhost:8080/options/customer-options")
+            .get("http://localhost:8080/options/customer-options", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 setCustomerOptions(res.data.customeroptions)
             })
@@ -151,7 +175,11 @@ export default function SalesAndInvoice() {
             })
 
         axios
-            .get("http://localhost:8080/options/product-options")
+            .get("http://localhost:8080/options/product-options", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 setProductOptions(res.data.productoptions)
             })

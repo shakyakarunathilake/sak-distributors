@@ -45,17 +45,17 @@ app.use((error, req, res, next) => {
 app.use(express.static("uploads"));
 
 app.use("/auth", authRoutes);
-app.use("/password", passwordRoutes);
-app.use("/employees", employeeRoutes);
-app.use("/customers", customerRoutes);
-app.use("/products", productRoutes);
-app.use("/orders", orderRoutes);
-app.use("/options", optionRoutes);
-app.use("/admin", adminRoutes);
-app.use("/suppliers", supplierRoutes);
-app.use("/purchaseorder", purchaseOrderRoutes);
-app.use("/grn", grnRoutes);
-app.use("/gin", ginRoutes);
-app.use("/metadata", metaDataRoutes);
+app.use("/password", checkAuth, passwordRoutes);
+app.use("/employees", checkAuth, employeeRoutes);
+app.use("/customers", checkAuth, customerRoutes);
+app.use("/products", checkAuth, productRoutes);
+app.use("/orders", checkAuth, orderRoutes);
+app.use("/options", checkAuth, optionRoutes);
+app.use("/admin", checkAuth, adminRoutes);
+app.use("/suppliers", checkAuth, supplierRoutes);
+app.use("/purchaseorder", checkAuth, purchaseOrderRoutes);
+app.use("/grn", checkAuth, grnRoutes);
+app.use("/gin", checkAuth, ginRoutes);
+app.use("/metadata", checkAuth, metaDataRoutes);
 
 module.exports = app;

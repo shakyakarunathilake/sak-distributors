@@ -59,7 +59,11 @@ export default function ManageGRN() {
 
     useEffect(() => {
         axios
-            .get("http://localhost:8080/grn/get-all-grn-table-data")
+            .get("http://localhost:8080/grn/get-all-grn-table-data", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 sessionStorage.setItem("GRNTableData", JSON.stringify(res.data));
                 setRecords(res.data.tbody);
@@ -72,7 +76,11 @@ export default function ManageGRN() {
 
     const openInPopup = grnnumber => {
         axios
-            .get(`http://localhost:8080/grn/${grnnumber}`)
+            .get(`http://localhost:8080/grn/${grnnumber}`, {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 setGRNRecords(res.data.grn);
                 setOpenPopup(true);
@@ -89,7 +97,11 @@ export default function ManageGRN() {
         }
 
         axios
-            .post(`http://localhost:8080/grn/update-by-grnnumber/${grnnumber}`, grn)
+            .post(`http://localhost:8080/grn/update-by-grnnumber/${grnnumber}`, grn, {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 setAlert(res.data.alert);
                 setType(res.data.type);

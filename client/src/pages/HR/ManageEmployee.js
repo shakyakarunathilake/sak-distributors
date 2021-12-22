@@ -57,7 +57,11 @@ export default function ManageEmployee() {
 
     useEffect(() => {
         axios
-            .get("http://localhost:8080/employees/get-all-employees-table-data")
+            .get("http://localhost:8080/employees/get-all-employees-table-data", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 sessionStorage.setItem("EmployeesTableData", JSON.stringify(res.data));
                 setRecords(res.data.tbody);
@@ -74,7 +78,11 @@ export default function ManageEmployee() {
         }
         if (action === "Create") {
             axios
-                .post("http://localhost:8080/employees/create-employee", employee)
+                .post("http://localhost:8080/employees/create-employee", employee, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
                 .then(res => {
                     setAlert(res.data.alert);
                     setType(res.data.type);
@@ -88,7 +96,11 @@ export default function ManageEmployee() {
 
         } if (action === "Edit") {
             axios
-                .post(`http://localhost:8080/employees/update-by-id/${employeeid}`, employee)
+                .post(`http://localhost:8080/employees/update-by-id/${employeeid}`, employee, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
                 .then(res => {
                     setAlert(res.data.alert);
                     setType(res.data.type);
@@ -108,7 +120,11 @@ export default function ManageEmployee() {
 
     const openInPopup = employeeid => {
         axios
-            .get(`http://localhost:8080/employees/${employeeid}`)
+            .get(`http://localhost:8080/employees/${employeeid}`, {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 setEmployeeRecords(res.data.employee);
                 setOpenPopup(true);
@@ -120,7 +136,11 @@ export default function ManageEmployee() {
 
     const getNextEmployeeId = () => {
         axios
-            .get("http://localhost:8080/employees/get-next-regno")
+            .get("http://localhost:8080/employees/get-next-regno", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 setNextEmpId(res.data.nextemployeeid);
             })
