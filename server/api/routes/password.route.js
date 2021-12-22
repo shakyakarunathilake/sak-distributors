@@ -34,6 +34,11 @@ router.put("/change-password/", (req, res, next) => {
                                 .exec()
                                 .then(doc => {
                                     console.log(doc);
+                                    
+                                    function emailIntegration() {
+                                        console.log("Email Sent");
+                                    }
+
                                     res.status(200).json({
                                         type: "success",
                                         message: "Password Changed"
@@ -68,6 +73,9 @@ router.post("/forgot-password", (req, res, next) => {
         .find({ email: req.body.email })
         .exec()
         .then(employee => {
+
+            function emailIntegration() { }
+
             res.status(200).json({
                 type: "success",
                 message: `Hi ${employee[0].firstname} ${employee[0].lastname}. The reset instruction has been sent to your email address. Have a nice day`

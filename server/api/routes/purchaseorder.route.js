@@ -210,6 +210,10 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
         .exec()
         .then(result => {
 
+            function emailIntegration() {
+                console.log("Email Sent");
+            }
+
             const grn = new GRN({
                 _id: new mongoose.Types.ObjectId(),
                 ponumber: result.ponumber,

@@ -114,6 +114,11 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
                         //     username: result.employeeid,
                         //     password: firstpassword
                         // });
+
+                        function emailIntegration() {
+                            console.log("Email Sent");
+                        }
+
                         console.log("Employee Created");
                         res.status(201).json({
                             message: "Handling POST requests to /employees/create-employee, EMPLOYEE SAVED",

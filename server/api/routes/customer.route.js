@@ -74,6 +74,11 @@ router.post("/create-customer", formDataBody.fields([]), (req, res, next) => {
     customer
         .save()
         .then(result => {
+
+            function emailIntegration() {
+                console.log("Email Sent");
+            }
+
             res.status(201).json({
                 message: "Handeling POST requests to /customers/create-customer, CUSTOMER SAVED",
                 type: 'success',
