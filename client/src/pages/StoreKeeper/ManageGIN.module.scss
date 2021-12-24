@@ -2,8 +2,29 @@
 
 .container {
     box-sizing: border-box;
+}
+
+.actionRow {
+    width: 100vw;
+    box-sizing: border-box;
+    display: grid;
+
+    .button {
+        width: 240px;
+        height: 53.28px;
+        color: $inverseFontColor;
+        font-size: 1em;
+        margin: 20px 25px 20px auto;
+    }
+
+    .icon {
+        margin-right: 10px;
+    }
+}
+
+.pagecontent {
     width: 100vw;
     // height: calc(100vh - 199.28px);
     box-sizing: border-box;
-    padding: 50px 20px 20px 20px;
+    padding: 0px 20px;
 }
