@@ -178,59 +178,32 @@ router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
 
     order
         .save()
+        .exec()
         .then(result => {
 
-            const gin = new GIN({
-                _id: new mongoose.Types.ObjectId(),
-                orderno: result.orderno,
-                ginnumber: `GIN-${result.orderno}`,
-                customerid: result.customerid,
-                storename: result.storename,
-                status: "Pending",
-                items: items,
-                createdat: "Pending",
-                createdby: "Pending",
-                total: result.total,
-            });
-
-            gin
-                .save()
-                .then(result => {
-
-                    console.log("GIN ADDED: ", result)
-
-                    MetaData
-                        .findOneAndUpdate(
-                            {},
-                            {
-                                $push: {
-                                    'customerorders': {
-                                        'orderno': result.orderno,
-                                        'customerid': result.customerid,
-                                        'storename': result.storename,
-                                        'status': 'Pending',
-                                        'ordercreatedby': result.ordercreatedby
-                                    },
-                                    'awaitinggindata': {
-                                        'orderno': result.orderno,
-                                        'ginnumber': result.ginnumber,
-                                        'status': result.status,
-                                    }
-                                },
+            MetaData
+                .findOneAndUpdate(
+                    {},
+                    {
+                        $push: {
+                            'customerorders': {
+                                'orderno': result.orderno,
+                                'customerid': result.customerid,
+                                'storename': result.storename,
+                                'status': 'Pending',
+                                'ordercreatedby': result.ordercreatedby
                             },
-                            { upsert: true }
-                        )
-                        .exec()
-                        .then(result => { console.log("META DATA ADDED: ", result) })
-                        .catch(err => {
-                            console.log(err);
-                            res.status(500).json({ "Error": err });
-                        })
-
-                })
+                        },
+                    },
+                    { upsert: true }
+                )
+                .exec()
+                .then(result => { console.log("META DATA ADDED: ", result) })
                 .catch(err => {
-                    console.log("GIN ERROR: ", err);
+                    console.log(err);
+                    res.status(500).json({ "Error": err });
                 })
+
             res.status(201).json({
                 message: "Handeling POST requests to /orders/create-order, ORDER CREATED",
                 type: 'success',
