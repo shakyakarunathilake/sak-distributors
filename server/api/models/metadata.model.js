@@ -5,7 +5,6 @@ const metaDataSchema = mongoose.Schema({
     purchaseorderapprovaldata: { type: Array, required: false },
     awaitinggrndata: { type: Array, required: false },
     customerorders: { type: Array, required: false },
-    awaitinggindata: { type: Array, required: false },
 })
 
 module.exports = mongoose.model('MetaData', metaDataSchema);
