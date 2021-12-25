@@ -31,8 +31,6 @@ router.get("/get-all-gin-table-data", (req, res, next) => {
                 status: x.status,
             }))
 
-            console.log("TBODY: ", tbody);
-
             res.status(201).json({
                 message: "Handeling GET requests to /get-all-gin-table-data",
                 tbody: tbody,
