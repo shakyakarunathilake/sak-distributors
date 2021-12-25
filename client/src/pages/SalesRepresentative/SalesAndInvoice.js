@@ -110,8 +110,9 @@ export default function SalesAndInvoice() {
             ;
         }
 
-        setOrderRecords(null)
+        setOrderRecords(null);
         setOpenPopup(false);
+        setReRender(orderno);
         setAction('');
     }
 
