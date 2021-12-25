@@ -49,7 +49,7 @@ export default function GINForm(props) {
 
     const classes = useStyles();
 
-    const { GINRecords, handleClosePopUp, updateGIN } = props;
+    const { GINRecords, handleClosePopUp, updateGIN, orderRecords, inChargeOptions } = props;
 
     const { handleSubmit } = useForm({ mode: "all" });
 
@@ -99,6 +99,8 @@ export default function GINForm(props) {
                         handleClosePopUp={handleClosePopUp}
                         completeFormStep={completeFormStep}
                         GINRecords={GINRecords}
+                        inChargeOptions={inChargeOptions}
+                        orderRecords={orderRecords}
                     />
 
                 </section>
