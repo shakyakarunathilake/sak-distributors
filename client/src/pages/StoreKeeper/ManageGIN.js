@@ -36,12 +36,14 @@ export default function ManageGIN() {
     const [open, setOpen] = React.useState(false);
     const [alert, setAlert] = React.useState();
 
-    const [records, setRecords] = useState([]);
+    const [tableRecords, setTableRecords] = useState([]);
 
-    const [GINRecords, setGINRecords] = useState(null);
     const [action, setAction] = useState('');
-    const [openPopup, setOpenPopup] = useState(false);
+    const [orderRecords, setOrderRecords] = useState([]);
+    const [GINRecords, setGINRecords] = useState(null);
+    const [inChargeOptions, setInChargeOptions] = useState([]);
 
+    const [openPopup, setOpenPopup] = useState(false);
     const [reRender, setReRender] = useState(null);
 
     const handleAlert = () => {
@@ -66,13 +68,36 @@ export default function ManageGIN() {
             .get("http://localhost:8080/gin/get-all-gin-table-data")
             .then(res => {
                 sessionStorage.setItem("GINTableData", JSON.stringify(res.data));
-                setRecords(res.data.tbody);
+                setTableRecords(res.data.tbody);
                 setReRender(null);
             })
             .catch(error => {
                 console.log(error)
             })
     }, [reRender]);
+
+    const getInChargeOptions = () => {
+        axios
+            .get('http://localhost:8080/options/employee-options-for-gin')
+            .then(res => {
+                setInChargeOptions(res.data.employeeOptions)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
+    const getOrderRecords = () => {
+        axios
+            .get('http://localhost:8080/orders/get-order-records')
+            .then(res => {
+                setOrderRecords(res.data.orderRecords)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+
+    }
 
     const openInPopup = ginnumber => {
         axios
@@ -86,7 +111,7 @@ export default function ManageGIN() {
             })
     }
 
-    const updateGIN = (gin, ginnumber,) => {
+    const addOrEdit = (gin, ginnumber,) => {
 
         for (let [key, value] of gin.entries()) {
             console.log(key, value);
@@ -119,6 +144,8 @@ export default function ManageGIN() {
                         variant="contained"
                         onClick={
                             () => {
+                                getOrderRecords();
+                                getInChargeOptions();
                                 setAction('Create');
                                 setOpenPopup(true);
                             }
@@ -160,7 +187,7 @@ export default function ManageGIN() {
                                 }
                             },
                         ]}
-                        data={records}
+                        data={tableRecords}
                         options={{
                             toolbar: false,
                             filtering: true,
@@ -221,7 +248,9 @@ export default function ManageGIN() {
                             GINRecords={GINRecords}
                             handleClosePopUp={handleClosePopUp}
                             setAction={setAction}
-                            updateGIN={updateGIN}
+                            addOrEdit={addOrEdit}
+                            orderRecords={orderRecords}
+                            inChargeOptions={inChargeOptions}
                         />
                     }
 
