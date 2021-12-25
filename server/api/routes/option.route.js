@@ -256,4 +256,32 @@ router.get("/customer-options", (req, res, next) => {
         })
 })
 
+//Get all employee options for admin
+router.get("/employee-options-for-gin", (req, res, next) => {
+
+    Employee
+        .find()
+        .exec()
+        .then(doc => {
+
+            const candidates = doc.filter(x =>
+                x.designation === 'Sales Representative' && x.employeestatus === 'Active'
+            );
+
+            const employeeOptions = candidates.map(x => ({
+                title: `${x.employeeid} : ${x.firstname} ${x.lastname}`,
+                id: x.employeeid
+            }))
+
+            res.status(201).json({
+                message: "Handeling GET requests to /employee-options-for-gin",
+                employeeOptions: employeeOptions,
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        })
+})
+
 module.exports = router;
