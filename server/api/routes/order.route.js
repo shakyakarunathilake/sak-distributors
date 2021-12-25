@@ -41,6 +41,33 @@ router.get("/get-all-sales-and-invoice-table-data", (req, res, next) => {
         })
 })
 
+//Get Order Records 
+router.get("/get-order-records", (req, res, next) => {
+
+    Order
+        .find()
+        .exec()
+        .then(doc => {
+
+            const orderRecords = doc.map(x => ({
+                "orderno": x.orderno,
+                "items": x.items,
+                "route": x.route
+            }))
+
+            res.status(200).json({
+                message: "Handeling GET requests to /get-order-records",
+                orderRecords: orderRecords
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                "Error": err
+            });
+        })
+})
+
 //Get next invoice number
 router.get("/get-next-orderno", (req, res, next) => {
 
@@ -120,39 +147,6 @@ router.get("/:orderno", (req, res, next) => {
 
 })
 
-//Get order details by order number
-router.post("/update-by-id/:orderno", formDataBody.fields([]), (req, res, next) => {
-    console.log("UPDATE:", req.body);
-
-    const items = JSON.parse(req.body.items);
-
-    Order
-        .findOneAndUpdate(
-            { orderno: req.params.orderno },
-            {
-                'items': items,
-                'total': req.body.total,
-
-            },
-            { new: true }
-        )
-        .exec()
-        .then(doc => {
-            res.status(200).json({
-                message: "Handling POST requests to /orders/update-by-orderno/:orderno, ORDER UPDATED",
-                type: 'success',
-                alert: `${doc.orderno} updated`,
-            });
-        })
-        .catch(err => {
-            res.status(200).json({
-                type: 'error',
-                alert: `Something went wrong. Could not update order`,
-            });
-            console.log(err);
-        });
-});
-
 //Create a order
 router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
 
@@ -200,8 +194,13 @@ router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
                 .exec()
                 .then(result => { console.log("META DATA ADDED: ", result) })
                 .catch(err => {
-                    console.log(err);
-                    res.status(500).json({ "Error": err });
+
+                    console.log("META DATA ERROR: ", err);
+
+                    res.status(200).json({
+                        type: 'error',
+                        alert: `Something went wrong. Could not add order`,
+                    });
                 })
 
             res.status(201).json({
@@ -212,7 +211,7 @@ router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
         })
         .catch(err => {
 
-            console.log("ERROR: ", err);
+            console.log("CREATE ORDER ERROR: ", err);
 
             res.status(200).json({
                 type: 'error',
@@ -222,5 +221,37 @@ router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
 
 });
 
+//Get order details by order number
+router.post("/update-by-id/:orderno", formDataBody.fields([]), (req, res, next) => {
+    console.log("UPDATE:", req.body);
+
+    const items = JSON.parse(req.body.items);
+
+    Order
+        .findOneAndUpdate(
+            { orderno: req.params.orderno },
+            {
+                'items': items,
+                'total': req.body.total,
+
+            },
+            { new: true }
+        )
+        .exec()
+        .then(doc => {
+            res.status(200).json({
+                message: "Handling POST requests to /orders/update-by-orderno/:orderno, ORDER UPDATED",
+                type: 'success',
+                alert: `${doc.orderno} updated`,
+            });
+        })
+        .catch(err => {
+            res.status(200).json({
+                type: 'error',
+                alert: `Something went wrong. Could not update order`,
+            });
+            console.log(err);
+        });
+});
 
 module.exports = router;
