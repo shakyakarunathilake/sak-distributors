@@ -30,18 +30,23 @@
 
     .body {
         display: grid;
-        grid-template-rows: min-content auto;
+        grid-template-rows: min-content min-content;
 
         .orderDetails {
             display: grid;
             grid-template-columns: 40% 60%;
             padding: 20px;
-
+            
+            .red {
+                color: red;
+                font-weight: 600;
+            }
+            
             .details {
                 table-layout: auto !important;
                 width: 100% !important;
                 box-sizing: border-box !important;
-
+                
                 tr {
                     th {
                         width: 200px;
@@ -82,20 +87,9 @@
                         }
                     }
 
-                    .blue {
-                        color: $primaryMain;
-                        font-weight: 600;
-                    }
-
-                    .red {
-                        color: red;
-                        font-weight: 600;
-                    }
                 }
             }
         }
-
-    
     }
 
     .footer {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 
 //Development Stage
@@ -148,7 +148,7 @@ export default function StepOne(props) {
     const handleInChargeChange = (event, option) => {
         if (option) {
             setValue("incharge", option.title);
-            clearErrors();
+            clearErrors("incharge");
         }
     }
 
@@ -273,7 +273,7 @@ export default function StepOne(props) {
                                         name={"ginnumber"}
                                         control={control}
                                         render={({ field: { value } }) => (
-                                            <Typography className={style.input && style.blue}>
+                                            <Typography className={style.input}>
                                                 {value}
                                             </Typography>
                                         )}
@@ -296,7 +296,9 @@ export default function StepOne(props) {
                             </tr>
 
                             <tr>
-                                <th align="left">Route</th>
+                                <th align="left">
+                                    Route <span className={style.red}>*</span>
+                                </th>
                                 <td align="left">
                                     <Controller
                                         name={"route"}
@@ -317,7 +319,9 @@ export default function StepOne(props) {
                             </tr>
 
                             <tr>
-                                <th align="left">In Charge</th>
+                                <th align="left">
+                                    In Charge <span className={style.red}>*</span>
+                                </th>
                                 <td align="left">
                                     <Controller
                                         name={"incharge"}
@@ -348,7 +352,9 @@ export default function StepOne(props) {
                                 </td>
                             </tr>
                             <tr>
-                                <th align="left">Vehicle </th>
+                                <th align="left">
+                                    Vehicle <span className={style.red}>*</span>
+                                </th>
                                 <td align="left">
                                     <Controller
                                         name={"vehicle"}
@@ -359,7 +365,7 @@ export default function StepOne(props) {
                                                 fullWidth={true}
                                                 error={errors.vehicle ? true : false}
                                                 helperText={errors.vehicle && errors.vehicle.message}
-                                                value={value || ''}
+                                                value={value}
                                                 onChange={onChange}
                                                 placeholder="Ex: Van (PND 8430)"
                                                 margin="dense"
@@ -494,8 +500,11 @@ export default function StepOne(props) {
                         toolbar: false,
                         filtering: true,
                         search: false,
-                        minBodyHeight: "calc(100vh - 495px)",
-                        maxBodyHeight: "calc(100vh - 495px)",
+                        paging: true,
+                        pageSizeOptions: [5],
+                        pageSize: 5,
+                        // minBodyHeight: "calc(100vh - 500px)",
+                        // maxBodyHeight: "calc(100vh - 500px)",
                         headerStyle: {
                             position: "sticky",
                             top: "0",
