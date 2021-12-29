@@ -3,9 +3,21 @@
 .container {
     display: grid;
     grid-template-rows: min-content auto min-content;
+    height: min-content;
     width: 80vw;
-    height: max-content;
     box-sizing: border-box;
+
+    Button {
+        width: max-content;
+        height: 40px;
+        font-size: 1em;
+        white-space: nowrap;
+        padding: 0 30px;
+    }
+
+    .hidden {
+        display: none;
+    }
 
     .header {
         .title {
@@ -36,11 +48,6 @@
             display: grid;
             grid-template-columns: 50% 50%;
             padding: 20px;
-
-            .red {
-                color: red;
-                font-weight: 600;
-            }
 
             .details {
                 table-layout: auto !important;
@@ -86,24 +93,51 @@
                             }
                         }
                     }
+
+                    .blue {
+                        color: $primaryMain;
+                        font-weight: 600;
+                    }
+
+                    .red {
+                        color: red;
+                        font-weight: 600;
+                    }
                 }
             }
         }
     }
 
-    .footer {
+    .doneBtn {
         text-align: right;
         padding: 30px 0px 10px 0px;
+    }
 
-        Button {
-            font-size: 1em;
-            padding: 0 30px;
-            height: 40px;
-            width: auto;
+    .footer {
+        display: grid;
+        grid-template-columns: auto auto;
+        padding: 30px 0px 10px 0px;
 
-            &:disabled {
-                background-color: hsl(230, 66%, 57%);
+        .backBtn {
+            text-align: left;
+            Button {
+                background-color: #aca9bb;
                 color: $inverseFontColor;
+
+                &:disabled {
+                    background-color: #c2c2c2;
+                    color: $inverseFontColor;
+                }
+            }
+        }
+
+        .nextBtn {
+            text-align: right;
+            Button {
+                &:disabled {
+                    background-color: hsl(230, 66%, 57%);
+                    color: $inverseFontColor;
+                }
             }
         }
     }

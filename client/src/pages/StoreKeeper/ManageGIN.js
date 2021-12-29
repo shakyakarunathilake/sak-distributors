@@ -257,7 +257,7 @@ export default function ManageGIN() {
 
                 <PopUp
                     openPopup={openPopup}
-                    fullScreen={true}
+                    // fullScreen={true}
                     setOpenPopup={setOpenPopup}
                 >
                     {
@@ -265,14 +265,14 @@ export default function ManageGIN() {
                         <ViewGIN
                             GINRecords={GINRecords}
                             handleClosePopUp={handleClosePopUp}
-                            setAction={setAction}
+                            action={action}
                         />}
                     {
                         (action === 'Create' || action === 'Edit') &&
                         <CreateGINForm
                             GINRecords={GINRecords}
                             handleClosePopUp={handleClosePopUp}
-                            setAction={setAction}
+                            action={action}
                             addOrEdit={addOrEdit}
                             orderRecords={orderRecords}
                             inChargeOptions={inChargeOptions}

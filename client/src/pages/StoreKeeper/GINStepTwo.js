@@ -1,12 +1,5 @@
-import React, { useEffect } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-
-//Development Stage
-import * as employeeservice from "../../services/employeeService";
-
-//Shared Components
-import TextField from '../../shared/TextField/TextField';
-import Select from '../../shared/Select/Select';
+import React from 'react';
+import { Controller } from 'react-hook-form';
 
 //Material UI 
 import {
@@ -14,13 +7,11 @@ import {
     TableHead,
     TableRow,
     TableCell,
-    TablePagination,
     Button,
     Grid,
     Typography,
-    TextField as MuiTextField
+    TablePagination,
 } from '@material-ui/core';
-import Autocomplete from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
 
 //Material UI Icons
@@ -30,39 +21,8 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import MaterialTable from 'material-table';
 
 //SCSS styles
-import style from './GINStepOne.module.scss';
-import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+import style from './GINStepTwo.module.scss';
 import { makeStyles } from '@material-ui/core/styles';
-
-const theme = createTheme({
-    overrides: {
-        MuiInputBase: {
-            root: {
-                fontSize: '0.9em',
-                fontFamily: 'Roboto, Poppins, sans-serif',
-            }
-        },
-        MuiFormHelperText: {
-            root: {
-                fontSize: '0.64em',
-                fontFamily: 'Roboto, Poppins, sans-serif',
-            }
-        },
-        MuiOutlinedInput: {
-            inputMarginDense: {
-                paddingTop: "10px",
-                paddingBottom: "10px"
-            }
-        },
-        MuiAutocomplete: {
-            inputRoot: {
-                '&&[class*="MuiOutlinedInput-root"] $input': {
-                    padding: 1
-                }
-            }
-        },
-    }
-});
 
 const useStyles = makeStyles({
     tablehead: {
@@ -77,7 +37,7 @@ const useStyles = makeStyles({
             fontSize: "0.8em",
             border: "none",
             padding: "5px 0 2.5px 0"
-        },
+        }
     },
     row2: {
         "& .MuiTableCell-head": {
@@ -86,140 +46,15 @@ const useStyles = makeStyles({
             fontSize: "0.8em",
             border: "none",
             padding: "2.5px 0 5px 0"
-        },
+        }
     }
 });
 
-export default function GINStepOne(props) {
+export default function GINStepTwo(props) {
 
     const classes = useStyles();
 
-    const {
-        data,
-        setData,
-        setConfirmation,
-        setOrderFormData,
-        handleClosePopUp,
-        completeFormStep,
-        orderRecords,
-        GINRecords,
-        inChargeOptions,
-        orderNumbers,
-        setOrderNumbers,
-        action,
-        control,
-        watch,
-        getValues,
-        trigger,
-        isValid,
-        errors,
-        setValue,
-    } = props;
-
-    useEffect(() => {
-        if (GINRecords !== null) {
-            setData([...GINRecords.items]);
-            setOrderNumbers([...GINRecords.ordernumbers]);
-            setValue('incharge', GINRecords.incharge);
-        }
-    }, [setData, GINRecords, setValue])
-
-    useEffect(() => {
-        if (GINRecords === null) {
-            getOrderNumbers();
-        }
-    }, [watch('route'), GINRecords]);
-
-    const handleInChargeChange = (event, option) => {
-        if (option) {
-            setValue("incharge", option.title);
-        }
-    }
-
-    const handleChipClick = () => { }
-
-    const getOrderNumbers = () => {
-
-        const relevantOrderRecords = orderRecords.filter(x => x.route === getValues('route'));
-
-        const relevantOrderNumbers = relevantOrderRecords.map(x => x.orderno);
-        setOrderNumbers(relevantOrderNumbers)
-
-        const relevantOrderItems = [].concat.apply([], relevantOrderRecords.map(order => {
-            const itemList = [];
-
-            order.items.forEach(item => {
-                itemList.push({
-                    'description': item.description,
-                    'price': item.price,
-                    'piecespercase': item.piecespercase,
-                    'cases': parseInt(item.salesqtycases) + parseInt(item.freeqtycases),
-                    'pieces': parseInt(item.salesqtypieces) + parseInt(item.freeqtypieces),
-                    'grossamount': item.grossamount
-                })
-            })
-
-            return itemList;
-        })).reduce((a, c) => {
-
-            const filtered = a.filter(el => el.description === c.description);
-
-            if (filtered.length > 0) {
-                a[a.indexOf(filtered[0])].pieces += +c.pieces;
-                a[a.indexOf(filtered[0])].cases += +c.cases;
-            } else {
-                a.push(c);
-            }
-
-            return a;
-        }, []);
-
-        let pieces = 0;
-        let cases = 0;
-
-        const getPieces = (noofpieces, piecespercase) => {
-            pieces = noofpieces % piecespercase;
-            return pieces;
-        }
-
-        const getCases = (noofpieces, piecespercase) => {
-            cases = Math.floor(noofpieces / piecespercase);
-            return cases;
-        }
-
-        const organizedRelevantOrderItems = relevantOrderItems.map(item => (
-            item.pieces > item.piecespercase
-                ? { ...item, pieces: getPieces(item.pieces, item.piecespercase), cases: getCases(item.pieces, item.piecespercase) + parseInt(item.cases) }
-                : item
-        ))
-
-        setData(organizedRelevantOrderItems);
-
-    }
-
-    const getTotal = () => {
-        let total = 0;
-
-        for (let i = 0; i < data.length; i++) {
-            total = total + (isNaN(data[i].grossamount) ? 0 : data[i].grossamount);
-        }
-
-        setValue("total", total);
-        return total;
-    }
-
-    const onSubmit = () => {
-        trigger();
-
-        console.log("IS VALID: ", isValid);
-        console.log("VALUES: ", getValues());
-
-        if (isValid) {
-            setOrderFormData(getValues());
-            setConfirmation(true);
-            completeFormStep();
-        }
-    }
+    const { onSubmit, backFormStep, control, getValues, handleClosePopUp, data, action, orderNumbers } = props;
 
     return (
         <div className={style.container}>
@@ -228,8 +63,9 @@ export default function GINStepOne(props) {
 
                 <div className={style.title}>
                     <div>
-                        {action === 'Create' && 'Create GIN Form'}
+                        {action === 'View' && 'View GIN Form'}
                         {action === 'Edit' && 'Edit GIN Form'}
+                        {action === 'Create' && 'Create GIN Form'}
                     </div>
                     <div>
                         <HighlightOffIcon
@@ -239,8 +75,8 @@ export default function GINStepOne(props) {
                     </div>
                 </div>
 
-                <div className={style.step}>
-                    Step 1 of 2
+                <div className={action === 'View' ? style.hidden : style.step}>
+                    Step 2 of 2
                 </div>
 
             </div>
@@ -272,89 +108,51 @@ export default function GINStepOne(props) {
                                         name={"createdat"}
                                         control={control}
                                         render={({ field: { value } }) => (
-                                            <Typography className={value === 'Pending' ? style.red : style.input}>
+                                            <Typography className={style.input}>
                                                 {value}
                                             </Typography>
                                         )}
                                     />
                                 </td>
                             </tr>
-
                             <tr>
-                                <th align="left">
-                                    Route <span className={style.red}>*</span>
-                                </th>
+                                <th align="left">Route</th>
                                 <td align="left">
                                     <Controller
                                         name={"route"}
                                         control={control}
-                                        rules={{ required: { value: true, message: "Route is required" } }}
-                                        render={({ field: { onChange, value } }) => (
-                                            <Select
-                                                size="small"
-                                                value={value || ''}
-                                                onChange={onChange}
-                                                options={employeeservice.getRouteOptions()}
-                                                error={errors.route ? true : false}
-                                                helperText={errors.route && errors.route.message}
-                                            />
+                                        render={({ field: { value } }) => (
+                                            <Typography className={style.input}>
+                                                {value}
+                                            </Typography>
                                         )}
                                     />
                                 </td>
                             </tr>
-
                             <tr>
-                                <th align="left">
-                                    In Charge <span className={style.red}>*</span>
-                                </th>
+                                <th align="left">In Charge</th>
                                 <td align="left">
                                     <Controller
                                         name={"incharge"}
                                         control={control}
-                                        rules={{ required: "In Charge is required" }}
-                                        render={({ field: { onChange, value } }) => (
-                                            <ThemeProvider theme={theme}>
-                                                <Autocomplete
-                                                    options={inChargeOptions || []}
-                                                    getOptionLabel={(option) => option.title}
-                                                    onChange={handleInChargeChange}
-                                                    inputValue={value}
-                                                    size="small"
-                                                    renderInput={(params) => (
-                                                        <MuiTextField
-                                                            {...params}
-                                                            helperText={errors.incharge && errors.incharge.message}
-                                                            error={errors.incharge ? true : false}
-                                                            variant="outlined"
-                                                            margin="dense"
-                                                            placeholder="Ex: Buddhika Bandara (E00006)"
-                                                        />
-                                                    )}
-                                                />
-                                            </ThemeProvider>
+                                        render={({ field: { value } }) => (
+                                            <Typography className={style.input}>
+                                                {value}
+                                            </Typography>
                                         )}
                                     />
                                 </td>
                             </tr>
                             <tr>
-                                <th align="left">
-                                    Vehicle <span className={style.red}>*</span>
-                                </th>
+                                <th align="left">Vehicle</th>
                                 <td align="left">
                                     <Controller
                                         name={"vehicle"}
                                         control={control}
-                                        rules={{ required: { value: true, message: "Vehicle is required" } }}
-                                        render={({ field: { onChange, value } }) => (
-                                            <TextField
-                                                fullWidth={true}
-                                                error={errors.vehicle ? true : false}
-                                                helperText={errors.vehicle && errors.vehicle.message}
-                                                value={value}
-                                                onChange={onChange}
-                                                placeholder="Ex: Van (PND 8430)"
-                                                margin="dense"
-                                            />
+                                        render={({ field: { value } }) => (
+                                            <Typography className={style.input}>
+                                                {value}
+                                            </Typography>
                                         )}
                                     />
                                 </td>
@@ -370,7 +168,7 @@ export default function GINStepOne(props) {
                                     <div>
                                         {
                                             orderNumbers.map(x =>
-                                                <Chip className={style.chip} label={x} key={x} onClick={handleChipClick} />
+                                                <Chip className={style.chip} label={x} key={x} />
                                             )
                                         }
                                     </div>
@@ -394,7 +192,7 @@ export default function GINStepOne(props) {
                                         <Typography style={{ fontWeight: 600 }}> Total (Rs.) </Typography>
                                     </Grid>
                                     <Grid item align="Right" style={{ margin: "0px 20px 0px 0px" }}>
-                                        <Typography style={{ fontWeight: 600 }}> {getTotal()} </Typography>
+                                        <Typography style={{ fontWeight: 600 }}> {getValues("total")} </Typography>
                                     </Grid>
                                 </Grid>
                                 <TablePagination {...props} />
@@ -481,15 +279,12 @@ export default function GINStepOne(props) {
                     ]}
                     data={data}
                     options={{
-                        tableLayout: 'auto',
                         toolbar: false,
                         filtering: true,
                         search: false,
                         paging: true,
                         pageSize: 5,
                         pageSizeOptions: [5],
-                        // minBodyHeight: "calc(100vh - 500px)",
-                        // maxBodyHeight: "calc(100vh - 500px)",
                         headerStyle: {
                             position: "sticky",
                             top: "0",
@@ -506,17 +301,45 @@ export default function GINStepOne(props) {
 
             </div>
 
-            <div className={style.footer}>
-                <Button
-                    color="primary"
-                    variant="contained"
-                    onClick={onSubmit}
-                    disabled={!isValid}
-                >
-                    Next
-                </Button>
-            </div>
+            {
+                action === "View" ?
+                    <div className={style.doneBtn}>
+                        <Button
+                            type="submit"
+                            color="primary"
+                            variant="contained"
+                        >
+                            Done
+                        </Button>
+                    </div>
+                    :
+                    <div className={style.footer}>
 
+                        <div className={style.backBtn}>
+                            <Button
+                                variant="contained"
+                                onClick={backFormStep}
+                                style={{
+                                    backgroundColor: '#ACA9BB',
+                                    color: 'white'
+                                }}
+                            >
+                                Back
+                            </Button>
+                        </div>
+
+                        <div className={style.nextBtn}>
+                            <Button
+                                onClick={onSubmit}
+                                color="primary"
+                                variant="contained"
+                            >
+                                Confirm and Submit
+                            </Button>
+                        </div>
+
+                    </div>
+            }
         </div>
     )
 }

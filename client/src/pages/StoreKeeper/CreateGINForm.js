@@ -2,66 +2,39 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import formData from 'form-data';
 
-//Material UI 
-import {
-    Paper,
-    TableHead,
-    TableRow,
-    TableCell,
-    Button,
-    Grid,
-    Typography,
-    TablePagination,
-} from '@material-ui/core';
-import Chip from '@mui/material/Chip';
-
-
-//Material UI Icons
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-
-//Material Table
-import MaterialTable from 'material-table';
-
 //SCSS styles
 import style from './CreateGINForm.module.scss';
-import { makeStyles } from '@material-ui/core/styles';
 
 //Form Step
 import GINStepOne from './GINStepOne';
-
-const useStyles = makeStyles({
-    tablehead: {
-        position: 'sticky',
-        top: 0,
-        zIndex: 9999
-    },
-    row1: {
-        "& .MuiTableCell-head": {
-            color: "white",
-            backgroundColor: "#20369f",
-            fontSize: "0.8em",
-            border: "none",
-            padding: "5px 0 2.5px 0"
-        }
-    },
-    row2: {
-        "& .MuiTableCell-head": {
-            color: "white",
-            backgroundColor: "#20369f",
-            fontSize: "0.8em",
-            border: "none",
-            padding: "2.5px 0 5px 0"
-        }
-    }
-});
+import GINStepTwo from './GINStepTwo';
 
 export default function GINForm(props) {
 
-    const classes = useStyles();
+    const { GINRecords, handleClosePopUp, addOrEdit, action, orderRecords, inChargeOptions } = props;
 
-    const { GINRecords, handleClosePopUp, addOrEdit, orderRecords, inChargeOptions } = props;
+    const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
+    const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
+    const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
 
-    const { handleSubmit } = useForm({ mode: "all" });
+    const today = new Date();
+    const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    const dateTime = date + ' ' + time;
+    const ginTime = today.getFullYear() + '' + (today.getMonth() + 1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+
+    const { formState: { isValid, errors }, control, watch, getValues, trigger, setValue, handleSubmit } = useForm({
+        mode: "onChange",
+        defaultValues: {
+            ginnumber: GINRecords ? GINRecords.ginnumber : `GIN${ginTime}`,
+            createdat: GINRecords ? GINRecords.createdat : dateTime,
+            createdby: GINRecords ? GINRecords.createdby : `${firstname} ${lastname} (${employeeid})`,
+            route: GINRecords ? GINRecords.route : '',
+            incharge: GINRecords ? GINRecords.incharge : '',
+            vehicle: GINRecords ? GINRecords.vehicle : '',
+            total: GINRecords ? GINRecords.total : ''
+        }
+    });
 
     const [data, setData] = useState([]);
     const [formStep, setFormStep] = useState(0);
@@ -119,6 +92,14 @@ export default function GINForm(props) {
                         orderRecords={orderRecords}
                         orderNumbers={orderNumbers}
                         setOrderNumbers={setOrderNumbers}
+                        control={control}
+                        watch={watch}
+                        getValues={getValues}
+                        trigger={trigger}
+                        isValid={isValid}
+                        errors={errors}
+                        setValue={setValue}
+                        action={action}
                     />
 
                 </section>
@@ -126,246 +107,21 @@ export default function GINForm(props) {
 
             {
                 formStep >= 1 &&
-                <section className={formStep === 1 ? style.two : style.hidden}>
-                    <div className={style.header}>
+                <section className={formStep === 1 ? style.visible : style.hidden}>
 
-                        <div className={style.title}>
-                            <div>
-                                Create GIN Form
-                            </div>
-                            <div>
-                                <HighlightOffIcon
-                                    className={style.icon}
-                                    onClick={() => { handleClosePopUp() }}
-                                />
-                            </div>
-                        </div>
-
-                        <div className={style.step}>
-                            Step 2 of 2
-                        </div>
-
-                    </div>
-
-                    <div className={style.body}>
-
-                        <div className={style.orderDetails}>
-
-                            <table className={style.details}>
-                                <tbody>
-                                    <tr>
-                                        <th align="left">GIN Number</th>
-                                        <td align="left">
-                                            <Typography className={style.input && style.blue}>
-                                                {orderFormData.ginnumber}
-                                            </Typography>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th align="left">GIN Created at</th>
-                                        <td align="left">
-                                            <Typography className={style.input && style.blue}>
-                                                {orderFormData.createdat}
-                                            </Typography>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th align="left">Route</th>
-                                        <td align="left">
-                                            <Typography className={style.input}>
-                                                {orderFormData.route}
-                                            </Typography>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th align="left">In Charge</th>
-                                        <td align="left">
-                                            <Typography className={style.input}>
-                                                {orderFormData.incharge}
-                                            </Typography>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th align="left">Vehicle</th>
-                                        <td align="left">
-                                            <Typography className={style.input}>
-                                                {orderFormData.vehicle}
-                                            </Typography>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-                            <table className={style.details}>
-                                <tbody>
-                                    <tr>
-                                        <th rowSpan={5} className={style.thAlign}>Order Numbers</th>
-                                        <td rowSpan={5} className={style.tdAlign}>
-                                            <div>
-                                                {
-                                                    orderNumbers.map(x =>
-                                                        <Chip className={style.chip} label={x} key={x} />
-                                                    )
-                                                }
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-                        </div>
-
-                        <MaterialTable
-                            components={{
-                                Container: props => <Paper {...props} elevation={1} />,
-                                Pagination: props => (
-                                    <td style={{
-                                        display: "flex",
-                                        flexDirection: "column",
-                                    }} >
-                                        <Grid container style={{ background: "#f5f5f5", padding: 7, color: 'red' }}>
-                                            <Grid item align="Right" style={{ margin: "0px 220px 0px auto" }}>
-                                                <Typography style={{ fontWeight: 600 }}> Total (Rs.) </Typography>
-                                            </Grid>
-                                            <Grid item align="Right" style={{ margin: "0px 20px 0px 0px" }}>
-                                                <Typography style={{ fontWeight: 600 }}> {orderFormData.total} </Typography>
-                                            </Grid>
-                                        </Grid>
-                                        <TablePagination {...props} />
-                                    </td>
-                                ),
-                                Header: props => (
-                                    <TableHead {...props} className={classes.tablehead} >
-                                        <TableRow className={classes.row1}>
-                                            <TableCell padding="none" rowSpan={2}>
-                                                <div style={{ padding: '0 10px' }}>
-                                                    Description
-                                                </div>
-                                            </TableCell>
-                                            <TableCell width="150px" padding="none" rowSpan={2} align="center">
-                                                <div style={{ padding: '0 10px' }}>
-                                                    Price (Rs.)
-                                                </div>
-                                            </TableCell>
-                                            <TableCell width="100px" padding="none" rowSpan={2} align="center">
-                                                <div style={{ padding: '0 10px' }}>
-                                                    Pieces per Case
-                                                </div>
-                                            </TableCell>
-                                            <TableCell padding="none" colSpan={2} align="center">
-                                                Total
-                                            </TableCell>
-                                            <TableCell padding="none" width="250px" rowSpan={2} align="center">
-                                                <div style={{ padding: '0 10px' }}>
-                                                    Gross Amount (Rs.)
-                                                </div>
-                                            </TableCell>
-                                        </TableRow>
-                                        <TableRow className={classes.row2}>
-                                            <TableCell width="150px" padding="none" align="center">Cases</TableCell>
-                                            <TableCell width="150px" padding="none" align="center">Pieces</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                ),
-                            }}
-                            columns={[
-                                {
-                                    title: 'Description',
-                                    field: "description",
-                                    cellStyle: {
-                                        textAlign: 'left'
-                                    }
-                                },
-                                {
-                                    title: 'Price (Rs.)',
-                                    field: 'price',
-                                    cellStyle: {
-                                        textAlign: 'left'
-                                    }
-                                },
-                                {
-                                    title: 'Pieces per Case',
-                                    field: 'piecespercase',
-                                    cellStyle: {
-                                        textAlign: 'left'
-                                    }
-                                },
-                                {
-                                    title: 'Cases',
-                                    field: 'cases',
-                                    width: "10%",
-                                    cellStyle: {
-                                        textAlign: 'right'
-                                    }
-                                },
-                                {
-                                    title: 'Pieces',
-                                    field: 'pieces',
-                                    cellStyle: {
-                                        textAlign: 'right'
-                                    }
-                                },
-                                {
-                                    title: 'Gross Amount (Rs.)',
-                                    field: 'grossamount',
-                                    cellStyle: {
-                                        textAlign: 'right'
-                                    }
-                                }
-                            ]}
-                            data={data}
-                            options={{
-                                toolbar: false,
-                                filtering: true,
-                                search: false,
-                                paging: true,
-                                pageSize: 7,
-                                pageSizeOptions: [7],
-                                headerStyle: {
-                                    position: "sticky",
-                                    top: "0",
-                                    backgroundColor: '#20369f',
-                                    color: '#FFF',
-                                    fontSize: "0.8em"
-                                },
-                                rowStyle: rowData => ({
-                                    fontSize: "0.8em",
-                                    backgroundColor: (rowData.tableData.id % 2 === 1) ? '#ebebeb' : '#ffffff'
-                                })
-                            }}
-                        />
-
-                    </div>
-
-                    <div className={style.footer}>
-
-                        <div>
-                            <Button
-                                variant="contained"
-                                onClick={backFormStep}
-                                style={{
-                                    backgroundColor: '#ACA9BB',
-                                    color: 'white'
-                                }}
-                            >
-                                Back
-                            </Button>
-                        </div>
-
-                        <div className={style.nextBtn}>
-                            <Button
-                                type="submit"
-                                color="primary"
-                                variant="contained"
-                            >
-                                Confirm and Submit
-                            </Button>
-                        </div>
-
-                    </div>
+                    <GINStepTwo
+                        backFormStep={backFormStep}
+                        onSubmit={onSubmit}
+                        data={data}
+                        handleClosePopUp={handleClosePopUp}
+                        orderFormData={orderFormData}
+                        orderNumbers={orderNumbers}
+                        control={control}
+                        getValues={getValues}
+                        action={action}
+                    />
 
                 </section>
-
             }
 
         </form>
