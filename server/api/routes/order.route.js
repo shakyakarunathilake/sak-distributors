@@ -223,7 +223,7 @@ router.get("/get-order-records", (req, res, next) => {
         .exec()
         .then(doc => {
 
-            const candidates = doc.filter(x => x.status !== 'Pending');
+            const candidates = doc.filter(x => x.status == 'Pending');
 
             const orderRecords = candidates.map(x => ({
                 "orderno": x.orderno,
