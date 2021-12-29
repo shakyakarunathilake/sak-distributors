@@ -3,19 +3,23 @@ import { useForm } from 'react-hook-form';
 import formData from 'form-data';
 
 //Material UI 
-import { Grid } from '@material-ui/core';
-import { Typography } from '@material-ui/core';
-import { Paper } from '@material-ui/core';
-import { Button } from '@material-ui/core';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import {
+    Paper,
+    TableHead,
+    TableRow,
+    TableCell,
+    Button,
+    Grid,
+    Typography,
+} from '@material-ui/core';
+import Chip from '@mui/material/Chip';
+
 
 //Material UI Icons
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
 //Material Table
-import MaterialTable, { MTableToolbar } from 'material-table';
+import MaterialTable from 'material-table';
 
 //SCSS styles
 import style from './CreateGINForm.module.scss';
@@ -25,6 +29,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import GINStepOne from './GINStepOne';
 
 const useStyles = makeStyles({
+    tablehead: {
+        position: 'sticky',
+        top: 0,
+        zIndex: 9999
+    },
     row1: {
         "& .MuiTableCell-head": {
             color: "white",
@@ -49,7 +58,7 @@ export default function GINForm(props) {
 
     const classes = useStyles();
 
-    const { GINRecords, handleClosePopUp, updateGIN, orderRecords, inChargeOptions } = props;
+    const { GINRecords, handleClosePopUp, addOrEdit, orderRecords, inChargeOptions } = props;
 
     const { handleSubmit } = useForm({ mode: "all" });
 
@@ -57,6 +66,7 @@ export default function GINForm(props) {
     const [formStep, setFormStep] = useState(0);
     const [confirmation, setConfirmation] = useState(false);
     const [orderFormData, setOrderFormData] = useState({});
+    const [orderNumbers, setOrderNumbers] = useState([]);
 
     const completeFormStep = () => {
         setFormStep(x => x + 1);
@@ -71,13 +81,18 @@ export default function GINForm(props) {
 
             const ginFormData = new formData();
 
+            ginFormData.append('ginnumber', orderFormData.ginnumber);
             ginFormData.append('createdat', orderFormData.createdat);
             ginFormData.append('createdby', orderFormData.createdby);
-            ginFormData.append('status', orderFormData.status);
+            ginFormData.append('route', orderFormData.route);
+            ginFormData.append('vehicle', orderFormData.vehicle);
+            ginFormData.append('incharge', orderFormData.incharge);
+            ginFormData.append('ordernumbers', JSON.stringify(orderNumbers));
             ginFormData.append('items', JSON.stringify(data));
-            ginFormData.append('gintotal', orderFormData.gintotal);
+            ginFormData.append('total', orderFormData.total);
+            ginFormData.append('status', 'Processing');
 
-            updateGIN(ginFormData, orderFormData.ginnumber);
+            addOrEdit(ginFormData, orderFormData.ginnumber);
         }
     };
 
@@ -101,6 +116,8 @@ export default function GINForm(props) {
                         GINRecords={GINRecords}
                         inChargeOptions={inChargeOptions}
                         orderRecords={orderRecords}
+                        orderNumbers={orderNumbers}
+                        setOrderNumbers={setOrderNumbers}
                     />
 
                 </section>
@@ -136,15 +153,7 @@ export default function GINForm(props) {
                             <table className={style.details}>
                                 <tbody>
                                     <tr>
-                                        <th align="left">Order No.</th>
-                                        <td align="left">
-                                            <Typography className={style.input && style.blue}>
-                                                {orderFormData.orderno}
-                                            </Typography>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th align="left">GIN No.</th>
+                                        <th align="left">GIN Number</th>
                                         <td align="left">
                                             <Typography className={style.input && style.blue}>
                                                 {orderFormData.ginnumber}
@@ -154,16 +163,32 @@ export default function GINForm(props) {
                                     <tr>
                                         <th align="left">GIN Created at</th>
                                         <td align="left">
-                                            <Typography className={style.input}>
+                                            <Typography className={style.input && style.blue}>
                                                 {orderFormData.createdat}
                                             </Typography>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th align="left">GIN Created by</th>
+                                        <th align="left">Route</th>
                                         <td align="left">
                                             <Typography className={style.input}>
-                                                {orderFormData.createdby}
+                                                {orderFormData.route}
+                                            </Typography>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th align="left">In Charge</th>
+                                        <td align="left">
+                                            <Typography className={style.input}>
+                                                {orderFormData.incharge}
+                                            </Typography>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th align="left">Vehicle</th>
+                                        <td align="left">
+                                            <Typography className={style.input}>
+                                                {orderFormData.vehicle}
                                             </Typography>
                                         </td>
                                     </tr>
@@ -173,35 +198,15 @@ export default function GINForm(props) {
                             <table className={style.details}>
                                 <tbody>
                                     <tr>
-                                        <th align="left">Distributor</th>
-                                        <td align="left">
-                                            <Typography className={style.input}>
-                                                {orderFormData.distributor}
-                                            </Typography>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th align="left">Address</th>
-                                        <td align="left">
-                                            <Typography className={style.input}>
-                                                {orderFormData.distributoraddress}
-                                            </Typography>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th align="left">Contact No.</th>
-                                        <td align="left">
-                                            <Typography className={style.input}>
-                                                {orderFormData.distributorcontactnumber}
-                                            </Typography>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th align="left">Customer</th>
-                                        <td align="left">
-                                            <Typography className={style.input}>
-                                                {orderFormData.customer}
-                                            </Typography>
+                                        <th rowSpan={5} className={style.thAlign}>Order Numbers</th>
+                                        <td rowSpan={5} className={style.tdAlign}>
+                                            <div>
+                                                {
+                                                    orderNumbers.map(x =>
+                                                        <Chip className={style.chip} label={x} key={x} />
+                                                    )
+                                                }
+                                            </div>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -212,223 +217,108 @@ export default function GINForm(props) {
                         <MaterialTable
                             components={{
                                 Container: props => <Paper {...props} elevation={1} />,
-                                Toolbar: (props) => (
-                                    <div
-                                        style={{
-                                            height: "0px",
-                                        }}
-                                    >
-                                        <MTableToolbar {...props} />
-                                    </div>
-                                ),
                                 Pagination: () => (
                                     <td style={{
                                         display: "flex",
-                                        flexDirection: "column"
+                                        flexDirection: "column",
                                     }} >
-                                        <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
-                                            <Grid item align="Left">
-                                                <Typography style={{ fontWeight: 600 }}> Order Total (Rs.) </Typography>
-                                            </Grid>
-                                            <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
-                                                <Typography style={{ fontWeight: 600 }}> {GINRecords.total} </Typography>
-                                            </Grid>
-                                        </Grid>
                                         <Grid container style={{ background: "#f5f5f5", padding: 7, color: 'red' }}>
-                                            <Grid item align="Left">
-                                                <Typography style={{ fontWeight: 600 }}> GIN Total (Rs.) </Typography>
+                                            <Grid item align="Right" style={{ margin: "0px 220px 0px auto" }}>
+                                                <Typography style={{ fontWeight: 600 }}> Total (Rs.) </Typography>
                                             </Grid>
-                                            <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
-                                                <Typography style={{ fontWeight: 600 }}> {orderFormData.gintotal} </Typography>
+                                            <Grid item align="Right" style={{ margin: "0px 20px 0px 0px" }}>
+                                                <Typography style={{ fontWeight: 600 }}> {orderFormData.total} </Typography>
                                             </Grid>
                                         </Grid>
                                     </td>
                                 ),
                                 Header: props => (
-                                    <TableHead {...props} style={{ position: 'sticky', top: '0', zIndex: 99999 }}>
+                                    <TableHead {...props} className={classes.tablehead} >
                                         <TableRow className={classes.row1}>
-                                            <TableCell width="30%" padding="none" rowSpan={2}>
+                                            <TableCell padding="none" rowSpan={2}>
                                                 <div style={{ padding: '0 10px' }}>
                                                     Description
                                                 </div>
                                             </TableCell>
-                                            <TableCell width="5%" padding="none" rowSpan={2}>
+                                            <TableCell width="150px" padding="none" rowSpan={2} align="center">
+                                                <div style={{ padding: '0 10px' }}>
+                                                    Price (Rs.)
+                                                </div>
+                                            </TableCell>
+                                            <TableCell width="100px" padding="none" rowSpan={2} align="center">
                                                 <div style={{ padding: '0 10px' }}>
                                                     Pieces per Case
                                                 </div>
                                             </TableCell>
-                                            <TableCell width="5%" padding="none" rowSpan={2} align="center">
+                                            <TableCell padding="none" colSpan={2} align="center">
+                                                Total
+                                            </TableCell>
+                                            <TableCell padding="none" width="250px" rowSpan={2} align="center">
                                                 <div style={{ padding: '0 10px' }}>
-                                                    Price
-                                                </div>
-                                            </TableCell>
-                                            <TableCell padding="none" colSpan={2} align="center">
-                                                Sales Qty.
-                                            </TableCell>
-                                            <TableCell padding="none" colSpan={2} align="center">
-                                                Delivering Sales Qty.
-                                            </TableCell>
-                                            <TableCell padding="none" colSpan={2} align="center">
-                                                Free Qty.
-                                            </TableCell>
-                                            <TableCell padding="none" colSpan={2} align="center">
-                                                Delivering Free Qty.
-                                            </TableCell>
-                                            <TableCell padding="none" width="8%" rowSpan={2} align="center">
-                                                <div style={{ padding: '0 10px' }}>
-                                                    GIN Gross Amount
-                                                </div>
-                                            </TableCell>
-                                            <TableCell padding="none" width="8%" rowSpan={2} align="center">
-                                                <div style={{ padding: '0 10px' }}>
-                                                    Ord. Gross Amount
+                                                    Gross Amount (Rs.)
                                                 </div>
                                             </TableCell>
                                         </TableRow>
                                         <TableRow className={classes.row2}>
-                                            <TableCell width="5%" padding="none" align="center">Cs</TableCell>
-                                            <TableCell width="5%" padding="none" align="center">Pcs</TableCell>
-                                            <TableCell width="5%" padding="none" align="center">Cs</TableCell>
-                                            <TableCell width="5%" padding="none" align="center">Pcs</TableCell>
-                                            <TableCell width="5%" padding="none" align="center">Cs</TableCell>
-                                            <TableCell width="5%" padding="none" align="center">Pcs</TableCell>
-                                            <TableCell width="5%" padding="none" align="center">Cs</TableCell>
-                                            <TableCell width="5%" padding="none" align="center">Pcs</TableCell>
+                                            <TableCell width="150px" padding="none" align="center">Cases</TableCell>
+                                            <TableCell width="150px" padding="none" align="center">Pieces</TableCell>
                                         </TableRow>
                                     </TableHead>
                                 ),
                             }}
                             columns={[
                                 {
+                                    title: 'Description',
                                     field: "description",
                                     cellStyle: {
-                                        padding: "10px 7px 10px 7px",
-                                        width: '30%',
                                         textAlign: 'left'
                                     }
                                 },
                                 {
-                                    field: "piecespercase",
-                                    editable: 'never',
+                                    title: 'Price (Rs.)',
+                                    field: 'price',
                                     cellStyle: {
-                                        padding: "10px 7px 10px 7px",
-                                        width: '5%',
                                         textAlign: 'left'
                                     }
                                 },
                                 {
-                                    field: "price",
-                                    type: 'numeric',
+                                    title: 'Pieces per Case',
+                                    field: 'piecespercase',
                                     cellStyle: {
-                                        padding: "10px 7px 10px 7px",
-                                        width: '5%',
+                                        textAlign: 'left'
+                                    }
+                                },
+                                {
+                                    title: 'Cases',
+                                    field: 'cases',
+                                    width: "10%",
+                                    cellStyle: {
                                         textAlign: 'right'
                                     }
                                 },
                                 {
-                                    field: "salesqtycases",
-                                    type: 'numeric',
+                                    title: 'Pieces',
+                                    field: 'pieces',
                                     cellStyle: {
-                                        padding: "10px 7px 10px 7px",
-                                        width: '5%',
                                         textAlign: 'right'
                                     }
                                 },
                                 {
-                                    field: "salesqtypieces",
-                                    type: 'numeric',
+                                    title: 'Gross Amount (Rs.)',
+                                    field: 'grossamount',
                                     cellStyle: {
-                                        width: '5%',
-                                        padding: "10px 7px 10px 7px",
-                                        textAlign: 'right'
-                                    }
-                                },
-                                {
-                                    field: "deliveringsalesqtycases",
-                                    type: 'numeric',
-                                    cellStyle: {
-                                        padding: "10px 7px 10px 7px",
-                                        width: '5%',
-                                        textAlign: 'right'
-                                    }
-                                },
-                                {
-                                    field: "deliveringsalesqtypieces",
-                                    type: 'numeric',
-                                    cellStyle: {
-                                        padding: "10px 7px 10px 7px",
-                                        width: '5%',
-                                        textAlign: 'right'
-                                    }
-                                },
-                                {
-                                    title: "Free Cs",
-                                    field: "freeqtycases",
-                                    type: 'numeric',
-                                    cellStyle: {
-                                        width: '5%',
-                                        padding: "10px 7px 10px 7px",
-                                        textAlign: 'right'
-                                    }
-                                },
-                                {
-                                    title: "Free Pcs",
-                                    field: "freeqtypieces",
-                                    type: 'numeric',
-                                    cellStyle: {
-                                        width: '5%',
-                                        padding: "10px 7px 10px 7px",
-                                        textAlign: 'right'
-                                    }
-                                },
-                                {
-                                    field: "deliveringfreeqtycases",
-                                    type: 'numeric',
-                                    cellStyle: {
-                                        padding: "10px 7px 10px 7px",
-                                        width: '5%',
-                                        textAlign: 'right'
-                                    }
-                                },
-                                {
-                                    field: "deliveringfreeqtypieces",
-                                    type: 'numeric',
-                                    cellStyle: {
-                                        padding: "10px 7px 10px 7px",
-                                        width: '5%',
-                                        textAlign: 'right'
-                                    }
-                                },
-                                {
-                                    title: "GIN Gross Amount (Rs.)",
-                                    field: "gingrossamount",
-                                    type: 'numeric',
-                                    cellStyle: {
-                                        width: '8%',
-                                        padding: "10px 7px 10px 7px",
-                                        textAlign: 'right'
-                                    }
-                                },
-                                {
-                                    title: "Ord. Gross Amount (Rs.)",
-                                    field: "grossamount",
-                                    type: 'numeric',
-                                    cellStyle: {
-                                        width: '8%',
-                                        padding: "10px 7px 10px 7px",
                                         textAlign: 'right'
                                     }
                                 }
                             ]}
                             data={data}
                             options={{
-                                addRowPosition: "first",
-                                toolbar: true,
+                                toolbar: false,
                                 filtering: true,
                                 search: false,
                                 pageSize: 999,
-                                maxBodyHeight: "calc(100vh - 420px)",
-                                minBodyHeight: "calc(100vh - 420px)",
+                                maxBodyHeight: "calc(100vh - 425px)",
+                                minBodyHeight: "calc(100vh - 425px)",
                                 actionsColumnIndex: -1,
                                 headerStyle: {
                                     position: "sticky",

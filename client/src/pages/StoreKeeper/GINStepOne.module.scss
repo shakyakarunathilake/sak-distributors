@@ -1,10 +1,11 @@
 @import "../../styles/variables";
 
 .container {
+    display: grid;
+    grid-template-rows: min-content auto min-content;
     width: calc(100vw - 50px);
     height: calc(100vh - 20px);
     box-sizing: border-box;
-    grid-template-columns: min-content auto min-content;
 
     .header {
         .title {
@@ -28,10 +29,13 @@
     }
 
     .body {
+        display: grid;
+        grid-template-rows: min-content auto;
+
         .orderDetails {
             display: grid;
             grid-template-columns: 40% 60%;
-            padding: 25px 20px;
+            padding: 20px;
 
             .details {
                 table-layout: auto !important;
@@ -70,9 +74,6 @@
                             width: min-content;
                             margin: 3px;
                             background-color: $secondaryLight;
-                            // border: 1px solid $primaryMain;
-                            // color: $primaryMain;
-                            // background-color: $inverseFontColor;
 
                             &:hover {
                                 background-color: $primaryMain;
@@ -93,11 +94,13 @@
                 }
             }
         }
+
+    
     }
 
     .footer {
         text-align: right;
-        padding: 30px 0px 18px 0px;
+        padding: 30px 0px 10px 0px;
 
         Button {
             font-size: 1em;

@@ -12,6 +12,7 @@ import Button from '@material-ui/core/Button';
 //Material UI Icons
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 
 //Material Table
 import MaterialTable from 'material-table';
@@ -59,7 +60,8 @@ export default function ManageGIN() {
 
 
     const handleClosePopUp = () => {
-        setOpenPopup(false)
+        setGINRecords(null);
+        setOpenPopup(false);
         setAction('');
     }
 
@@ -117,18 +119,36 @@ export default function ManageGIN() {
             console.log(key, value);
         }
 
-        axios
-            .post(`http://localhost:8080/gin/update-by-ginnumber/${ginnumber}`, gin)
-            .then(res => {
-                setAlert(res.data.alert);
-                setType(res.data.type);
-                handleAlert();
-                setReRender(ginnumber);
-            })
-            .catch(err => {
-                console.log(err);
-            })
+        if (action === "Create") {
+            axios
+                .post(`http://localhost:8080/gin/create-gin`, gin)
+                .then(res => {
+                    setAlert(res.data.alert);
+                    setType(res.data.type);
+                    handleAlert();
+                    setReRender(ginnumber);
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        }
 
+        if (action === "Edit") {
+            axios
+                .post(`http://localhost:8080/gin/update-by-ginnumber/${ginnumber}`, gin)
+                .then(res => {
+                    setAlert(res.data.alert);
+                    setType(res.data.type);
+                    handleAlert();
+                    setReRender(ginnumber);
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        }
+
+        setAction('');
+        setGINRecords(null);
         handleClosePopUp();
     }
 
@@ -161,28 +181,24 @@ export default function ManageGIN() {
                     <MaterialTable
                         columns={[
                             {
-                                title: "Order Number", field: "orderno", render: rowData => {
-                                    return (
-                                        <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.orderno}</p>
-                                    )
-                                }
-                            },
-                            {
                                 title: "GIN", field: "ginnumber", render: rowData => {
                                     return (
                                         <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.ginnumber}</p>
                                     )
                                 }
                             },
-                            { title: "Customer", field: "customer" },
+                            { title: "Route", field: "route" },
+                            { title: "In Charge", field: "incharge" },
                             {
                                 title: "Status", field: "status", render: rowData => {
-
-
                                     return (
                                         rowData.status === 'Pending' ?
                                             <p style={{ padding: "0", margin: "0", color: 'red', fontWeight: "700" }}>{rowData.status}</p>
-                                            : <p style={{ padding: "0", margin: "0", color: "#4caf50", fontWeight: "700" }}>{rowData.status}</p>
+                                            : rowData.status === 'Processing' ?
+                                                <p style={{ padding: "0", margin: "0", color: "#2196F3", fontWeight: "700" }}>{rowData.status}</p>
+                                                : rowData.status === 'Shipping' ?
+                                                    <p style={{ padding: "0", margin: "0", color: "#FF8400", fontWeight: "700" }}>{rowData.status}</p>
+                                                    : <p style={{ padding: "0", margin: "0", color: "#4caf50", fontWeight: "700" }}>{rowData.status}</p>
                                     )
                                 }
                             },
@@ -217,14 +233,23 @@ export default function ManageGIN() {
                                 }
                             },
                             (rowData) => ({
-                                disabled: rowData.status === 'Complete',
+                                disabled: rowData.status === 'Delivering' && rowData.status === 'Complete',
                                 icon: 'edit',
                                 tooltip: 'Edit',
                                 onClick: (event, rowData) => {
                                     setAction('Edit');
                                     openInPopup(rowData.ginnumber);
                                 }
-                            })
+                            }),
+                            (rowData) => ({
+                                disabled: rowData.status !== 'Processing',
+                                icon: LocalShippingIcon,
+                                tooltip: 'Delivery Confirmation',
+                                onClick: (event, rowData) => {
+                                    setAction('Delivery');
+                                    openInPopup(rowData.ginnumber);
+                                }
+                            }),
                         ]}
                     />
 

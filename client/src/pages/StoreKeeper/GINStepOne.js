@@ -38,7 +38,14 @@ const theme = createTheme({
     overrides: {
         MuiInputBase: {
             root: {
-                fontSize: '0.9em'
+                fontSize: '0.9em',
+                fontFamily: 'Roboto, Poppins, sans-serif',
+            }
+        },
+        MuiFormHelperText: {
+            root: {
+                fontSize: '0.64em',
+                fontFamily: 'Roboto, Poppins, sans-serif',
             }
         },
         MuiOutlinedInput: {
@@ -58,6 +65,11 @@ const theme = createTheme({
 });
 
 const useStyles = makeStyles({
+    tablehead: {
+        position: 'sticky',
+        top: 0,
+        zIndex: 9999
+    },
     row1: {
         "& .MuiTableCell-head": {
             color: "white",
@@ -90,12 +102,11 @@ export default function StepOne(props) {
         handleClosePopUp,
         completeFormStep,
         orderRecords,
+        GINRecords,
         inChargeOptions,
+        orderNumbers,
+        setOrderNumbers
     } = props;
-
-    const { formState: { errors }, control, watch, getValues, setValue } = useForm();
-
-    const [orderNumbers, setOrderNumbers] = useState([]);
 
     const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
     const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
@@ -107,15 +118,39 @@ export default function StepOne(props) {
     const dateTime = date + ' ' + time;
     const ginTime = today.getFullYear() + '' + (today.getMonth() + 1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
 
-    useEffect(() => {
-        setValue("ginnumber", `GIN${ginTime}`);
-        setValue("createdat", dateTime);
-        setValue("createdby", `${firstname} ${lastname} (${employeeid})`);
-    }, [setValue])
+    const { formState: { isValid, errors }, control, watch, getValues, clearErrors, trigger, setValue } = useForm({
+        mode: "onChange",
+        defaultValues: {
+            ginnumber: GINRecords ? GINRecords.ginnumber : `GIN${ginTime}`,
+            createdat: GINRecords ? GINRecords.createdat : dateTime,
+            createdby: GINRecords ? GINRecords.createdby : `${firstname} ${lastname} (${employeeid})`,
+            route: GINRecords ? GINRecords.route : '',
+            incharge: GINRecords ? GINRecords.incharge : '',
+            vehicle: GINRecords ? GINRecords.vehicle : '',
+            total: GINRecords ? GINRecords.total : ''
+        }
+    });
 
     useEffect(() => {
-        getOrderNumbers();
-    }, [watch('route')]);
+        if (GINRecords !== null) {
+            setData([...GINRecords.items]);
+            setOrderNumbers([...GINRecords.ordernumbers]);
+            setValue('incharge', GINRecords.incharge);
+        }
+    }, [setData, GINRecords, setValue])
+
+    useEffect(() => {
+        if (GINRecords === null) {
+            getOrderNumbers();
+        }
+    }, [watch('route'), GINRecords]);
+
+    const handleInChargeChange = (event, option) => {
+        if (option) {
+            setValue("incharge", option.title);
+            clearErrors();
+        }
+    }
 
     const handleChipClick = () => { }
 
@@ -133,6 +168,7 @@ export default function StepOne(props) {
                 itemList.push({
                     'description': item.description,
                     'price': item.price,
+                    'piecespercase': item.piecespercase,
                     'cases': parseInt(item.salesqtycases) + parseInt(item.freeqtycases),
                     'pieces': parseInt(item.salesqtypieces) + parseInt(item.freeqtypieces),
                     'grossamount': item.grossamount
@@ -154,29 +190,51 @@ export default function StepOne(props) {
             return a;
         }, []);
 
-        const organizedRelevantOrderItems = relevantOrderItems.forEach(item => {
+        let pieces = 0;
+        let cases = 0;
 
-        })
+        const getPieces = (noofpieces, piecespercase) => {
+            pieces = noofpieces % piecespercase;
+            return pieces;
+        }
 
-        setData(relevantOrderItems);
+        const getCases = (noofpieces, piecespercase) => {
+            cases = Math.floor(noofpieces / piecespercase);
+            return cases;
+        }
+
+        const organizedRelevantOrderItems = relevantOrderItems.map(item => (
+            item.pieces > item.piecespercase
+                ? { ...item, pieces: getPieces(item.pieces, item.piecespercase), cases: getCases(item.pieces, item.piecespercase) + parseInt(item.cases) }
+                : item
+        ))
+
+        setData(organizedRelevantOrderItems);
 
     }
 
-    const getGINTotal = () => {
+    const getTotal = () => {
         let total = 0;
 
         for (let i = 0; i < data.length; i++) {
             total = total + (isNaN(data[i].grossamount) ? 0 : data[i].grossamount);
         }
 
-        setValue("gintotal", total);
+        setValue("total", total);
         return total;
     }
 
     const onSubmit = () => {
-        setOrderFormData(getValues());
-        setConfirmation(true);
-        completeFormStep();
+        trigger();
+
+        console.log("IS VALID: ", isValid);
+        console.log("VALUES: ", getValues());
+
+        if (isValid) {
+            setOrderFormData(getValues());
+            setConfirmation(true);
+            completeFormStep();
+        }
     }
 
     return (
@@ -270,7 +328,8 @@ export default function StepOne(props) {
                                                 <Autocomplete
                                                     options={inChargeOptions || []}
                                                     getOptionLabel={(option) => option.title}
-                                                    onChange={onChange}
+                                                    onChange={handleInChargeChange}
+                                                    inputValue={value}
                                                     size="small"
                                                     renderInput={(params) => (
                                                         <MuiTextField
@@ -337,20 +396,21 @@ export default function StepOne(props) {
                         Pagination: props => (
                             <td style={{
                                 display: "flex",
-                                flexDirection: "column"
+                                flexDirection: "column",
                             }} >
                                 <Grid container style={{ background: "#f5f5f5", padding: 7, color: 'red' }}>
                                     <Grid item align="Right" style={{ margin: "0px 220px 0px auto" }}>
-                                        <Typography style={{ fontWeight: 600 }}> GIN Total (Rs.) </Typography>
+                                        <Typography style={{ fontWeight: 600 }}> Total (Rs.) </Typography>
                                     </Grid>
                                     <Grid item align="Right" style={{ margin: "0px 20px 0px 0px" }}>
-                                        <Typography style={{ fontWeight: 600 }}> {getGINTotal()} </Typography>
+                                        <Typography style={{ fontWeight: 600 }}> {getTotal()} </Typography>
                                     </Grid>
                                 </Grid>
+                                <TablePagination {...props} />
                             </td>
                         ),
                         Header: props => (
-                            <TableHead {...props} >
+                            <TableHead {...props} className={classes.tablehead} >
                                 <TableRow className={classes.row1}>
                                     <TableCell padding="none" rowSpan={2}>
                                         <div style={{ padding: '0 10px' }}>
@@ -360,6 +420,11 @@ export default function StepOne(props) {
                                     <TableCell width="150px" padding="none" rowSpan={2} align="center">
                                         <div style={{ padding: '0 10px' }}>
                                             Price (Rs.)
+                                        </div>
+                                    </TableCell>
+                                    <TableCell width="100px" padding="none" rowSpan={2} align="center">
+                                        <div style={{ padding: '0 10px' }}>
+                                            Pieces per Case
                                         </div>
                                     </TableCell>
                                     <TableCell padding="none" colSpan={2} align="center">
@@ -383,7 +448,6 @@ export default function StepOne(props) {
                             title: 'Description',
                             field: "description",
                             cellStyle: {
-                                cellWidth: '55%',
                                 textAlign: 'left'
                             }
                         },
@@ -391,7 +455,13 @@ export default function StepOne(props) {
                             title: 'Price (Rs.)',
                             field: 'price',
                             cellStyle: {
-                                cellWidth: '10%',
+                                textAlign: 'left'
+                            }
+                        },
+                        {
+                            title: 'Pieces per Case',
+                            field: 'piecespercase',
+                            cellStyle: {
                                 textAlign: 'left'
                             }
                         },
@@ -400,7 +470,6 @@ export default function StepOne(props) {
                             field: 'cases',
                             width: "10%",
                             cellStyle: {
-                                cellWidth: '10%',
                                 textAlign: 'right'
                             }
                         },
@@ -408,7 +477,6 @@ export default function StepOne(props) {
                             title: 'Pieces',
                             field: 'pieces',
                             cellStyle: {
-                                cellWidth: '10%',
                                 textAlign: 'right'
                             }
                         },
@@ -416,7 +484,6 @@ export default function StepOne(props) {
                             title: 'Gross Amount (Rs.)',
                             field: 'grossamount',
                             cellStyle: {
-                                cellWidth: '15%',
                                 textAlign: 'right'
                             }
                         }
@@ -427,9 +494,8 @@ export default function StepOne(props) {
                         toolbar: false,
                         filtering: true,
                         search: false,
-                        pageSize: 999,
-                        maxBodyHeight: "calc(100vh - 460px)",
-                        minBodyHeight: "calc(100vh - 460px)",
+                        minBodyHeight: "calc(100vh - 495px)",
+                        maxBodyHeight: "calc(100vh - 495px)",
                         headerStyle: {
                             position: "sticky",
                             top: "0",
