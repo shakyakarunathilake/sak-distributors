@@ -11,8 +11,8 @@
 .two {
     display: grid;
     grid-template-rows: min-content auto min-content;
-    height: inherit;
-    // box-sizing: border-box;
+    height: calc(100vh - 20px);
+    box-sizing: border-box;
 
     Button {
         width: max-content;
@@ -43,6 +43,9 @@
     }
 
     .body {
+        display: grid;
+        grid-template-rows: min-content min-content;
+
         .orderDetails {
             display: grid;
             grid-template-columns: 40% 60%;

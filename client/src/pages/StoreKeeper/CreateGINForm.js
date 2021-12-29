@@ -11,6 +11,7 @@ import {
     Button,
     Grid,
     Typography,
+    TablePagination,
 } from '@material-ui/core';
 import Chip from '@mui/material/Chip';
 
@@ -217,7 +218,7 @@ export default function GINForm(props) {
                         <MaterialTable
                             components={{
                                 Container: props => <Paper {...props} elevation={1} />,
-                                Pagination: () => (
+                                Pagination: props => (
                                     <td style={{
                                         display: "flex",
                                         flexDirection: "column",
@@ -230,6 +231,7 @@ export default function GINForm(props) {
                                                 <Typography style={{ fontWeight: 600 }}> {orderFormData.total} </Typography>
                                             </Grid>
                                         </Grid>
+                                        <TablePagination {...props} />
                                     </td>
                                 ),
                                 Header: props => (
@@ -316,10 +318,9 @@ export default function GINForm(props) {
                                 toolbar: false,
                                 filtering: true,
                                 search: false,
-                                pageSize: 999,
-                                maxBodyHeight: "calc(100vh - 425px)",
-                                minBodyHeight: "calc(100vh - 425px)",
-                                actionsColumnIndex: -1,
+                                paging: true,
+                                pageSize: 7,
+                                pageSizeOptions: [7],
                                 headerStyle: {
                                     position: "sticky",
                                     top: "0",
