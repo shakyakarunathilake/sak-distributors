@@ -29,7 +29,6 @@ export default function StepOne(props) {
         customerType,
         setCustomerType,
         handleClosePopUp,
-        isDirty,
         isValid,
         errors,
         control,

@@ -237,8 +237,8 @@ export default function StepFour(props) {
                             },
                         },
                         {
-                            title: "Return",
-                            field: "return",
+                            title: "Returns",
+                            field: "returns",
                             cellStyle: {
                                 width: '6%',
                                 padding: "12px 5px 12px 7px",

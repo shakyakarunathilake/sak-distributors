@@ -269,7 +269,7 @@ router.get("/employee-options-for-gin", (req, res, next) => {
             );
 
             const employeeOptions = candidates.map(x => ({
-                title: `${x.employeeid} : ${x.firstname} ${x.lastname}`,
+                title: `${x.firstname} ${x.lastname} (${x.employeeid})`,
                 id: x.employeeid
             }))
 

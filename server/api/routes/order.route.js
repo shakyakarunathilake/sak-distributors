@@ -5,7 +5,6 @@ const multer = require("multer");
 
 const Order = require("../models/order.model");
 const MetaData = require("../models/metadata.model");
-const GIN = require("../models/gin.model");
 
 const formDataBody = multer();
 
@@ -15,58 +14,6 @@ router.get("/", (req, res, next) => {
         message: "Handeling GET requests to /orders"
     });
 });
-
-//Get all table sales and invoice data
-router.get("/get-all-sales-and-invoice-table-data", (req, res, next) => {
-
-    Order
-        .find()
-        .exec()
-        .then(doc => {
-
-            const tbody = doc.map(x => ({
-                "orderno": x.orderno,
-                "storename": x.storename,
-                "status": x.status,
-            }))
-
-            res.status(201).json({
-                message: "Handeling GET requests to /get-all-sales-and-invoice-table-data",
-                tbody: tbody,
-            });
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({ "Error": err });
-        })
-})
-
-//Get Order Records 
-router.get("/get-order-records", (req, res, next) => {
-
-    Order
-        .find()
-        .exec()
-        .then(doc => {
-
-            const orderRecords = doc.map(x => ({
-                "orderno": x.orderno,
-                "items": x.items,
-                "route": x.route
-            }))
-
-            res.status(200).json({
-                message: "Handeling GET requests to /get-order-records",
-                orderRecords: orderRecords
-            })
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                "Error": err
-            });
-        })
-})
 
 //Get next invoice number
 router.get("/get-next-orderno", (req, res, next) => {
@@ -111,46 +58,10 @@ router.get("/get-next-orderno", (req, res, next) => {
 
 });
 
-//Get order details by order number
-router.get("/:orderno", (req, res, next) => {
-
-    Order
-        .findOne({ orderno: req.params.orderno })
-        .exec()
-        .then(doc => {
-
-            const order = {
-                'orderno': doc.orderno,
-                'contactnumber': doc.contactnumber,
-                'customerid': doc.customerid,
-                'deliverydate': doc.deliverydate,
-                'orderno': doc.orderno,
-                'orderplacedat': doc.orderplacedat,
-                'route': doc.route,
-                'ordercreatedby': doc.ordercreatedby,
-                'shippingaddress': doc.shippingaddress,
-                'storename': doc.storename,
-                'items': doc.items,
-                'total': doc.total,
-                'status': doc.status,
-            }
-
-            res.status(200).json({
-                message: "Handeling GET requests to  orders/:orderno",
-                order: order,
-            })
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({ "Error": err });
-        })
-
-})
-
 //Create a order
 router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
 
-    console.log("ORDER BODY: ", req.body);
+    console.log("PURCHASE ORDER Body: ", req.body);
     const items = JSON.parse(req.body.items);
 
     const order = new Order({
@@ -172,8 +83,9 @@ router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
 
     order
         .save()
-        .exec()
         .then(result => {
+
+            console.log("ORDER ADDED: ", result)
 
             MetaData
                 .findOneAndUpdate(
@@ -182,24 +94,24 @@ router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
                         $push: {
                             'customerorders': {
                                 'orderno': result.orderno,
-                                'customerid': result.customerid,
-                                'storename': result.storename,
-                                'status': 'Pending',
-                                'ordercreatedby': result.ordercreatedby
+                                'route': result.route,
+                                'status': result.status
                             },
                         },
                     },
                     { upsert: true }
                 )
                 .exec()
-                .then(result => { console.log("META DATA ADDED: ", result) })
-                .catch(err => {
+                .then(result => {
+                    console.log("META DATA ADDED: ", result)
+                })
+                .catch(error => {
 
-                    console.log("META DATA ERROR: ", err);
+                    console.log("META DATA ERROR: ", error)
 
                     res.status(200).json({
                         type: 'error',
-                        alert: `Something went wrong. Could not add order`,
+                        alert: error,
                     });
                 })
 
@@ -207,15 +119,15 @@ router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
                 message: "Handeling POST requests to /orders/create-order, ORDER CREATED",
                 type: 'success',
                 alert: `${result.orderno} added`,
-            });
+            })
         })
-        .catch(err => {
+        .catch(error => {
 
-            console.log("CREATE ORDER ERROR: ", err);
+            console.log("ORDER ERROR: ", error)
 
             res.status(200).json({
                 type: 'error',
-                alert: `Something went wrong. Could not add order`,
+                alert: error,
             });
         })
 
@@ -252,6 +164,123 @@ router.post("/update-by-id/:orderno", formDataBody.fields([]), (req, res, next) 
             });
             console.log(err);
         });
+});
+
+//Get all table sales and invoice data
+router.get("/get-all-sales-and-invoice-table-data", (req, res, next) => {
+
+    Order
+        .find()
+        .exec()
+        .then(doc => {
+
+            const tbody = doc.map(x => ({
+                "orderno": x.orderno,
+                "storename": x.storename,
+                "status": x.status,
+            }))
+
+            res.status(201).json({
+                message: "Handeling GET requests to /get-all-sales-and-invoice-table-data",
+                tbody: tbody,
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        })
+});
+
+router.get("/get-all-sales-and-invoice-table-data/:employee", (req, res, next) => {
+
+    Order
+        .find({ ordercreatedby: req.params.employee })
+        .exec()
+        .then(doc => {
+
+            const tbody = doc.map(x => ({
+                "orderno": x.orderno,
+                "storename": x.storename,
+                "status": x.status,
+            }))
+
+            res.status(201).json({
+                message: "Handeling GET requests to /get-all-sales-and-invoice-table-data/:employee",
+                tbody: tbody,
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        })
+});
+
+//Get Order Records 
+router.get("/get-order-records", (req, res, next) => {
+
+    Order
+        .find()
+        .exec()
+        .then(doc => {
+
+            const candidates = doc.filter(x => x.status !== 'Pending');
+
+            const orderRecords = candidates.map(x => ({
+                "orderno": x.orderno,
+                "items": x.items,
+                "route": x.route
+            }))
+
+            res.status(200).json({
+                message: "Handeling GET requests to /get-order-records",
+                orderRecords: orderRecords
+            })
+        })
+        .catch(error => {
+
+            console.log(error);
+
+            res.status(500).json({
+                "Error": error
+            });
+        })
+});
+
+//Get order details by order number
+router.get("/:orderno", (req, res, next) => {
+
+    Order
+        .findOne({ orderno: req.params.orderno })
+        .exec()
+        .then(doc => {
+
+            const order = {
+                'orderno': doc.orderno,
+                'customertype': doc.customertype,
+                'contactnumber': doc.contactnumber,
+                'customerid': doc.customerid,
+                'deliverydate': doc.deliverydate,
+                'orderno': doc.orderno,
+                'orderplacedat': doc.orderplacedat,
+                'route': doc.route,
+                'ordercreatedby': doc.ordercreatedby,
+                'shippingaddress': doc.shippingaddress,
+                'storename': doc.storename,
+                'items': doc.items,
+                'total': doc.total,
+                'status': doc.status,
+            }
+
+            res.status(200).json({
+                message: "Handeling GET requests to  orders/:orderno",
+                order: order,
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        })
+
 });
 
 module.exports = router;

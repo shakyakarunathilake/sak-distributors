@@ -20,18 +20,20 @@ export default function ViewOrder(props) {
 
     useEffect(() => {
 
-        setValue("customertype", orderRecords.customerid !== null ? 'Registered Customer' : 'Unregistered Customer');
-        setValue("orderno", orderRecords.orderno);
-        setValue("orderplacedat", orderRecords.orderplacedat);
-        setValue("deliverydate", orderRecords.deliverydate);
-        setValue("ordercreatedby", orderRecords.ordercreatedby);
-        setValue("storename", orderRecords.storename);
-        setValue("customerid", orderRecords.customerid);
-        setValue("shippingaddress", orderRecords.shippingaddress);
-        setValue("contactnumber", orderRecords.contactnumber);
-        setValue("route", orderRecords.route);
-        setData(orderRecords.items);
-        setTotal(orderRecords.total);
+        if (orderRecords != null) {
+            setValue("customertype", orderRecords.customertype);
+            setValue("orderno", orderRecords.orderno);
+            setValue("orderplacedat", orderRecords.orderplacedat);
+            setValue("deliverydate", orderRecords.deliverydate);
+            setValue("ordercreatedby", orderRecords.ordercreatedby);
+            setValue("storename", orderRecords.storename);
+            setValue("customerid", orderRecords.customerid);
+            setValue("shippingaddress", orderRecords.shippingaddress);
+            setValue("contactnumber", orderRecords.contactnumber);
+            setValue("route", orderRecords.route);
+            setData(orderRecords.items);
+            setTotal(orderRecords.total);
+        }
 
     }, [setData, setTotal, setValue, orderRecords])
 

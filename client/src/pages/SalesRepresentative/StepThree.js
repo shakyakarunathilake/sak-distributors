@@ -230,7 +230,7 @@ export default function StepThree(props) {
                                                     <b> Selling Price: </b> {option.sellingprice}
                                                 </Grid>
                                                 <Grid item xs={12}>
-                                                    <b> Pcs/Cases: </b> {option.piecespercases}
+                                                    <b> Pcs/Cases: </b> {option.piecespercase}
                                                 </Grid>
                                             </Grid>
                                         </Box>

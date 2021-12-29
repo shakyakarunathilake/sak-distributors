@@ -47,6 +47,10 @@ export default function SalesAndInvoice() {
     const [nextOrderNo, setNextOrderNo] = useState();
     const [reRender, setReRender] = useState(null);
 
+    const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
+    const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
+    const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
+
     const handleAlert = () => {
         setOpen(true);
     };
@@ -60,7 +64,7 @@ export default function SalesAndInvoice() {
 
     useEffect(() => {
         axios
-            .get(`http://localhost:8080/orders/get-all-sales-and-invoice-table-data`)
+            .get(`http://localhost:8080/orders/get-all-sales-and-invoice-table-data/${firstname} ${lastname} (${employeeid})`)
             .then(res => {
                 sessionStorage.setItem("SalesAndInvoiceTableData", JSON.stringify(res.data));
                 setRecords(res.data.tbody);
@@ -121,11 +125,12 @@ export default function SalesAndInvoice() {
             .get(`http://localhost:8080/orders/${orderno}`)
             .then(res => {
                 setOrderRecords(res.data.order);
-                setOpenPopup(true);
             })
             .catch(err => {
                 console.log(err);
             })
+
+        setOpenPopup(true);
     }
 
     const getNextOrderNo = () => {
@@ -202,12 +207,13 @@ export default function SalesAndInvoice() {
                             {
                                 title: "Status", field: "status", render: rowData => {
                                     return (
-                                        rowData.status === "Complete" ?
-                                            <p style={{ padding: "0", margin: "0", color: "#4cbb17", fontWeight: "700" }}>{rowData.status}</p> :
-                                            rowData.status === "Pending" ?
-                                                <p style={{ padding: "0", margin: "0", color: "#E48F1B", fontWeight: "700" }}>{rowData.status}</p> :
-                                                <p style={{ padding: "0", margin: "0", color: "#2196f3", fontWeight: "700" }}>{rowData.status}</p>
-
+                                        rowData.status === 'Pending' ?
+                                            <p style={{ padding: "0", margin: "0", color: 'red', fontWeight: "700" }}>{rowData.status}</p>
+                                            : rowData.status === 'Processing' ?
+                                                <p style={{ padding: "0", margin: "0", color: "#2196F3", fontWeight: "700" }}>{rowData.status}</p>
+                                                : rowData.status === 'Shipping' ?
+                                                    <p style={{ padding: "0", margin: "0", color: "#FF8400", fontWeight: "700" }}>{rowData.status}</p>
+                                                    : <p style={{ padding: "0", margin: "0", color: "#4caf50", fontWeight: "700" }}>{rowData.status}</p>
                                     )
                                 }
                             },
@@ -242,15 +248,16 @@ export default function SalesAndInvoice() {
                                     openInPopup(rowData.orderno);
                                 }
                             },
-                            {
+                            rowData => ({
                                 icon: 'edit',
                                 tooltip: 'Edit',
                                 onClick: (event, rowData) => {
                                     setAction('Edit');
                                     getOptions();
                                     openInPopup(rowData.orderno);
-                                }
-                            }
+                                },
+                                disabled: rowData.status !== 'Pending'
+                            })
                         ]}
                     />
                 </div>
@@ -277,12 +284,12 @@ export default function SalesAndInvoice() {
                     {
                         action === "Edit" &&
                         <EditOrder
+                            orderRecords={orderRecords}
                             handleClosePopUp={handleClosePopUp}
                             addOrEdit={addOrEdit}
                             productOptions={productOptions}
-                            customerOptions={customerOptions}
                             nextOrderNo={nextOrderNo}
-                            orderRecords={orderRecords}
+                            customerOptions={customerOptions}
                             action={action}
                         />
                     }
