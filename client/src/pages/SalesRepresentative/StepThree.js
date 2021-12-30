@@ -23,6 +23,11 @@ import style from './StepThree.module.scss';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
+    tablehead: {
+        position: 'sticky',
+        top: 0,
+        zIndex: 9999
+    },
     row1: {
         "& .MuiTableCell-head": {
             color: "white",
@@ -147,7 +152,7 @@ export default function StepThree(props) {
                             </td>
                         ),
                         Header: props => (
-                            <TableHead {...props} >
+                            <TableHead {...props} className={classes.tablehead}>
                                 <TableRow className={classes.row1}>
                                     <TableCell width="28%" padding="none" rowSpan={2}>
                                         <div style={{ padding: '0 10px' }}>
