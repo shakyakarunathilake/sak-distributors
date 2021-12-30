@@ -260,6 +260,7 @@ export default function StepFour(props) {
                         toolbar: false,
                         search: false,
                         filter: true,
+                        pageSize: 999,
                         maxBodyHeight: "calc(100vh - 240px)",
                         minBodyHeight: "calc(100vh - 240px)",
                         headerStyle: {

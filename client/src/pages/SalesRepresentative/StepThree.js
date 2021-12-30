@@ -527,6 +527,7 @@ export default function StepThree(props) {
                         maxBodyHeight: "calc(100vh - 280px)",
                         minBodyHeight: "calc(100vh - 280px)",
                         actionsColumnIndex: -1,
+                        pageSize: 999,
                         headerStyle: {
                             position: "sticky",
                             top: "0",
