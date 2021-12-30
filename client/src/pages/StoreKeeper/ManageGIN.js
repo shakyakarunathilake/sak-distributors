@@ -23,6 +23,7 @@ import style from './ManageGIN.module.scss';
 //Pop Up Forms
 import ViewGIN from './ViewGIN';
 import CreateGINForm from './CreateGINForm';
+import DeliveryForm from './DeliveryForm';
 
 //Connecting to Backend
 import axios from 'axios';
@@ -102,15 +103,20 @@ export default function ManageGIN() {
     }
 
     const openInPopup = ginnumber => {
-        axios
-            .get(`http://localhost:8080/gin/${ginnumber}`)
-            .then(res => {
-                setGINRecords(res.data.gin);
-                setOpenPopup(true);
-            })
-            .catch(err => {
-                console.log(err);
-            })
+        if (action === 'Delivery') {
+            setGINRecords({ 'ginnumber': ginnumber });
+            setOpenPopup(true);
+        } else {
+            axios
+                .get(`http://localhost:8080/gin/${ginnumber}`)
+                .then(res => {
+                    setGINRecords(res.data.gin);
+                    setOpenPopup(true);
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        }
     }
 
     const addOrEdit = (gin, ginnumber,) => {
@@ -133,7 +139,7 @@ export default function ManageGIN() {
                 })
         }
 
-        if (action === "Edit") {
+        if (action === "Edit" || action === "Delivery") {
             axios
                 .post(`http://localhost:8080/gin/update-by-ginnumber/${ginnumber}`, gin)
                 .then(res => {
@@ -260,6 +266,7 @@ export default function ManageGIN() {
                     // fullScreen={true}
                     setOpenPopup={setOpenPopup}
                 >
+
                     {
                         action === 'View' &&
                         <ViewGIN
@@ -276,6 +283,14 @@ export default function ManageGIN() {
                             addOrEdit={addOrEdit}
                             orderRecords={orderRecords}
                             inChargeOptions={inChargeOptions}
+                        />
+                    }
+                    {
+                        action === 'Delivery' &&
+                        <DeliveryForm
+                            GINRecords={GINRecords}
+                            handleClosePopUp={handleClosePopUp}
+                            addOrEdit={addOrEdit}
                         />
                     }
 
