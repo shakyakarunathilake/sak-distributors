@@ -79,7 +79,7 @@ export default function StepTwo(props) {
                 </div>
 
                 {
-                    getValues('customerid') !== null &&
+                    getValues('customerid') &&
                     <div className={style.row}>
                         <div className={style.boldText}>
                             Customer ID
