@@ -9,9 +9,9 @@ import { Button } from '@material-ui/core';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
 //SCSS Style
-import style from './DeliveryForm.module.scss';
+import style from './DispatchForm.module.scss';
 
-export default function DeliveryForm(props) {
+export default function DispatchForm(props) {
 
     const { handleClosePopUp, addOrEdit, GINRecords } = props;
 
@@ -22,7 +22,7 @@ export default function DeliveryForm(props) {
         const ginFormData = new formData();
 
         ginFormData.append('ginnumber', GINRecords.ginnumber);
-        ginFormData.append('status', 'Delivery');
+        ginFormData.append('status', 'Dispatched');
 
         addOrEdit(ginFormData, GINRecords.ginnumber);
 
@@ -36,7 +36,7 @@ export default function DeliveryForm(props) {
 
             <div className={style.header}>
                 <div>
-                    GIN ready to be delivered
+                    Confirm GIN Status
                 </div>
                 <div>
                     <HighlightOffIcon
@@ -47,6 +47,9 @@ export default function DeliveryForm(props) {
             </div>
 
             <div className={style.body}>
+                <span className={style.blue}>GIN Number: {GINRecords.ginnumber} </span> <br />
+                The above GIN has been dispatched. <br />
+                Once you approve dispatch changes cannot be undone.
             </div>
 
 
@@ -56,10 +59,10 @@ export default function DeliveryForm(props) {
                     variant="contained"
                     onClick={onSubmit}
                 >
-                    Approve
+                    Approve Dispatch
                 </Button>
             </div>
 
-        </form>
+        </form >
     )
 }
