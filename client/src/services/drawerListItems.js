@@ -234,6 +234,12 @@ const getDeliveryRepresentativeListItems = [
         path: "http://localhost:3000/delivery-representative/manage-gin",
         icon: <InsertDriveFileIcon />,
     },
+    {
+        id: "Sales and Invoice",
+        title: "Sales and Invoice",
+        path: "http://localhost:3000/delivery-representative/sales-and-invoice",
+        icon: <DescriptionIcon />,
+    },
 ];
 
 export function drawerListItems(designation) {
