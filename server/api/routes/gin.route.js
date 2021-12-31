@@ -42,6 +42,34 @@ router.get("/get-all-gin-table-data", (req, res, next) => {
 
 })
 
+router.get("/get-all-gin-table-data/:employee", (req, res, next) => {
+
+    GIN
+        .find({ incharge: req.params.employee })
+        .exec()
+        .then(doc => {
+
+            const candidates = doc.filter(x => x.status === "Dispatched")
+
+            const tbody = candidates.map(x => ({
+                ginnumber: x.ginnumber,
+                route: x.route,
+                incharge: x.incharge,
+                status: x.status
+            }))
+
+            res.status(201).json({
+                message: "Handeling GET requests to /get-all-gin-table-data",
+                tbody: tbody,
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        })
+
+})
+
 //Get gin data by ginnumber
 router.get("/:ginnumber", (req, res, next) => {
     const id = req.params.ginnumber;
@@ -130,91 +158,91 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
 })
 
 //Update GIN by GIN Number
-// router.post("/update-by-ginnumber/:ginnumber", formDataBody.fields([]), (req, res, next) => {
-//     console.log("UPDATE: ", req.body);
+router.post("/update-by-ginnumber/:ginnumber", formDataBody.fields([]), (req, res, next) => {
 
-//     const items = JSON.parse(req.body.items);
+    GIN
+        .findOneAndUpdate(
+            { "ginnumber": req.params.ginnumber },
+            {
+                '$set': {
+                    'vehicle': req.body.vehicle,
+                    'incharge': req.body.incharge,
+                }
+            },
+            { upsert: true }
+        )
+        .exec()
+        .then(doc => {
+            res.status(200).json({
+                message: "Handling POST requests to /gin/update-by-id/:ginnumber, GIN UPDATED",
+                type: 'success',
+                alert: `${doc.ginnumber} updated`,
+            });
+        })
+        .catch(err => {
+            res.status(200).json({
+                type: 'error',
+                alert: `Something went wrong. Could not update GIN`,
+            });
+            console.log(err);
+        });
+});
 
-//     GIN
-//         .findOneAndUpdate(
-//             { "ginnumber": req.params.ginnumber },
-//             {
-//                 '$set': {
-//                     'createdat': req.body.createdat,
-//                     'createdby': req.body.createdby,
-//                     'status': req.body.status,
-//                     'items': items,
-//                     'gintotal': req.body.gintotal,
-//                 }
-//             },
-//             { upsert: true }
-//         )
-//         .exec()
-//         .then(doc => {
+//Update GIN by GIN Number
+router.post("/approve-dispatch/:ginnumber", formDataBody.fields([]), (req, res, next) => {
 
-//             Order
-//                 .findOneAndUpdate(
-//                     { "orderno": doc.orderno },
-//                     {
-//                         '$set': {
-//                             'status': 'Completed',
-//                         }
-//                     },
-//                     { upsert: true }
-//                 )
-//                 .exec()
-//                 .then(doc => {
+    GIN
+        .findOneAndUpdate(
+            { "ginnumber": req.params.ginnumber },
+            {
+                '$set': {
+                    'status': req.body.status,
+                }
+            },
+            { upsert: true }
+        )
+        .exec()
+        .then(doc => {
 
-//                     console.log("ORDER ADDED: ", doc)
+            doc.ordernumbers.map(orderno => {
 
-//                     MetaData
-//                         .findOneAndUpdate(
-//                             {},
-//                             {
-//                                 $pull: {
-//                                     'customerorders': {
-//                                         'orderno': doc.orderno
-//                                     },
-//                                     'awaitinggindata': {
-//                                         'orderno': doc.orderno
-//                                     },
-//                                 }
-//                             },
-//                             { upsert: true }
-//                         )
-//                         .exec()
-//                         .then(result =>
-//                             console.log("META DATA ADDED: ", result)
-//                         )
-//                         .catch(err => {
-//                             console.log(err);
-//                             res.status(200).json({
-//                                 type: 'error',
-//                                 alert: `Something went wrong. Could not update Meta Data `,
-//                             })
-//                         })
-//                 })
-//                 .catch(err => {
-//                     res.status(200).json({
-//                         type: 'error',
-//                         alert: `Something went wrong. Could not update relevant Order `,
-//                     });
-//                     console.log(err);
-//                 })
+                Order
+                    .findOneAndUpdate(
+                        { "orderno": orderno },
+                        {
+                            '$set': {
+                                'status': 'Dispatched'
+                            }
+                        },
+                        { upsert: true }
+                    )
+                    .exec()
+                    .then(doc =>
+                        console.log("UPDATED ORDER STATUS OF ORDER NUMBER: ", doc.orderno)
+                    )
+                    .catch(err => {
+                        res.status(200).json({
+                            type: 'error',
+                            alert: `Something went wrong. Could not update status of relevant orders`,
+                        });
+                        console.log(err);
+                    });
 
-//             res.status(200).json({
-//                 message: "Handling POST requests to /gin/update-by-id/:ginnumber, GIN UPDATED",
-//                 type: 'success',
-//                 alert: `${doc.ginnumber} updated`,
-//             });
-//         })
-//         .catch(err => {
-//             res.status(200).json({
-//                 type: 'error',
-//                 alert: `Something went wrong. Could not update GIN`,
-//             });
-//             console.log(err);
-//         });
-// });
+            });
+
+            res.status(200).json({
+                message: "Handling POST requests to /gin/approve-dispatch/:ginnumber, GIN STATUS CHANGED TO DISPATCHED",
+                type: 'success',
+                alert: `${doc.ginnumber} status updated`,
+            });
+        })
+        .catch(err => {
+            res.status(200).json({
+                type: 'error',
+                alert: `Something went wrong. Could not update GIN`,
+            });
+            console.log(err);
+        });
+});
 
 module.exports = router;
