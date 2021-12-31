@@ -1,13 +1,16 @@
 import React from 'react';
 
 //Material UI Components
-import { Button } from '@material-ui/core';
-import { Paper } from '@material-ui/core';
-import { Typography } from '@material-ui/core';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import { Grid } from '@material-ui/core';
+import {
+    Paper,
+    TableHead,
+    TableRow,
+    TableCell,
+    Button,
+    Grid,
+    Typography,
+    TablePagination,
+} from '@material-ui/core';
 
 //Material Table
 import MaterialTable from 'material-table';
@@ -95,7 +98,7 @@ export default function StepFour(props) {
                 <MaterialTable
                     components={{
                         Container: props => <Paper {...props} elevation={1} />,
-                        Pagination: () => (
+                        Pagination: props => (
                             <td style={{
                                 display: "flex",
                                 flexDirection: "column"
@@ -108,6 +111,7 @@ export default function StepFour(props) {
                                         <Typography style={{ fontWeight: 600 }}>{total}</Typography>
                                     </Grid>
                                 </Grid>
+                                <TablePagination {...props} />
                             </td>
                         ),
                         Header: props => (
@@ -263,11 +267,11 @@ export default function StepFour(props) {
                     data={data}
                     options={{
                         toolbar: false,
-                        search: false,
                         filter: true,
-                        pageSize: 999,
-                        maxBodyHeight: "calc(100vh - 240px)",
-                        minBodyHeight: "calc(100vh - 240px)",
+                        search: false,
+                        paging: true,
+                        pageSize: 5,
+                        pageSizeOptions: [5, 10, 15],
                         headerStyle: {
                             position: "sticky",
                             top: "0",

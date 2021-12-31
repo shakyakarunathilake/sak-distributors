@@ -169,8 +169,7 @@ export default function SalesAndInvoice() {
     }
 
     return (
-        <Page
-            title="Sales and Invoice">
+        <Page title="Sales and Invoice">
 
             <div className={style.container}>
 

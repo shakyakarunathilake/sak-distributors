@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-
 //Form Steps
 import StepTwo from './StepTwo';
 import StepFour from './StepFour';
@@ -12,6 +11,7 @@ import style from './ViewOrder.module.scss';
 export default function ViewOrder(props) {
 
     const { action, handleClosePopUp, orderRecords } = props;
+
     const { control, getValues, setValue, handleSubmit } = useForm({ mode: "all" });
 
     const [data, setData] = useState();
@@ -51,44 +51,42 @@ export default function ViewOrder(props) {
 
 
     return (
-        <div>
 
-            <form
-                className={style.form}
-                onSubmit={handleSubmit(onSubmit)}
-            >
-                {
-                    formStep >= 0 &&
-                    <section className={formStep === 0 ? style.visible : style.hidden}>
-                        <StepTwo
-                            handleClosePopUp={handleClosePopUp}
-                            control={control}
-                            backFormStep={backFormStep}
-                            completeFormStep={completeFormStep}
-                            action={action}
-                            formStep={formStep}
-                            getValues={getValues}
-                        />
-                    </section>
-                }
+        <form
+            className={style.form}
+            onSubmit={handleSubmit(onSubmit)}
+        >
+            {
+                formStep >= 0 &&
+                <section className={formStep === 0 ? style.visible : style.hidden}>
+                    <StepTwo
+                        handleClosePopUp={handleClosePopUp}
+                        control={control}
+                        backFormStep={backFormStep}
+                        completeFormStep={completeFormStep}
+                        action={action}
+                        formStep={formStep}
+                        getValues={getValues}
+                    />
+                </section>
+            }
 
-                {
-                    formStep >= 1 &&
-                    <section className={formStep === 1 ? style.visible : style.hidden}>
-                        <StepFour
-                            data={data}
-                            handleClosePopUp={handleClosePopUp}
-                            backFormStep={backFormStep}
-                            onSubmit={onSubmit}
-                            total={total}
-                            action={action}
-                            formStep={formStep}
-                        />
-                    </section>
-                }
+            {
+                formStep >= 1 &&
+                <section className={formStep === 1 ? style.visible : style.hidden}>
+                    <StepFour
+                        data={data}
+                        handleClosePopUp={handleClosePopUp}
+                        backFormStep={backFormStep}
+                        onSubmit={onSubmit}
+                        total={total}
+                        action={action}
+                        formStep={formStep}
+                    />
+                </section>
+            }
 
-            </form >
+        </form >
 
-        </div>
     )
 }
