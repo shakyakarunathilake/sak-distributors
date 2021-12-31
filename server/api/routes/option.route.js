@@ -265,7 +265,7 @@ router.get("/employee-options-for-gin", (req, res, next) => {
         .then(doc => {
 
             const candidates = doc.filter(x =>
-                x.designation === 'Sales Representative' && x.employeestatus === 'Active'
+                x.designation === 'Delivery Representative' && x.employeestatus === 'Active'
             );
 
             const employeeOptions = candidates.map(x => ({
