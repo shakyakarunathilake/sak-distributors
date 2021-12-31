@@ -22,7 +22,7 @@ export default function OrderHistory() {
 
 
     const [records, setRecords] = useState([]);
-
+    const [action, setAction] = useState();
     const [orderRecords, setOrderRecords] = useState({});
     const [openPopup, setOpenPopup] = useState(false);
 
@@ -112,6 +112,7 @@ export default function OrderHistory() {
                             icon: VisibilityIcon,
                             tooltip: 'View',
                             onClick: (event, rowData) => {
+                                setAction("View");
                                 openInPopup(rowData.orderno);
                             }
                         }
@@ -125,6 +126,7 @@ export default function OrderHistory() {
             >
                 <ViewOrder
                     handleClosePopUp={handleClosePopUp}
+                    action={action}
                     orderRecords={orderRecords}
                 />
             </PopUp>
