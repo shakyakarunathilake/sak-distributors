@@ -109,6 +109,11 @@ function App() {
             <Route exact path='/sales-representative/dashboard' component={Dashboard} />
             <Route exact path='/sales-representative/manage-customers' component={ManageCustomer} />
             <Route exact path='/sales-representative/sales-and-invoice' component={SalesAndInvoice} />
+
+            {/* Delivery Representative */}
+            <Route exact path='/delivery-representative/dashboard' component={Dashboard} />
+            <Route exact path='/delivery-representative/manage-gin' component={ManageGIN} />
+
           </Switch>
         </BrowserRouter>
       }
