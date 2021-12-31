@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+.hidden {
+    display: none;
+}
+
 .actionRow {
     width: 100vw;
     box-sizing: border-box;
@@ -14,7 +18,7 @@
         height: 53.28px;
         color: $inverseFontColor;
         font-size: 1em;
-        margin: 20px 25px 20px auto;
+        margin: 20px 25px 0px auto;
     }
 
     .icon {
@@ -26,5 +30,5 @@
     width: 100vw;
     // height: calc(100vh - 199.28px);
     box-sizing: border-box;
-    padding: 0px 20px;
+    padding: 20px 20px 0 20px;
 }
