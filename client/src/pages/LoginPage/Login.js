@@ -86,6 +86,8 @@ export default function Login() {
                             break;
                         case "Sales Representative": window.location.replace("http://localhost:3000/sales-representative/dashboard");
                             break;
+                        case "Delivery Representative": window.location.replace("http://localhost:3000/delivery-representative/dashboard");
+                            break;
                         default: window.location.replace("http://localhost:3000/");
                     }
                 }
