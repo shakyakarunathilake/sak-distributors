@@ -177,6 +177,7 @@ router.post("/approve-delivery/:orderno", formDataBody.fields([]), (req, res, ne
             {
                 '$set': {
                     'status': req.body.status,
+                    'deliveredat': req.body.deliveredat
                 }
             },
             { upsert: true }

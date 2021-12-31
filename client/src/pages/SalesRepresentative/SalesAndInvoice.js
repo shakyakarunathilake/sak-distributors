@@ -26,7 +26,7 @@ import axios from 'axios';
 import ViewOrder from './ViewOrder';
 import EditOrder from './EditOrder';
 import CreateOrder from './CreateOrder';
-import CompleteForm from '../DeliveryRepresentative/CompleteForm';
+import DeliveredForm from '../DeliveryRepresentative/DeliveredForm';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -130,7 +130,7 @@ export default function SalesAndInvoice() {
                 });
             ;
         }
-        if (action === "Complete") {
+        if (action === "Delivered") {
             axios
                 .post(`http://localhost:8080/orders/approve-delivery/${orderno}`, order)
                 .then(res => {
@@ -289,9 +289,9 @@ export default function SalesAndInvoice() {
                             }),
                             {
                                 icon: DoneIcon,
-                                tooltip: 'Complete',
+                                tooltip: 'Delivered',
                                 onClick: (event, rowData) => {
-                                    setAction('Complete');
+                                    setAction('Delivered');
                                     openInPopup(rowData.orderno);
                                 },
                                 disabled: designation !== "Delivery Representative"
@@ -303,7 +303,7 @@ export default function SalesAndInvoice() {
                 <PopUp
                     openPopup={openPopup}
                     setOpenPopup={setOpenPopup}
-                    fullScreen={action === "Complete" ? false : true}
+                    fullScreen={action === "Delivered" ? false : true}
                 >
 
                     {
@@ -340,8 +340,8 @@ export default function SalesAndInvoice() {
                         />
                     }
                     {
-                        action === 'Complete' &&
-                        <CompleteForm
+                        action === 'Delivered' &&
+                        <DeliveredForm
                             orderRecords={orderRecords}
                             handleClosePopUp={handleClosePopUp}
                             addOrEdit={addOrEdit}

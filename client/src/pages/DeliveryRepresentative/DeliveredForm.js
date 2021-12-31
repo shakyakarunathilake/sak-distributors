@@ -9,7 +9,7 @@ import { Button } from '@material-ui/core';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
 //SCSS Style
-import style from './CompleteForm.module.scss';
+import style from './DeliveredForm.module.scss';
 
 export default function DispatchForm(props) {
 
@@ -17,12 +17,18 @@ export default function DispatchForm(props) {
 
     const { handleSubmit } = useForm()
 
+    const today = new Date();
+    const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    const dateTime = date + ' ' + time;
+
     const onSubmit = () => {
 
         const ginFormData = new formData();
 
         ginFormData.append('orderno', orderRecords.orderno);
-        ginFormData.append('status', 'Complete');
+        ginFormData.append('deliveredat', dateTime);
+        ginFormData.append('status', 'Delivered');
 
         addOrEdit(ginFormData, orderRecords.orderno);
 
@@ -49,7 +55,7 @@ export default function DispatchForm(props) {
             <div className={style.body}>
                 <span className={style.blue}>Order Number: {orderRecords.orderno} </span> <br />
                 The above order has been delivered. <br />
-                Once you approve dispatch changes cannot be undone.
+                Once you approve delivered changes cannot be undone.
             </div>
 
 
