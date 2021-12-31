@@ -293,6 +293,7 @@ export default function GINStepOne(props) {
                                             <Select
                                                 size="small"
                                                 value={value || ''}
+                                                disabled={action === "Edit"}
                                                 onChange={onChange}
                                                 options={employeeservice.getRouteOptions()}
                                                 error={errors.route ? true : false}
