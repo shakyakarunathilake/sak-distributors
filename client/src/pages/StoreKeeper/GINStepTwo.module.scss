@@ -5,139 +5,160 @@
     grid-template-rows: min-content auto min-content;
     height: min-content;
     width: 80vw;
+    height: max-content;
     box-sizing: border-box;
+}
 
-    Button {
-        width: max-content;
-        height: 40px;
-        font-size: 1em;
-        white-space: nowrap;
-        padding: 0 30px;
-    }
+.tablet {
+    display: grid;
+    grid-template-rows: min-content auto min-content;
+    height: min-content;
+    width: calc(100vw - 50px);
+    height: calc(100vh - 25px);
+    box-sizing: border-box;
+}
 
-    .hidden {
-        display: none;
-    }
+Button {
+    width: max-content;
+    height: 40px;
+    font-size: 1em;
+    white-space: nowrap;
+    padding: 0 30px;
+}
 
-    .header {
-        .title {
-            display: grid;
-            grid-template-columns: auto min-content;
-            font-size: 1.55em;
-            font-weight: 600;
-            .icon {
-                color: red;
-                &:hover {
-                    transform: scale(1.1);
-                }
+.hidden {
+    display: none;
+}
+
+.header {
+    .title {
+        display: grid;
+        grid-template-columns: auto min-content;
+        font-size: 1.55em;
+        font-weight: 600;
+        .icon {
+            color: red;
+            &:hover {
+                transform: scale(1.1);
             }
         }
-
-        .step {
-            margin: 5px 0 0 0;
-            color: $primaryLight;
-            font-size: 0.75em;
-        }
     }
 
-    .body {
+    .step {
+        margin: 5px 0 0 0;
+        color: $primaryLight;
+        font-size: 0.75em;
+    }
+}
+
+.body {
+    display: grid;
+    grid-template-rows: min-content min-content;
+
+    .orderDetails {
         display: grid;
-        grid-template-rows: min-content min-content;
+        grid-template-columns: 40% 60%;
+        padding: 20px;
 
-        .orderDetails {
-            display: grid;
-            grid-template-columns: 50% 50%;
-            padding: 20px;
+        .details {
+            table-layout: auto !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
 
-            .details {
-                table-layout: auto !important;
-                width: 100% !important;
-                box-sizing: border-box !important;
+            tr {
+                th {
+                    width: 200px;
+                    height: 30px;
+                }
 
-                tr {
-                    th {
-                        width: 200px;
-                        height: 30px;
-                    }
+                .thAlign {
+                    width: 150px;
+                    white-space: nowrap;
+                    padding: 2px 1px 1px 40px;
+                    vertical-align: top;
+                    text-align: left;
+                }
 
-                    .thAlign {
-                        width: 150px;
-                        white-space: nowrap;
-                        padding: 2px 1px 1px 40px;
-                        vertical-align: top;
-                        text-align: left;
-                    }
+                .tdAlign {
+                    vertical-align: top;
+                    text-align: left;
+                    // overflow: auto;
 
-                    .tdAlign {
-                        vertical-align: top;
-                        text-align: left;
+                    .pc {
+                        width: 100%;
+                        height: 188.56px;
+                        margin: 0;
+                        padding: 0;
                         overflow: auto;
+                    }
 
-                        div {
-                            width: 100%;
-                            height: 188.56px;
-                            margin: 0;
-                            padding: 0;
-                            overflow: auto;
+                    .tablet {
+                        width: 100%;
+                        height: 138px;
+                        margin: 0;
+                        padding: 0;
+                        overflow: auto;
+                    }
+
+                    .chip {
+                        height: 30px;
+                        width: min-content;
+                        margin: 3px;
+                        background-color: $secondaryLight;
+
+                        &:hover {
+                            background-color: $primaryMain;
+                            color: $inverseFontColor;
                         }
-
-                        .chip {
-                            height: 30px;
-                            width: min-content;
-                            margin: 3px;
-                            background-color: $secondaryLight;
-
-                            &:hover {
-                                background-color: $primaryMain;
-                                color: $inverseFontColor;
-                            }
-                        }
                     }
+                }
 
-                    .blue {
-                        color: $primaryMain;
-                        font-weight: 600;
-                    }
+                .blue {
+                    color: $primaryMain;
+                    font-weight: 600;
+                }
 
-                    .red {
-                        color: red;
-                        font-weight: 600;
-                    }
+                .red {
+                    color: red;
+                    font-weight: 600;
                 }
             }
         }
     }
+}
 
-    .doneBtn {
-        text-align: right;
-        padding: 30px 0px 10px 0px;
+.doneBtn {
+    text-align: right;
+    padding: 30px 0px 10px 0px;
+    Button {
+        font-size: 1em;
     }
+}
 
-    .footer {
-        display: grid;
-        grid-template-columns: auto auto;
-        padding: 30px 0px 10px 0px;
+.footer {
+    display: grid;
+    grid-template-columns: auto auto;
+    padding: 30px 0px 10px 0px;
 
-        .backBtn {
-            text-align: left;
-            Button {
-                background-color: #aca9bb;
+    .backBtn {
+        text-align: left;
+        Button {
+            background-color: #aca9bb;
+            color: $inverseFontColor;
+
+            &:disabled {
+                background-color: #c2c2c2;
                 color: $inverseFontColor;
-
-                &:disabled {
-                    background-color: #c2c2c2;
-                    color: $inverseFontColor;
-                }
             }
         }
+    }
 
-        .nextBtn {
-            text-align: right;
-            Button {
-                &:disabled {
-                    background-color: hsl(230, 66%, 57%);
-                    color: $inverseFontColor;
-                }
+    .nextBtn {
+        text-align: right;
+        Button {
+            &:disabled {
+                background-color: hsl(230, 66%, 57%);
+                color: $inverseFontColor;
             }
         }
     }
