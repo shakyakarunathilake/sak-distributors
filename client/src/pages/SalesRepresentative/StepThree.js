@@ -1,15 +1,19 @@
 import React, { useMemo, useEffect, useRef } from 'react';
+import AutoSizer from 'react-virtualized-auto-sizer';
 
 //Material UI Components
-import { Paper } from '@material-ui/core';
-import { Button, Grid } from '@mui/material';
+import {
+    Paper,
+    TableHead,
+    TableRow,
+    TableCell,
+    Button,
+    Grid,
+    TextField as MuiTextField,
+    Typography,
+} from '@material-ui/core';
 import Box from '@mui/material/Box';
-import { TextField as MuiTextField } from '@material-ui/core';
 import Autocomplete from '@mui/material/Autocomplete';
-import { Typography } from '@material-ui/core';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 
 //Material Table
 import MaterialTable, { MTableAction, MTableToolbar } from 'material-table';
