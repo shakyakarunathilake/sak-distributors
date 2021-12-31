@@ -13,6 +13,7 @@ import Button from '@material-ui/core/Button';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import DoneIcon from '@mui/icons-material/Done';
 
 //Material Table
 import MaterialTable from 'material-table';
@@ -23,7 +24,7 @@ import style from './ManageGIN.module.scss';
 //Pop Up Forms
 import ViewGIN from './ViewGIN';
 import CreateGINForm from './CreateGINForm';
-import DispatchForm from './DispatchForm';
+import DispatchCompleteForm from './DispatchCompleteForm';
 
 //Connecting to Backend
 import axios from 'axios';
@@ -185,6 +186,19 @@ export default function ManageGIN() {
                     console.log(err);
                 })
         }
+        if (action === "Complete") {
+            axios
+                .post(`http://localhost:8080/gin/approve-complete/${ginnumber}`, gin)
+                .then(res => {
+                    setAlert(res.data.alert);
+                    setType(res.data.type);
+                    handleAlert();
+                    setReRender(ginnumber);
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        }
 
         setAction('');
         setGINRecords(null);
@@ -289,6 +303,15 @@ export default function ManageGIN() {
                                     openInPopup(rowData.ginnumber);
                                 }
                             }),
+                            (rowData) => ({
+                                disabled: designation !== "Delivery Representative" || rowData.status === "Complete",
+                                icon: DoneIcon,
+                                tooltip: 'Complete',
+                                onClick: (event, rowData) => {
+                                    setAction('Complete');
+                                    openInPopup(rowData.ginnumber);
+                                }
+                            }),
                         ]}
                     />
 
@@ -296,7 +319,7 @@ export default function ManageGIN() {
 
                 <PopUp
                     openPopup={openPopup}
-                    fullScreen={designation === "Delivery Representative" && true}
+                    fullScreen={(designation === "Delivery Representative" && action === 'View') ? true : false}
                     setOpenPopup={setOpenPopup}
                 >
 
@@ -306,7 +329,8 @@ export default function ManageGIN() {
                             GINRecords={GINRecords}
                             handleClosePopUp={handleClosePopUp}
                             action={action}
-                        />}
+                        />
+                    }
                     {
                         (action === 'Create' || action === 'Edit') &&
                         <CreateGINForm
@@ -319,11 +343,12 @@ export default function ManageGIN() {
                         />
                     }
                     {
-                        action === 'Dispatch' &&
-                        <DispatchForm
+                        (action === 'Dispatch' || action === 'Complete') &&
+                        <DispatchCompleteForm
                             GINRecords={GINRecords}
                             handleClosePopUp={handleClosePopUp}
                             addOrEdit={addOrEdit}
+                            action={action}
                         />
                     }
 
