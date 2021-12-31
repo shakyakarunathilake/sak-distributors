@@ -49,7 +49,7 @@ router.get("/get-all-gin-table-data/:employee", (req, res, next) => {
         .exec()
         .then(doc => {
 
-            const candidates = doc.filter(x => x.status === "Dispatched")
+            const candidates = doc.filter(x => x.status === "Dispatched" || "Complete")
 
             const tbody = candidates.map(x => ({
                 ginnumber: x.ginnumber,
@@ -188,7 +188,7 @@ router.post("/update-by-ginnumber/:ginnumber", formDataBody.fields([]), (req, re
         });
 });
 
-//Update GIN by GIN Number
+//Approve dispatch GIN by GIN Number
 router.post("/approve-dispatch/:ginnumber", formDataBody.fields([]), (req, res, next) => {
 
     GIN
@@ -204,6 +204,8 @@ router.post("/approve-dispatch/:ginnumber", formDataBody.fields([]), (req, res, 
         .exec()
         .then(doc => {
 
+            const incharge = doc.incharge;
+
             doc.ordernumbers.map(orderno => {
 
                 Order
@@ -211,7 +213,8 @@ router.post("/approve-dispatch/:ginnumber", formDataBody.fields([]), (req, res, 
                         { "orderno": orderno },
                         {
                             '$set': {
-                                'status': 'Dispatched'
+                                'status': 'Dispatched',
+                                'deliveredby': incharge,
                             }
                         },
                         { upsert: true }
@@ -232,6 +235,37 @@ router.post("/approve-dispatch/:ginnumber", formDataBody.fields([]), (req, res, 
 
             res.status(200).json({
                 message: "Handling POST requests to /gin/approve-dispatch/:ginnumber, GIN STATUS CHANGED TO DISPATCHED",
+                type: 'success',
+                alert: `${doc.ginnumber} status updated`,
+            });
+        })
+        .catch(err => {
+            res.status(200).json({
+                type: 'error',
+                alert: `Something went wrong. Could not update GIN`,
+            });
+            console.log(err);
+        });
+});
+
+
+//Approve complete GIN by GIN Number
+router.post("/approve-complete/:ginnumber", formDataBody.fields([]), (req, res, next) => {
+
+    GIN
+        .findOneAndUpdate(
+            { "ginnumber": req.params.ginnumber },
+            {
+                '$set': {
+                    'status': req.body.status,
+                }
+            },
+            { upsert: true }
+        )
+        .exec()
+        .then(doc => {
+            res.status(200).json({
+                message: "Handling POST requests to /gin/approve-complete/:ginnumber, GIN STATUS CHANGED TO COMPLETED",
                 type: 'success',
                 alert: `${doc.ginnumber} status updated`,
             });
