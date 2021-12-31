@@ -9,11 +9,11 @@ import { Button } from '@material-ui/core';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
 //SCSS Style
-import style from './DispatchForm.module.scss';
+import style from './DispatchCompleteForm.module.scss';
 
-export default function DispatchForm(props) {
+export default function DispatchCompleteForm(props) {
 
-    const { handleClosePopUp, addOrEdit, GINRecords } = props;
+    const { handleClosePopUp, action, addOrEdit, GINRecords } = props;
 
     const { handleSubmit } = useForm()
 
@@ -22,7 +22,7 @@ export default function DispatchForm(props) {
         const ginFormData = new formData();
 
         ginFormData.append('ginnumber', GINRecords.ginnumber);
-        ginFormData.append('status', 'Dispatched');
+        ginFormData.append('status', action === 'Dispatch' ? 'Dispatched' : 'Complete');
 
         addOrEdit(ginFormData, GINRecords.ginnumber);
 
@@ -48,8 +48,8 @@ export default function DispatchForm(props) {
 
             <div className={style.body}>
                 <span className={style.blue}>GIN Number: {GINRecords.ginnumber} </span> <br />
-                The above GIN has been dispatched. <br />
-                Once you approve dispatch changes cannot be undone.
+                The above GIN has been {action === 'Dispatch' ? 'dispatched' : 'completed'}. <br />
+                Once you approve {action === 'Dispatch' ? 'dispatch' : 'complete'}, changes cannot be undone.
             </div>
 
 
@@ -59,7 +59,7 @@ export default function DispatchForm(props) {
                     variant="contained"
                     onClick={onSubmit}
                 >
-                    Approve Dispatch
+                    {action === 'Dispatch' ? 'Approve Dispatch' : 'Approve Complete'}
                 </Button>
             </div>
 
