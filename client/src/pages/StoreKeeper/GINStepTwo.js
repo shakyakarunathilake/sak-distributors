@@ -56,8 +56,10 @@ export default function GINStepTwo(props) {
 
     const { onSubmit, backFormStep, control, getValues, handleClosePopUp, data, action, orderNumbers } = props;
 
+    const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
+
     return (
-        <div className={style.container}>
+        <div className={designation === "Delivery Representative" ? style.tablet : style.container}>
 
             <div className={style.header}>
 
@@ -101,20 +103,25 @@ export default function GINStepTwo(props) {
                                     />
                                 </td>
                             </tr>
-                            <tr>
-                                <th align="left">GIN Created at</th>
-                                <td align="left">
-                                    <Controller
-                                        name={"createdat"}
-                                        control={control}
-                                        render={({ field: { value } }) => (
-                                            <Typography className={style.input}>
-                                                {value}
-                                            </Typography>
-                                        )}
-                                    />
-                                </td>
-                            </tr>
+
+                            {
+                                designation !== "Delivery Representative" &&
+                                <tr>
+                                    <th align="left">GIN Created at</th>
+                                    <td align="left">
+                                        <Controller
+                                            name={"createdat"}
+                                            control={control}
+                                            render={({ field: { value } }) => (
+                                                <Typography className={style.input}>
+                                                    {value}
+                                                </Typography>
+                                            )}
+                                        />
+                                    </td>
+                                </tr>
+                            }
+
                             <tr>
                                 <th align="left">Route</th>
                                 <td align="left">
@@ -163,14 +170,16 @@ export default function GINStepTwo(props) {
                     <table className={style.details}>
                         <tbody>
                             <tr>
-                                <th rowSpan={5} className={style.thAlign}>Order Numbers</th>
-                                <td rowSpan={5} className={style.tdAlign}>
-                                    <div>
+                                <th rowSpan={designation === "Delivery Representative" ? 4 : 5} className={style.thAlign}>Order Numbers</th>
+                                <td rowSpan={designation === "Delivery Representative" ? 4 : 5} className={style.tdAlign}>
+                                    <div className={designation === "Delivery Representative" ? style.tablet : style.pc}>
+
                                         {
                                             orderNumbers.map(x =>
                                                 <Chip className={style.chip} label={x} key={x} />
                                             )
                                         }
+
                                     </div>
                                 </td>
                             </tr>
@@ -201,33 +210,33 @@ export default function GINStepTwo(props) {
                         Header: props => (
                             <TableHead {...props} className={classes.tablehead} >
                                 <TableRow className={classes.row1}>
-                                    <TableCell padding="none" rowSpan={2}>
+                                    <TableCell width="35%" padding="none" rowSpan={2}>
                                         <div style={{ padding: '0 10px' }}>
                                             Description
                                         </div>
                                     </TableCell>
-                                    <TableCell width="150px" padding="none" rowSpan={2} align="center">
+                                    <TableCell width="10%" padding="none" rowSpan={2} align="center">
                                         <div style={{ padding: '0 10px' }}>
                                             Price (Rs.)
                                         </div>
                                     </TableCell>
-                                    <TableCell width="100px" padding="none" rowSpan={2} align="center">
+                                    <TableCell width="10%" padding="none" rowSpan={2} align="center">
                                         <div style={{ padding: '0 10px' }}>
                                             Pieces per Case
                                         </div>
                                     </TableCell>
-                                    <TableCell padding="none" colSpan={2} align="center">
+                                    <TableCell width="10%" padding="none" colSpan={2} align="center">
                                         Total
                                     </TableCell>
-                                    <TableCell padding="none" width="250px" rowSpan={2} align="center">
+                                    <TableCell padding="none" width="15%" rowSpan={2} align="center">
                                         <div style={{ padding: '0 10px' }}>
                                             Gross Amount (Rs.)
                                         </div>
                                     </TableCell>
                                 </TableRow>
                                 <TableRow className={classes.row2}>
-                                    <TableCell width="150px" padding="none" align="center">Cases</TableCell>
-                                    <TableCell width="150px" padding="none" align="center">Pieces</TableCell>
+                                    <TableCell width="10%" padding="none" align="center">Cases</TableCell>
+                                    <TableCell width="10%" padding="none" align="center">Pieces</TableCell>
                                 </TableRow>
                             </TableHead>
                         ),
@@ -283,8 +292,8 @@ export default function GINStepTwo(props) {
                         filtering: true,
                         search: false,
                         paging: true,
-                        pageSize: 5,
-                        pageSizeOptions: [5],
+                        pageSize: designation === "Delivery Representative" ? 4 : 5,
+                        pageSizeOptions: [],
                         headerStyle: {
                             position: "sticky",
                             top: "0",
