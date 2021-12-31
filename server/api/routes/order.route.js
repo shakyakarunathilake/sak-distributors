@@ -70,6 +70,8 @@ router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
         customerid: req.body.customerid,
         customertype: req.body.customertype,
         deliverydate: req.body.deliverydate,
+        deliveredby: '',
+        deliveredat: '',
         orderno: req.body.orderno,
         orderplacedat: req.body.orderplacedat,
         route: req.body.route,
@@ -166,6 +168,37 @@ router.post("/update-by-id/:orderno", formDataBody.fields([]), (req, res, next) 
         });
 });
 
+//Approve delivery by order number
+router.post("/approve-delivery/:orderno", formDataBody.fields([]), (req, res, next) => {
+
+    Order
+        .findOneAndUpdate(
+            { "orderno": req.params.orderno },
+            {
+                '$set': {
+                    'status': req.body.status,
+                }
+            },
+            { upsert: true }
+        )
+        .exec()
+        .then(doc => {
+            res.status(200).json({
+                message: "Handling POST requests to /orders/approve-delivery/:orderno, ORDER STATUS CHANGED TO COMPLETE",
+                type: 'success',
+                alert: `${doc.orderno} status updated`,
+            });
+        })
+        .catch(err => {
+            res.status(200).json({
+                type: 'error',
+                alert: `Something went wrong. Could not update order`,
+            });
+            console.log(err);
+        })
+
+});
+
 //Get all table sales and invoice data
 router.get("/get-all-sales-and-invoice-table-data", (req, res, next) => {
 
@@ -191,7 +224,7 @@ router.get("/get-all-sales-and-invoice-table-data", (req, res, next) => {
         })
 });
 
-router.get("/get-all-sales-and-invoice-table-data/:employee", (req, res, next) => {
+router.get("/get-all-sales-and-invoice-table-data-for-sales-representative/:employee", (req, res, next) => {
 
     Order
         .find({ ordercreatedby: req.params.employee })
@@ -205,7 +238,31 @@ router.get("/get-all-sales-and-invoice-table-data/:employee", (req, res, next) =
             }))
 
             res.status(201).json({
-                message: "Handeling GET requests to /get-all-sales-and-invoice-table-data/:employee",
+                message: "Handeling GET requests to /get-all-sales-and-invoice-table-data-for-sales-representative/:employee",
+                tbody: tbody,
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        })
+});
+
+router.get("/get-all-sales-and-invoice-table-data-for-delivery-representative/:employee", (req, res, next) => {
+
+    Order
+        .find({ deliveredby: req.params.employee })
+        .exec()
+        .then(doc => {
+
+            const tbody = doc.map(x => ({
+                "orderno": x.orderno,
+                "storename": x.storename,
+                "status": x.status,
+            }))
+
+            res.status(201).json({
+                message: "Handeling GET requests to /get-all-sales-and-invoice-table-data-for-delivery-representative/:employee",
                 tbody: tbody,
             });
         })
