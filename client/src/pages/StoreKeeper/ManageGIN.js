@@ -23,7 +23,7 @@ import style from './ManageGIN.module.scss';
 //Pop Up Forms
 import ViewGIN from './ViewGIN';
 import CreateGINForm from './CreateGINForm';
-import DeliveryForm from './DeliveryForm';
+import DispatchForm from './DispatchForm';
 
 //Connecting to Backend
 import axios from 'axios';
@@ -48,6 +48,12 @@ export default function ManageGIN() {
     const [openPopup, setOpenPopup] = useState(false);
     const [reRender, setReRender] = useState(null);
 
+
+    const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
+    const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
+    const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
+    const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
+
     const handleAlert = () => {
         setOpen(true);
     };
@@ -67,16 +73,29 @@ export default function ManageGIN() {
     }
 
     useEffect(() => {
-        axios
-            .get("http://localhost:8080/gin/get-all-gin-table-data")
-            .then(res => {
-                sessionStorage.setItem("GINTableData", JSON.stringify(res.data));
-                setTableRecords(res.data.tbody);
-                setReRender(null);
-            })
-            .catch(error => {
-                console.log(error)
-            })
+        if (designation === 'Delivery Representative') {
+            axios
+                .get(`http://localhost:8080/gin/get-all-gin-table-data/${firstname} ${lastname} (${employeeid})`)
+                .then(res => {
+                    sessionStorage.setItem("GINTableData", JSON.stringify(res.data));
+                    setTableRecords(res.data.tbody);
+                    setReRender(null);
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        } else {
+            axios
+                .get("http://localhost:8080/gin/get-all-gin-table-data/")
+                .then(res => {
+                    sessionStorage.setItem("GINTableData", JSON.stringify(res.data));
+                    setTableRecords(res.data.tbody);
+                    setReRender(null);
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        }
     }, [reRender]);
 
     const getInChargeOptions = () => {
@@ -103,7 +122,7 @@ export default function ManageGIN() {
     }
 
     const openInPopup = ginnumber => {
-        if (action === 'Delivery') {
+        if (action === 'Dispatch') {
             setGINRecords({ 'ginnumber': ginnumber });
             setOpenPopup(true);
         } else {
@@ -139,9 +158,23 @@ export default function ManageGIN() {
                 })
         }
 
-        if (action === "Edit" || action === "Delivery") {
+        if (action === "Edit") {
             axios
                 .post(`http://localhost:8080/gin/update-by-ginnumber/${ginnumber}`, gin)
+                .then(res => {
+                    setAlert(res.data.alert);
+                    setType(res.data.type);
+                    handleAlert();
+                    setReRender(ginnumber);
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        }
+
+        if (action === "Dispatch") {
+            axios
+                .post(`http://localhost:8080/gin/approve-dispatch/${ginnumber}`, gin)
                 .then(res => {
                     setAlert(res.data.alert);
                     setType(res.data.type);
@@ -162,7 +195,7 @@ export default function ManageGIN() {
         <Page title="Manage GIN">
             <div className={style.container}>
 
-                <div className={style.actionRow}>
+                <div className={designation === "Delivery Representative" ? style.hidden : style.actionRow}>
                     <Button
                         className={style.button}
                         color="primary"
@@ -239,7 +272,7 @@ export default function ManageGIN() {
                                 }
                             },
                             (rowData) => ({
-                                disabled: rowData.status === 'Delivering' && rowData.status === 'Complete',
+                                disabled: rowData.status === 'Dispatched' || rowData.status === 'Complete' || designation === "Delivery Representative",
                                 icon: 'edit',
                                 tooltip: 'Edit',
                                 onClick: (event, rowData) => {
@@ -248,11 +281,11 @@ export default function ManageGIN() {
                                 }
                             }),
                             (rowData) => ({
-                                disabled: rowData.status !== 'Processing',
+                                disabled: rowData.status !== 'Processing' || designation === "Delivery Representative",
                                 icon: LocalShippingIcon,
-                                tooltip: 'Delivery Confirmation',
+                                tooltip: 'Dispatch',
                                 onClick: (event, rowData) => {
-                                    setAction('Delivery');
+                                    setAction('Dispatch');
                                     openInPopup(rowData.ginnumber);
                                 }
                             }),
@@ -263,7 +296,7 @@ export default function ManageGIN() {
 
                 <PopUp
                     openPopup={openPopup}
-                    // fullScreen={true}
+                    fullScreen={designation === "Delivery Representative" && true}
                     setOpenPopup={setOpenPopup}
                 >
 
@@ -286,8 +319,8 @@ export default function ManageGIN() {
                         />
                     }
                     {
-                        action === 'Delivery' &&
-                        <DeliveryForm
+                        action === 'Dispatch' &&
+                        <DispatchForm
                             GINRecords={GINRecords}
                             handleClosePopUp={handleClosePopUp}
                             addOrEdit={addOrEdit}
