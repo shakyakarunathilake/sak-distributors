@@ -221,6 +221,21 @@ const getSalesRepresentativeListItems = [
 
 ];
 
+const getDeliveryRepresentativeListItems = [
+    {
+        id: "Dashboard",
+        title: "Dashboard",
+        path: "http://localhost:3000/store-keeper/dashboard",
+        icon: <DashboardIcon />
+    },
+    {
+        id: "Manage GIN",
+        title: "Manage GIN",
+        path: "http://localhost:3000/delivery-representative/manage-gin",
+        icon: <InsertDriveFileIcon />,
+    },
+];
+
 export function drawerListItems(designation) {
     if (designation === "Distributor") {
         return (getDistributorListItems)
@@ -239,5 +254,8 @@ export function drawerListItems(designation) {
     }
     if (designation === "Sales Representative") {
         return (getSalesRepresentativeListItems)
+    }
+    if (designation === "Delivery Representative") {
+        return (getDeliveryRepresentativeListItems)
     }
 }
