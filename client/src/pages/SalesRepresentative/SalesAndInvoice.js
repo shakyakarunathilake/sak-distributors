@@ -17,6 +17,7 @@ import Button from '@material-ui/core/Button';
 //Material UI Icons
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import DoneIcon from '@mui/icons-material/Done';
 
 //Connecting to Backend
 import axios from 'axios';
@@ -25,6 +26,7 @@ import axios from 'axios';
 import ViewOrder from './ViewOrder';
 import EditOrder from './EditOrder';
 import CreateOrder from './CreateOrder';
+import CompleteForm from '../DeliveryRepresentative/CompleteForm';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -50,6 +52,7 @@ export default function SalesAndInvoice() {
     const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
     const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
     const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
+    const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
 
     const handleAlert = () => {
         setOpen(true);
@@ -63,16 +66,29 @@ export default function SalesAndInvoice() {
     };
 
     useEffect(() => {
-        axios
-            .get(`http://localhost:8080/orders/get-all-sales-and-invoice-table-data/${firstname} ${lastname} (${employeeid})`)
-            .then(res => {
-                sessionStorage.setItem("SalesAndInvoiceTableData", JSON.stringify(res.data));
-                setRecords(res.data.tbody);
-                setReRender(null);
-            })
-            .catch(error => {
-                console.log(error)
-            })
+        if (designation === "Delivery Representative") {
+            axios
+                .get(`http://localhost:8080/orders/get-all-sales-and-invoice-table-data-for-delivery-representative/${firstname} ${lastname} (${employeeid})`)
+                .then(res => {
+                    sessionStorage.setItem("SalesAndInvoiceTableData", JSON.stringify(res.data));
+                    setRecords(res.data.tbody);
+                    setReRender(null);
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        } else {
+            axios
+                .get(`http://localhost:8080/orders/get-all-sales-and-invoice-table-data-for-sales-representative/${firstname} ${lastname} (${employeeid})`)
+                .then(res => {
+                    sessionStorage.setItem("SalesAndInvoiceTableData", JSON.stringify(res.data));
+                    setRecords(res.data.tbody);
+                    setReRender(null);
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        }
     }, [reRender]);
 
     const handleClosePopUp = () => {
@@ -99,7 +115,8 @@ export default function SalesAndInvoice() {
                     console.log(err);
                 });
             ;
-        } if (action === "Edit") {
+        }
+        if (action === "Edit") {
             axios
                 .post(`http://localhost:8080/orders/update-by-id/${orderno}`, order)
                 .then(res => {
@@ -112,6 +129,19 @@ export default function SalesAndInvoice() {
                     console.log(err);
                 });
             ;
+        }
+        if (action === "Complete") {
+            axios
+                .post(`http://localhost:8080/orders/approve-delivery/${orderno}`, order)
+                .then(res => {
+                    setAlert(res.data.alert);
+                    setType(res.data.type);
+                    handleAlert();
+                    setReRender(orderno);
+                })
+                .catch(err => {
+                    console.log(err);
+                })
         }
 
         setOrderRecords(null);
@@ -256,7 +286,16 @@ export default function SalesAndInvoice() {
                                     openInPopup(rowData.orderno);
                                 },
                                 disabled: rowData.status !== 'Pending'
-                            })
+                            }),
+                            {
+                                icon: DoneIcon,
+                                tooltip: 'Complete',
+                                onClick: (event, rowData) => {
+                                    setAction('Complete');
+                                    openInPopup(rowData.orderno);
+                                },
+                                disabled: designation !== "Delivery Representative"
+                            }
                         ]}
                     />
                 </div>
@@ -264,7 +303,7 @@ export default function SalesAndInvoice() {
                 <PopUp
                     openPopup={openPopup}
                     setOpenPopup={setOpenPopup}
-                    fullScreen={true}
+                    fullScreen={action === "Complete" ? false : true}
                 >
 
                     {
@@ -298,6 +337,14 @@ export default function SalesAndInvoice() {
                             handleClosePopUp={handleClosePopUp}
                             orderRecords={orderRecords}
                             action={action}
+                        />
+                    }
+                    {
+                        action === 'Complete' &&
+                        <CompleteForm
+                            orderRecords={orderRecords}
+                            handleClosePopUp={handleClosePopUp}
+                            addOrEdit={addOrEdit}
                         />
                     }
                 </PopUp>
