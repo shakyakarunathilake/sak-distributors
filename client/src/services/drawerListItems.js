@@ -225,7 +225,7 @@ const getDeliveryRepresentativeListItems = [
     {
         id: "Dashboard",
         title: "Dashboard",
-        path: "http://localhost:3000/store-keeper/dashboard",
+        path: "http://localhost:3000/delivery-representative/dashboard",
         icon: <DashboardIcon />
     },
     {
