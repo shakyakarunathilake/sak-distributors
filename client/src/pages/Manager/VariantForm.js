@@ -32,7 +32,7 @@ export default function VariantForm(props) {
 
     const { handleClosePopUp, addVariant, productOptions, employeeOptions, productRecords } = props;
 
-    const { handleSubmit, formState: { errors }, control, reset, setValue } = useForm();
+    const { handleSubmit, formState: { errors }, control, reset, setValue } = useForm({ mode: "onBlur" });
 
     const [file, setFile] = useState();
     const [show, setShow] = useState(false);
@@ -52,6 +52,7 @@ export default function VariantForm(props) {
             setValue("productstatus", productRecords.status);
             setValue("variantid", productRecords.variant.variantid);
             setValue("type", productRecords.variant.type);
+            setValue("piecespercase", productRecords.variant.piecespercase);
             setValue("bulkprice", productRecords.variant.bulkprice);
             setValue("mrp", productRecords.variant.mrp);
             setValue("sellingprice", productRecords.variant.sellingprice);
@@ -103,6 +104,7 @@ export default function VariantForm(props) {
             productstatus: '',
             variantid: '',
             type: '',
+            piecespercase: '',
             bulkprice: '',
             mrp: '',
             sellingprice: '',
@@ -112,6 +114,7 @@ export default function VariantForm(props) {
             variantaddeddate: '',
             variantaddedby: '',
         });
+        setShow(false);
         setFile("");
     }
 
@@ -124,6 +127,7 @@ export default function VariantForm(props) {
         productFormData.append("variantid", values.variantid);
         productFormData.append('type', values.type);
         productFormData.append("offercaption", values.offercaption ? values.offercaption : "");
+        productFormData.append("piecespercase", values.piecespercase);
         productFormData.append("bulkprice", values.bulkprice);
         productFormData.append("purchaseprice", values.purchaseprice);
         productFormData.append("sellingprice", values.sellingprice);
@@ -248,12 +252,13 @@ export default function VariantForm(props) {
                                         <Controller
                                             name={"autocomplete"}
                                             control={control}
-                                            render={() => (
+                                            render={({ field: { value } }) => (
                                                 <Autocomplete
                                                     options={productOptions || []}
                                                     fullWidth
                                                     getOptionLabel={(option) => option.title}
                                                     onChange={handleProductChange}
+                                                    inputValue={value}
                                                     renderInput={(params) => (
                                                         <MuiTextField
                                                             {...params}
@@ -428,6 +433,28 @@ export default function VariantForm(props) {
                             <div className={style.gridrow}>
                                 <div>
                                     <Controller
+                                        name={"piecespercase"}
+                                        control={control}
+                                        rules={{
+                                            required: { value: true, message: "Pieces/Case is required" },
+                                            pattern: { value: /^[0-9]*$/, message: "Pieces/Case is invalid" }
+                                        }}
+                                        render={({ field: { onChange, value } }) => (
+                                            <TextField
+                                                className={style.field}
+                                                helperText={errors.piecespercase && errors.piecespercase.message}
+                                                error={errors.piecespercase ? true : false}
+                                                onChange={onChange}
+                                                value={value || ''}
+                                                label="Pieces/Case *"
+                                                placeholder="24"
+                                                fullWidth={true}
+                                            />
+                                        )}
+                                    />
+                                </div>
+                                <div>
+                                    <Controller
                                         name={"bulkprice"}
                                         control={control}
                                         rules={{
@@ -455,6 +482,9 @@ export default function VariantForm(props) {
                                         )}
                                     />
                                 </div>
+                            </div>
+
+                            <div className={style.rowminicolumns}>
                                 <div>
                                     <Controller
                                         name={"purchaseprice"}
@@ -484,9 +514,6 @@ export default function VariantForm(props) {
                                         )}
                                     />
                                 </div>
-                            </div>
-
-                            <div className={style.gridrow}>
                                 <div>
                                     <Controller
                                         name={"sellingprice"}
