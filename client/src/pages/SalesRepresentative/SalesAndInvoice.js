@@ -203,7 +203,7 @@ export default function SalesAndInvoice() {
 
             <div className={style.container}>
 
-                <div className={style.actionRow}>
+                <div className={designation === "Delivery Representative" ? style.hidden : style.actionRow}>
                     <Button
                         className={style.button}
                         color="primary"
@@ -287,15 +287,15 @@ export default function SalesAndInvoice() {
                                 },
                                 disabled: rowData.status !== 'Pending'
                             }),
-                            {
+                            rowData => ({
                                 icon: DoneIcon,
                                 tooltip: 'Delivered',
                                 onClick: (event, rowData) => {
                                     setAction('Delivered');
                                     openInPopup(rowData.orderno);
                                 },
-                                disabled: designation !== "Delivery Representative"
-                            }
+                                disabled: designation !== "Delivery Representative" || rowData.status === 'Delivered'
+                            })
                         ]}
                     />
                 </div>
