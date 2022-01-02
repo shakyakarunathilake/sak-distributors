@@ -20,6 +20,7 @@ const purchaseOrderRoutes = require("./api/routes/purchaseorder.route");
 const grnRoutes = require("./api/routes/grn.route");
 const ginRoutes = require("./api/routes/gin.route");
 const metaDataRoutes = require("./api/routes/metadata.route");
+const storeRoutes = require("./api/routes/store.route");
 
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -57,5 +58,6 @@ app.use("/purchaseorder", purchaseOrderRoutes);
 app.use("/grn", grnRoutes);
 app.use("/gin", ginRoutes);
 app.use("/metadata", metaDataRoutes);
+app.use("/store", storeRoutes);
 
 module.exports = app;
