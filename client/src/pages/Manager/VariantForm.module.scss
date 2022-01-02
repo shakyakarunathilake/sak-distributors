@@ -112,7 +112,7 @@
 
                 .rowminicolumns {
                     display: grid;
-                    grid-template-columns: calc(25% - 20px) calc(40% - 25px) calc(40% - 25px);
+                    grid-template-columns: calc(33% - 11px) calc(33% - 11px) calc(33% - 11px);
                     grid-column-gap: 20px;
                     padding: 8px 0;
                 }
