@@ -12,6 +12,7 @@ const productSchema = mongoose.Schema({
     variants: [{
         variantid: { type: String, required: true },
         type: { type: String, required: true },
+        piecespercase: { type: String, required: true },
         bulkprice: { type: Number, required: true },
         mrp: { type: Number, required: true },
         purchaseprice: { type: Number, required: true },
