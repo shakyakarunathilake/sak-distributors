@@ -30,7 +30,6 @@ router.get("/product-options-for-purchase-order", (req, res, next) => {
                 productid: x.productid,
                 name: x.name,
                 supplier: x.supplier,
-                piecespercase: 10,
             }))
 
             res.status(200).json({
@@ -211,7 +210,7 @@ router.get("/product-options", (req, res, next) => {
                         sellingprice: variant.sellingprice,
                         type: variant.type,
                         offercaption: variant.offercaption,
-                        piecespercase: 10,
+                        piecespercase: variant.piecespercase,
                         title: `${product.productid}${variant.variantid}-${product.name}`,
                     })
                 })
