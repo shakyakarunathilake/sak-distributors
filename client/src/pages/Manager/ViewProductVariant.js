@@ -33,6 +33,7 @@ export default function ViewProductVariant(props) {
         setValue("productstatus", productRecords?.status);
         setValue("variantid", productRecords?.variant["variantid"]);
         setValue("type", productRecords?.variant.type);
+        setValue("piecespercase", productRecords?.variant.piecespercase);
         setValue("bulkprice", productRecords?.variant.bulkprice);
         setValue("mrp", productRecords?.variant.mrp);
         setValue("sellingprice", productRecords?.variant.sellingprice);
@@ -248,6 +249,23 @@ export default function ViewProductVariant(props) {
                                     <div className={style.productData}>
                                         <Controller
                                             name={"variantstatus"}
+                                            control={control}
+                                            render={({ field: { value } }) => (
+                                                <Typography className={style.input}>
+                                                    {value}
+                                                </Typography>
+                                            )}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className={style.row}>
+                                    <div className={style.boldText}>
+                                        Pieces/Case
+                                    </div>
+                                    <div className={style.productData}>
+                                        <Controller
+                                            name={"piecespercase"}
                                             control={control}
                                             render={({ field: { value } }) => (
                                                 <Typography className={style.input}>
