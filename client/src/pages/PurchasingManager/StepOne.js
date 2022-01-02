@@ -330,7 +330,6 @@ export default function StepOne(props) {
                                         onChange={(e, option) => {
                                             let data = { ...props.rowData };
                                             data.description = e.target.innerText;
-                                            data.piecespercase = option.piecespercase;
                                             props.onRowDataChange(data);
                                         }}
                                         inputValue={props.value}
@@ -355,12 +354,37 @@ export default function StepOne(props) {
                             {
                                 title: "Pieces Per Cases",
                                 field: "piecespercase",
-                                editable: 'never',
+                                type: 'numeric',
                                 cellStyle: {
                                     padding: "10px 5px 10px 7px",
                                     width: '6%',
                                     textAlign: 'center'
                                 },
+                                editComponent: props =>
+                                    <MuiTextField
+                                        onChange={e => {
+                                            let data = { ...props.rowData };
+                                            data.piecespercase = e.target.value;
+                                            let salesqtycases = isNaN(data.salesqtycases) ? 0 : data.salesqtycases;
+                                            let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
+                                            let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
+                                            let listprice = isNaN(data.listprice) ? 0 : data.listprice;
+                                            data.value = ((salesqtycases * piecespercase) + +salesqtypieces) * listprice;
+                                            props.onRowDataChange(data);
+                                        }}
+                                        type="number"
+                                        helperText={props.helperText}
+                                        error={props.error}
+                                        variant="standard"
+                                        value={props.value}
+                                    />
+                                ,
+                                validate: (rowData) =>
+                                    rowData.piecespercase === undefined
+                                        ? { isValid: false, helperText: 'Required *' }
+                                        : rowData.piecespercase === ''
+                                            ? { isValid: false, helperText: 'Required *' }
+                                            : true
                             },
                             {
                                 field: "listprice",
