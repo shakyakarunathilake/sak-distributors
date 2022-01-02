@@ -4,16 +4,11 @@ import React, { useEffect, useState } from 'react';
 import Page from '../../shared/Page/Page';
 
 //Material UI 
-import { Grid } from '@material-ui/core';
 import { Paper } from '@material-ui/core';
-import { TextField as MuiTextField } from '@material-ui/core';
-import { Typography } from '@material-ui/core';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
-//Material UI Icons
-import DeleteIcon from '@mui/icons-material/Delete';
 
 //Material Table
 import MaterialTable, { MTableToolbar } from 'material-table';
@@ -21,6 +16,9 @@ import MaterialTable, { MTableToolbar } from 'material-table';
 //SCSS styles
 import style from './ManageStore.module.scss';
 import { makeStyles } from '@material-ui/core/styles';
+
+//Axios
+import axios from 'axios';
 
 const useStyles = makeStyles({
     row1: {
@@ -50,16 +48,16 @@ export default function ManageStore() {
     const [data, setData] = useState();
 
     useEffect(() => {
-        setData([{
-            'description': "Khomba Soap",
-            'piecespercase': 10,
-            'price': 55,
-            'qtycases': 45,
-            'qtypieces': 4,
-            'damaged': 5,
-            'return': 11
-        }])
-    }, [setData])
+        axios
+            .get("http://localhost:8080/store/get-all-store-table-data")
+            .then(res => {
+                sessionStorage.setItem("StoreTableData", JSON.stringify(res.data));
+                setData(res.data.tbody);
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }, []);
 
     return (
         <Page title="Manage Store">
@@ -80,65 +78,94 @@ export default function ManageStore() {
                         Header: props => (
                             <TableHead {...props} style={{ position: 'sticky', top: '0', zIndex: 99999 }}>
                                 <TableRow className={classes.row1}>
-                                    <TableCell padding="none" rowSpan={2}>
+                                    <TableCell width="9%" padding="none" rowSpan={2}>
                                         <div style={{ padding: '0 10px' }}>
-                                            Description
+                                            Prod. ID
                                         </div>
                                     </TableCell>
-                                    <TableCell width="10%" padding="none" rowSpan={2}>
+                                    <TableCell width="25%" padding="none" rowSpan={2} align="left">
                                         <div style={{ padding: '0 10px' }}>
-                                            Pieces per Case
+                                            Name
+                                        </div>
+                                    </TableCell>
+                                    <TableCell width="15%" padding="none" rowSpan={2} align="center">
+                                        <div style={{ padding: '0 10px' }}>
+                                            GRN / GIN No.
                                         </div>
                                     </TableCell>
                                     <TableCell width="10%" padding="none" rowSpan={2} align="center">
                                         <div style={{ padding: '0 10px' }}>
-                                            Price
+                                            Date
+                                        </div>
+                                    </TableCell>
+                                    <TableCell width="5%" padding="none" rowSpan={2} align="center">
+                                        <div style={{ padding: '0 10px' }}>
+                                            Pieces / Case
                                         </div>
                                     </TableCell>
                                     <TableCell padding="none" colSpan={2} align="center">
-                                        Quantity
+                                        Sales Qty.
                                     </TableCell>
-                                    <TableCell padding="none" width="10%" rowSpan={2} align="center">
-                                        <div style={{ padding: '0 10px' }}>
-                                            Damaged
-                                        </div>
+                                    <TableCell padding="none" colSpan={2} align="center">
+                                        Free Qty.
                                     </TableCell>
-                                    <TableCell padding="none" width="10%" rowSpan={2} align="center">
-                                        <div style={{ padding: '0 10px' }}>
-                                            Return
-                                        </div>
+                                    <TableCell padding="none" colSpan={2} align="center">
+                                        Return Qty.
                                     </TableCell>
                                 </TableRow>
                                 <TableRow className={classes.row2}>
-                                    <TableCell width="10%" padding="none" align="center">Cases</TableCell>
-                                    <TableCell width="10%" padding="none" align="center">Pieces</TableCell>
+                                    <TableCell width="6%" padding="none" align="center">Cs</TableCell>
+                                    <TableCell width="6%" padding="none" align="center">Pcs</TableCell>
+                                    <TableCell width="6%" padding="none" align="center">Cs</TableCell>
+                                    <TableCell width="6%" padding="none" align="center">Pcs</TableCell>
+                                    <TableCell width="6%" padding="none" align="center">R</TableCell>
+                                    <TableCell width="6%" padding="none" align="center">D</TableCell>
                                 </TableRow>
                             </TableHead>
                         ),
                     }}
                     columns={[
                         {
-                            field: "description",
-                            editable: 'never',
+                            field: "productid",
+                            render: rowData => {
+                                return (
+                                    <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.productid}</p>
+                                )
+                            },
                             cellStyle: {
                                 padding: "10px 7px 10px 7px",
-                                width: '30%',
+                                width: '9%',
                                 textAlign: 'left'
+                            }
+                        },
+                        {
+                            field: "name",
+                            cellStyle: {
+                                padding: "10px 7px 10px 7px",
+                                width: '25%',
+                                textAlign: 'left'
+                            }
+                        },
+                        {
+                            field: "grnginnumber",
+                            cellStyle: {
+                                padding: "10px 7px 10px 7px",
+                                width: '15%',
+                                textAlign: 'left'
+                            }
+                        },
+                        {
+                            field: "date",
+                            type: 'numeric',
+                            cellStyle: {
+                                padding: "10px 7px 10px 7px",
+                                width: '10%',
+                                textAlign: 'right'
                             }
                         },
                         {
                             field: "piecespercase",
-                            editable: 'never',
-                            cellStyle: {
-                                padding: "10px 7px 10px 7px",
-                                width: '5%',
-                                textAlign: 'left'
-                            }
-                        },
-                        {
-                            field: "price",
                             type: 'numeric',
-                            editable: 'never',
                             cellStyle: {
                                 padding: "10px 7px 10px 7px",
                                 width: '5%',
@@ -146,31 +173,46 @@ export default function ManageStore() {
                             }
                         },
                         {
-                            field: "qtycases",
+                            field: "salesqtycases",
                             type: 'numeric',
-                            editable: 'never',
                             cellStyle: {
-                                padding: "10px 7px 10px 7px",
-                                width: '5%',
-                                textAlign: 'right'
-                            }
-                        },
-                        {
-                            field: "qtypieces",
-                            type: 'numeric',
-                            editable: 'never',
-                            cellStyle: {
-                                width: '5%',
+                                width: '6%',
                                 padding: "10px 7px 10px 7px",
                                 textAlign: 'right'
                             }
                         },
                         {
-                            field: "return",
+                            field: "salesqtypieces",
                             type: 'numeric',
-                            editable: 'never',
                             cellStyle: {
-                                width: '5%',
+                                width: '6%',
+                                padding: "10px 7px 10px 7px",
+                                textAlign: 'right'
+                            }
+                        },
+                        {
+                            field: "freeqtycases",
+                            type: 'numeric',
+                            cellStyle: {
+                                width: '6%',
+                                padding: "10px 7px 10px 7px",
+                                textAlign: 'right'
+                            }
+                        },
+                        {
+                            field: "freeqtypieces",
+                            type: 'numeric',
+                            cellStyle: {
+                                width: '6%',
+                                padding: "10px 7px 10px 7px",
+                                textAlign: 'right'
+                            }
+                        },
+                        {
+                            field: "returned",
+                            type: 'numeric',
+                            cellStyle: {
+                                width: '6%',
                                 padding: "10px 7px 10px 7px",
                                 textAlign: 'right'
                             }
@@ -178,9 +220,8 @@ export default function ManageStore() {
                         {
                             field: "damaged",
                             type: 'numeric',
-                            editable: 'never',
                             cellStyle: {
-                                width: '5%',
+                                width: '6%',
                                 padding: "10px 7px 10px 7px",
                                 textAlign: 'right'
                             }
