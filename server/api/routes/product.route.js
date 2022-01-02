@@ -148,12 +148,16 @@ router.post("/create-product", uploads.single("productimage"), (req, res, next) 
                     console.log("STORE UPDATED AS: ", result)
                 })
                 .catch(err => {
+                    console.log("Error: ", err)
                     res.status(200).json({
                         type: 'error',
                         alert: `Something went wrong. Could not update store`
                     });
-                    console.log("Error: ", err)
-                })
+                });
+
+            return result;
+        })
+        .then(result => {
 
             res.status(201).json({
                 message: "Handeling POST requests to /products/create-product, PRODUCT SAVED",
@@ -161,6 +165,7 @@ router.post("/create-product", uploads.single("productimage"), (req, res, next) 
                 alert: `${result.name} (${result.productid}) added`,
                 addedProduct: result,
             })
+            
         })
         .catch(err => {
             res.status(200).json({
