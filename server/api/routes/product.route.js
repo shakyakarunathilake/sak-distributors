@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const multer = require("multer");
 
 const Product = require("../models/product.model");
+const Store = require("../models/store.model");
 
 const storage = multer.diskStorage({
     destination: function (req, file, callback) {
@@ -134,7 +135,25 @@ router.post("/create-product", uploads.single("productimage"), (req, res, next) 
         .save()
         .then(result => {
 
-            console.log("Product Created: ", result);
+            const store = new Store({
+                _id: mongoose.Types.ObjectId(),
+                productid: result.productid,
+                name: result.name,
+            })
+
+            store
+                .save()
+                .then(result => {
+                    console.log("****  STORE UPDATED  ****")
+                    console.log("STORE UPDATED AS: ", result)
+                })
+                .catch(err => {
+                    res.status(200).json({
+                        type: 'error',
+                        alert: `Something went wrong. Could not update store`
+                    });
+                    console.log("Error: ", err)
+                })
 
             res.status(201).json({
                 message: "Handeling POST requests to /products/create-product, PRODUCT SAVED",
@@ -165,6 +184,7 @@ router.post("/add-new-variant/:productid", uploads.single("productimage"), (req,
                     'variants': {
                         'variantid': req.body.variantid,
                         'type': req.body.type,
+                        'piecespercase': req.body.piecespercase,
                         'bulkprice': req.body.bulkprice,
                         'mrp': req.body.mrp,
                         'sellingprice': req.body.sellingprice,
@@ -319,6 +339,7 @@ router.post("/update-by-id/:productid/:variantid", uploads.single("productimage"
                     'productid': req.body.productid,
                     'status': req.body.productstatus,
                     'variants.$.type': req.body.type,
+                    'variants.$.piecespercase': req.body.piecespercase,
                     'variants.$.bulkprice': req.body.bulkprice,
                     'variants.$.mrp': req.body.mrp,
                     'variants.$.price': req.body.price,
