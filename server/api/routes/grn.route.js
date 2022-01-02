@@ -134,41 +134,50 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
                 )
                 .exec()
                 .then(doc => {
-
-                    console.log("PURCHASE ORDER ADDED: ", doc)
-
-                    MetaData
-                        .findOneAndUpdate(
-                            {},
-                            {
-                                $pull: {
-                                    'awaitinggrndata': {
-                                        'ponumber': doc.ponumber
-                                    }
-                                }
-                            },
-                            { upsert: true }
-                        )
-                        .exec()
-                        .then(result =>
-                            console.log("META DATA ADDED: ", result)
-                        )
-                        .catch(err => {
-                            console.log(err);
-                            res.status(200).json({
-                                type: 'error',
-                                alert: `Something went wrong. Could not update Meta Data `,
-                            })
-                        })
+                    console.log("****** PURCHASE ORDER UPDATED ******");
+                    console.log(doc);
                 })
                 .catch(err => {
+                    console.log(err);
                     res.status(200).json({
                         type: 'error',
                         alert: `Something went wrong. Could not update relevant Purchase Order `,
                     });
-                    console.log(err);
-                })
+                });
 
+            return doc;
+
+        })
+        .then(doc => {
+
+            MetaData
+                .findOneAndUpdate(
+                    {},
+                    {
+                        $pull: {
+                            'awaitinggrndata': {
+                                'ponumber': doc.ponumber
+                            }
+                        }
+                    },
+                    { upsert: true }
+                )
+                .exec()
+                .then(doc => {
+                    console.log("****** META DATA ADDED ******");
+                    console.log(doc);
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.status(200).json({
+                        type: 'error',
+                        alert: `Something went wrong. Could not update Meta Data `,
+                    })
+                });
+
+            return doc;
+        })
+        .then(doc => {
             res.status(200).json({
                 message: "Handling POST requests to /grn/update-by-id/:grnnumber, GRN UPDATED",
                 type: 'success',
@@ -176,11 +185,11 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
             });
         })
         .catch(err => {
+            console.log(err);
             res.status(200).json({
                 type: 'error',
                 alert: `Something went wrong. Could not update GRN`,
             });
-            console.log(err);
         });
 });
 
