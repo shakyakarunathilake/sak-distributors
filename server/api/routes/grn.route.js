@@ -6,6 +6,7 @@ const multer = require("multer");
 const MetaData = require("../models/metadata.model")
 const PurchaseOrder = require("../models/purchaseorder.model");
 const GRN = require("../models/grn.model");
+const Store = require("../models/store.model");
 
 const formDataBody = multer();
 
@@ -96,7 +97,6 @@ router.get("/:grnnumber", (req, res, next) => {
 
 //Update GRN by GRN Number
 router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, res, next) => {
-    console.log("UPDATE: ", req.body);
 
     const items = JSON.parse(req.body.items);
 
@@ -116,64 +116,106 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
             { upsert: true }
         )
         .exec()
+        // .then(doc => {
+
+        //     PurchaseOrder
+        //         .findOneAndUpdate(
+        //             { "ponumber": doc.ponumber },
+        //             {
+        //                 '$set': {
+        //                     'status': 'Delivered',
+        //                 }
+        //             },
+        //             { upsert: true }
+        //         )
+        //         .exec()
+        //         .then(doc => {
+        //             console.log("******** GRN COMPLETE PURCHASE ORDER UPDATED ********");
+        //         })
+        //         .catch(err => {
+        //             console.log("******** GRN COMPLETE PURCHASE ORDER UPDATE ERROR ********");
+        //             console.log(err);
+
+        //             res.status(200).json({
+        //                 type: 'error',
+        //                 alert: `Something went wrong. Could not update relevant Purchase Order `,
+        //             });
+        //         });
+
+        //     return doc;
+
+        // })
+        // .then(doc => {
+
+        //     MetaData
+        //         .findOneAndUpdate(
+        //             {},
+        //             {
+        //                 $pull: {
+        //                     'noofawaitinggrn': {
+        //                         'ponumber': doc.ponumber
+        //                     }
+        //                 }
+        //             },
+        //             { upsert: true }
+        //         )
+        //         .exec()
+        //         .then(doc => {
+        //             console.log("******** GRN COMPLETE META DATA ADDED ********");
+        //         })
+        //         .catch(err => {
+        //             console.log("******** GRN COMPLETE META DATA ERROR ********");
+        //             console.log(err);
+
+        //             res.status(200).json({
+        //                 type: 'error',
+        //                 alert: `Something went wrong. Could not update Meta Data `,
+        //             })
+        //         });
+
+        //     return doc;
+        // })
         .then(doc => {
 
-            PurchaseOrder
-                .findOneAndUpdate(
-                    { "ponumber": doc.ponumber },
-                    {
-                        '$set': {
-                            'status': 'Delivered',
-                        }
-                    },
-                    { upsert: true }
-                )
-                .exec()
-                .then(doc => {
-                    console.log("****** PURCHASE ORDER UPDATED ******");
-                    console.log(doc);
-                })
-                .catch(err => {
-                    console.log(err);
-                    res.status(200).json({
-                        type: 'error',
-                        alert: `Something went wrong. Could not update relevant Purchase Order `,
-                    });
-                });
+            doc.items.map(item => {
 
-            return doc;
-
-        })
-        .then(doc => {
-
-            MetaData
-                .findOneAndUpdate(
-                    {},
-                    {
-                        $pull: {
-                            'awaitinggrndata': {
-                                'ponumber': doc.ponumber
+                Store
+                    .findOneAndUpdate(
+                        { name: item.description },
+                        {
+                            $inc: { 'storequantity.$.salesqtycases': parseInt(item.salesqtycases) },
+                            $inc: { 'storequantity.$.salesqtypieces': parseInt(item.salesqtypieces) },
+                            $inc: { 'storequantity.$.freeqtypieces': parseInt(item.freeqtypieces) },
+                            $inc: { 'storequantity.$.freeqtycases': parseInt(item.freeqtycases) },
+                            $push: {
+                                'grngin': {
+                                    'grnnumberginnumber': doc.grnnumber,
+                                    'date': req.body.createdat,
+                                    'piecespercase': item.piecespercase,
+                                    'price': item.listprice,
+                                    'salesqtycases': item.salesqtycases,
+                                    'salesqtypieces': item.salesqtypieces,
+                                    'freeqtycases': item.freeqtycases,
+                                    'freeqtypieces': item.freeqtypieces,
+                                }
                             }
-                        }
-                    },
-                    { upsert: true }
-                )
-                .exec()
-                .then(doc => {
-                    console.log("****** META DATA ADDED ******");
-                    console.log(doc);
-                })
-                .catch(err => {
-                    console.log(err);
-                    res.status(200).json({
-                        type: 'error',
-                        alert: `Something went wrong. Could not update Meta Data `,
+                        },
+                        { new: true }
+                    )
+                    .exec()
+                    .then(doc => {
+                        console.log("******** ITEMS ADDED TO STORE ********");
+                        console.log(doc);
                     })
-                });
+                    .catch(err => {
+                        res.status(200).json({
+                            type: 'error',
+                            alert: `Something went wrong. Could not update store`,
+                        });
+                        console.log(err);
+                    })
+            })
 
-            return doc;
-        })
-        .then(doc => {
             res.status(200).json({
                 message: "Handling POST requests to /grn/update-by-id/:grnnumber, GRN UPDATED",
                 type: 'success',
