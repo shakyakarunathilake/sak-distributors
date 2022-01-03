@@ -87,6 +87,7 @@ export default function ManageProduct() {
         for (let [key, value] of product.entries()) {
             console.log(key, value);
         }
+
         if (action === "Create") {
             axios
                 .post("http://localhost:8080/products/create-product", product)
@@ -100,8 +101,9 @@ export default function ManageProduct() {
                     console.log(err);
                 });
             ;
+        }
 
-        } if (action === "Edit") {
+        if (action === "Edit") {
             axios
                 .post(`http://localhost:8080/products/update-by-id/${productid}`, product)
                 .then(res => {
@@ -140,7 +142,8 @@ export default function ManageProduct() {
                 });
             ;
             setOpenPopup(false);
-        } else {
+        }
+        else {
             axios
                 .post(`http://localhost:8080/products/update-by-id/${productid}/${variantid}`, product)
                 .then(res => {
@@ -318,7 +321,7 @@ export default function ManageProduct() {
                             search: false,
                             paging: false,
                             actionsColumnIndex: -1,
-                            maxBodyHeight: JSON.parse(sessionStorage.getItem("Auth")).designation !== 'Purchasing Manager' ? "calc(100vh - 126px)" :"calc(100vh - 199.27px)",
+                            maxBodyHeight: JSON.parse(sessionStorage.getItem("Auth")).designation !== 'Purchasing Manager' ? "calc(100vh - 126px)" : "calc(100vh - 199.27px)",
                             headerStyle: {
                                 position: "sticky",
                                 top: "0",
