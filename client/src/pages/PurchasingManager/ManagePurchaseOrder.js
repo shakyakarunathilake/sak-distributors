@@ -41,6 +41,8 @@ export default function ManagePurchaseOrder() {
     const [supplierOptions, setSupplierOptions] = useState([]);
     const [productOptions, setProductOptions] = useState([]);
 
+    const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
+
     const handleAlert = () => {
         setOpen(true);
     };
@@ -122,7 +124,7 @@ export default function ManagePurchaseOrder() {
             ;
         }
 
-        if (JSON.parse(sessionStorage.getItem("Auth")).designation === 'Distributor' && action === "Edit") {
+        if (designation === 'Distributor' && action === "Edit") {
             axios
                 .post(`http://localhost:8080/purchaseorder/approve-by-ponumber/${ponumber}`, purchaseorder)
                 .then(res => {
@@ -163,7 +165,7 @@ export default function ManagePurchaseOrder() {
         <Page title="Manage Purchase Order">
             <div className={style.container}>
 
-                <div className={style.actionRow}>
+                <div className={designation === "Distributor" ? style.hidden : style.actionRow}>
 
                     <Button
                         className={style.button}
