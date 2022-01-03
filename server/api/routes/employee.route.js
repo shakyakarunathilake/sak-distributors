@@ -119,7 +119,6 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
                             message: "Handling POST requests to /employees/create-employee, EMPLOYEE SAVED",
                             type: 'success',
                             alert: `${result.firstname} ${result.lastname} added`,
-                            addedEmployee: result
                         });
                     })
                     .catch(err => {
@@ -163,7 +162,6 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
                     message: "Handling POST requests to /employees/create-employee, EMPLOYEE SAVED",
                     type: 'success',
                     alert: `${result.firstname} ${result.lastname} added`,
-                    addedEmployee: result
                 });
             })
             .catch(err => {
@@ -260,7 +258,7 @@ router.get("/:employeeid", (req, res, next) => {
 //Update employee data by Employee ID
 router.post("/update-by-id/:employeeid", uploads.single('employeeimage'), (req, res, next) => {
     console.log("UPDATE: ", req.body);
-    // formDataBody.fields([])
+
     Employee
         .findOneAndUpdate({ employeeid: req.params.employeeid }, req.body, { new: true })
         .exec()
