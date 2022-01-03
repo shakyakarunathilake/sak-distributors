@@ -143,6 +143,38 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
             return result;
 
         })
+        .then(result => {
+
+            result.ordernumbers.map(order => {
+
+                MetaData
+                    .findOneAndUpdate(
+                        {},
+                        {
+                            $pull: {
+                                'noofcustomerorders': {
+                                    'orderno': order
+                                }
+                            }
+                        },
+                        { upsert: true }
+                    )
+                    .exec()
+                    .then(doc => {
+                        console.log("****** META DATA ADDED ******");
+                        console.log(doc);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        res.status(200).json({
+                            type: 'error',
+                            alert: `Something went wrong. Could not update Meta Data `,
+                        })
+                    });
+            })
+
+            return result;
+        })
         .then(result =>
             res.status(201).json({
                 message: "Handeling POST requests to /gin/create-gin, GIN CREATED",
