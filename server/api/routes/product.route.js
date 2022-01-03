@@ -115,9 +115,6 @@ router.get("/get-next-productid", (req, res, next) => {
 //Create a product
 router.post("/create-product", uploads.single("productimage"), (req, res, next) => {
 
-    console.log("Body: ", req.body);
-    console.log("Added Date: ", req.body.addeddate);
-
     const addeddate = new Date(req.body.addeddate).toISOString().split('T')[0];
 
     const product = new Product({
@@ -139,16 +136,27 @@ router.post("/create-product", uploads.single("productimage"), (req, res, next) 
                 _id: mongoose.Types.ObjectId(),
                 productid: result.productid,
                 name: result.name,
+                storequantity: [{
+                    salesqtycases: 0,
+                    salesqtypieces: 0,
+                    freeqtycases: 0,
+                    freeqtypieces: 0,
+                }]
             })
 
             store
                 .save()
                 .then(result => {
-                    console.log("****  STORE UPDATED  ****")
-                    console.log("STORE UPDATED AS: ", result)
+
+                    console.log("********  STORE UPDATED  ********")
+                    console.log(result)
+
                 })
-                .catch(err => {
-                    console.log("Error: ", err)
+                .catch(error => {
+
+                    console.log("******** ERROR WHILE UPDATING THE STORE  ********")
+                    console.log(error)
+
                     res.status(200).json({
                         type: 'error',
                         alert: `Something went wrong. Could not update store`
