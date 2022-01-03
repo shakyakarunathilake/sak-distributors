@@ -61,7 +61,6 @@ router.get("/get-next-orderno", (req, res, next) => {
 //Create a order
 router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
 
-    console.log("PURCHASE ORDER Body: ", req.body);
     const items = JSON.parse(req.body.items);
 
     const order = new Order({
@@ -94,7 +93,7 @@ router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
                     {},
                     {
                         $push: {
-                            'customerorders': {
+                            'noofcustomerorders': {
                                 'orderno': result.orderno,
                                 'route': result.route,
                                 'status': result.status

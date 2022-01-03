@@ -50,7 +50,6 @@ router.get("/get-all-purchaseorder-table-data", (req, res, next) => {
 //Create a purchaseorder
 router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) => {
 
-    console.log("PURCHASE ORDER Body: ", req.body);
     const items = JSON.parse(req.body.items);
 
     const purchaseorder = new PurchaseOrder({
@@ -82,7 +81,7 @@ router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) =
                     {},
                     {
                         $push: {
-                            'purchaseorderapprovaldata': {
+                            'noofpurchaseordertobeapproved': {
                                 'ponumber': result.ponumber,
                                 'createdat': result.createdat,
                                 'createdby': result.createdby
@@ -92,7 +91,9 @@ router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) =
                     { upsert: true }
                 )
                 .exec()
-                .then(result => { console.log("META DATA ADDED: ", result) })
+                .then(result => {
+                    // console.log("******** CREATE PURCHASE ORDER METADATA ADDED ********")
+                })
                 .catch(err => {
                     console.log(err);
                     res.status(500).json({ "Error": err });
@@ -162,8 +163,6 @@ router.get("/:ponumber", (req, res, next) => {
 //Update purchase order details by po number
 router.post("/update-by-ponumber/:ponumber", formDataBody.fields([]), (req, res, next) => {
 
-    console.log("UPDATE:", req.body);
-
     const items = JSON.parse(req.body.items);
 
     PurchaseOrder
@@ -194,8 +193,6 @@ router.post("/update-by-ponumber/:ponumber", formDataBody.fields([]), (req, res,
 
 //Update purchase order details by po number
 router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res, next) => {
-
-    console.log("APPROVE PURCHASE ORDER:", req.body);
 
     const items = JSON.parse(req.body.items);
 
@@ -230,10 +227,11 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
             grn
                 .save()
                 .then(result => {
-                    console.log("GRN ADDED: ", result)
+                    // console.log("********  APPROVE PURCHASE ORDER ********")
                 })
                 .catch(err => {
-                    console.log("GRN ERROR: ", err);
+                    console.log("********  APPROVE PURCHASE ORDER GRN ERROR ********")
+                    console.log(err)
                 })
 
             return result;
@@ -246,14 +244,14 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
                     {},
                     {
                         $push: {
-                            'awaitinggrndata': {
+                            'noofawaitinggrn': {
                                 'ponumber': result.ponumber,
-                                'grnnumber': result.grnnumber,
+                                'grnnumber': `GRN-${result.ponumber}`,
                                 'status': result.status,
                             }
                         },
                         $pull: {
-                            'purchaseorderapprovaldata': {
+                            'noofpurchaseordertobeapproved': {
                                 'ponumber': result.ponumber
                             }
                         }
@@ -261,12 +259,13 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
                     { upsert: true }
                 )
                 .exec()
-                .then(result =>
-                    console.log("META DATA ADDED: ", result)
-                )
-                .catch(err =>
-                    console.log("META DATA ERROR: ", err)
-                )
+                .then(result => {
+                    // console.log("********  APPROVE PURCHASE ORDER METADATA ADDED ********")
+                })
+                .catch(err => {
+                    console.log("********  APPROVE PURCHASE ORDER METADATA ERROR ********")
+                    console.log(err)
+                })
 
             return result;
         })
@@ -280,7 +279,7 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
         .catch(err => {
             res.status(200).json({
                 type: 'error',
-                alert: `Something went wrong. Could not update purchase order`,
+                alert: `Something went wrong. Could not approve purchase order`,
             });
             console.log(err);
         });
