@@ -78,14 +78,23 @@ export default function ManageStore() {
                         Header: props => (
                             <TableHead {...props} style={{ position: 'sticky', top: '0', zIndex: 99999 }}>
                                 <TableRow className={classes.row1}>
-                                    <TableCell width="9%" padding="none" rowSpan={2}>
+                                    <TableCell width="3%" padding="none" rowSpan={2}>
+                                        <div style={{ padding: '0 10px' }}>
+                                        </div>
+                                    </TableCell>
+                                    <TableCell width="10%" padding="none" rowSpan={2}>
                                         <div style={{ padding: '0 10px' }}>
                                             Prod. ID
                                         </div>
                                     </TableCell>
-                                    <TableCell width="25%" padding="none" rowSpan={2} align="left">
+                                    <TableCell width="28%" padding="none" rowSpan={2} align="left">
                                         <div style={{ padding: '0 10px' }}>
                                             Name
+                                        </div>
+                                    </TableCell>
+                                    <TableCell width="5%" padding="none" rowSpan={2} align="left">
+                                        <div style={{ padding: '0 10px' }}>
+                                            Unit Price
                                         </div>
                                     </TableCell>
                                     <TableCell width="15%" padding="none" rowSpan={2} align="center">
@@ -109,17 +118,17 @@ export default function ManageStore() {
                                     <TableCell padding="none" colSpan={2} align="center">
                                         Free Qty.
                                     </TableCell>
-                                    <TableCell padding="none" colSpan={2} align="center">
+                                    {/* <TableCell padding="none" colSpan={2} align="center">
                                         Return Qty.
-                                    </TableCell>
+                                    </TableCell> */}
                                 </TableRow>
                                 <TableRow className={classes.row2}>
                                     <TableCell width="6%" padding="none" align="center">Cs</TableCell>
                                     <TableCell width="6%" padding="none" align="center">Pcs</TableCell>
                                     <TableCell width="6%" padding="none" align="center">Cs</TableCell>
                                     <TableCell width="6%" padding="none" align="center">Pcs</TableCell>
-                                    <TableCell width="6%" padding="none" align="center">R</TableCell>
-                                    <TableCell width="6%" padding="none" align="center">D</TableCell>
+                                    {/* <TableCell width="6%" padding="none" align="center">R</TableCell> */}
+                                    {/* <TableCell width="6%" padding="none" align="center">D</TableCell> */}
                                 </TableRow>
                             </TableHead>
                         ),
@@ -134,7 +143,7 @@ export default function ManageStore() {
                             },
                             cellStyle: {
                                 padding: "10px 7px 10px 7px",
-                                width: '9%',
+                                width: '10%',
                                 textAlign: 'left'
                             }
                         },
@@ -142,12 +151,20 @@ export default function ManageStore() {
                             field: "name",
                             cellStyle: {
                                 padding: "10px 7px 10px 7px",
-                                width: '25%',
+                                width: '28%',
                                 textAlign: 'left'
                             }
                         },
                         {
-                            field: "grnginnumber",
+                            field: "price",
+                            cellStyle: {
+                                padding: "10px 7px 10px 7px",
+                                width: '5%',
+                                textAlign: 'left'
+                            }
+                        },
+                        {
+                            field: "grnnumberginnumber",
                             cellStyle: {
                                 padding: "10px 7px 10px 7px",
                                 width: '15%',
@@ -208,26 +225,27 @@ export default function ManageStore() {
                                 textAlign: 'right'
                             }
                         },
-                        {
-                            field: "returned",
-                            type: 'numeric',
-                            cellStyle: {
-                                width: '6%',
-                                padding: "10px 7px 10px 7px",
-                                textAlign: 'right'
-                            }
-                        },
-                        {
-                            field: "damaged",
-                            type: 'numeric',
-                            cellStyle: {
-                                width: '6%',
-                                padding: "10px 7px 10px 7px",
-                                textAlign: 'right'
-                            }
-                        },
+                        // {
+                        //     field: "returned",
+                        //     type: 'numeric',
+                        //     cellStyle: {
+                        //         width: '6%',
+                        //         padding: "10px 7px 10px 7px",
+                        //         textAlign: 'right'
+                        //     }
+                        // },
+                        // {
+                        //     field: "damaged",
+                        //     type: 'numeric',
+                        //     cellStyle: {
+                        //         width: '6%',
+                        //         padding: "10px 7px 10px 7px",
+                        //         textAlign: 'right'
+                        //     }
+                        // },
                     ]}
                     data={data}
+                    parentChildData={(row, rows) => rows.find(a => a.id === row.parentid)}
                     options={{
                         addRowPosition: "first",
                         toolbar: false,
