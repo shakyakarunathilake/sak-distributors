@@ -78,7 +78,6 @@ router.post("/create-customer", formDataBody.fields([]), (req, res, next) => {
                 message: "Handeling POST requests to /customers/create-customer, CUSTOMER SAVED",
                 type: 'success',
                 alert: `${result.storename} added`,
-                addedCustomer: result
             });
         })
         .catch(err => {
@@ -195,7 +194,6 @@ router.post("/update-by-id/:customerid", formDataBody.fields([]), (req, res, nex
                 message: "Handling POST requests to /customers/update-by-id/:customerid, CUSTOMER UPDATED",
                 type: 'success',
                 alert: `${doc.firstname} ${doc.lastname} updated`,
-                updatedCustomer: doc
             });
         })
         .catch(err => {
