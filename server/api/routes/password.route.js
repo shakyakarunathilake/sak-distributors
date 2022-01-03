@@ -67,12 +67,12 @@ router.post("/forgot-password", (req, res, next) => {
     Employee
         .find({ email: req.body.email })
         .exec()
-        .then(employee => {
+        .then(employee =>
             res.status(200).json({
                 type: "success",
                 message: `Hi ${employee[0].firstname} ${employee[0].lastname}. The reset instruction has been sent to your email address. Have a nice day`
-            });
-        })
+            })
+        )
         .catch(err => {
             console.log(err);
             res.status(500).json({

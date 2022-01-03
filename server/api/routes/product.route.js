@@ -157,16 +157,15 @@ router.post("/create-product", uploads.single("productimage"), (req, res, next) 
 
             return result;
         })
-        .then(result => {
+        .then(result =>
 
             res.status(201).json({
                 message: "Handeling POST requests to /products/create-product, PRODUCT SAVED",
                 type: 'success',
                 alert: `${result.name} (${result.productid}) added`,
-                addedProduct: result,
             })
-            
-        })
+
+        )
         .catch(err => {
             res.status(200).json({
                 type: 'error',
@@ -204,14 +203,13 @@ router.post("/add-new-variant/:productid", uploads.single("productimage"), (req,
             { upsert: true }
         )
         .exec()
-        .then(doc => {
+        .then(doc =>
             res.status(200).json({
                 message: "Handling POST requests to /products/add-new-variant/:productid , VARIANT SAVED",
                 type: 'success',
                 alert: `${doc.name} (${doc.productid}): ${req.body.variantid} added`,
-                addedVariant: doc
-            });
-        })
+            })
+        )
         .catch(err => {
             res.status(200).json({
                 type: 'error',
@@ -317,13 +315,13 @@ router.post("/update-by-id/:productid", uploads.single("productimage"), (req, re
             { upsert: true }
         )
         .exec()
-        .then(doc => {
+        .then(doc =>
             res.status(200).json({
                 message: "Handling POST requests to /products/update-by-id/:productid, PRODUCT UPDATED",
                 type: 'success',
                 alert: `${doc.name} (${doc.productid}) Updated`,
-            });
-        })
+            })
+        )
         .catch(err => {
             res.status(200).json({
                 type: 'error',
@@ -357,14 +355,13 @@ router.post("/update-by-id/:productid/:variantid", uploads.single("productimage"
             { upsert: true }
         )
         .exec()
-        .then(doc => {
+        .then(doc =>
             res.status(200).json({
                 message: "Handling POST requests to /products/update-by-id/:productid, PRODUCT UPDATED",
                 type: 'success',
                 alert: `${doc.name} (${doc.productid}) : ${req.params.variantid} Updated`,
-                updatedProduct: doc
-            });
-        })
+            })
+        )
         .catch(err => {
             res.status(200).json({
                 type: 'error',

@@ -140,12 +140,16 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
                     });
             })
 
+            return result;
+
+        })
+        .then(result =>
             res.status(201).json({
                 message: "Handeling POST requests to /gin/create-gin, GIN CREATED",
                 type: 'success',
                 alert: `${result.ginnumber} added`,
-            });
-        })
+            })
+        )
         .catch(err => {
 
             console.log("CREATE GIN ERROR: ", err);
@@ -172,13 +176,13 @@ router.post("/update-by-ginnumber/:ginnumber", formDataBody.fields([]), (req, re
             { upsert: true }
         )
         .exec()
-        .then(doc => {
+        .then(doc =>
             res.status(200).json({
                 message: "Handling POST requests to /gin/update-by-id/:ginnumber, GIN UPDATED",
                 type: 'success',
                 alert: `${doc.ginnumber} updated`,
-            });
-        })
+            })
+        )
         .catch(err => {
             res.status(200).json({
                 type: 'error',
@@ -233,12 +237,15 @@ router.post("/approve-dispatch/:ginnumber", formDataBody.fields([]), (req, res, 
 
             });
 
+            return doc;
+        })
+        .then(doc =>
             res.status(200).json({
                 message: "Handling POST requests to /gin/approve-dispatch/:ginnumber, GIN STATUS CHANGED TO DISPATCHED",
                 type: 'success',
                 alert: `${doc.ginnumber} status updated`,
-            });
-        })
+            })
+        )
         .catch(err => {
             res.status(200).json({
                 type: 'error',
@@ -263,13 +270,13 @@ router.post("/approve-complete/:ginnumber", formDataBody.fields([]), (req, res, 
             { upsert: true }
         )
         .exec()
-        .then(doc => {
+        .then(doc =>
             res.status(200).json({
                 message: "Handling POST requests to /gin/approve-complete/:ginnumber, GIN STATUS CHANGED TO COMPLETED",
                 type: 'success',
                 alert: `${doc.ginnumber} status updated`,
-            });
-        })
+            })
+        )
         .catch(err => {
             res.status(200).json({
                 type: 'error',

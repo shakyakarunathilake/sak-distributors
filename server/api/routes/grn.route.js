@@ -31,8 +31,6 @@ router.get("/get-all-grn-table-data", (req, res, next) => {
                 status: x.status,
             }))
 
-            console.log("TBODY: ", tbody);
-
             res.status(201).json({
                 message: "Handeling GET requests to /get-all-grn-table-data",
                 tbody: tbody,
@@ -84,8 +82,6 @@ router.get("/:grnnumber", (req, res, next) => {
                     }
                 ]
             }
-
-            console.log("GRN RECORDS: ", grn);
 
             res.status(200).json({
                 message: "Handeling GET requests to /:grnnumber",

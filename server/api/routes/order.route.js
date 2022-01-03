@@ -117,12 +117,15 @@ router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
                     });
                 })
 
+            return result;
+        })
+        .then(result =>
             res.status(201).json({
                 message: "Handeling POST requests to /orders/create-order, ORDER CREATED",
                 type: 'success',
                 alert: `${result.orderno} added`,
             })
-        })
+        )
         .catch(error => {
 
             console.log("ORDER ERROR: ", error)
