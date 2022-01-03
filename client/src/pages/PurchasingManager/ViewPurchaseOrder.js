@@ -60,7 +60,7 @@ export default function ViewPurchaseOrder(props) {
             <div className={style.header}>
 
                 <div>
-                    Create Purchase Order
+                    View Purchase Order
                 </div>
                 <div>
                     <HighlightOffIcon
