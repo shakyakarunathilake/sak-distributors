@@ -26,7 +26,7 @@ export default function GINForm(props) {
     const { formState: { isValid, errors }, control, watch, getValues, trigger, setValue, handleSubmit } = useForm({
         mode: "onChange",
         defaultValues: {
-            ginnumber: GINRecords ? GINRecords.ginnumber : `GIN${ginTime}`,
+            ginnumber: GINRecords ? GINRecords.ginnumber : `GIN-${ginTime}`,
             createdat: GINRecords ? GINRecords.createdat : dateTime,
             createdby: GINRecords ? GINRecords.createdby : `${firstname} ${lastname} (${employeeid})`,
             route: GINRecords ? GINRecords.route : '',
