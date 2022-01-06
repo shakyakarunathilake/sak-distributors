@@ -286,29 +286,68 @@ export default function ManageProduct() {
                     <MaterialTable
                         columns={[
                             {
-                                title: "Product ID", field: "productid", render: rowData => {
+                                title: "Product ID",
+                                field: "productid",
+                                render: rowData => {
                                     return (
                                         <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.productid}</p>
                                     )
+                                },
+                                cellStyle: {
+                                    width: "10%",
+                                    textAlign: 'left'
                                 }
                             },
                             {
-                                title: "Variant ID", field: "variantid", render: rowData => {
+                                title: "Variant ID",
+                                field: "variantid",
+                                render: rowData => {
                                     return (
                                         <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.variantid}</p>
                                     )
+                                },
+                                cellStyle: {
+                                    width: "10%",
+                                    textAlign: 'left'
                                 }
                             },
-                            { title: "Name", field: "name" },
-                            { title: "Supplier", field: "supplier" },
-                            { title: "Type", field: "type" },
                             {
-                                title: "Status", field: "status", render: rowData => {
+                                title: "Name",
+                                field: "name",
+                                cellStyle: {
+                                    width: "37%",
+                                    textAlign: 'left'
+                                }
+                            },
+                            {
+                                title: "Supplier",
+                                field: "supplier",
+                                cellStyle: {
+                                    width: "15%",
+                                    textAlign: 'left'
+                                }
+                            },
+                            {
+                                title: "Type",
+                                field: "type",
+                                cellStyle: {
+                                    width: "10%",
+                                    textAlign: 'left'
+                                }
+                            },
+                            {
+                                title: "Status",
+                                field: "status",
+                                render: rowData => {
                                     return (
                                         rowData.status === "Active" ?
                                             <p style={{ padding: "0", margin: "0", color: "#4cbb17", fontWeight: "700" }}>{rowData.status}</p> :
                                             <p style={{ padding: "0", margin: "0", color: "red", fontWeight: "700" }}>{rowData.status}</p>
                                     )
+                                },
+                                cellStyle: {
+                                    width: "8%",
+                                    textAlign: 'center'
                                 }
                             },
                         ]}
@@ -331,7 +370,7 @@ export default function ManageProduct() {
                             },
                             rowStyle: rowData => ({
                                 fontSize: "0.8em",
-                                backgroundColor: (rowData.tableData.id % 2 === 0) ? '#ebebeb' : '#ffffff'
+                                backgroundColor: (rowData.tableData.id % 2 === 0) ? '#ffffff' : '#ebebeb'
                             })
                         }}
                         actions={[
