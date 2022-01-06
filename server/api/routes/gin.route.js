@@ -5,6 +5,8 @@ const multer = require("multer");
 
 const Order = require("../models/order.model");
 const GIN = require("../models/gin.model");
+const MetaData = require("../models/metadata.model");
+const Store = require("../models/store.model");
 
 const formDataBody = multer();
 
@@ -256,9 +258,10 @@ router.post("/approve-dispatch/:ginnumber", formDataBody.fields([]), (req, res, 
                         { upsert: true }
                     )
                     .exec()
-                    .then(doc =>
-                        console.log("UPDATED ORDER STATUS OF ORDER NUMBER: ", doc.orderno)
-                    )
+                    .then(doc => {
+                        console.log("******** UPDATED ORDER STATUS OF ORDER NUMBER ********")
+                        console.log(doc.orderno);
+                    })
                     .catch(err => {
                         res.status(200).json({
                             type: 'error',
@@ -268,6 +271,53 @@ router.post("/approve-dispatch/:ginnumber", formDataBody.fields([]), (req, res, 
                     });
 
             });
+
+            return doc;
+        })
+        .then(doc => {
+
+            doc.items.map(item => {
+
+                const name = item.description.substring(item.description.indexOf("-") + 1);
+
+                Store
+                    .findOneAndUpdate(
+                        { name: name },
+                        {
+                            $inc: {
+                                'storequantity.salesqtycases': -parseInt(item.salesqtycases),
+                                'storequantity.salesqtypieces': -parseInt(item.salesqtypieces),
+                                'storequantity.freeqtypieces': -parseInt(item.freeqtypieces),
+                                'storequantity.freeqtycases': -parseInt(item.freeqtycases)
+                            },
+                            $push: {
+                                'grngin': {
+                                    'grnnumberginnumber': doc.ginnumber,
+                                    'date': doc.createdat,
+                                    'piecespercase': item.piecespercase,
+                                    'listorsellingprice': item.sellingprice,
+                                    'salesqtycases': item.salesqtycases,
+                                    'salesqtypieces': item.salesqtypieces,
+                                    'freeqtycases': item.freeqtycases,
+                                    'freeqtypieces': item.freeqtypieces,
+                                }
+                            }
+                        },
+                        { new: true }
+                    )
+                    .exec()
+                    .then(doc => {
+                        console.log("******** ITEMS ADDED TO STORE ********");
+                        console.log(doc);
+                    })
+                    .catch(err => {
+                        res.status(200).json({
+                            type: 'error',
+                            alert: `Something went wrong. Could not update store`,
+                        });
+                        console.log(err);
+                    })
+            })
 
             return doc;
         })

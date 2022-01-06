@@ -46,7 +46,6 @@ router.get("/get-all-purchaseorder-table-data", (req, res, next) => {
 
 })
 
-
 //Create a purchaseorder
 router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) => {
 
@@ -210,6 +209,30 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
         .exec()
         .then(result => {
 
+            const items = [];
+
+            result.items.forEach(item => {
+
+                items.push({
+                    "freeqtycases": item.freeqtycases,
+                    "deliveredfreeqtycases": item.deliveredfreeqtycases ? item.deliveredfreeqtycases : item.freeqtycases,
+                    "freeqtypieces": item.freeqtypieces,
+                    "deliveredfreeqtypieces": item.deliveredfreeqtypieces ? item.deliveredfreeqtypieces : item.freeqtypieces,
+                    "damaged": item.damaged ? item.damaged : 0,
+                    "description": item.description,
+                    "piecespercase": parseInt(item.piecespercase),
+                    "listprice": item.listprice,
+                    "salesqtycases": parseInt(item.salesqtycases),
+                    "deliveredsalesqtycases": item.deliveredsalesqtycases ? item.deliveredsalesqtycases : parseInt(item.salesqtycases),
+                    "value": item.value,
+                    "grnvalue": item.value,
+                    "salesqtypieces": parseInt(item.salesqtypieces),
+                    "deliveredsalesqtypieces": item.deliveredsalesqtypieces ? item.deliveredsalesqtypieces : parseInt(item.salesqtypieces),
+                    "tableData": item.tableData
+                })
+
+            });
+
             const grn = new GRN({
                 _id: new mongoose.Types.ObjectId(),
                 ponumber: result.ponumber,
@@ -227,11 +250,12 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
             grn
                 .save()
                 .then(result => {
-                    // console.log("********  APPROVE PURCHASE ORDER ********")
+                    console.log("********  APPROVE PURCHASE ORDER ********");
+                    console.log(result)
                 })
                 .catch(err => {
-                    console.log("********  APPROVE PURCHASE ORDER GRN ERROR ********")
-                    console.log(err)
+                    console.log("********  APPROVE PURCHASE ORDER GRN ERROR ********");
+                    console.log(err);
                 })
 
             return result;
@@ -259,8 +283,8 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
                     { upsert: true }
                 )
                 .exec()
-                .then(result => {
-                    // console.log("********  APPROVE PURCHASE ORDER METADATA ADDED ********")
+                .then(() => {
+                    console.log("********  APPROVE PURCHASE ORDER METADATA ADDED ********")
                 })
                 .catch(err => {
                     console.log("********  APPROVE PURCHASE ORDER METADATA ERROR ********")

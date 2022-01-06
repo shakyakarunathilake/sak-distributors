@@ -73,7 +73,7 @@ export default function StepOne(props) {
         setValue("customername", "S.A.K Distributors");
         setValue("customeraddress", "No.233, Kiriwallapitiya, Rambukkana, Srilanka");
         setValue("contactnumber", "0352264009");
-        setValue("status", "Complete");
+        setValue("status", "Delivered");
 
         setData(GRNRecords.items);
 

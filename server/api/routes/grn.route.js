@@ -63,25 +63,7 @@ router.get("/:grnnumber", (req, res, next) => {
                 'total': doc.total,
                 'damagedmissingitems': doc.damagedmissingitems,
                 'grntotal': doc.total,
-                'items': [
-                    {
-                        "freeqtycases": doc.items[0].freeqtycases,
-                        "deliveredfreeqtycases": doc.items[0].deliveredfreeqtycases ? doc.items[0].deliveredfreeqtycases : doc.items[0].freeqtycases,
-                        "freeqtypieces": doc.items[0].freeqtypieces,
-                        "deliveredfreeqtypieces": doc.items[0].deliveredfreeqtypieces ? doc.items[0].deliveredfreeqtypieces : doc.items[0].freeqtypieces,
-                        "damaged": doc.items[0].damaged ? doc.items[0].damaged : 0,
-                        "description": doc.items[0].description,
-                        "piecespercase": doc.items[0].piecespercase,
-                        "listprice": doc.items[0].listprice,
-                        "salesqtycases": doc.items[0].salesqtycases,
-                        "deliveredsalesqtycases": doc.items[0].deliveredsalesqtycases ? doc.items[0].deliveredsalesqtycases : doc.items[0].salesqtycases,
-                        "value": doc.items[0].value,
-                        "grnvalue": doc.items[0].value,
-                        "salesqtypieces": doc.items[0].salesqtypieces,
-                        "deliveredsalesqtypieces": doc.items[0].deliveredsalesqtypieces ? doc.items[0].deliveredsalesqtypieces : doc.items[0].salesqtypieces,
-                        "tableData": doc.items[0].tableData
-                    }
-                ]
+                'items': doc.items
             }
 
             res.status(200).json({
@@ -96,7 +78,7 @@ router.get("/:grnnumber", (req, res, next) => {
 })
 
 //Update GRN by GRN Number
-router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, res, next) => {
+router.post("/create-grnnumber/:grnnumber", formDataBody.fields([]), (req, res, next) => {
 
     const items = JSON.parse(req.body.items);
 
@@ -116,87 +98,88 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
             { upsert: true }
         )
         .exec()
-        // .then(doc => {
+        .then(doc => {
 
-        //     PurchaseOrder
-        //         .findOneAndUpdate(
-        //             { "ponumber": doc.ponumber },
-        //             {
-        //                 '$set': {
-        //                     'status': 'Delivered',
-        //                 }
-        //             },
-        //             { upsert: true }
-        //         )
-        //         .exec()
-        //         .then(doc => {
-        //             console.log("******** GRN COMPLETE PURCHASE ORDER UPDATED ********");
-        //         })
-        //         .catch(err => {
-        //             console.log("******** GRN COMPLETE PURCHASE ORDER UPDATE ERROR ********");
-        //             console.log(err);
+            PurchaseOrder
+                .findOneAndUpdate(
+                    { "ponumber": doc.ponumber },
+                    {
+                        '$set': {
+                            'status': 'Delivered',
+                        }
+                    },
+                    { upsert: true }
+                )
+                .exec()
+                .then(doc => {
+                    console.log("******** GRN STATUS DELIVERED AND PURCHASE ORDER UPDATED ********");
+                })
+                .catch(err => {
+                    console.log("******** GRN STATUS DELIVERED AND PURCHASE ORDER UPDATED ERROR!!!!! ********");
+                    console.log(err);
 
-        //             res.status(200).json({
-        //                 type: 'error',
-        //                 alert: `Something went wrong. Could not update relevant Purchase Order `,
-        //             });
-        //         });
+                    res.status(200).json({
+                        type: 'error',
+                        alert: `Something went wrong. Could not update relevant Purchase Order `,
+                    });
+                });
 
-        //     return doc;
+            return doc;
 
-        // })
-        // .then(doc => {
+        })
+        .then(doc => {
 
-        //     MetaData
-        //         .findOneAndUpdate(
-        //             {},
-        //             {
-        //                 $pull: {
-        //                     'noofawaitinggrn': {
-        //                         'ponumber': doc.ponumber
-        //                     }
-        //                 }
-        //             },
-        //             { upsert: true }
-        //         )
-        //         .exec()
-        //         .then(doc => {
-        //             console.log("******** GRN COMPLETE META DATA ADDED ********");
-        //         })
-        //         .catch(err => {
-        //             console.log("******** GRN COMPLETE META DATA ERROR ********");
-        //             console.log(err);
+            MetaData
+                .findOneAndUpdate(
+                    {},
+                    {
+                        $pull: {
+                            'noofawaitinggrn': {
+                                'ponumber': doc.ponumber
+                            }
+                        }
+                    },
+                    { upsert: true }
+                )
+                .exec()
+                .then(doc => {
+                    console.log("******** GRN STATUS DELIVERED AND META DATA ADDED ********");
+                })
+                .catch(err => {
+                    console.log("******** GRN STATUS DELIVERED AND META DATA ERROR!!!!! ********");
+                    console.log(err);
 
-        //             res.status(200).json({
-        //                 type: 'error',
-        //                 alert: `Something went wrong. Could not update Meta Data `,
-        //             })
-        //         });
+                    res.status(200).json({
+                        type: 'error',
+                        alert: `Something went wrong. Could not update Meta Data `,
+                    })
+                });
 
-        //     return doc;
-        // })
+            return doc;
+        })
         .then(doc => {
 
             doc.items.map(item => {
-
                 Store
                     .findOneAndUpdate(
                         { name: item.description },
                         {
-                            $inc: { 'storequantity.$.salesqtycases': parseInt(item.salesqtycases) },
-                            $inc: { 'storequantity.$.salesqtypieces': parseInt(item.salesqtypieces) },
-                            $inc: { 'storequantity.$.freeqtypieces': parseInt(item.freeqtypieces) },
-                            $inc: { 'storequantity.$.freeqtycases': parseInt(item.freeqtycases) },
+                            $inc: {
+                                'storequantity.salesqtycases': parseInt(item.deliveredsalesqtycases),
+                                'storequantity.salesqtypieces': parseInt(item.deliveredsalesqtypieces),
+                                'storequantity.freeqtypieces': parseInt(item.deliveredfreeqtypieces),
+                                'storequantity.freeqtycases': parseInt(item.deliveredfreeqtycases)
+                            },
                             $push: {
                                 'grngin': {
                                     'grnnumberginnumber': doc.grnnumber,
                                     'date': req.body.createdat,
                                     'piecespercase': item.piecespercase,
-                                    'price': item.listprice,
-                                    'salesqtycases': item.salesqtycases,
-                                    'salesqtypieces': item.salesqtypieces,
-                                    'freeqtycases': item.freeqtycases,
-                                    'freeqtypieces': item.freeqtypieces,
+                                    'listorsellingprice': item.listprice,
+                                    'salesqtycases': item.deliveredsalesqtycases,
+                                    'salesqtypieces': item.deliveredsalesqtypieces,
+                                    'freeqtycases': item.deliveredfreeqtycases,
+                                    'freeqtypieces': item.deliveredfreeqtypieces,
                                 }
                             }
                         },
@@ -216,12 +199,15 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
                     })
             })
 
+            return doc;
+        })
+        .then(doc =>
             res.status(200).json({
                 message: "Handling POST requests to /grn/update-by-id/:grnnumber, GRN UPDATED",
                 type: 'success',
                 alert: `${doc.grnnumber} updated`,
-            });
-        })
+            })
+        )
         .catch(err => {
             console.log(err);
             res.status(200).json({

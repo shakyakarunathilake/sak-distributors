@@ -76,7 +76,7 @@ export default function ManageStore() {
                             </div>
                         ),
                         Header: props => (
-                            <TableHead {...props} style={{ position: 'sticky', top: '0', zIndex: 99999 }}>
+                            <TableHead {...props} style={{ position: 'sticky', top: '0', zIndex: 999 }}>
                                 <TableRow className={classes.row1}>
                                     <TableCell width="3%" padding="none" rowSpan={2}>
                                         <div style={{ padding: '0 10px' }}>
@@ -92,9 +92,9 @@ export default function ManageStore() {
                                             Name
                                         </div>
                                     </TableCell>
-                                    <TableCell width="5%" padding="none" rowSpan={2} align="left">
+                                    <TableCell width="5%" padding="none" rowSpan={2} align="center">
                                         <div style={{ padding: '0 10px' }}>
-                                            Unit Price
+                                            List / Selling Price
                                         </div>
                                     </TableCell>
                                     <TableCell width="15%" padding="none" rowSpan={2} align="center">
@@ -109,7 +109,7 @@ export default function ManageStore() {
                                     </TableCell>
                                     <TableCell width="5%" padding="none" rowSpan={2} align="center">
                                         <div style={{ padding: '0 10px' }}>
-                                            Pieces / Case
+                                            Pieces per Case
                                         </div>
                                     </TableCell>
                                     <TableCell padding="none" colSpan={2} align="center">
@@ -142,31 +142,37 @@ export default function ManageStore() {
                                 )
                             },
                             cellStyle: {
-                                padding: "10px 7px 10px 7px",
                                 width: '10%',
                                 textAlign: 'left'
                             }
                         },
+                        //     const name = item.description;
                         {
                             field: "name",
                             cellStyle: {
-                                padding: "10px 7px 10px 7px",
                                 width: '28%',
                                 textAlign: 'left'
                             }
                         },
                         {
-                            field: "price",
+                            field: "listorsellingprice",
                             cellStyle: {
-                                padding: "10px 7px 10px 7px",
                                 width: '5%',
-                                textAlign: 'left'
+                                textAlign: 'right'
                             }
                         },
                         {
                             field: "grnnumberginnumber",
+                            render: rowData => {
+                                const grnnumberginnumber = rowData.grnnumberginnumber ? rowData.grnnumberginnumber.substring(0, 3) : '';
+
+                                return (
+                                    grnnumberginnumber === "GRN" ?
+                                        <p style={{ padding: "0", margin: "0", color: "#1338BD", fontWeight: "700" }}>{rowData.grnnumberginnumber}</p> :
+                                        <p style={{ padding: "0", margin: "0", color: "#FC6A03", fontWeight: "700" }}>{rowData.grnnumberginnumber}</p>
+                                )
+                            },
                             cellStyle: {
-                                padding: "10px 7px 10px 7px",
                                 width: '15%',
                                 textAlign: 'left'
                             }
@@ -175,16 +181,14 @@ export default function ManageStore() {
                             field: "date",
                             type: 'numeric',
                             cellStyle: {
-                                padding: "10px 7px 10px 7px",
                                 width: '10%',
-                                textAlign: 'right'
+                                textAlign: 'left'
                             }
                         },
                         {
                             field: "piecespercase",
                             type: 'numeric',
                             cellStyle: {
-                                padding: "10px 7px 10px 7px",
                                 width: '5%',
                                 textAlign: 'right'
                             }
@@ -194,7 +198,6 @@ export default function ManageStore() {
                             type: 'numeric',
                             cellStyle: {
                                 width: '6%',
-                                padding: "10px 7px 10px 7px",
                                 textAlign: 'right'
                             }
                         },
@@ -203,7 +206,6 @@ export default function ManageStore() {
                             type: 'numeric',
                             cellStyle: {
                                 width: '6%',
-                                padding: "10px 7px 10px 7px",
                                 textAlign: 'right'
                             }
                         },
@@ -212,7 +214,6 @@ export default function ManageStore() {
                             type: 'numeric',
                             cellStyle: {
                                 width: '6%',
-                                padding: "10px 7px 10px 7px",
                                 textAlign: 'right'
                             }
                         },
@@ -221,7 +222,6 @@ export default function ManageStore() {
                             type: 'numeric',
                             cellStyle: {
                                 width: '6%',
-                                padding: "10px 7px 10px 7px",
                                 textAlign: 'right'
                             }
                         },
@@ -252,8 +252,8 @@ export default function ManageStore() {
                         paging: false,
                         filtering: true,
                         search: false,
-                        maxBodyHeight: "calc(100vh - 420px)",
-                        minBodyHeight: "calc(100vh - 420px)",
+                        maxBodyHeight: "calc(100vh - 126px)",
+                        minBodyHeight: "calc(100vh - 126px)",
                         actionsColumnIndex: -1,
                         headerStyle: {
                             position: "sticky",
