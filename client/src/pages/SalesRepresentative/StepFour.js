@@ -100,7 +100,7 @@ export default function StepFour(props) {
                 <AutoSizer>
                     {({ height, width }) => {
                         console.log(`Height: ${height} | Width: ${width}`);
-                        const pageSize = Math.floor((height - 192) / 48);
+                        const pageSize = Math.floor((height - 150) / 48);
                         console.log(`Page Size: ${pageSize}`);
 
                         return (
