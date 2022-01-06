@@ -264,7 +264,7 @@ export default function ManageStore() {
                         },
                         rowStyle: rowData => ({
                             fontSize: "0.8em",
-                            backgroundColor: (rowData.tableData.id % 2 === 1) ? '#ebebeb' : '#ffffff'
+                            backgroundColor: !!rowData.grnnumberginnumber ? '#ebebeb' : '#ffffff'
                         })
                     }}
                 />

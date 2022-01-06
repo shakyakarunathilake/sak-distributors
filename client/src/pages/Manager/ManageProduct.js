@@ -370,7 +370,7 @@ export default function ManageProduct() {
                             },
                             rowStyle: rowData => ({
                                 fontSize: "0.8em",
-                                backgroundColor: (rowData.tableData.id % 2 === 0) ? '#ffffff' : '#ebebeb'
+                                backgroundColor: !!rowData.variantid ? '#ebebeb' : '#ffffff'
                             })
                         }}
                         actions={[
