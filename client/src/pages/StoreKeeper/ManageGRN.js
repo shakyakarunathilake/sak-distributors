@@ -89,7 +89,7 @@ export default function ManageGRN() {
         }
 
         axios
-            .post(`http://localhost:8080/grn/update-by-grnnumber/${grnnumber}`, grn)
+            .post(`http://localhost:8080/grn/create-grnnumber/${grnnumber}`, grn)
             .then(res => {
                 setAlert(res.data.alert);
                 setType(res.data.type);
