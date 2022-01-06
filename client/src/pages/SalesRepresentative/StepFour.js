@@ -139,7 +139,7 @@ export default function StepFour(props) {
                                                     </TableCell>
                                                     <TableCell padding="none" width="6%" rowSpan={2} align="center">
                                                         <div style={{ padding: '0 10px' }}>
-                                                            Price
+                                                            Selling Price
                                                         </div>
                                                     </TableCell>
                                                     <TableCell padding="none" width="6%" rowSpan={2} align="center">
@@ -193,8 +193,8 @@ export default function StepFour(props) {
                                             },
                                         },
                                         {
-                                            title: "Price",
-                                            field: "price",
+                                            title: "Selling Price",
+                                            field: "sellingprice",
                                             cellStyle: {
                                                 width: '6%',
                                                 padding: "12px 5px 12px 7px",

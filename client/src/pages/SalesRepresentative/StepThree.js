@@ -165,7 +165,7 @@ export default function StepThree(props) {
                                     </TableCell>
                                     <TableCell width="8%" padding="none" rowSpan={2} align="center">
                                         <div style={{ padding: '0 10px' }}>
-                                            Price
+                                            Selling Price
                                         </div>
                                     </TableCell>
                                     <TableCell padding="none" colSpan={2} align="center">
@@ -249,7 +249,7 @@ export default function StepThree(props) {
                                         props.onChange(option.title)
                                         let data = { ...props.rowData };
                                         data.description = option.title;
-                                        data.price = option.sellingprice;
+                                        data.sellingprice = option.sellingprice;
                                         data.piecespercase = option.piecespercase;
                                         data.mrp = option.mrp;
                                         props.onRowDataChange(data);
@@ -279,8 +279,8 @@ export default function StepThree(props) {
                             hidden: true,
                         },
                         {
-                            title: "Price",
-                            field: "price",
+                            title: "Selling Price",
+                            field: "sellingprice",
                             editable: 'never',
                             type: 'numeric',
                             cellStyle: {
@@ -313,7 +313,7 @@ export default function StepThree(props) {
                                         let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
                                         let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
                                         let numberofpieces = (salesqtycases * piecespercase) + +salesqtypieces;
-                                        data.grossamount = numberofpieces * data.price;
+                                        data.grossamount = numberofpieces * data.sellingprice;
                                         props.onRowDataChange(data);
                                     }}
                                     type="number"
@@ -349,7 +349,7 @@ export default function StepThree(props) {
                                         let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
                                         let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
                                         let numberofpieces = (salesqtycases * piecespercase) + +salesqtypieces;
-                                        data.grossamount = numberofpieces * data.price;
+                                        data.grossamount = numberofpieces * data.sellingprice;
                                         props.onRowDataChange(data);
                                     }}
                                     type="number"
@@ -422,7 +422,7 @@ export default function StepThree(props) {
                                         let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
                                         let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
                                         let numberofpieces = (salesqtycases * piecespercase) + +salesqtypieces;
-                                        data.grossamount = numberofpieces * data.price;
+                                        data.grossamount = numberofpieces * data.sellingprice;
                                         props.onRowDataChange(data);
                                     }}
                                     type="number"
@@ -459,7 +459,7 @@ export default function StepThree(props) {
                                         let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
                                         let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
                                         let numberofpieces = (salesqtycases * piecespercase) + +salesqtypieces;
-                                        data.grossamount = numberofpieces * data.price;
+                                        data.grossamount = numberofpieces * data.sellingprice;
                                         props.onRowDataChange(data);
                                     }}
                                     type="number"

@@ -210,78 +210,96 @@ export default function GINStepTwo(props) {
                         Header: props => (
                             <TableHead {...props} className={classes.tablehead} >
                                 <TableRow className={classes.row1}>
-                                    <TableCell width="35%" padding="none" rowSpan={2}>
+                                    <TableCell width="42%" padding="none" rowSpan={2}>
                                         <div style={{ padding: '0 10px' }}>
                                             Description
                                         </div>
                                     </TableCell>
-                                    <TableCell width="10%" padding="none" rowSpan={2} align="center">
+                                    <TableCell width="8%" padding="none" rowSpan={2} align="center">
                                         <div style={{ padding: '0 10px' }}>
-                                            Price (Rs.)
+                                            Selling Price (Rs.)
                                         </div>
                                     </TableCell>
-                                    <TableCell width="10%" padding="none" rowSpan={2} align="center">
+                                    <TableCell width="8%" padding="none" rowSpan={2} align="center">
                                         <div style={{ padding: '0 10px' }}>
                                             Pieces per Case
                                         </div>
                                     </TableCell>
-                                    <TableCell width="10%" padding="none" colSpan={2} align="center">
-                                        Total
+                                    <TableCell padding="none" colSpan={2} align="center">
+                                        Sales Qty.
                                     </TableCell>
-                                    <TableCell padding="none" width="15%" rowSpan={2} align="center">
+                                    <TableCell padding="none" colSpan={2} align="center">
+                                        Free Qty.
+                                    </TableCell>
+                                    <TableCell padding="none" width="10%" rowSpan={2} align="center">
                                         <div style={{ padding: '0 10px' }}>
                                             Gross Amount (Rs.)
                                         </div>
                                     </TableCell>
                                 </TableRow>
                                 <TableRow className={classes.row2}>
-                                    <TableCell width="10%" padding="none" align="center">Cases</TableCell>
-                                    <TableCell width="10%" padding="none" align="center">Pieces</TableCell>
+                                    <TableCell width="8%" padding="none" align="center">Cs</TableCell>
+                                    <TableCell width="8%" padding="none" align="center">Pcs</TableCell>
+                                    <TableCell width="8%" padding="none" align="center">Cs</TableCell>
+                                    <TableCell width="8%" padding="none" align="center">Pcs</TableCell>
                                 </TableRow>
                             </TableHead>
                         ),
                     }}
                     columns={[
                         {
-                            title: 'Description',
                             field: "description",
                             cellStyle: {
+                                width: "42%",
                                 textAlign: 'left'
                             }
                         },
                         {
-                            title: 'Price (Rs.)',
-                            field: 'price',
+                            field: 'sellingprice',
                             cellStyle: {
-                                textAlign: 'left'
+                                width: "8%",
+                                textAlign: 'right'
                             }
                         },
                         {
-                            title: 'Pieces per Case',
                             field: 'piecespercase',
                             cellStyle: {
-                                textAlign: 'left'
-                            }
-                        },
-                        {
-                            title: 'Cases',
-                            field: 'cases',
-                            width: "10%",
-                            cellStyle: {
+                                width: "8%",
                                 textAlign: 'right'
                             }
                         },
                         {
-                            title: 'Pieces',
-                            field: 'pieces',
+                            field: 'salesqtycases',
                             cellStyle: {
+                                width: "8%",
                                 textAlign: 'right'
                             }
                         },
                         {
-                            title: 'Gross Amount (Rs.)',
+                            field: 'salesqtypieces',
+                            cellStyle: {
+                                width: "8%",
+                                textAlign: 'right'
+                            }
+                        },
+                        {
+                            field: 'freeqtycases',
+                            cellStyle: {
+                                width: "8%",
+                                textAlign: 'right'
+                            }
+                        },
+                        {
+                            field: 'freeqtypieces',
+                            cellStyle: {
+                                width: "8%",
+                                textAlign: 'right'
+                            }
+                        },
+                        {
                             field: 'grossamount',
                             cellStyle: {
+                                width: "10%",
                                 textAlign: 'right'
                             }
                         }
