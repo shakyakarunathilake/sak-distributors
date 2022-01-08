@@ -173,34 +173,34 @@ export default function ViewPurchaseOrder(props) {
                                 flexDirection: "column"
                             }} >
                                 <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
-                                    <Grid item align="Left">
+                                    <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '200px' }}>
                                         <Typography style={{ fontWeight: 600 }}> Gross Total (Rs.) </Typography>
                                     </Grid>
-                                    <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
+                                    <Grid item align="Right" style={{ margin: "0px 10px 0px 0px", width: '200px' }}>
                                         <Typography style={{ fontWeight: 600 }}> {poRecords.grosstotal} </Typography>
                                     </Grid>
                                 </Grid>
                                 <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
-                                    <Grid item align="Left">
+                                    <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '200px' }}>
                                         <Typography style={{ fontWeight: 600 }}> Received Discounts (Rs.)</Typography>
                                     </Grid>
-                                    <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
+                                    <Grid item align="Right" style={{ margin: "0px 10px 0px 0px", width: '200px' }}>
                                         <Typography style={{ fontWeight: 600 }}> {poRecords.receiveddiscounts} </Typography>
                                     </Grid>
                                 </Grid>
                                 <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
-                                    <Grid item align="Left">
+                                    <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '200px' }}>
                                         <Typography style={{ fontWeight: 600 }}> Damaged / Expired Items (Rs.) </Typography>
                                     </Grid>
-                                    <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
+                                    <Grid item align="Right" style={{ margin: "0px 10px 0px 0px", width: '200px' }}>
                                         <Typography style={{ fontWeight: 600 }}> {poRecords.damagedmissingitems} </Typography>
                                     </Grid>
                                 </Grid>
                                 <Grid container style={{ background: "#f5f5f5", padding: 7, color: 'red' }}>
-                                    <Grid item align="Left">
+                                    <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '200px' }}>
                                         <Typography style={{ fontWeight: 600 }}> Total (Rs.) </Typography>
                                     </Grid>
-                                    <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
+                                    <Grid item align="Right" style={{ margin: "0px 10px 0px 0px", width: '200px' }}>
                                         <Typography style={{ fontWeight: 600 }}> {poRecords.total} </Typography>
                                     </Grid>
                                 </Grid>
