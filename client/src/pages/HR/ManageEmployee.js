@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import AutoSizer from 'react-virtualized-auto-sizer';
 import MaterialTable from 'material-table';
 
 //Shared Components
@@ -154,71 +155,124 @@ export default function ManageEmployee() {
                 </div>
 
                 <div className={style.pagecontent}>
-                    <MaterialTable
-                        columns={[
-                            {
-                                title: "Employee ID", field: "employeeid", render: rowData => {
-                                    return (
-                                        <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.employeeid}</p>
-                                    )
-                                }
-                            },
-                            { title: "Title", field: "title" },
-                            { title: "Name", field: "name" },
-                            { title: "Designation", field: "designation" },
-                            {
-                                title: "Status", field: "status", render: rowData => {
-                                    return (
-                                        rowData.status === "Active" ?
-                                            <p style={{ padding: "0", margin: "0", color: "#4cbb17", fontWeight: "700" }}>{rowData.status}</p> :
-                                            rowData.status === "Inactive" ?
-                                                <p style={{ padding: "0", margin: "0", color: "red", fontWeight: "700" }}>{rowData.status}</p> :
-                                                <p style={{ padding: "0", margin: "0", color: "#eed202", fontWeight: "700" }}>{rowData.status}</p>
 
-                                    )
-                                }
-                            },
-                            { title: "Hired Date", field: "hireddate" },
-                        ]}
-                        data={records}
-                        options={{
-                            toolbar: false,
-                            filtering: true,
-                            search: false,
-                            paging: false,
-                            actionsColumnIndex: -1,
-                            maxBodyHeight: "calc(100vh - 199.27px)",
-                            headerStyle: {
-                                position: "sticky",
-                                top: "0",
-                                backgroundColor: '#20369f',
-                                color: '#FFF',
-                                fontSize: "0.8em"
-                            },
-                            rowStyle: rowData => ({
-                                fontSize: "0.8em",
-                                backgroundColor: (rowData.tableData.id % 2 === 0) ? '#ebebeb' : '#ffffff'
-                            })
+                    <AutoSizer>
+                        {({ height, width }) => {
+                            const pageSize = Math.floor((height - 199.27) / 48);
+                            return (
+                                <div style={{ height: `${height}px`, width: `${width}px`, overflowY: 'auto' }}>
+
+                                    <MaterialTable
+                                        columns={[
+                                            {
+                                                title: "Employee ID",
+                                                field: "employeeid",
+                                                cellStyle: {
+                                                    width: "12%",
+                                                    textAlign: 'left'
+                                                },
+                                                render: rowData => {
+                                                    return (
+                                                        <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.employeeid}</p>
+                                                    )
+                                                }
+                                            },
+                                            {
+                                                title: "Title",
+                                                field: "title",
+                                                cellStyle: {
+                                                    width: "8%",
+                                                    textAlign: 'left'
+                                                }
+                                            },
+                                            {
+                                                title: "Name",
+                                                field: "name",
+                                                cellStyle: {
+                                                    width: "25%",
+                                                    textAlign: 'left'
+                                                }
+                                            },
+                                            {
+                                                title: "Designation",
+                                                field: "designation",
+                                                cellStyle: {
+                                                    width: "20%",
+                                                    textAlign: 'left'
+                                                }
+                                            },
+                                            {
+                                                title: "Status",
+                                                field: "status",
+                                                cellStyle: {
+                                                    width: "15%",
+                                                    textAlign: 'left'
+                                                },
+                                                render: rowData => {
+                                                    return (
+                                                        rowData.status === "Active" ?
+                                                            <p style={{ padding: "0", margin: "0", color: "#4cbb17", fontWeight: "700" }}>{rowData.status}</p> :
+                                                            rowData.status === "Inactive" ?
+                                                                <p style={{ padding: "0", margin: "0", color: "red", fontWeight: "700" }}>{rowData.status}</p> :
+                                                                <p style={{ padding: "0", margin: "0", color: "#eed202", fontWeight: "700" }}>{rowData.status}</p>
+
+                                                    )
+                                                }
+                                            },
+                                            {
+                                                title: "Hired Date",
+                                                field: "hireddate",
+                                                cellStyle: {
+                                                    width: "15%",
+                                                    textAlign: 'left'
+                                                },
+                                            },
+                                        ]}
+                                        data={records}
+                                        options={{
+                                            pageSize: pageSize,
+                                            pageSizeOptions: [],
+                                            paging: true,
+                                            toolbar: false,
+                                            filtering: true,
+                                            search: false,
+                                            actionsColumnIndex: -1,
+                                            headerStyle: {
+                                                position: "sticky",
+                                                top: "0",
+                                                backgroundColor: '#20369f',
+                                                color: '#FFF',
+                                                fontSize: "0.8em"
+                                            },
+                                            rowStyle: rowData => ({
+                                                fontSize: "0.8em",
+                                                backgroundColor: (rowData.tableData.id % 2 === 0) ? '#ebebeb' : '#ffffff'
+                                            })
+                                        }}
+                                        actions={[
+                                            {
+                                                icon: VisibilityIcon,
+                                                tooltip: 'View',
+                                                onClick: (event, rowData) => {
+                                                    setAction('View');
+                                                    openInPopup(rowData.employeeid);
+                                                }
+                                            },
+                                            {
+                                                icon: 'edit',
+                                                tooltip: 'Edit',
+                                                onClick: (event, rowData) => {
+                                                    setAction('Edit');
+                                                    openInPopup(rowData.employeeid);
+                                                }
+                                            }
+                                        ]}
+                                    />
+                                </div>
+                            );
                         }}
-                        actions={[
-                            {
-                                icon: VisibilityIcon,
-                                tooltip: 'View',
-                                onClick: (event, rowData) => {
-                                    setAction('View');
-                                    openInPopup(rowData.employeeid);
-                                }
-                            },
-                            {
-                                icon: 'edit',
-                                tooltip: 'Edit',
-                                onClick: (event, rowData) => {
-                                    setAction('Edit');
-                                    openInPopup(rowData.employeeid);
-                                }
-                            }
-                        ]}
-                    />
+                    </AutoSizer>
+
                 </div>
                 <PopUp
                     openPopup={openPopup}

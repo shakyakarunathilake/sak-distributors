@@ -1,7 +1,7 @@
 @import "../../styles/variables";
 
 .container {
-    width: 900px;
+    width: 1000px;
     box-sizing: border-box;
     grid-template-columns: min-content auto;
 }
@@ -76,7 +76,7 @@
 
                 .row {
                     display: grid;
-                    grid-template-columns: 160px calc(100% - 160px);
+                    grid-template-columns: 190px calc(100% - 190px);
                     padding: 8px 0;
 
                     .boldText {
@@ -92,7 +92,7 @@
                         font-size: 1em;
                         margin: 20px 0px 5px 0px;
                         height: 45px;
-                        width: 190px;
+                        padding: 0 40px;
                         background-color: $primaryMain;
                         color: $inverseFontColor;
                     }
