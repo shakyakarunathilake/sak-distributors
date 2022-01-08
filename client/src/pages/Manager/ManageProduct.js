@@ -315,7 +315,7 @@ export default function ManageProduct() {
                                 title: "Name",
                                 field: "name",
                                 cellStyle: {
-                                    width: "37%",
+                                    width: "30%",
                                     textAlign: 'left'
                                 }
                             },
@@ -323,7 +323,7 @@ export default function ManageProduct() {
                                 title: "Supplier",
                                 field: "supplier",
                                 cellStyle: {
-                                    width: "15%",
+                                    width: "22%",
                                     textAlign: 'left'
                                 }
                             },
