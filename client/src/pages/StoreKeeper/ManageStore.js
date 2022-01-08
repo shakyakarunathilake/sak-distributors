@@ -89,12 +89,12 @@ export default function ManageStore() {
                                     </TableCell>
                                     <TableCell width="28%" padding="none" rowSpan={2} align="left">
                                         <div style={{ padding: '0 10px' }}>
-                                            Name
+                                            Description
                                         </div>
                                     </TableCell>
                                     <TableCell width="5%" padding="none" rowSpan={2} align="center">
                                         <div style={{ padding: '0 10px' }}>
-                                            List / Selling Price
+                                            List / Selling Price (Rs.)
                                         </div>
                                     </TableCell>
                                     <TableCell width="15%" padding="none" rowSpan={2} align="center">
@@ -113,11 +113,11 @@ export default function ManageStore() {
                                         </div>
                                     </TableCell>
                                     <TableCell padding="none" colSpan={2} align="center">
-                                        Sales Qty.
+                                        Total Qty.
                                     </TableCell>
-                                    <TableCell padding="none" colSpan={2} align="center">
+                                    {/* <TableCell padding="none" colSpan={2} align="center">
                                         Free Qty.
-                                    </TableCell>
+                                    </TableCell> */}
                                     {/* <TableCell padding="none" colSpan={2} align="center">
                                         Return Qty.
                                     </TableCell> */}
@@ -125,8 +125,8 @@ export default function ManageStore() {
                                 <TableRow className={classes.row2}>
                                     <TableCell width="6%" padding="none" align="center">Cs</TableCell>
                                     <TableCell width="6%" padding="none" align="center">Pcs</TableCell>
-                                    <TableCell width="6%" padding="none" align="center">Cs</TableCell>
-                                    <TableCell width="6%" padding="none" align="center">Pcs</TableCell>
+                                    {/* <TableCell width="6%" padding="none" align="center">Cs</TableCell>
+                                    <TableCell width="6%" padding="none" align="center">Pcs</TableCell> */}
                                     {/* <TableCell width="6%" padding="none" align="center">R</TableCell> */}
                                     {/* <TableCell width="6%" padding="none" align="center">D</TableCell> */}
                                 </TableRow>
@@ -209,22 +209,22 @@ export default function ManageStore() {
                                 textAlign: 'right'
                             }
                         },
-                        {
-                            field: "freeqtycases",
-                            type: 'numeric',
-                            cellStyle: {
-                                width: '6%',
-                                textAlign: 'right'
-                            }
-                        },
-                        {
-                            field: "freeqtypieces",
-                            type: 'numeric',
-                            cellStyle: {
-                                width: '6%',
-                                textAlign: 'right'
-                            }
-                        },
+                        // {
+                        //     field: "freeqtycases",
+                        //     type: 'numeric',
+                        //     cellStyle: {
+                        //         width: '6%',
+                        //         textAlign: 'right'
+                        //     }
+                        // },
+                        // {
+                        //     field: "freeqtypieces",
+                        //     type: 'numeric',
+                        //     cellStyle: {
+                        //         width: '6%',
+                        //         textAlign: 'right'
+                        //     }
+                        // },
                         // {
                         //     field: "returned",
                         //     type: 'numeric',

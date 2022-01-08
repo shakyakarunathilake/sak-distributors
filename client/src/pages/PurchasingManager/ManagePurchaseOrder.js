@@ -191,17 +191,66 @@ export default function ManagePurchaseOrder() {
                     <MaterialTable
                         columns={[
                             {
-                                title: "PO Number", field: "ponumber", render: rowData => {
+                                title: "PO Number",
+                                field: "ponumber",
+                                cellStyle: {
+                                    width: '10%',
+                                    textAlign: 'left'
+                                },
+                                render: rowData => {
                                     return (
                                         <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.ponumber}</p>
                                     )
                                 }
                             },
-                            { title: "Supplier", field: "supplier" },
-                            { title: "Created By", field: "createdby" },
-                            { title: "Approved By", field: "approvedby" },
                             {
-                                title: "Status", field: "status", render: rowData => {
+                                title: "Supplier",
+                                field: "supplier",
+                                cellStyle: {
+                                    width: '19%',
+                                    textAlign: 'left'
+                                },
+                            },
+                            {
+                                title: "Created by",
+                                field: "createdby",
+                                cellStyle: {
+                                    width: '16%',
+                                    textAlign: 'left'
+                                },
+                            },
+                            {
+                                title: "Created at",
+                                field: "createdat",
+                                cellStyle: {
+                                    width: '12%',
+                                    textAlign: 'left'
+                                },
+                            },
+                            {
+                                title: "Approved by",
+                                field: "approvedby",
+                                cellStyle: {
+                                    width: '16%',
+                                    textAlign: 'left'
+                                },
+                            },
+                            {
+                                title: "Approved at",
+                                field: "approvedat",
+                                cellStyle: {
+                                    width: '12%',
+                                    textAlign: 'left'
+                                },
+                            },
+                            {
+                                title: "Status",
+                                field: "status",
+                                cellStyle: {
+                                    width: '10%',
+                                    textAlign: 'left'
+                                },
+                                render: rowData => {
                                     return (
                                         rowData.status === "Delivered" ?
                                             <p style={{ padding: "0", margin: "0", color: "#4cbb17", fontWeight: "700" }}>{rowData.status}</p> :

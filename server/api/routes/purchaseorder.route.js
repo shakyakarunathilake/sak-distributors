@@ -28,7 +28,9 @@ router.get("/get-all-purchaseorder-table-data", (req, res, next) => {
                 ponumber: x.ponumber,
                 supplier: x.supplier,
                 createdby: x.createdby,
+                createdat: x.createdat,
                 approvedby: x.approvedby,
+                approvedat: x.approvedat,
                 status: x.status,
             }))
 
