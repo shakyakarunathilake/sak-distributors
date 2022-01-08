@@ -32,8 +32,8 @@ router.get("/get-all-store-table-data", (req, res, next) => {
                     racknumber: product.racknumber,
                     salesqtycases: product.storequantity.salesqtycases,
                     salesqtypieces: product.storequantity.salesqtypieces,
-                    freeqtycases: product.storequantity.freeqtycases,
-                    freeqtypieces: product.storequantity.freeqtypieces,
+                    // freeqtycases: product.storequantity.freeqtycases,
+                    // freeqtypieces: product.storequantity.freeqtypieces,
                 });
 
                 let parentid = rowid;
@@ -49,10 +49,10 @@ router.get("/get-all-store-table-data", (req, res, next) => {
                         grnnumberginnumber: details.grnnumberginnumber,
                         date: details.date,
                         piecespercase: details.piecespercase,
-                        salesqtycases: details.salesqtycases,
-                        salesqtypieces: details.salesqtypieces,
-                        freeqtycases: details.freeqtycases,
-                        freeqtypieces: details.freeqtypieces,
+                        salesqtycases: `${details.salesqtycases} / ${details.freeqtycases}`,
+                        salesqtypieces: `${details.salesqtypieces} / ${details.freeqtypieces}`,
+                        // freeqtycases: details.freeqtycases,
+                        // freeqtypieces: details.freeqtypieces,
                     })
 
                     rowid++;
