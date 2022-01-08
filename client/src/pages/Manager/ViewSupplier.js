@@ -39,7 +39,7 @@ export default function ViewSupplier(props) {
         <div className={style.container}>
 
             <div className={style.header}>
-                <div>View Customer</div>
+                <div>View Supplier</div>
                 <div>
                     <HighlightOffIcon
                         className={style.icon}

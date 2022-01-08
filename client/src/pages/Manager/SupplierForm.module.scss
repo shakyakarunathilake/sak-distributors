@@ -1,7 +1,7 @@
 @import "../../styles/variables";
 
 .container {
-    width: 900px;
+    width: 800px;
     box-sizing: border-box;
 
     .header {
@@ -30,7 +30,7 @@
             }
 
             .dividerDiv {
-                margin: 15px 0;
+                margin: 25px 0 15px 0;
                 font-weight: 600;
                 font-size: 1em;
                 // text-align: center;
@@ -72,7 +72,7 @@
                     font-size: 1em;
                     margin: 20px 0px 5px 0px;
                     height: 45px;
-                    width: 190px;
+                    padding: 0 40px;
                 }
 
                 .resetBtnDiv {

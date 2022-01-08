@@ -1,7 +1,7 @@
 @import "../../styles/variables";
 
 .container {
-    width: 900px;
+    width: 800px;
     box-sizing: border-box;
     grid-template-columns: min-content auto;
 }
@@ -16,7 +16,7 @@
         color: red;
 
         &:hover {
-        transform: scale(1.1);
+            transform: scale(1.1);
         }
     }
 }
@@ -54,7 +54,7 @@
                 font-size: 1em;
                 margin: 20px 0px 5px 0px;
                 height: 45px;
-                width: 190px;
+                padding: 0 40px;
                 background-color: $primaryMain;
                 color: $inverseFontColor;
             }
