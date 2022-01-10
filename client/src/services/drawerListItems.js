@@ -90,9 +90,9 @@ const getManagerListItems = [
         icon: <PersonIcon />,
     },
     {
-        id: "Order History",
-        title: "Order History",
-        path: "http://localhost:3000/manager/order-history",
+        id: "Sales & Invoice",
+        title: "Sales & Invoice",
+        path: "http://localhost:3000/manager/sales-and-invoice",
         icon: <ViewListIcon />,
     },
     {
