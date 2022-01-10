@@ -168,7 +168,7 @@ export default function ManageEmployee() {
                                                 title: "Employee ID",
                                                 field: "employeeid",
                                                 cellStyle: {
-                                                    width: "12%",
+                                                    width: "13%",
                                                     textAlign: 'left'
                                                 },
                                                 render: rowData => {
@@ -181,7 +181,7 @@ export default function ManageEmployee() {
                                                 title: "Title",
                                                 field: "title",
                                                 cellStyle: {
-                                                    width: "8%",
+                                                    width: "7%",
                                                     textAlign: 'left'
                                                 }
                                             },
@@ -189,7 +189,7 @@ export default function ManageEmployee() {
                                                 title: "Name",
                                                 field: "name",
                                                 cellStyle: {
-                                                    width: "25%",
+                                                    width: "20%",
                                                     textAlign: 'left'
                                                 }
                                             },
@@ -197,7 +197,15 @@ export default function ManageEmployee() {
                                                 title: "Designation",
                                                 field: "designation",
                                                 cellStyle: {
-                                                    width: "20%",
+                                                    width: "14%",
+                                                    textAlign: 'left'
+                                                }
+                                            },
+                                            {
+                                                title: "Contact No.",
+                                                field: "contactnumber",
+                                                cellStyle: {
+                                                    width: "14%",
                                                     textAlign: 'left'
                                                 }
                                             },
@@ -205,7 +213,7 @@ export default function ManageEmployee() {
                                                 title: "Status",
                                                 field: "status",
                                                 cellStyle: {
-                                                    width: "15%",
+                                                    width: "13%",
                                                     textAlign: 'left'
                                                 },
                                                 render: rowData => {
@@ -223,7 +231,7 @@ export default function ManageEmployee() {
                                                 title: "Hired Date",
                                                 field: "hireddate",
                                                 cellStyle: {
-                                                    width: "15%",
+                                                    width: "14%",
                                                     textAlign: 'left'
                                                 },
                                             },
