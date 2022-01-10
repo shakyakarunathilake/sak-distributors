@@ -7,7 +7,7 @@ import Page from '../../shared/Page/Page';
 import PopUp from '../../shared/PopUp/PopUp';
 
 //SCSS styles
-import style from './OrderHistory.module.scss';
+import style from './AllSalesAndInvoice.module.scss';
 
 //Material UI Icons
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -18,7 +18,7 @@ import axios from 'axios';
 //Forms
 import ViewOrder from '../SalesRepresentative/ViewOrder';
 
-export default function OrderHistory() {
+export default function AllSalesAndInvoice() {
 
 
     const [records, setRecords] = useState([]);
@@ -59,22 +59,49 @@ export default function OrderHistory() {
     }
 
     return (
-        <Page title="Order History">
+        <Page title="Sales and Invoices">
 
             <div className={style.container}>
 
                 <MaterialTable
                     columns={[
                         {
-                            title: "Order ID", field: "orderno", render: rowData => {
+                            title: "Order ID",
+                            field: "orderno",
+                            render: rowData => {
                                 return (
                                     <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.orderno}</p>
                                 )
+                            },
+                            cellStyle: {
+                                width: "10%",
+                                textAlign: 'left'
                             }
                         },
-                        { title: "Customer Name", field: "storename" },
                         {
-                            title: "Status", field: "status", render: rowData => {
+                            title: "Customer Name",
+                            field: "storename",
+                            cellStyle: {
+                                width: "25%",
+                                textAlign: 'left'
+                            }
+                        },
+                        {
+                            title: "Customer Type",
+                            field: "customertype",
+                            cellStyle: {
+                                width: "15%",
+                                textAlign: 'left'
+                            }
+                        },
+                        {
+                            title: "Status",
+                            field: "status",
+                            cellStyle: {
+                                width: "10%",
+                                textAlign: 'left'
+                            },
+                            render: rowData => {
                                 return (
                                     rowData.status === 'Pending' ?
                                         <p style={{ padding: "0", margin: "0", color: 'red', fontWeight: "700" }}>{rowData.status}</p>
@@ -84,6 +111,22 @@ export default function OrderHistory() {
                                                 <p style={{ padding: "0", margin: "0", color: "#FF8400", fontWeight: "700" }}>{rowData.status}</p>
                                                 : <p style={{ padding: "0", margin: "0", color: "#4caf50", fontWeight: "700" }}>{rowData.status}</p>
                                 )
+                            }
+                        },
+                        {
+                            title: "Created by",
+                            field: "ordercreatedby",
+                            cellStyle: {
+                                width: "20%",
+                                textAlign: 'left'
+                            }
+                        },
+                        {
+                            title: "Total",
+                            field: "total",
+                            cellStyle: {
+                                width: "15%",
+                                textAlign: 'left'
                             }
                         },
                     ]}

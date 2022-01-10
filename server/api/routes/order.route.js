@@ -212,8 +212,11 @@ router.get("/get-all-sales-and-invoice-table-data", (req, res, next) => {
 
             const tbody = doc.map(x => ({
                 "orderno": x.orderno,
+                "customertype": x.customertype,
                 "storename": x.storename,
                 "status": x.status,
+                "ordercreatedby": x.ordercreatedby,
+                "total": x.total,
             }))
 
             res.status(201).json({
