@@ -98,7 +98,7 @@ export default function SupplierForm(props) {
                     className={style.form}
                     onSubmit={handleSubmit(onSubmit)}
                 >
-                    <div className={classnames(style.row, style.redFont)}>
+                    <div className={style.redFont}>
                         The fields with "*" are required
                     </div>
                     <div className={classnames(style.row, style.threecolumns)}>
