@@ -56,6 +56,7 @@ router.get("/get-all-product-table-data", (req, res, next) => {
                         name: main.name,
                         supplier: main.supplier,
                         variantid: sub.variantid,
+                        offercaption: sub.offercaption,
                         type: sub.type,
                         status: sub.status,
                     })
@@ -74,7 +75,6 @@ router.get("/get-all-product-table-data", (req, res, next) => {
             res.status(500).json({ "Error": err });
         })
 })
-
 
 // Get next product id
 router.get("/get-next-productid", (req, res, next) => {
@@ -286,7 +286,19 @@ router.get("/:productid/:variantid", (req, res, next) => {
 
             product = {
                 ...product,
-                variant
+                'variant': {
+                    'variantid': variant.variantid,
+                    'type': variant.type,
+                    'piecespercase': variant.piecespercase,
+                    'bulkprice': variant.bulkprice.toFixed(2),
+                    'mrp': variant.mrp.toFixed(2),
+                    'sellingprice': variant.sellingprice.toFixed(2),
+                    'purchaseprice': variant.purchaseprice.toFixed(2),
+                    'offercaption': variant.offercaption,
+                    'status': variant.status,
+                    'addeddate': variant.addeddate,
+                    'addedby': variant.addedby
+                }
             }
 
             console.log("Document: ", doc);
