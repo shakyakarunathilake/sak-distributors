@@ -1,7 +1,7 @@
 @import "../../styles/variables";
 
 .container {
-    width: 900px;
+    width: 850px;
     box-sizing: border-box;
     grid-template-columns: min-content auto;
 }
@@ -16,7 +16,7 @@
         color: red;
 
         &:hover {
-        transform: scale(1.1);
+            transform: scale(1.1);
         }
     }
 }
@@ -38,8 +38,8 @@
 
         .row {
             display: grid;
-            grid-template-columns: 250px calc(100% - 250px);
-            padding: 8px 20px;
+            grid-template-columns: 300px calc(100% - 300px);
+            padding: 8px 25px;
 
             .boldText {
                 font-size: 1em;
@@ -54,7 +54,7 @@
                 font-size: 1em;
                 margin: 20px 0px 5px 0px;
                 height: 45px;
-                width: 190px;
+                padding: $formButtonPadding;
                 background-color: $primaryMain;
                 color: $inverseFontColor;
             }
