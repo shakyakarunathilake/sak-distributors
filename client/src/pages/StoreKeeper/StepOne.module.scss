@@ -63,7 +63,7 @@
 
         Button {
             font-size: 1em;
-            padding: 0 30px;
+            padding: $formButtonPadding;
             height: 40px;
             width: auto;
         }

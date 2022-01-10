@@ -121,7 +121,7 @@
                 }
             }
         }
-        
+
         .buttonRow {
             display: grid;
             grid-template-columns: auto min-content;
@@ -132,7 +132,7 @@
                 font-size: 1em;
                 margin: 20px 0px 5px 0px;
                 height: 45px;
-                width: 190px;
+                padding: $formButtonPadding;
             }
 
             .resetBtnDiv {
