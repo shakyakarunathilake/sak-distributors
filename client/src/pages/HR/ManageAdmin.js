@@ -146,7 +146,7 @@ export default function ManageAdmin() {
                                                 title: "Employee ID",
                                                 field: "employeeid",
                                                 cellStyle: {
-                                                    width: "15%",
+                                                    width: "13%",
                                                     textAlign: 'left'
                                                 },
                                                 render: rowData => {
@@ -167,7 +167,7 @@ export default function ManageAdmin() {
                                                 title: "Name",
                                                 field: "name",
                                                 cellStyle: {
-                                                    width: "28%",
+                                                    width: "20%",
                                                     textAlign: 'left'
                                                 }
                                             },
@@ -175,7 +175,15 @@ export default function ManageAdmin() {
                                                 title: "Designation",
                                                 field: "designation",
                                                 cellStyle: {
-                                                    width: "20%",
+                                                    width: "15%",
+                                                    textAlign: 'left'
+                                                }
+                                            },
+                                            {
+                                                title: "Contact No.",
+                                                field: "contactnumber",
+                                                cellStyle: {
+                                                    width: "15%",
                                                     textAlign: 'left'
                                                 }
                                             },
@@ -183,7 +191,7 @@ export default function ManageAdmin() {
                                                 title: "Status",
                                                 field: "status",
                                                 cellStyle: {
-                                                    width: "15%",
+                                                    width: "13%",
                                                     textAlign: 'left'
                                                 },
                                                 render: rowData => {
