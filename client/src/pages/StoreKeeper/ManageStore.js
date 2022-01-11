@@ -156,6 +156,7 @@ export default function ManageStore() {
                         },
                         {
                             field: "listorsellingprice",
+                            // render: rowData => parseInt(rowData.listorsellingprice).toFixed(2),
                             cellStyle: {
                                 width: '5%',
                                 textAlign: 'right'
