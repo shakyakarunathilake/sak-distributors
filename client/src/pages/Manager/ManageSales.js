@@ -7,7 +7,7 @@ import Page from '../../shared/Page/Page';
 import PopUp from '../../shared/PopUp/PopUp';
 
 //SCSS styles
-import style from './AllSalesAndInvoice.module.scss';
+import style from './ManageSales.module.scss';
 
 //Material UI Icons
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -18,7 +18,7 @@ import axios from 'axios';
 //Forms
 import ViewOrder from '../SalesRepresentative/ViewOrder';
 
-export default function AllSalesAndInvoice() {
+export default function ManageSales() {
 
 
     const [records, setRecords] = useState([]);
@@ -59,7 +59,7 @@ export default function AllSalesAndInvoice() {
     }
 
     return (
-        <Page title="Sales and Invoices">
+        <Page title="Manage Sales">
 
             <div className={style.container}>
 

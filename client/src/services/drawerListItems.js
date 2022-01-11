@@ -90,9 +90,9 @@ const getManagerListItems = [
         icon: <PersonIcon />,
     },
     {
-        id: "Sales & Invoice",
-        title: "Sales & Invoice",
-        path: "http://localhost:3000/manager/sales-and-invoice",
+        id: "Manage Sales",
+        title: "Manage Sales",
+        path: "http://localhost:3000/manager/manage-sales",
         icon: <ViewListIcon />,
     },
     {
@@ -115,12 +115,6 @@ const getPurchasingManagerListItems = [
         title: "Manage Products",
         path: "http://localhost:3000/purchasing-manager/manage-products",
         icon: <AssignmentIcon />,
-    },
-    {
-        id: "Manage Sales",
-        title: "Manage Sales",
-        path: "http://localhost:3000/purchasing-manager/manage-sales",
-        icon: <ReceiptIcon />
     },
     {
         id: "Manage Purchase Order",
