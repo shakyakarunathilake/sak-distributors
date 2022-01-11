@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef } from 'react';
+import AutoSizer from 'react-virtualized-auto-sizer';
 import { useForm, Controller } from 'react-hook-form';
 
 //Shared Components
@@ -7,14 +8,18 @@ import PopUp from '../../shared/PopUp/PopUp';
 //Material UI 
 import Divider from '@mui/material/Divider';
 import Select from '../../shared/Select/Select';
-import { Button, Grid } from '@material-ui/core';
-import { Paper } from '@material-ui/core';
-import { TextField as MuiTextField } from '@material-ui/core';
-import { Typography } from '@material-ui/core';
+import {
+    Paper,
+    TableHead,
+    TableRow,
+    TableCell,
+    TablePagination,
+    Button,
+    Grid,
+    Typography,
+    TextField as MuiTextField
+} from '@material-ui/core';
 import { Autocomplete } from '@mui/material';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 
 //Material UI Icons
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
@@ -236,390 +241,412 @@ export default function StepOne(props) {
 
                     </div>
 
-                    <MaterialTable
-                        components={{
-                            Container: props => <Paper {...props} elevation={1} />,
-                            Action: props => {
-                                //If isn't the add action
-                                if (typeof props.action === typeof Function || props.action.tooltip !== 'Add') {
-                                    return <MTableAction {...props} />
-                                } else {
-                                    return <div ref={addActionRef} onClick={props.action.onClick} />;
-                                }
-                            },
-                            Toolbar: (props) => (
-                                <div
-                                    style={{
-                                        height: "0px",
-                                    }}
-                                >
-                                    <MTableToolbar {...props} />
+                    <AutoSizer>
+                        {({ height, width }) => {
+                            const pageSize = Math.floor((height - 310) / 48);
+                            return (
+                                <div style={{ height: `${height}px`, width: `${width}px`, overflowY: 'auto' }}>
+
+                                    <MaterialTable
+                                        components={{
+                                            Container: props => <Paper {...props} elevation={1} />,
+                                            Action: props => {
+                                                //If isn't the add action
+                                                if (typeof props.action === typeof Function || props.action.tooltip !== 'Add') {
+                                                    return <MTableAction {...props} />
+                                                } else {
+                                                    return <div ref={addActionRef} onClick={props.action.onClick} />;
+                                                }
+                                            },
+                                            Toolbar: (props) => (
+                                                <div
+                                                    style={{
+                                                        height: "0px",
+                                                    }}
+                                                >
+                                                    <MTableToolbar {...props} />
+                                                </div>
+                                            ),
+                                            Pagination: props => (
+                                                <td style={{
+                                                    display: "flex",
+                                                    flexDirection: "column"
+                                                }} >
+                                                    <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
+                                                        <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '200px' }}>
+                                                            <Typography style={{ fontSize: "1.05em", fontWeight: 600 }}> Gross Total (Rs.) </Typography>
+                                                        </Grid>
+                                                        <Grid item align="Right" style={{ margin: "0px 102.56px  0px 0px", width: '200px' }}>
+                                                            <Typography style={{ fontSize: "1.05em", fontWeight: 600 }}>  {getGrossTotal().toFixed(2)} </Typography>
+                                                        </Grid>
+                                                    </Grid>
+                                                    <TablePagination {...props} />
+                                                </td>
+                                            ),
+                                            Header: props => (
+                                                <TableHead {...props} style={{ position: 'sticky', top: '0', zIndex: 99999 }}>
+                                                    <TableRow className={classes.row1}>
+                                                        <TableCell width="27%" padding="none" rowSpan={2}>
+                                                            <div style={{ padding: '0 10px' }}>
+                                                                Description
+                                                            </div>
+                                                        </TableCell>
+                                                        <TableCell width="7%" padding="none" rowSpan={2} align="center">
+                                                            <div style={{ padding: '0 10px' }}>
+                                                                Pieces per case
+                                                            </div>
+                                                        </TableCell>
+                                                        <TableCell width="7%" padding="none" rowSpan={2} align="center">
+                                                            <div style={{ padding: '0 10px' }}>
+                                                                List Price (Rs.)
+                                                            </div>
+                                                        </TableCell>
+                                                        <TableCell padding="none" colSpan={2} align="center">
+                                                            Sales Qty.
+                                                        </TableCell>
+                                                        <TableCell padding="none" colSpan={2} align="center">
+                                                            Free Qty.
+                                                        </TableCell>
+                                                        <TableCell padding="none" colSpan={2} align="center">
+                                                            Return Qty.
+                                                        </TableCell>
+                                                        <TableCell padding="none" width="11%" rowSpan={2} align="center">
+                                                            <div style={{ padding: '0 10px' }}>
+                                                                Value (Rs.)
+                                                            </div>
+                                                        </TableCell>
+                                                        <TableCell padding="none" rowSpan={2} align="center">
+                                                            Action
+                                                        </TableCell>
+                                                    </TableRow>
+                                                    <TableRow className={classes.row2}>
+                                                        <TableCell width="7%" padding="none" align="center">Cs</TableCell>
+                                                        <TableCell width="7%" padding="none" align="center">Pcs</TableCell>
+                                                        <TableCell width="7%" padding="none" align="center">Cs</TableCell>
+                                                        <TableCell width="7%" padding="none" align="center">Pcs</TableCell>
+                                                        <TableCell width="7%" padding="none" align="center">D</TableCell>
+                                                        <TableCell width="7%" padding="none" align="center">R</TableCell>
+                                                    </TableRow>
+                                                </TableHead>
+                                            ),
+                                        }}
+                                        columns={[
+                                            {
+                                                title: "Description",
+                                                field: "description",
+                                                cellStyle: {
+                                                    padding: "10px 5px 10px 7px",
+                                                    width: '27%',
+                                                    textAlign: 'left'
+                                                },
+                                                editComponent: props => (
+                                                    <Autocomplete
+                                                        // options={selectedProductOptions || []}
+                                                        options={getProductItemList}
+                                                        getOptionLabel={(option) => option.name}
+                                                        onChange={(e, option) => {
+                                                            let data = { ...props.rowData };
+                                                            data.description = e.target.innerText;
+                                                            props.onRowDataChange(data);
+                                                        }}
+                                                        inputValue={props.value}
+                                                        renderInput={(params) =>
+                                                            <MuiTextField
+                                                                {...params}
+                                                                helperText={props.helperText}
+                                                                error={props.error}
+                                                                variant="standard"
+                                                                placeholder='Khomba Original Herbal Care Soap'
+                                                            />
+                                                        }
+                                                    />
+                                                ),
+                                                validate: (rowData) =>
+                                                    rowData.description === undefined
+                                                        ? { isValid: false, helperText: 'Required *' }
+                                                        : rowData.description === ''
+                                                            ? { isValid: false, helperText: 'Required *' }
+                                                            : true
+
+                                            },
+                                            {
+                                                title: "Pieces Per Cases",
+                                                field: "piecespercase",
+                                                type: 'numeric',
+                                                cellStyle: {
+                                                    padding: "10px 5px 10px 7px",
+                                                    width: '7%',
+                                                    textAlign: 'right'
+                                                },
+                                                editComponent: props =>
+                                                    <MuiTextField
+                                                        onChange={e => {
+                                                            let data = { ...props.rowData };
+                                                            data.piecespercase = e.target.value;
+                                                            let salesqtycases = isNaN(data.salesqtycases) ? 0 : data.salesqtycases;
+                                                            let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
+                                                            let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
+                                                            let listprice = isNaN(data.listprice) ? 0 : data.listprice;
+                                                            data.value = ((salesqtycases * piecespercase) + +salesqtypieces) * listprice;
+                                                            props.onRowDataChange(data);
+                                                        }}
+                                                        type="number"
+                                                        helperText={props.helperText}
+                                                        error={props.error}
+                                                        variant="standard"
+                                                        value={props.value}
+                                                        placeholder='24'
+                                                    />
+                                                ,
+                                                validate: (rowData) =>
+                                                    rowData.piecespercase === undefined
+                                                        ? { isValid: false, helperText: 'Required *' }
+                                                        : rowData.piecespercase === ''
+                                                            ? { isValid: false, helperText: 'Required *' }
+                                                            : true
+                                            },
+                                            {
+                                                field: "listprice",
+                                                title: '55.00',
+                                                type: 'numeric',
+                                                cellStyle: {
+                                                    padding: "10px 5px 10px 7px",
+                                                    width: '7%',
+                                                    textAlign: 'right'
+                                                },
+                                                render: rowData => rowData.listprice.toFixed(2),
+                                                validate: (rowData) =>
+                                                    rowData.listprice === undefined
+                                                        ? { isValid: false, helperText: 'Required *' }
+                                                        : rowData.listprice === ''
+                                                            ? { isValid: false, helperText: 'Required *' }
+                                                            : true
+
+
+                                            },
+                                            {
+                                                title: "Sales Cs",
+                                                field: "salesqtycases",
+                                                type: 'numeric',
+                                                cellStyle: {
+                                                    padding: "10px 5px 10px 7px",
+                                                    width: '7%',
+                                                    textAlign: 'right'
+                                                },
+                                                editComponent: props =>
+                                                    <MuiTextField
+                                                        onChange={e => {
+                                                            let data = { ...props.rowData };
+                                                            data.salesqtycases = e.target.value;
+                                                            let salesqtycases = isNaN(data.salesqtycases) ? 0 : data.salesqtycases;
+                                                            let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
+                                                            let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
+                                                            let listprice = isNaN(data.listprice) ? 0 : data.listprice;
+                                                            data.value = ((salesqtycases * piecespercase) + +salesqtypieces) * listprice;
+                                                            props.onRowDataChange(data);
+                                                        }}
+                                                        type="number"
+                                                        helperText={props.helperText}
+                                                        error={props.error}
+                                                        variant="standard"
+                                                        value={props.value}
+                                                        placeholder='9'
+                                                    />
+                                                ,
+                                                validate: (rowData) =>
+                                                    rowData.salesqtycases === undefined
+                                                        ? { isValid: false, helperText: 'Required *' }
+                                                        : rowData.salesqtycases === ''
+                                                            ? { isValid: false, helperText: 'Required *' }
+                                                            : true
+
+                                            },
+                                            {
+                                                title: "Sales Pcs",
+                                                field: "salesqtypieces",
+                                                type: 'numeric',
+                                                cellStyle: {
+                                                    width: '7%',
+                                                    padding: "10px 5px 10px 7px",
+                                                    textAlign: 'right'
+                                                },
+                                                editComponent: props =>
+                                                    <MuiTextField
+                                                        onChange={e => {
+                                                            let data = { ...props.rowData };
+                                                            data.salesqtypieces = e.target.value;
+                                                            let salesqtycases = isNaN(data.salesqtycases) ? 0 : data.salesqtycases;
+                                                            let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
+                                                            let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
+                                                            let listprice = isNaN(data.listprice) ? 0 : data.listprice;
+                                                            data.value = ((salesqtycases * piecespercase) + +salesqtypieces) * listprice;
+                                                            props.onRowDataChange(data);
+                                                        }}
+                                                        type="number"
+                                                        helperText={props.helperText}
+                                                        error={props.error}
+                                                        variant="standard"
+                                                        value={props.value}
+                                                        placeholder='9'
+                                                    />
+                                                ,
+                                                validate: (rowData) =>
+                                                    rowData.salesqtypieces === undefined
+                                                        ? { isValid: false, helperText: 'Required *' }
+                                                        : rowData.salesqtypieces === ''
+                                                            ? { isValid: false, helperText: 'Required *' }
+                                                            : true
+
+                                            },
+                                            {
+                                                title: "9",
+                                                field: "freeqtycases",
+                                                type: 'numeric',
+                                                initialEditValue: 0,
+                                                cellStyle: {
+                                                    width: '7%',
+                                                    padding: "10px 5px 10px 7px",
+                                                    textAlign: 'right'
+                                                },
+                                                validate: (rowData) =>
+                                                    rowData.freeqtycases === undefined
+                                                        ? { isValid: false, helperText: 'Required *' }
+                                                        : rowData.freeqtycases === ''
+                                                            ? { isValid: false, helperText: 'Required *' }
+                                                            : true
+
+                                            },
+                                            {
+                                                title: "9",
+                                                field: "freeqtypieces",
+                                                type: 'numeric',
+                                                initialEditValue: 0,
+                                                cellStyle: {
+                                                    width: '7%',
+                                                    padding: "10px 5px 10px 7px",
+                                                    textAlign: 'right'
+                                                },
+                                                validate: (rowData) =>
+                                                    rowData.freeqtypieces === undefined
+                                                        ? { isValid: false, helperText: 'Required *' }
+                                                        : rowData.freeqtypieces === ''
+                                                            ? { isValid: false, helperText: 'Required *' }
+                                                            : true
+
+                                            },
+                                            {
+                                                title: "9",
+                                                field: "damaged",
+                                                type: 'numeric',
+                                                initialEditValue: 0,
+                                                cellStyle: {
+                                                    width: '7%',
+                                                    padding: "10px 5px 10px 7px",
+                                                    textAlign: 'right'
+                                                },
+                                                validate: (rowData) =>
+                                                    rowData.damaged === undefined
+                                                        ? { isValid: false, helperText: 'Required *' }
+                                                        : rowData.damaged === ''
+                                                            ? { isValid: false, helperText: 'Required *' }
+                                                            : true
+
+                                            },
+                                            {
+                                                title: "9",
+                                                field: "return",
+                                                type: 'numeric',
+                                                initialEditValue: 0,
+                                                cellStyle: {
+                                                    width: '7%',
+                                                    padding: "10px 5px 10px 7px",
+                                                    textAlign: 'right'
+                                                },
+                                                validate: (rowData) =>
+                                                    rowData.return === undefined
+                                                        ? { isValid: false, helperText: 'Required *' }
+                                                        : rowData.return === ''
+                                                            ? { isValid: false, helperText: 'Required *' }
+                                                            : true
+
+                                            },
+                                            {
+                                                title: "9999.99",
+                                                field: "value",
+                                                type: 'numeric',
+                                                render: rowData => rowData.value ? rowData.value.toFixed(2) : '',
+                                                cellStyle: {
+                                                    width: 'min-content'
+                                                },
+                                                editable: 'never',
+                                            }
+                                        ]}
+                                        data={data}
+                                        editable={{
+                                            onRowAdd: (newData) =>
+                                                new Promise((resolve, reject) => {
+                                                    setTimeout(() => {
+                                                        setData(prevData => [...prevData, newData]);
+
+                                                        resolve();
+                                                    }, 100);
+                                                }),
+                                            onRowUpdate: (newData, oldData) =>
+                                                new Promise((resolve, reject) => {
+                                                    setTimeout(() => {
+                                                        const dataUpdate = [...data];
+                                                        const index = oldData.tableData.id;
+                                                        dataUpdate[index] = newData;
+                                                        setData([...dataUpdate]);
+
+                                                        resolve();
+                                                    }, 1)
+                                                }),
+                                            onRowDelete: oldData =>
+                                                new Promise((resolve, reject) => {
+                                                    setTimeout(() => {
+                                                        const dataDelete = [...data];
+                                                        const index = oldData.tableData.id;
+                                                        dataDelete.splice(index, 1);
+                                                        setData([...dataDelete]);
+
+                                                        resolve()
+                                                    }, 1)
+                                                }),
+                                        }}
+                                        icons={{
+                                            Delete: () => (
+                                                <div>
+                                                    <DeleteIcon className={style.deleteItemBtn} />
+                                                </div>
+                                            )
+                                        }}
+                                        options={{
+                                            pageSize: pageSize,
+                                            pageSizeOptions: [],
+                                            paging: true,
+                                            addRowPosition: "first",
+                                            toolbar: true,
+                                            filtering: true,
+                                            search: false,
+                                            actionsColumnIndex: -1,
+                                            headerStyle: {
+                                                position: "sticky",
+                                                top: "0",
+                                                backgroundColor: '#20369f',
+                                                color: '#FFF',
+                                                fontSize: "0.8em"
+                                            },
+                                            rowStyle: rowData => ({
+                                                fontSize: "0.8em",
+                                                backgroundColor: (rowData.tableData.id % 2 === 1) ? '#ebebeb' : '#ffffff'
+                                            })
+                                        }}
+                                    />
                                 </div>
-                            ),
-                            Pagination: () => (
-                                <td style={{
-                                    display: "flex",
-                                    flexDirection: "column"
-                                }} >
-                                    <Grid container style={{ background: "#f5f5f5", padding: 15 }}>
-                                        <Grid item align="Left">
-                                            <Typography style={{ fontWeight: 600 }}> Gross Total (Rs.) </Typography>
-                                        </Grid>
-                                        <Grid item align="Right" style={{ margin: "0px 102.56px 0px auto" }}>
-                                            <Typography style={{ fontWeight: 600 }}> {getGrossTotal()} </Typography>
-                                        </Grid>
-                                    </Grid>
-                                </td>
-                            ),
-                            Header: props => (
-                                <TableHead {...props} style={{ position: 'sticky', top: '0', zIndex: 99999 }}>
-                                    <TableRow className={classes.row1}>
-                                        <TableCell width="26%" padding="none" rowSpan={2}>
-                                            <div style={{ padding: '0 10px' }}>
-                                                Description
-                                            </div>
-                                        </TableCell>
-                                        <TableCell width="6%" padding="none" rowSpan={2} align="center">
-                                            <div style={{ padding: '0 10px' }}>
-                                                Pieces per case
-                                            </div>
-                                        </TableCell>
-                                        <TableCell width="6%" padding="none" rowSpan={2} align="center">
-                                            <div style={{ padding: '0 10px' }}>
-                                                List Price
-                                            </div>
-                                        </TableCell>
-                                        <TableCell padding="none" colSpan={2} align="center">
-                                            Sales Qty.
-                                        </TableCell>
-                                        <TableCell padding="none" colSpan={2} align="center">
-                                            Free Qty.
-                                        </TableCell>
-                                        <TableCell padding="none" colSpan={2} align="center">
-                                            Return Qty.
-                                        </TableCell>
-                                        <TableCell padding="none" width="10%" rowSpan={2} align="center">
-                                            <div style={{ padding: '0 10px' }}>
-                                                Value
-                                            </div>
-                                        </TableCell>
-                                        <TableCell padding="none" width="11%" rowSpan={2} align="center">
-                                            Action
-                                        </TableCell>
-                                    </TableRow>
-                                    <TableRow className={classes.row2}>
-                                        <TableCell width="6%" padding="none" align="center">Cs</TableCell>
-                                        <TableCell width="6%" padding="none" align="center">Pcs</TableCell>
-                                        <TableCell width="6%" padding="none" align="center">Cs</TableCell>
-                                        <TableCell width="6%" padding="none" align="center">Pcs</TableCell>
-                                        <TableCell width="6%" padding="none" align="center">D</TableCell>
-                                        <TableCell width="6%" padding="none" align="center">R</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                            ),
+                            );
                         }}
-                        columns={[
-                            {
-                                title: "Description",
-                                field: "description",
-                                editComponent: props => (
-                                    <Autocomplete
-                                        // options={selectedProductOptions || []}
-                                        options={getProductItemList}
-                                        getOptionLabel={(option) => option.name}
-                                        onChange={(e, option) => {
-                                            let data = { ...props.rowData };
-                                            data.description = e.target.innerText;
-                                            props.onRowDataChange(data);
-                                        }}
-                                        inputValue={props.value}
-                                        renderInput={(params) =>
-                                            <MuiTextField
-                                                {...params}
-                                                helperText={props.helperText}
-                                                error={props.error}
-                                                variant="standard"
-                                            />
-                                        }
-                                    />
-                                ),
-                                validate: (rowData) =>
-                                    rowData.description === undefined
-                                        ? { isValid: false, helperText: 'Required *' }
-                                        : rowData.description === ''
-                                            ? { isValid: false, helperText: 'Required *' }
-                                            : true
-
-                            },
-                            {
-                                title: "Pieces Per Cases",
-                                field: "piecespercase",
-                                type: 'numeric',
-                                cellStyle: {
-                                    padding: "10px 5px 10px 7px",
-                                    width: '6%',
-                                    textAlign: 'center'
-                                },
-                                editComponent: props =>
-                                    <MuiTextField
-                                        onChange={e => {
-                                            let data = { ...props.rowData };
-                                            data.piecespercase = e.target.value;
-                                            let salesqtycases = isNaN(data.salesqtycases) ? 0 : data.salesqtycases;
-                                            let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
-                                            let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
-                                            let listprice = isNaN(data.listprice) ? 0 : data.listprice;
-                                            data.value = ((salesqtycases * piecespercase) + +salesqtypieces) * listprice;
-                                            props.onRowDataChange(data);
-                                        }}
-                                        type="number"
-                                        helperText={props.helperText}
-                                        error={props.error}
-                                        variant="standard"
-                                        value={props.value}
-                                    />
-                                ,
-                                validate: (rowData) =>
-                                    rowData.piecespercase === undefined
-                                        ? { isValid: false, helperText: 'Required *' }
-                                        : rowData.piecespercase === ''
-                                            ? { isValid: false, helperText: 'Required *' }
-                                            : true
-                            },
-                            {
-                                field: "listprice",
-                                type: 'numeric',
-                                cellStyle: {
-                                    padding: "10px 5px 10px 7px",
-                                    width: '6%',
-                                    textAlign: 'center'
-                                },
-                                validate: (rowData) =>
-                                    rowData.listprice === undefined
-                                        ? { isValid: false, helperText: 'Required *' }
-                                        : rowData.listprice === ''
-                                            ? { isValid: false, helperText: 'Required *' }
-                                            : true
-
-
-                            },
-                            {
-                                title: "Sales Cs",
-                                field: "salesqtycases",
-                                type: 'numeric',
-                                cellStyle: {
-                                    padding: "10px 5px 10px 7px",
-                                    width: '6%',
-                                    textAlign: 'center'
-                                },
-                                editComponent: props =>
-                                    <MuiTextField
-                                        onChange={e => {
-                                            let data = { ...props.rowData };
-                                            data.salesqtycases = e.target.value;
-                                            let salesqtycases = isNaN(data.salesqtycases) ? 0 : data.salesqtycases;
-                                            let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
-                                            let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
-                                            let listprice = isNaN(data.listprice) ? 0 : data.listprice;
-                                            data.value = ((salesqtycases * piecespercase) + +salesqtypieces) * listprice;
-                                            props.onRowDataChange(data);
-                                        }}
-                                        type="number"
-                                        helperText={props.helperText}
-                                        error={props.error}
-                                        variant="standard"
-                                        value={props.value}
-                                    />
-                                ,
-                                validate: (rowData) =>
-                                    rowData.salesqtycases === undefined
-                                        ? { isValid: false, helperText: 'Required *' }
-                                        : rowData.salesqtycases === ''
-                                            ? { isValid: false, helperText: 'Required *' }
-                                            : true
-
-                            },
-                            {
-                                title: "Sales Pcs",
-                                field: "salesqtypieces",
-                                type: 'numeric',
-                                cellStyle: {
-                                    width: '6%',
-                                    padding: "10px 5px 10px 7px",
-                                    textAlign: 'center'
-                                },
-                                editComponent: props =>
-                                    <MuiTextField
-                                        onChange={e => {
-                                            let data = { ...props.rowData };
-                                            data.salesqtypieces = e.target.value;
-                                            let salesqtycases = isNaN(data.salesqtycases) ? 0 : data.salesqtycases;
-                                            let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
-                                            let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
-                                            let listprice = isNaN(data.listprice) ? 0 : data.listprice;
-                                            data.value = ((salesqtycases * piecespercase) + +salesqtypieces) * listprice;
-                                            props.onRowDataChange(data);
-                                        }}
-                                        type="number"
-                                        helperText={props.helperText}
-                                        error={props.error}
-                                        variant="standard"
-                                        value={props.value}
-                                    />
-                                ,
-                                validate: (rowData) =>
-                                    rowData.salesqtypieces === undefined
-                                        ? { isValid: false, helperText: 'Required *' }
-                                        : rowData.salesqtypieces === ''
-                                            ? { isValid: false, helperText: 'Required *' }
-                                            : true
-
-                            },
-                            {
-                                title: "Free Cs",
-                                field: "freeqtycases",
-                                type: 'numeric',
-                                initialEditValue: 0,
-                                cellStyle: {
-                                    width: '6%',
-                                    padding: "10px 5px 10px 7px",
-                                    textAlign: 'center'
-                                },
-                                validate: (rowData) =>
-                                    rowData.freeqtycases === undefined
-                                        ? { isValid: false, helperText: 'Required *' }
-                                        : rowData.freeqtycases === ''
-                                            ? { isValid: false, helperText: 'Required *' }
-                                            : true
-
-                            },
-                            {
-                                title: "Free Pcs",
-                                field: "freeqtypieces",
-                                type: 'numeric',
-                                initialEditValue: 0,
-                                cellStyle: {
-                                    width: '6%',
-                                    padding: "10px 5px 10px 7px",
-                                    textAlign: 'center'
-                                },
-                                validate: (rowData) =>
-                                    rowData.freeqtypieces === undefined
-                                        ? { isValid: false, helperText: 'Required *' }
-                                        : rowData.freeqtypieces === ''
-                                            ? { isValid: false, helperText: 'Required *' }
-                                            : true
-
-                            },
-                            {
-                                title: "Damaged",
-                                field: "damaged",
-                                type: 'numeric',
-                                initialEditValue: 0,
-                                cellStyle: {
-                                    width: '6%',
-                                    padding: "10px 5px 10px 7px",
-                                    textAlign: 'center'
-                                },
-                                validate: (rowData) =>
-                                    rowData.damaged === undefined
-                                        ? { isValid: false, helperText: 'Required *' }
-                                        : rowData.damaged === ''
-                                            ? { isValid: false, helperText: 'Required *' }
-                                            : true
-
-                            },
-                            {
-                                title: "Return",
-                                field: "return",
-                                type: 'numeric',
-                                initialEditValue: 0,
-                                cellStyle: {
-                                    width: '6%',
-                                    padding: "10px 5px 10px 7px",
-                                    textAlign: 'center'
-                                },
-                                validate: (rowData) =>
-                                    rowData.return === undefined
-                                        ? { isValid: false, helperText: 'Required *' }
-                                        : rowData.return === ''
-                                            ? { isValid: false, helperText: 'Required *' }
-                                            : true
-
-                            },
-                            {
-                                title: "Value (Rs.)",
-                                field: "value",
-                                type: 'numeric',
-                                cellStyle: {
-                                    width: 'min-content'
-                                },
-                                editable: 'never',
-                            }
-                        ]}
-                        data={data}
-                        editable={{
-                            onRowAdd: (newData) =>
-                                new Promise((resolve, reject) => {
-                                    setTimeout(() => {
-                                        setData(prevData => [...prevData, newData]);
-
-                                        resolve();
-                                    }, 100);
-                                }),
-                            onRowUpdate: (newData, oldData) =>
-                                new Promise((resolve, reject) => {
-                                    setTimeout(() => {
-                                        const dataUpdate = [...data];
-                                        const index = oldData.tableData.id;
-                                        dataUpdate[index] = newData;
-                                        setData([...dataUpdate]);
-
-                                        resolve();
-                                    }, 1)
-                                }),
-                            onRowDelete: oldData =>
-                                new Promise((resolve, reject) => {
-                                    setTimeout(() => {
-                                        const dataDelete = [...data];
-                                        const index = oldData.tableData.id;
-                                        dataDelete.splice(index, 1);
-                                        setData([...dataDelete]);
-
-                                        resolve()
-                                    }, 1)
-                                }),
-                        }}
-                        icons={{
-                            Delete: () => (
-                                <div>
-                                    <DeleteIcon className={style.deleteItemBtn} />
-                                </div>
-                            )
-                        }}
-                        options={{
-                            addRowPosition: "first",
-                            toolbar: true,
-                            filtering: true,
-                            search: false,
-                            pageSize: 999,
-                            maxBodyHeight: "calc(100vh - 300px)",
-                            minBodyHeight: "calc(100vh - 300px)",
-                            actionsColumnIndex: -1,
-                            headerStyle: {
-                                position: "sticky",
-                                top: "0",
-                                backgroundColor: '#20369f',
-                                color: '#FFF',
-                                fontSize: "0.8em"
-                            },
-                            rowStyle: rowData => ({
-                                fontSize: "0.8em",
-                                backgroundColor: (rowData.tableData.id % 2 === 1) ? '#ebebeb' : '#ffffff'
-                            })
-                        }}
-                    />
-
+                    </AutoSizer>
                 </div>
 
                 <Divider
@@ -630,7 +657,7 @@ export default function StepOne(props) {
 
                 <Quotations />
 
-            </div>
+            </div >
 
             <div className={style.footer}>
 
@@ -669,6 +696,6 @@ export default function StepOne(props) {
 
             </PopUp>
 
-        </div>
+        </div >
     )
 }

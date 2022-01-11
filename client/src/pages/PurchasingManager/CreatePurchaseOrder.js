@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import AutoSizer from 'react-virtualized-auto-sizer';
 import formData from 'form-data';
 
 //Material UI 
-import { Button, Grid } from '@material-ui/core';
-import { Typography } from '@material-ui/core';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import {
+    TableHead,
+    TableRow,
+    TableCell,
+    TablePagination,
+    Button,
+    Grid,
+    Typography,
+} from '@material-ui/core';
 
 //Material UI Icons
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
@@ -242,218 +247,230 @@ export default function CreatePurchaseOrder(props) {
 
                         </div>
 
-                        <MaterialTable
-                            components={{
-                                Pagination: () => (
-                                    <td style={{
-                                        display: "flex",
-                                        flexDirection: "column"
-                                    }} >
-                                        <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
-                                            <Grid item align="Left">
-                                                <Typography style={{ fontWeight: 600 }}> Gross Total (Rs.) </Typography>
-                                            </Grid>
-                                            <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
-                                                <Typography style={{ fontWeight: 600 }}> {orderFormData.grosstotal} </Typography>
-                                            </Grid>
-                                        </Grid>
-                                        <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
-                                            <Grid item align="Left">
-                                                <Typography style={{ fontWeight: 600 }}> Received Discounts (Rs.)</Typography>
-                                            </Grid>
-                                            <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
-                                                <Typography style={{ fontWeight: 600 }}> {orderFormData.receiveddiscounts} </Typography>
-                                            </Grid>
-                                        </Grid>
-                                        <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
-                                            <Grid item align="Left">
-                                                <Typography style={{ fontWeight: 600 }}> Damaged / Expired Items (Rs.) </Typography>
-                                            </Grid>
-                                            <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
-                                                <Typography style={{ fontWeight: 600 }}> {orderFormData.damagedmissingitems} </Typography>
-                                            </Grid>
-                                        </Grid>
-                                        <Grid container style={{ background: "#f5f5f5", padding: 7, color: 'red' }}>
-                                            <Grid item align="Left">
-                                                <Typography style={{ fontWeight: 600 }}> Total (Rs.) </Typography>
-                                            </Grid>
-                                            <Grid item align="Right" style={{ margin: "0px 10px 0px auto" }}>
-                                                <Typography style={{ fontWeight: 600 }}> {orderFormData.total} </Typography>
-                                            </Grid>
-                                        </Grid>
-                                    </td>
-                                ),
-                                Header: props => (
-                                    <TableHead {...props} style={{ position: 'sticky', top: '0', zIndex: 99999 }}>
-                                        <TableRow className={classes.row1}>
-                                            <TableCell width="2%" padding="none" rowSpan={2} align="center">
-                                                <div style={{ padding: '0 10px' }}>
-                                                    #
-                                                </div>
-                                            </TableCell>
-                                            <TableCell width="32%" padding="none" rowSpan={2}>
-                                                <div style={{ padding: '0 10px' }}>
-                                                    Description
-                                                </div>
-                                            </TableCell>
-                                            <TableCell width="8%" padding="none" rowSpan={2} align="center">
-                                                <div style={{ padding: '0 10px' }}>
-                                                    List Price
-                                                </div>
-                                            </TableCell>
-                                            <TableCell padding="none" colSpan={2} align="center">
-                                                Sales Qty.
-                                            </TableCell>
-                                            <TableCell padding="none" colSpan={2} align="center">
-                                                Free Qty.
-                                            </TableCell>
-                                            <TableCell padding="none" colSpan={2} align="center">
-                                                Return Qty.
-                                            </TableCell>
-                                            <TableCell padding="none" width="14%" rowSpan={2} align="center">
-                                                <div style={{ padding: '0 10px' }}>
-                                                    Value
-                                                </div>
-                                            </TableCell>
-                                        </TableRow>
-                                        <TableRow className={classes.row2}>
-                                            <TableCell width="8%" padding="none" align="center">Cs</TableCell>
-                                            <TableCell width="8%" padding="none" align="center">Pcs</TableCell>
-                                            <TableCell width="8%" padding="none" align="center">Cs</TableCell>
-                                            <TableCell width="8%" padding="none" align="center">Pcs</TableCell>
-                                            <TableCell width="8%" padding="none" align="center">D</TableCell>
-                                            <TableCell width="8%" padding="none" align="center">R</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                ),
-                            }}
-                            columns={[
-                                {
-                                    title: "#",
-                                    field: "tableData.id",
-                                    cellStyle: {
-                                        padding: "10px 5px 10px 7px",
-                                        width: '2%',
-                                        textAlign: 'center'
-                                    },
-                                },
-                                {
-                                    title: "Description",
-                                    field: "description",
-                                    cellStyle: {
-                                        padding: "10px 5px 10px 7px",
-                                        width: '32%',
-                                        textAlign: 'left'
-                                    },
-                                },
-                                {
-                                    title: "Pieces Per Cases",
-                                    field: "piecespercase",
-                                    hidden: true,
-                                },
-                                {
-                                    field: "listprice",
-                                    type: 'numeric',
-                                    cellStyle: {
-                                        padding: "10px 5px 10px 7px",
-                                        width: '8%',
-                                        textAlign: 'center'
-                                    },
-                                },
-                                {
-                                    title: "Sales Cs",
-                                    field: "salesqtycases",
-                                    type: 'numeric',
-                                    cellStyle: {
-                                        padding: "10px 5px 10px 7px",
-                                        width: '8%',
-                                        textAlign: 'center'
-                                    },
-                                },
-                                {
-                                    title: "Sales Pcs",
-                                    field: "salesqtypieces",
-                                    type: 'numeric',
-                                    cellStyle: {
-                                        width: '8%',
-                                        padding: "10px 5px 10px 7px",
-                                        textAlign: 'center'
-                                    },
-                                },
-                                {
-                                    title: "Free Cs",
-                                    field: "freeqtycases",
-                                    type: 'numeric',
-                                    cellStyle: {
-                                        width: '8%',
-                                        padding: "10px 5px 10px 7px",
-                                        textAlign: 'center'
-                                    },
-                                },
-                                {
-                                    title: "Free Pcs",
-                                    field: "freeqtypieces",
-                                    type: 'numeric',
-                                    cellStyle: {
-                                        width: '8%',
-                                        padding: "10px 5px 10px 7px",
-                                        textAlign: 'center'
-                                    },
-                                },
-                                {
-                                    title: "Damaged",
-                                    field: "damaged",
-                                    type: 'numeric',
-                                    cellStyle: {
-                                        width: '8%',
-                                        padding: "10px 5px 10px 7px",
-                                        textAlign: 'center'
-                                    },
-                                },
-                                {
-                                    title: "Return",
-                                    field: "return",
-                                    type: 'numeric',
-                                    cellStyle: {
-                                        width: '8%',
-                                        padding: "10px 5px 10px 7px",
-                                        textAlign: 'center'
-                                    },
-                                },
-                                {
-                                    title: "Value (Rs.)",
-                                    field: "value",
-                                    type: 'numeric',
-                                    cellStyle: {
-                                        width: '12%',
-                                        padding: "10px 15px 10px 12px",
-                                        textAlign: 'right'
-                                    },
-                                    editable: 'never',
-                                }
-                            ]}
-                            data={data}
-                            options={{
-                                toolbar: false,
-                                filtering: true,
-                                search: false,
-                                pageSize: 999,
-                                minBodyHeight: poRecords ? "calc(100vh - 480px)" : "calc(100vh - 455px)",
-                                maxBodyHeight: poRecords ? "calc(100vh - 480px)" : "calc(100vh - 455px)",
-                                headerStyle: {
-                                    position: "sticky",
-                                    top: "0",
-                                    backgroundColor: '#20369f',
-                                    color: '#FFF',
-                                    fontSize: "0.8em"
-                                },
-                                rowStyle: rowData => ({
-                                    fontSize: "0.8em",
-                                    backgroundColor: (rowData.tableData.id % 2 === 0) ? '#ebebeb' : '#ffffff'
-                                })
-                            }}
+                        <AutoSizer>
+                            {({ height, width }) => {
+                                const pageSize = Math.floor((height - 470) / 48);
+                                return (
+                                    <div style={{ height: `${height}px`, width: `${width}px`, overflowY: 'auto' }}>
 
-                        />
+                                        <MaterialTable
+                                            components={{
+                                                Pagination: props => (
+                                                    <td style={{
+                                                        display: "flex",
+                                                        flexDirection: "column"
+                                                    }} >
+                                                        <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
+                                                            <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '200px' }}>
+                                                                <Typography style={{ fontWeight: 600 }}> Gross Total (Rs.) </Typography>
+                                                            </Grid>
+                                                            <Grid item align="Right" style={{ margin: "0px 10px  0px 0px", width: '200px' }}>
+                                                                <Typography style={{ fontWeight: 600 }}> {parseInt(orderFormData.grosstotal).toFixed(2)} </Typography>
+                                                            </Grid>
+                                                        </Grid>
+                                                        <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
+                                                            <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '200px' }}>
+                                                                <Typography style={{ fontWeight: 600 }}> Received Discounts (Rs.)</Typography>
+                                                            </Grid>
+                                                            <Grid item align="Right" style={{ margin: "0px 10px  0px 0px", width: '200px' }}>
+                                                                <Typography style={{ fontWeight: 600 }}> {parseInt(orderFormData.receiveddiscounts).toFixed(2)} </Typography>
+                                                            </Grid>
+                                                        </Grid>
+                                                        <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
+                                                            <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '200px' }}>
+                                                                <Typography style={{ fontWeight: 600 }}> Damaged / Expired Items (Rs.) </Typography>
+                                                            </Grid>
+                                                            <Grid item align="Right" style={{ margin: "0px 10px  0px 0px", width: '200px' }}>
+                                                                <Typography style={{ fontWeight: 600 }}> {parseInt(orderFormData.damagedmissingitems).toFixed(2)} </Typography>
+                                                            </Grid>
+                                                        </Grid>
+                                                        <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
+                                                            <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '200px' }}>
+                                                                <Typography style={{ fontSize: '1.05em', fontWeight: 600 }}> Total (Rs.) </Typography>
+                                                            </Grid>
+                                                            <Grid item align="Right" style={{ margin: "0px 10px  0px 0px", width: '200px' }}>
+                                                                <Typography style={{ fontSize: '1.05em', fontWeight: 600 }}> {parseInt(orderFormData.total).toFixed(2)} </Typography>
+                                                            </Grid>
+                                                        </Grid>
+                                                        <TablePagination {...props} />
+                                                    </td>
+                                                ),
+                                                Header: props => (
+                                                    <TableHead {...props} style={{ position: 'sticky', top: '0', zIndex: 99999 }}>
+                                                        <TableRow className={classes.row1}>
+                                                            <TableCell width="2%" padding="none" rowSpan={2} align="center">
+                                                                <div style={{ padding: '0 10px' }}>
+                                                                    #
+                                                                </div>
+                                                            </TableCell>
+                                                            <TableCell width="32%" padding="none" rowSpan={2}>
+                                                                <div style={{ padding: '0 10px' }}>
+                                                                    Description
+                                                                </div>
+                                                            </TableCell>
+                                                            <TableCell width="7%" padding="none" rowSpan={2} align="center">
+                                                                <div style={{ padding: '0 10px' }}>
+                                                                    Pieces per Case
+                                                                </div>
+                                                            </TableCell>
+                                                            <TableCell width="7%" padding="none" rowSpan={2} align="center">
+                                                                <div style={{ padding: '0 10px' }}>
+                                                                    List Price
+                                                                </div>
+                                                            </TableCell>
+                                                            <TableCell padding="none" colSpan={2} align="center">
+                                                                Sales Qty.
+                                                            </TableCell>
+                                                            <TableCell padding="none" colSpan={2} align="center">
+                                                                Free Qty.
+                                                            </TableCell>
+                                                            <TableCell padding="none" colSpan={2} align="center">
+                                                                Return Qty.
+                                                            </TableCell>
+                                                            <TableCell padding="none" width="12%" rowSpan={2} align="center">
+                                                                <div style={{ padding: '0 10px' }}>
+                                                                    Value
+                                                                </div>
+                                                            </TableCell>
+                                                        </TableRow>
+                                                        <TableRow className={classes.row2}>
+                                                            <TableCell width="7%" padding="none" align="center">Cs</TableCell>
+                                                            <TableCell width="7%" padding="none" align="center">Pcs</TableCell>
+                                                            <TableCell width="7%" padding="none" align="center">Cs</TableCell>
+                                                            <TableCell width="7%" padding="none" align="center">Pcs</TableCell>
+                                                            <TableCell width="6%" padding="none" align="center">D</TableCell>
+                                                            <TableCell width="6%" padding="none" align="center">R</TableCell>
+                                                        </TableRow>
+                                                    </TableHead>
+                                                ),
+                                            }}
+                                            columns={[
+                                                {
+                                                    field: "tableData.id",
+                                                    cellStyle: {
+                                                        padding: "10px 5px 10px 7px",
+                                                        width: '2%',
+                                                        textAlign: 'left'
+                                                    },
+                                                },
+                                                {
+                                                    field: "description",
+                                                    cellStyle: {
+                                                        padding: "10px 5px 10px 7px",
+                                                        width: '32%',
+                                                        textAlign: 'left'
+                                                    },
+                                                },
+                                                {
+                                                    title: "Pieces Per Cases",
+                                                    field: "piecespercase",
+                                                    cellStyle: {
+                                                        padding: "10px 5px 10px 7px",
+                                                        width: '7%',
+                                                        textAlign: 'right'
+                                                    },
+                                                },
+                                                {
+                                                    field: "listprice",
+                                                    type: 'numeric',
+                                                    render: rowData => rowData.listprice.toFixed(2),
+                                                    cellStyle: {
+                                                        padding: "10px 5px 10px 7px",
+                                                        width: '7%',
+                                                        textAlign: 'right'
+                                                    },
+                                                },
+                                                {
+                                                    field: "salesqtycases",
+                                                    type: 'numeric',
+                                                    cellStyle: {
+                                                        padding: "10px 5px 10px 7px",
+                                                        width: '7%',
+                                                        textAlign: 'right'
+                                                    },
+                                                },
+                                                {
+                                                    field: "salesqtypieces",
+                                                    type: 'numeric',
+                                                    cellStyle: {
+                                                        width: '7%',
+                                                        padding: "10px 5px 10px 7px",
+                                                        textAlign: 'right'
+                                                    },
+                                                },
+                                                {
+                                                    field: "freeqtycases",
+                                                    type: 'numeric',
+                                                    cellStyle: {
+                                                        width: '7%',
+                                                        padding: "10px 5px 10px 7px",
+                                                        textAlign: 'right'
+                                                    },
+                                                },
+                                                {
+                                                    field: "freeqtypieces",
+                                                    type: 'numeric',
+                                                    cellStyle: {
+                                                        width: '7%',
+                                                        padding: "10px 5px 10px 7px",
+                                                        textAlign: 'right'
+                                                    },
+                                                },
+                                                {
+                                                    field: "damaged",
+                                                    type: 'numeric',
+                                                    cellStyle: {
+                                                        width: '6%',
+                                                        padding: "10px 5px 10px 7px",
+                                                        textAlign: 'right'
+                                                    },
+                                                },
+                                                {
+                                                    field: "return",
+                                                    type: 'numeric',
+                                                    cellStyle: {
+                                                        width: '6%',
+                                                        padding: "10px 5px 10px 7px",
+                                                        textAlign: 'right'
+                                                    },
+                                                },
+                                                {
+                                                    field: "value",
+                                                    type: 'numeric',
+                                                    render: rowData => rowData.value ? rowData.value.toFixed(2) : '',
+                                                    cellStyle: {
+                                                        width: '12%',
+                                                        padding: "10px 15px 10px 12px",
+                                                        textAlign: 'right'
+                                                    },
+                                                }
+                                            ]}
+                                            data={data}
+                                            options={{
+                                                pageSize: pageSize,
+                                                pageSizeOptions: [],
+                                                paging: true,
+                                                toolbar: false,
+                                                filtering: true,
+                                                search: false,
+                                                headerStyle: {
+                                                    position: "sticky",
+                                                    top: "0",
+                                                    backgroundColor: '#20369f',
+                                                    color: '#FFF',
+                                                    fontSize: "0.8em"
+                                                },
+                                                rowStyle: rowData => ({
+                                                    fontSize: "0.8em",
+                                                    backgroundColor: (rowData.tableData.id % 2 === 0) ? '#ebebeb' : '#ffffff'
+                                                })
+                                            }}
+                                        />
+
+                                    </div>
+                                );
+                            }}
+                        </AutoSizer>
 
                     </div>
 

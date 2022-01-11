@@ -188,7 +188,7 @@ export default function ViewPurchaseOrder(props) {
                                                         <Typography style={{ fontWeight: 600 }}> Gross Total (Rs.) </Typography>
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 10px 0px 0px", width: '200px' }}>
-                                                        <Typography style={{ fontWeight: 600 }}> {poRecords.grosstotal} </Typography>
+                                                        <Typography style={{ fontWeight: 600 }}> {parseInt(poRecords.grosstotal).toFixed(2)} </Typography>
                                                     </Grid>
                                                 </Grid>
                                                 <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
@@ -196,7 +196,7 @@ export default function ViewPurchaseOrder(props) {
                                                         <Typography style={{ fontWeight: 600 }}> Received Discounts (Rs.)</Typography>
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 10px 0px 0px", width: '200px' }}>
-                                                        <Typography style={{ fontWeight: 600 }}> {poRecords.receiveddiscounts} </Typography>
+                                                        <Typography style={{ fontWeight: 600 }}> {parseInt(poRecords.receiveddiscounts).toFixed(2)} </Typography>
                                                     </Grid>
                                                 </Grid>
                                                 <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
@@ -204,15 +204,15 @@ export default function ViewPurchaseOrder(props) {
                                                         <Typography style={{ fontWeight: 600 }}> Damaged / Expired Items (Rs.) </Typography>
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 10px 0px 0px", width: '200px' }}>
-                                                        <Typography style={{ fontWeight: 600 }}> {poRecords.damagedmissingitems} </Typography>
+                                                        <Typography style={{ fontWeight: 600 }}> {parseInt(poRecords.damagedmissingitems).toFixed(2)} </Typography>
                                                     </Grid>
                                                 </Grid>
-                                                <Grid container style={{ background: "#f5f5f5", padding: 7, color: '#FC6A03' }}>
+                                                <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
                                                     <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '200px' }}>
-                                                        <Typography style={{ fontSize: '1.1em', fontWeight: 600 }}> Total (Rs.) </Typography>
+                                                        <Typography style={{ fontSize: '1.05em', fontWeight: 600 }}> Total (Rs.) </Typography>
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 10px 0px 0px", width: '200px' }}>
-                                                        <Typography style={{ fontSize: '1.1em', fontWeight: 600 }}> {poRecords.total} </Typography>
+                                                        <Typography style={{ fontSize: '1.05em', fontWeight: 600 }}> {parseInt(poRecords.total).toFixed(2)} </Typography>
                                                     </Grid>
                                                 </Grid>
                                                 <TablePagination {...props} />
@@ -231,7 +231,12 @@ export default function ViewPurchaseOrder(props) {
                                                             Description
                                                         </div>
                                                     </TableCell>
-                                                    <TableCell width="8%" padding="none" rowSpan={2} align="left">
+                                                    <TableCell width="6%" padding="none" rowSpan={2} align="center">
+                                                        <div style={{ padding: '0 10px' }}>
+                                                            Pieces per Case
+                                                        </div>
+                                                    </TableCell>
+                                                    <TableCell width="8%" padding="none" rowSpan={2} align="center">
                                                         <div style={{ padding: '0 10px' }}>
                                                             List Price (Rs.)
                                                         </div>
@@ -245,26 +250,25 @@ export default function ViewPurchaseOrder(props) {
                                                     <TableCell padding="none" colSpan={2} align="center">
                                                         Return Qty.
                                                     </TableCell>
-                                                    <TableCell padding="none" width="14%" rowSpan={2} align="left">
+                                                    <TableCell padding="none" width="14%" rowSpan={2} align="center">
                                                         <div style={{ padding: '0 10px' }}>
                                                             Value (Rs.)
                                                         </div>
                                                     </TableCell>
                                                 </TableRow>
                                                 <TableRow className={classes.row2}>
-                                                    <TableCell width="8%" padding="none" align="center">Cs</TableCell>
-                                                    <TableCell width="8%" padding="none" align="center">Pcs</TableCell>
-                                                    <TableCell width="8%" padding="none" align="center">Cs</TableCell>
-                                                    <TableCell width="8%" padding="none" align="center">Pcs</TableCell>
-                                                    <TableCell width="8%" padding="none" align="center">D</TableCell>
-                                                    <TableCell width="8%" padding="none" align="center">R</TableCell>
+                                                    <TableCell width="6%" padding="none" align="center">Cs</TableCell>
+                                                    <TableCell width="6%" padding="none" align="center">Pcs</TableCell>
+                                                    <TableCell width="6%" padding="none" align="center">Cs</TableCell>
+                                                    <TableCell width="6%" padding="none" align="center">Pcs</TableCell>
+                                                    <TableCell width="6%" padding="none" align="center">D</TableCell>
+                                                    <TableCell width="6%" padding="none" align="center">R</TableCell>
                                                 </TableRow>
                                             </TableHead>
                                         ),
                                     }}
                                     columns={[
                                         {
-                                            title: "#",
                                             field: "tableData.id",
                                             cellStyle: {
                                                 padding: "10px 5px 10px 7px",
@@ -273,7 +277,6 @@ export default function ViewPurchaseOrder(props) {
                                             },
                                         },
                                         {
-                                            title: "Description",
                                             field: "description",
                                             cellStyle: {
                                                 padding: "10px 5px 10px 7px",
@@ -282,13 +285,17 @@ export default function ViewPurchaseOrder(props) {
                                             },
                                         },
                                         {
-                                            title: "Pieces Per Cases",
                                             field: "piecespercase",
-                                            hidden: true,
+                                            cellStyle: {
+                                                padding: "10px 5px 10px 7px",
+                                                width: '6%',
+                                                textAlign: 'right'
+                                            },
                                         },
                                         {
                                             field: "listprice",
                                             type: 'numeric',
+                                            render: rowData => rowData.listprice.toFixed(2),
                                             cellStyle: {
                                                 padding: "10px 5px 10px 7px",
                                                 width: '8%',
@@ -296,67 +303,60 @@ export default function ViewPurchaseOrder(props) {
                                             },
                                         },
                                         {
-                                            title: "Sales Cs",
                                             field: "salesqtycases",
                                             type: 'numeric',
                                             cellStyle: {
                                                 padding: "10px 5px 10px 7px",
-                                                width: '8%',
+                                                width: '6%',
                                                 textAlign: 'right'
                                             },
                                         },
                                         {
-                                            title: "Sales Pcs",
                                             field: "salesqtypieces",
                                             type: 'numeric',
                                             cellStyle: {
-                                                width: '8%',
+                                                width: '6%',
                                                 padding: "10px 5px 10px 7px",
                                                 textAlign: 'right'
                                             },
                                         },
                                         {
-                                            title: "Free Cs",
                                             field: "freeqtycases",
                                             type: 'numeric',
                                             cellStyle: {
-                                                width: '8%',
+                                                width: '6%',
                                                 padding: "10px 5px 10px 7px",
                                                 textAlign: 'right'
                                             },
                                         },
                                         {
-                                            title: "Free Pcs",
                                             field: "freeqtypieces",
                                             type: 'numeric',
                                             cellStyle: {
-                                                width: '8%',
+                                                width: '6%',
                                                 padding: "10px 5px 10px 7px",
                                                 textAlign: 'right'
                                             },
                                         },
                                         {
-                                            title: "Damaged",
                                             field: "damaged",
                                             type: 'numeric',
                                             cellStyle: {
-                                                width: '8%',
+                                                width: '6%',
                                                 padding: "10px 5px 10px 7px",
                                                 textAlign: 'right'
                                             },
                                         },
                                         {
-                                            title: "Return",
                                             field: "return",
                                             type: 'numeric',
                                             cellStyle: {
-                                                width: '8%',
+                                                width: '6%',
                                                 padding: "10px 5px 10px 7px",
                                                 textAlign: 'right'
                                             },
                                         },
                                         {
-                                            title: "Value (Rs.)",
                                             field: "value",
                                             type: 'numeric',
                                             cellStyle: {
@@ -364,7 +364,7 @@ export default function ViewPurchaseOrder(props) {
                                                 padding: "10px 15px 10px 12px",
                                                 textAlign: 'right'
                                             },
-                                            editable: 'never',
+                                            render: rowData => rowData.value.toFixed(2),
                                         }
                                     ]}
                                     data={poRecords.items}
