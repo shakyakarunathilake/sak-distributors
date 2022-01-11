@@ -56,7 +56,6 @@
         .resetBtn {
             Button {
                 font-size: 1em;
-                width: auto;
                 background-color: #aca9bb;
                 color: $inverseFontColor;
 
@@ -72,7 +71,6 @@
 
             Button {
                 font-size: 1em;
-                width: auto;
 
                 &:disabled {
                     background-color: hsl(230, 66%, 57%);

@@ -146,10 +146,10 @@ export default function StepThree(props) {
                                 flexDirection: "column"
                             }} >
                                 <Grid container style={{ background: "#f5f5f5", padding: 15 }}>
-                                    <Grid item align="Left">
-                                        <Typography style={{ fontWeight: 600 }}> Total </Typography>
+                                    <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '100px' }}>
+                                        <Typography style={{ fontWeight: 600 }}> Total (Rs.) </Typography>
                                     </Grid>
-                                    <Grid item align="Right" style={{ margin: "0px 102.56px 0px auto" }}>
+                                    <Grid item align="Right" style={{ margin: "0px 102.59px  0px 0px", width: '100px' }}>
                                         <Typography style={{ fontWeight: 600 }}> {getTotal()} </Typography>
                                     </Grid>
                                 </Grid>
@@ -165,7 +165,7 @@ export default function StepThree(props) {
                                     </TableCell>
                                     <TableCell width="8%" padding="none" rowSpan={2} align="center">
                                         <div style={{ padding: '0 10px' }}>
-                                            Selling Price
+                                            Selling Price (Rs.)
                                         </div>
                                     </TableCell>
                                     <TableCell padding="none" colSpan={2} align="center">
@@ -179,7 +179,7 @@ export default function StepThree(props) {
                                     </TableCell>
                                     <TableCell padding="none" width="14%" rowSpan={2} align="center">
                                         <div style={{ padding: '0 10px' }}>
-                                            Gross Amount
+                                            Gross Amount (Rs.)
                                         </div>
                                     </TableCell>
                                     <TableCell padding="none" width="11%" rowSpan={2} align="center">
@@ -199,7 +199,6 @@ export default function StepThree(props) {
                     }}
                     columns={[
                         {
-                            title: "Description",
                             field: "description",
                             cellStyle: {
                                 padding: "10px 5px 10px 7px",
@@ -249,9 +248,9 @@ export default function StepThree(props) {
                                         props.onChange(option.title)
                                         let data = { ...props.rowData };
                                         data.description = option.title;
-                                        data.sellingprice = option.sellingprice;
+                                        data.sellingprice = parseInt(option.sellingprice).toFixed(2);
                                         data.piecespercase = option.piecespercase;
-                                        data.mrp = option.mrp;
+                                        data.mrp = parseInt(option.mrp).toFixed(2);
                                         props.onRowDataChange(data);
                                     }}
                                     inputValue={props.value}
@@ -274,35 +273,31 @@ export default function StepThree(props) {
 
                         },
                         {
-                            title: "Pieces Per Cases",
                             field: "piecespercase",
                             hidden: true,
                         },
                         {
-                            title: "Selling Price",
                             field: "sellingprice",
                             editable: 'never',
                             type: 'numeric',
                             cellStyle: {
                                 width: '8%',
                                 padding: "10px 5px 10px 7px",
-                                textAlign: 'center'
+                                textAlign: 'right'
                             },
                         },
                         {
-                            title: "MRP",
                             field: "mrp",
                             hidden: true,
 
                         },
                         {
-                            title: "Sales Cs",
                             field: "salesqtycases",
                             type: 'numeric',
                             cellStyle: {
                                 padding: "10px 5px 10px 7px",
                                 width: '7%',
-                                textAlign: 'center'
+                                textAlign: 'right'
                             },
                             editComponent: props =>
                                 <MuiTextField
@@ -313,7 +308,7 @@ export default function StepThree(props) {
                                         let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
                                         let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
                                         let numberofpieces = (salesqtycases * piecespercase) + +salesqtypieces;
-                                        data.grossamount = numberofpieces * data.sellingprice;
+                                        data.grossamount = (numberofpieces * data.sellingprice).toFixed(2);
                                         props.onRowDataChange(data);
                                     }}
                                     type="number"
@@ -332,13 +327,12 @@ export default function StepThree(props) {
 
                         },
                         {
-                            title: "Sales Pcs",
                             field: "salesqtypieces",
                             type: 'numeric',
                             cellStyle: {
                                 width: '7%',
                                 padding: "10px 5px 10px 7px",
-                                textAlign: 'center'
+                                textAlign: 'right'
                             },
                             editComponent: props =>
                                 <MuiTextField
@@ -349,7 +343,7 @@ export default function StepThree(props) {
                                         let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
                                         let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
                                         let numberofpieces = (salesqtycases * piecespercase) + +salesqtypieces;
-                                        data.grossamount = numberofpieces * data.sellingprice;
+                                        data.grossamount = (numberofpieces * data.sellingprice).toFixed(2);
                                         props.onRowDataChange(data);
                                     }}
                                     type="number"
@@ -368,14 +362,13 @@ export default function StepThree(props) {
 
                         },
                         {
-                            title: "Free Cs",
                             field: "freeqtycases",
                             type: 'numeric',
                             initialEditValue: 0,
                             cellStyle: {
                                 width: '7%',
                                 padding: "10px 5px 10px 7px",
-                                textAlign: 'center'
+                                textAlign: 'right'
                             },
                             validate: (rowData) =>
                                 rowData.freeqtycases === undefined
@@ -386,14 +379,13 @@ export default function StepThree(props) {
 
                         },
                         {
-                            title: "Free Pcs",
                             field: "freeqtypieces",
                             type: 'numeric',
                             initialEditValue: 0,
                             cellStyle: {
                                 width: '7%',
                                 padding: "10px 5px 10px 7px",
-                                textAlign: 'center'
+                                textAlign: 'right'
                             },
                             validate: (rowData) =>
                                 rowData.freeqtypieces === undefined
@@ -404,14 +396,13 @@ export default function StepThree(props) {
 
                         },
                         {
-                            title: "Damaged",
                             field: "damaged",
                             type: 'numeric',
                             initialEditValue: 0,
                             cellStyle: {
                                 width: '7%',
                                 padding: "10px 5px 10px 7px",
-                                textAlign: 'center'
+                                textAlign: 'right'
                             },
                             editComponent: props =>
                                 <MuiTextField
@@ -422,7 +413,7 @@ export default function StepThree(props) {
                                         let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
                                         let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
                                         let numberofpieces = (salesqtycases * piecespercase) + +salesqtypieces;
-                                        data.grossamount = numberofpieces * data.sellingprice;
+                                        data.grossamount = (numberofpieces * data.sellingprice).toFixed(2);
                                         props.onRowDataChange(data);
                                     }}
                                     type="number"
@@ -441,14 +432,13 @@ export default function StepThree(props) {
 
                         },
                         {
-                            title: "Returns",
                             field: "returns",
                             type: 'numeric',
                             initialEditValue: 0,
                             cellStyle: {
                                 width: '7%',
                                 padding: "10px 5px 10px 7px",
-                                textAlign: 'center'
+                                textAlign: 'right'
                             },
                             editComponent: props =>
                                 <MuiTextField
@@ -459,7 +449,7 @@ export default function StepThree(props) {
                                         let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
                                         let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
                                         let numberofpieces = (salesqtycases * piecespercase) + +salesqtypieces;
-                                        data.grossamount = numberofpieces * data.sellingprice;
+                                        data.grossamount = (numberofpieces * data.sellingprice).toFixed(2);
                                         props.onRowDataChange(data);
                                     }}
                                     type="number"
@@ -478,7 +468,6 @@ export default function StepThree(props) {
 
                         },
                         {
-                            title: "Gross Amount",
                             field: "grossamount",
                             editable: 'never',
                             type: 'numeric',

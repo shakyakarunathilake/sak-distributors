@@ -99,9 +99,7 @@ export default function StepFour(props) {
 
                 <AutoSizer>
                     {({ height, width }) => {
-                        console.log(`Height: ${height} | Width: ${width}`);
-                        const pageSize = Math.floor((height - 150) / 48);
-                        console.log(`Page Size: ${pageSize}`);
+                        const pageSize = Math.floor((height - 170) / 48);
 
                         return (
                             <div style={{ height: `${height}px`, width: `${width}px`, overflowY: 'auto' }}>
@@ -114,10 +112,10 @@ export default function StepFour(props) {
                                                 flexDirection: "column"
                                             }} >
                                                 <Grid container style={{ background: "#f5f5f5", padding: 15 }}>
-                                                    <Grid item align="Left">
-                                                        <Typography style={{ fontWeight: 600 }}> Total </Typography>
+                                                    <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '100px' }}>
+                                                        <Typography style={{ fontWeight: 600 }}> Total (Rs.) </Typography>
                                                     </Grid>
-                                                    <Grid item align="Right" style={{ margin: "0px 0px 0px auto" }}>
+                                                    <Grid item align="Right" style={{ margin: "0px 10px  0px 0px", width: '100px' }}>
                                                         <Typography style={{ fontWeight: 600 }}>{total}</Typography>
                                                     </Grid>
                                                 </Grid>
@@ -139,12 +137,12 @@ export default function StepFour(props) {
                                                     </TableCell>
                                                     <TableCell padding="none" width="6%" rowSpan={2} align="center">
                                                         <div style={{ padding: '0 10px' }}>
-                                                            Selling Price
+                                                            Selling Price (Rs.)
                                                         </div>
                                                     </TableCell>
                                                     <TableCell padding="none" width="6%" rowSpan={2} align="center">
                                                         <div style={{ padding: '0 10px' }}>
-                                                            MRP
+                                                            MRP (Rs.)
                                                         </div>
                                                     </TableCell>
                                                     <TableCell padding="none" colSpan={2} align="center">
@@ -158,7 +156,7 @@ export default function StepFour(props) {
                                                     </TableCell>
                                                     <TableCell padding="none" width="9%" rowSpan={2} align="center">
                                                         <div style={{ padding: '0 10px' }}>
-                                                            Gross Amount
+                                                            Gross Amount (Rs.)
                                                         </div>
                                                     </TableCell>
                                                 </TableRow>
@@ -175,7 +173,6 @@ export default function StepFour(props) {
                                     }}
                                     columns={[
                                         {
-                                            title: "Description",
                                             field: "description",
                                             cellStyle: {
                                                 padding: "12px 5px 12px 7px",
@@ -184,88 +181,78 @@ export default function StepFour(props) {
                                             },
                                         },
                                         {
-                                            title: "Pieces Per Cases",
                                             field: "piecespercase",
                                             cellStyle: {
                                                 width: '6%',
                                                 padding: "12px 5px 12px 7px",
-                                                textAlign: 'center'
+                                                textAlign: 'right'
                                             },
                                         },
                                         {
-                                            title: "Selling Price",
                                             field: "sellingprice",
                                             cellStyle: {
                                                 width: '6%',
                                                 padding: "12px 5px 12px 7px",
-                                                textAlign: 'center'
+                                                textAlign: 'right'
                                             },
                                         },
                                         {
-                                            title: "MRP",
                                             field: "mrp",
                                             cellStyle: {
                                                 width: '6%',
                                                 padding: "12px 5px 12px 7px",
-                                                textAlign: 'center'
+                                                textAlign: 'right'
                                             },
                                         },
                                         {
-                                            title: "Sales Cs",
                                             field: "salesqtycases",
                                             cellStyle: {
                                                 padding: "12px 5px 12px 7px",
                                                 width: '6%',
-                                                textAlign: 'center'
+                                                textAlign: 'right'
                                             },
                                         },
                                         {
-                                            title: "Sales Pcs",
                                             field: "salesqtypieces",
                                             cellStyle: {
                                                 width: '6%',
                                                 padding: "12px 5px 12px 7px",
-                                                textAlign: 'center'
+                                                textAlign: 'right'
                                             },
                                         },
                                         {
-                                            title: "Free Cs",
                                             field: "freeqtycases",
                                             cellStyle: {
                                                 width: '6%',
                                                 padding: "12px 5px 12px 7px",
-                                                textAlign: 'center'
+                                                textAlign: 'right'
                                             },
                                         },
                                         {
-                                            title: "Free Pcs",
                                             field: "freeqtypieces",
                                             cellStyle: {
                                                 width: '6%',
                                                 padding: "12px 5px 12px 7px",
-                                                textAlign: 'center'
+                                                textAlign: 'right'
                                             },
                                         },
                                         {
-                                            title: "Damaged",
                                             field: "damaged",
                                             cellStyle: {
                                                 width: '6%',
                                                 padding: "12px 5px 12px 7px",
-                                                textAlign: 'center'
+                                                textAlign: 'right'
                                             },
                                         },
                                         {
-                                            title: "Returns",
                                             field: "returns",
                                             cellStyle: {
                                                 width: '6%',
                                                 padding: "12px 5px 12px 7px",
-                                                textAlign: 'center'
+                                                textAlign: 'right'
                                             },
                                         },
                                         {
-                                            title: "Gross Amount",
                                             field: "grossamount",
                                             cellStyle: {
                                                 width: '9%',
