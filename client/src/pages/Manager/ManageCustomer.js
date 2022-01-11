@@ -44,6 +44,8 @@ export default function ManageCustomer() {
     const [nextCusId, setNextCusId] = useState();
     const [reRender, setReRender] = useState(null);
 
+    const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
+
     const handleAlert = () => {
         setOpen(true);
     };
@@ -134,7 +136,7 @@ export default function ManageCustomer() {
         <Page title="Manage Customers">
             <div className={style.container}>
 
-                <div className={style.actionRow}>
+                <div className={designation === "Manager" ? style.hidden : style.actionRow}>
                     <Button
                         className={style.button}
                         color="primary"
@@ -154,11 +156,11 @@ export default function ManageCustomer() {
                     </Button>
                 </div>
 
-                <div className={style.pagecontent}>
+                <div className={designation === "Manager" ? style.pagecontent1 : style.pagecontent2}>
 
                     <AutoSizer>
                         {({ height, width }) => {
-                            const pageSize = Math.floor((height - 199.27) / 48);
+                            const pageSize = Math.floor((height - 199.28) / 48);
                             return (
                                 <div style={{ height: `${height}px`, width: `${width}px`, overflowY: 'auto' }}>
 
@@ -181,15 +183,7 @@ export default function ManageCustomer() {
                                                 title: "Store Name",
                                                 field: "storename",
                                                 cellStyle: {
-                                                    width: "25%",
-                                                    textAlign: 'left'
-                                                }
-                                            },
-                                            {
-                                                title: "Title",
-                                                field: "title",
-                                                cellStyle: {
-                                                    width: "7%",
+                                                    width: "32%",
                                                     textAlign: 'left'
                                                 }
                                             },
@@ -258,7 +252,7 @@ export default function ManageCustomer() {
                                             }
                                         ]}
                                     />
-                                    
+
                                 </div>
                             );
                         }}
@@ -268,13 +262,18 @@ export default function ManageCustomer() {
                 <PopUp
                     openPopup={openPopup}
                     setOpenPopup={setOpenPopup}
+                    fullScreen={designation === "Manager" ? false : true}
                 >
-                    {action === 'View' ?
+                    {
+                        action === 'View' &&
                         <ViewCustomer
                             customerRecords={customerRecords}
                             setOpenPopup={setOpenPopup}
                             setAction={setAction}
-                        /> :
+                        />
+                    }
+                    {
+                        (action === 'Edit' || action === 'Create') &&
                         <CustomerForm
                             addOrEdit={addOrEdit}
                             customerRecords={customerRecords}

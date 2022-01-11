@@ -127,8 +127,7 @@ router.get("/get-all-customer-table-data", (req, res, next) => {
             const tbody = doc.map(x => ({
                 "customerid": x.customerid,
                 "storename": x.storename,
-                "title": x.title,
-                "customername": x.firstname + " " + x.lastname,
+                "customername": x.title + " " + x.firstname + " " + x.lastname,
                 "shippingaddress": x.shippingaddress,
                 "contactnumber": x.customercontactnumber,
             }))

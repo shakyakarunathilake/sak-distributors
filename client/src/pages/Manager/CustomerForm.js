@@ -27,6 +27,8 @@ export default function CustomerForm(props) {
 
     const { handleSubmit, formState: { errors }, control, reset, setValue, getValues } = useForm();
 
+    const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
+
     useEffect(() => {
         if (customerRecords != null) {
 
@@ -96,26 +98,32 @@ export default function CustomerForm(props) {
     };
 
     return (
-        <div className={style.container}>
+        <div className={designation === "Manager" ? style.container1 : style.container2}>
 
             <div className={style.header}>
-                <div>{customerRecords ? "Edit Customer" : "Add New Customer"}</div>
-                <div>
-                    <HighlightOffIcon
-                        className={style.icon}
-                        onClick={() => { setOpenPopup(false) }}
-                    />
+
+                <div className={style.mainheader}>
+                    <div>{customerRecords ? "Edit Customer" : "Add New Customer"}</div>
+                    <div>
+                        <HighlightOffIcon
+                            className={style.icon}
+                            onClick={() => { setOpenPopup(false) }}
+                        />
+                    </div>
+                </div>
+
+                <div className={style.subheader}>
+                    The fields with "*" are required
                 </div>
             </div>
 
-            <div className={style.body}>
-                <form
-                    className={style.form}
-                    onSubmit={handleSubmit(onSubmit)}
-                >
-                    <div className={style.redFont}>
-                        The fields with "*" are required
-                    </div>
+            <form
+                className={style.body}
+                onSubmit={handleSubmit(onSubmit)}
+            >
+
+                <div className={style.form}>
+
                     <div className={classnames(style.row, style.threecolumns)}>
                         <Controller
                             name={"customerid"}
@@ -388,28 +396,31 @@ export default function CustomerForm(props) {
                             )}
                         />
                     </div>
-                    <div className={style.buttonRow}>
-                        <div className={style.resetBtnDiv}>
-                            <Button
-                                className={style.resetBtn}
-                                onClick={resetForm}
-                                variant="outlined"
-                            >
-                                Reset
-                            </Button>
-                        </div>
-                        <div className={style.submitBtnDiv}>
-                            <Button
-                                className={style.submitBtn}
-                                type="submit"
-                                variant="contained"
-                            >
-                                Submit
-                            </Button>
-                        </div>
+
+                </div>
+
+                <div className={style.buttonRow}>
+                    <div className={style.resetBtnDiv}>
+                        <Button
+                            className={style.resetBtn}
+                            onClick={resetForm}
+                            variant="outlined"
+                        >
+                            Reset
+                        </Button>
                     </div>
-                </form>
-            </div>
+                    <div className={style.submitBtnDiv}>
+                        <Button
+                            className={style.submitBtn}
+                            type="submit"
+                            variant="contained"
+                        >
+                            Submit
+                        </Button>
+                    </div>
+                </div>
+
+            </form>
 
         </div >
     )

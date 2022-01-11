@@ -1,14 +1,29 @@
 @import "../../styles/variables";
 
-.container {
-    width: 900px;
+.container1 {
+    display: grid;
+    grid-template-rows: min-content auto;
     box-sizing: border-box;
+    width: 900px;
+    height: 700px;
+}
 
-    .header {
-        font-size: 1.8em;
-        font-weight: 600;
+.container2 {
+    display: grid;
+    grid-template-rows: min-content auto;
+    height: calc(100vh - 20px);
+    box-sizing: border-box;
+}
+
+.header {
+    display: grid;
+    grid-template-rows: min-content min-content;
+
+    .mainheader {
         display: grid;
         grid-template-columns: auto min-content;
+        font-size: 1.8em;
+        font-weight: 600;
 
         .icon {
             color: red;
@@ -18,63 +33,68 @@
         }
     }
 
-    .body {
-        .form {
-            .redFont {
-                color: red;
-                font-size: 0.7em;
-                margin: 2px 0 25px 0;
+    .subheader {
+        color: red;
+        font-size: 0.7em;
+        margin: 2px 0 25px 0;
+    }
+}
+
+.body {
+    display: grid;
+    grid-template-rows: auto min-content;
+
+    .form {
+        margin: auto 0;
+
+        .row {
+            padding: 7.5px 0;
+        }
+
+        .gridrow {
+            display: grid;
+            grid-template-columns: 160px auto;
+            grid-column-gap: 20px;
+            padding: 7.5px 0;
+        }
+
+        .twocolumns {
+            display: grid;
+            grid-template-columns: calc(50% - 10px) calc(50% - 10px);
+            grid-column-gap: 20px;
+        }
+
+        .threecolumns {
+            display: grid;
+            grid-template-columns: calc(20% - 10px) calc(20% - 10px) calc(60% - 20px);
+            grid-column-gap: 20px;
+        }
+    }
+
+    .buttonRow {
+        display: grid;
+        grid-template-columns: auto min-content;
+        grid-column-gap: 30px;
+        text-align: right;
+
+        Button {
+            font-size: 1em;
+            margin: 20px 0px 5px 0px;
+            height: 45px;
+            padding: $formButtonPadding;
+        }
+
+        .resetBtnDiv {
+            .resetBtn {
+                border-color: $primaryMain;
+                color: $primaryMain;
             }
+        }
 
-            .row {
-                padding: 7.5px 0;
-            }
-
-            .gridrow {
-                display: grid;
-                grid-template-columns: 160px auto;
-                grid-column-gap: 20px;
-                padding: 7.5px 0;
-            }
-
-            .twocolumns {
-                display: grid;
-                grid-template-columns: calc(50% - 10px) calc(50% - 10px);
-                grid-column-gap: 20px;
-            }
-
-            .threecolumns {
-                display: grid;
-                grid-template-columns: calc(20% - 10px) calc(20% - 10px) calc(60% - 20px);
-                grid-column-gap: 20px;
-            }
-
-            .buttonRow {
-                display: grid;
-                grid-template-columns: auto min-content;
-                grid-column-gap: 30px;
-                text-align: right;
-
-                Button {
-                    font-size: 1em;
-                    margin: 20px 0px 5px 0px;
-                    height: 45px;
-                    padding: $formButtonPadding;
-                }
-
-                .resetBtnDiv {
-                    .resetBtn {
-                        border-color: $primaryMain;
-                        color: $primaryMain;
-                    }
-                }
-
-                .submitBtnDiv {
-                    .submitBtn {
-                        background-color: $primaryMain;
-                        color: $inverseFontColor;
-                    }
-                }
+        .submitBtnDiv {
+            .submitBtn {
+                background-color: $primaryMain;
+                color: $inverseFontColor;
             }
         }
     }
