@@ -375,8 +375,6 @@ export default function ViewPurchaseOrder(props) {
                                         toolbar: false,
                                         filtering: true,
                                         search: false,
-                                        // minBodyHeight: "calc(100vh - 455px)",
-                                        // maxBodyHeight: "calc(100vh - 455px)",
                                         headerStyle: {
                                             position: "sticky",
                                             top: "0",
