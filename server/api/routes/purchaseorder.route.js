@@ -92,8 +92,8 @@ router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) =
                     { upsert: true }
                 )
                 .exec()
-                .then(result => {
-                    // console.log("******** CREATE PURCHASE ORDER METADATA ADDED ********")
+                .then(() => {
+                    console.log("******** CREATE PURCHASE ORDER METADATA ADDED ********");
                 })
                 .catch(err => {
                     console.log(err);
