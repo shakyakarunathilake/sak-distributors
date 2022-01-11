@@ -30,6 +30,8 @@ router.get("/get-all-grn-table-data", (req, res, next) => {
                 grnnumber: x.grnnumber,
                 supplier: x.supplier,
                 status: x.status,
+                createdby: x.createdby,
+                createdat: x.createdat
             }))
 
             res.status(201).json({

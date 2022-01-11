@@ -11,15 +11,9 @@
 .two {
     display: grid;
     grid-template-rows: min-content auto min-content;
-    height: inherit;
-    // box-sizing: border-box;
-
-    Button {
-        width: max-content;
-        height: 40px;
-        font-size: 1em;
-        white-space: nowrap;
-    }
+    height: calc(100vh - 20px);
+    box-sizing: border-box;
+    overflow: hidden;
 
     .header {
         .title {
@@ -73,11 +67,13 @@
         grid-template-columns: auto auto;
         padding: 30px 0px 10px 0px;
 
-        .resetBtn {
+        .backBtn {
             Button {
-                width: auto;
+                padding: 0 30px;
                 background-color: #aca9bb;
                 color: $inverseFontColor;
+                font-size: 1em;
+                white-space: nowrap;
 
                 &:disabled {
                     background-color: #c2c2c2;
@@ -89,7 +85,9 @@
         .nextBtn {
             text-align: right;
             Button {
-                width: auto;
+                padding: 0 30px;
+                font-size: 1em;
+                white-space: nowrap;
 
                 &:disabled {
                     background-color: hsl(230, 66%, 57%);

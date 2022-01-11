@@ -30,8 +30,8 @@ router.get("/get-all-store-table-data", (req, res, next) => {
                     productid: product.productid,
                     name: product.name,
                     racknumber: product.racknumber,
-                    salesqtycases: product.storequantity.salesqtycases,
-                    salesqtypieces: product.storequantity.salesqtypieces,
+                    cases: parseInt(product.storequantity.salesqtycases) + parseInt(product.storequantity.freeqtycases),
+                    pieces: parseInt(product.storequantity.salesqtypieces) + parseInt(product.storequantity.freeqtypieces),
                     // freeqtycases: product.storequantity.freeqtycases,
                     // freeqtypieces: product.storequantity.freeqtypieces,
                 });
@@ -49,8 +49,8 @@ router.get("/get-all-store-table-data", (req, res, next) => {
                         grnnumberginnumber: details.grnnumberginnumber,
                         date: details.date,
                         piecespercase: details.piecespercase,
-                        salesqtycases: `${details.salesqtycases} / ${details.freeqtycases}`,
-                        salesqtypieces: `${details.salesqtypieces} / ${details.freeqtypieces}`,
+                        cases: `${details.salesqtycases} / ${details.freeqtycases}`,
+                        pieces: `${details.salesqtypieces} / ${details.freeqtypieces}`,
                         // freeqtycases: details.freeqtycases,
                         // freeqtypieces: details.freeqtypieces,
                     })

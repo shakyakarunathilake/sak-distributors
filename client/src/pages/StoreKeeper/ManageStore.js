@@ -78,16 +78,16 @@ export default function ManageStore() {
                         Header: props => (
                             <TableHead {...props} style={{ position: 'sticky', top: '0', zIndex: 999 }}>
                                 <TableRow className={classes.row1}>
-                                    <TableCell width="3%" padding="none" rowSpan={2}>
+                                    <TableCell width="2%" padding="none" rowSpan={2}>
                                         <div style={{ padding: '0 10px' }}>
                                         </div>
                                     </TableCell>
-                                    <TableCell width="10%" padding="none" rowSpan={2}>
+                                    <TableCell width="9%" padding="none" rowSpan={2}>
                                         <div style={{ padding: '0 10px' }}>
                                             Prod. ID
                                         </div>
                                     </TableCell>
-                                    <TableCell width="28%" padding="none" rowSpan={2} align="left">
+                                    <TableCell width="30%" padding="none" rowSpan={2} align="left">
                                         <div style={{ padding: '0 10px' }}>
                                             Description
                                         </div>
@@ -142,7 +142,7 @@ export default function ManageStore() {
                                 )
                             },
                             cellStyle: {
-                                width: '10%',
+                                width: '9%',
                                 textAlign: 'left'
                             }
                         },
@@ -150,7 +150,7 @@ export default function ManageStore() {
                         {
                             field: "name",
                             cellStyle: {
-                                width: '28%',
+                                width: '30%',
                                 textAlign: 'left'
                             }
                         },
@@ -194,7 +194,7 @@ export default function ManageStore() {
                             }
                         },
                         {
-                            field: "salesqtycases",
+                            field: "cases",
                             type: 'numeric',
                             cellStyle: {
                                 width: '6%',
@@ -202,7 +202,7 @@ export default function ManageStore() {
                             }
                         },
                         {
-                            field: "salesqtypieces",
+                            field: "pieces",
                             type: 'numeric',
                             cellStyle: {
                                 width: '6%',

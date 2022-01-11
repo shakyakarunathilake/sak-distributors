@@ -196,7 +196,7 @@ export default function GINStepTwo(props) {
                                 display: "flex",
                                 flexDirection: "column",
                             }} >
-                                <Grid container style={{ background: "#f5f5f5", padding: 7, color: 'red' }}>
+                                <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
                                     <Grid item align="Right" style={{ margin: "0px 220px 0px auto" }}>
                                         <Typography style={{ fontWeight: 600 }}> Total (Rs.) </Typography>
                                     </Grid>

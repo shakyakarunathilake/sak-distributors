@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import AutoSizer from 'react-virtualized-auto-sizer';
 
 //Shared Components
 import Page from '../../shared/Page/Page';
@@ -229,91 +230,145 @@ export default function ManageGIN() {
                     </Button>
                 </div>
 
-                <div className={style.pagecontent}>
+                <div className={designation === "Store Keeper" ? style.pagecontent2 : style.pagecontent1}>
 
-                    <MaterialTable
-                        columns={[
-                            {
-                                title: "GIN", field: "ginnumber", render: rowData => {
-                                    return (
-                                        <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.ginnumber}</p>
-                                    )
-                                }
-                            },
-                            { title: "Route", field: "route" },
-                            { title: "In Charge", field: "incharge" },
-                            {
-                                title: "Status", field: "status", render: rowData => {
-                                    return (
-                                        rowData.status === 'Pending' ?
-                                            <p style={{ padding: "0", margin: "0", color: 'red', fontWeight: "700" }}>{rowData.status}</p>
-                                            : rowData.status === 'Processing' ?
-                                                <p style={{ padding: "0", margin: "0", color: "#2196F3", fontWeight: "700" }}>{rowData.status}</p>
-                                                : rowData.status === 'Shipping' ?
-                                                    <p style={{ padding: "0", margin: "0", color: "#FF8400", fontWeight: "700" }}>{rowData.status}</p>
-                                                    : <p style={{ padding: "0", margin: "0", color: "#4caf50", fontWeight: "700" }}>{rowData.status}</p>
-                                    )
-                                }
-                            },
-                        ]}
-                        data={tableRecords}
-                        options={{
-                            toolbar: false,
-                            filtering: true,
-                            search: false,
-                            paging: false,
-                            actionsColumnIndex: -1,
-                            maxBodyHeight: "calc(100vh - 199.27px)",
-                            headerStyle: {
-                                position: "sticky",
-                                top: "0",
-                                backgroundColor: '#20369f',
-                                color: '#FFF',
-                                fontSize: "0.8em"
-                            },
-                            rowStyle: rowData => ({
-                                fontSize: "0.8em",
-                                backgroundColor: (rowData.tableData.id % 2 === 0) ? '#ebebeb' : '#ffffff'
-                            })
+                    <AutoSizer>
+                        {({ height, width }) => {
+                            const pageSize = Math.floor((height - 199.27) / 48);
+                            return (
+                                <div style={{ height: `${height}px`, width: `${width}px`, overflowY: 'auto' }}>
+
+                                    <MaterialTable
+                                        columns={[
+                                            {
+                                                title: "#",
+                                                field: "tableData.id",
+                                                cellStyle: {
+                                                    width: '3%',
+                                                    textAlign: 'left'
+                                                },
+                                            },
+                                            {
+                                                title: "GIN",
+                                                field: "ginnumber",
+                                                cellStyle: {
+                                                    width: "15%",
+                                                    textAlign: 'left'
+                                                },
+                                                render: rowData => {
+                                                    return (
+                                                        <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.ginnumber}</p>
+                                                    )
+                                                }
+                                            },
+                                            {
+                                                title: "Route",
+                                                field: "route",
+                                                cellStyle: {
+                                                    width: "20%",
+                                                    textAlign: 'left'
+                                                },
+                                            },
+                                            {
+                                                title: "In Charge",
+                                                field: "incharge",
+                                                cellStyle: {
+                                                    width: "25%",
+                                                    textAlign: 'left'
+                                                },
+                                            },
+                                            {
+                                                title: "Status",
+                                                field: "status",
+                                                cellStyle: {
+                                                    width: "15%",
+                                                    textAlign: 'left'
+                                                },
+                                                render: rowData => {
+                                                    return (
+                                                        rowData.status === 'Pending' ?
+                                                            <p style={{ padding: "0", margin: "0", color: 'red', fontWeight: "700" }}>{rowData.status}</p>
+                                                            : rowData.status === 'Processing' ?
+                                                                <p style={{ padding: "0", margin: "0", color: "#2196F3", fontWeight: "700" }}>{rowData.status}</p>
+                                                                : rowData.status === 'Shipping' ?
+                                                                    <p style={{ padding: "0", margin: "0", color: "#FF8400", fontWeight: "700" }}>{rowData.status}</p>
+                                                                    : <p style={{ padding: "0", margin: "0", color: "#4caf50", fontWeight: "700" }}>{rowData.status}</p>
+                                                    )
+                                                }
+                                            },
+                                            {
+                                                title: "Created by",
+                                                field: "createdby",
+                                                cellStyle: {
+                                                    width: "17%",
+                                                    textAlign: 'left'
+                                                },
+                                            },
+                                        ]}
+                                        data={tableRecords}
+                                        options={{
+                                            pageSize: pageSize,
+                                            pageSizeOptions: [],
+                                            paging: true,
+                                            toolbar: false,
+                                            filtering: true,
+                                            search: false,
+                                            actionsColumnIndex: -1,
+                                            headerStyle: {
+                                                position: "sticky",
+                                                top: "0",
+                                                backgroundColor: '#20369f',
+                                                color: '#FFF',
+                                                fontSize: "0.8em"
+                                            },
+                                            rowStyle: rowData => ({
+                                                fontSize: "0.8em",
+                                                backgroundColor: (rowData.tableData.id % 2 === 0) ? '#ebebeb' : '#ffffff'
+                                            })
+                                        }}
+                                        actions={[
+                                            {
+                                                icon: VisibilityIcon,
+                                                tooltip: 'View',
+                                                onClick: (event, rowData) => {
+                                                    setAction('View');
+                                                    openInPopup(rowData.ginnumber);
+                                                }
+                                            },
+                                            (rowData) => ({
+                                                disabled: rowData.status === 'Dispatched' || rowData.status === 'Complete' || designation === "Delivery Representative",
+                                                icon: 'edit',
+                                                tooltip: 'Edit',
+                                                onClick: (event, rowData) => {
+                                                    setAction('Edit');
+                                                    openInPopup(rowData.ginnumber);
+                                                }
+                                            }),
+                                            (rowData) => ({
+                                                disabled: rowData.status !== 'Processing' || designation === "Delivery Representative",
+                                                icon: LocalShippingIcon,
+                                                tooltip: 'Dispatch',
+                                                onClick: (event, rowData) => {
+                                                    setAction('Dispatch');
+                                                    openInPopup(rowData.ginnumber);
+                                                }
+                                            }),
+                                            (rowData) => ({
+                                                disabled: designation !== "Delivery Representative" || rowData.status === "Complete",
+                                                icon: DoneIcon,
+                                                tooltip: 'Complete',
+                                                onClick: (event, rowData) => {
+                                                    setAction('Complete');
+                                                    openInPopup(rowData.ginnumber);
+                                                }
+                                            }),
+                                        ]}
+                                    />
+
+                                </div>
+                            );
                         }}
-                        actions={[
-                            {
-                                icon: VisibilityIcon,
-                                tooltip: 'View',
-                                onClick: (event, rowData) => {
-                                    setAction('View');
-                                    openInPopup(rowData.ginnumber);
-                                }
-                            },
-                            (rowData) => ({
-                                disabled: rowData.status === 'Dispatched' || rowData.status === 'Complete' || designation === "Delivery Representative",
-                                icon: 'edit',
-                                tooltip: 'Edit',
-                                onClick: (event, rowData) => {
-                                    setAction('Edit');
-                                    openInPopup(rowData.ginnumber);
-                                }
-                            }),
-                            (rowData) => ({
-                                disabled: rowData.status !== 'Processing' || designation === "Delivery Representative",
-                                icon: LocalShippingIcon,
-                                tooltip: 'Dispatch',
-                                onClick: (event, rowData) => {
-                                    setAction('Dispatch');
-                                    openInPopup(rowData.ginnumber);
-                                }
-                            }),
-                            (rowData) => ({
-                                disabled: designation !== "Delivery Representative" || rowData.status === "Complete",
-                                icon: DoneIcon,
-                                tooltip: 'Complete',
-                                onClick: (event, rowData) => {
-                                    setAction('Complete');
-                                    openInPopup(rowData.ginnumber);
-                                }
-                            }),
-                        ]}
-                    />
+                    </AutoSizer>
 
                 </div>
 

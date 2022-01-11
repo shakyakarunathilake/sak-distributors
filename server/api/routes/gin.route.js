@@ -29,7 +29,8 @@ router.get("/get-all-gin-table-data", (req, res, next) => {
                 ginnumber: x.ginnumber,
                 route: x.route,
                 incharge: x.incharge,
-                status: x.status
+                status: x.status,
+                createdby: x.createdby
             }))
 
             res.status(201).json({
@@ -57,7 +58,8 @@ router.get("/get-all-gin-table-data/:employee", (req, res, next) => {
                 ginnumber: x.ginnumber,
                 route: x.route,
                 incharge: x.incharge,
-                status: x.status
+                status: x.status,
+                createdby: x.createdby
             }))
 
             res.status(201).json({
