@@ -29,7 +29,7 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 //Material Table
 import MaterialTable from 'material-table';
 
-//SCSS styles
+//Styles
 import style from './GINStepOne.module.scss';
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import { makeStyles } from '@material-ui/core/styles';
