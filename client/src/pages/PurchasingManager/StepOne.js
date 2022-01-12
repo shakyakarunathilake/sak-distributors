@@ -209,7 +209,7 @@ export default function StepOne(props) {
                             name={'supplier'}
                             control={control}
                             rules={{
-                                required: { value: true, message: "Supplier is required" },
+                                required: { value: true, message: "Required *" },
                             }}
                             render={({ field: { onChange, value } }) => (
                                 <Select

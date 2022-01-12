@@ -30,7 +30,7 @@ export default function ProductsForm(props) {
 
     const { handleClosePopUp, addOrEdit, productRecords, nextId, employeeOptions } = props;
 
-    const { handleSubmit, formState: { errors }, control, reset, setValue, getValues } = useForm();
+    const { handleSubmit, formState: { errors }, control, reset, setValue, getValues } = useForm({ mode: "onBlur" });
 
     const [file, setFile] = useState("");
 
@@ -116,7 +116,7 @@ export default function ProductsForm(props) {
                                             name={"productimage"}
                                             control={control}
                                             defaultValue=""
-                                            rules={{ required: { value: true, message: "Product Image is required" } }}
+                                            rules={{ required: { value: true, message: "Required *" } }}
                                             render={({ field: { onChange } }) => (
                                                 <input
                                                     type="file"
@@ -178,7 +178,7 @@ export default function ProductsForm(props) {
                                         name={"name"}
                                         control={control}
                                         rules={{
-                                            required: { value: true, message: "Product Name is required" },
+                                            required: { value: true, message: "Required *" },
                                         }}
                                         render={({ field: { onChange, value } }) => (
                                             <TextField
@@ -190,6 +190,7 @@ export default function ProductsForm(props) {
                                                 onChange={onChange}
                                                 value={value || ''}
                                                 label="Product Name *"
+                                                size="small"
                                             />
                                         )}
                                     />
@@ -200,7 +201,7 @@ export default function ProductsForm(props) {
                                         name={"supplier"}
                                         control={control}
                                         rules={{
-                                            required: { value: true, message: "Supplier is required" },
+                                            required: { value: true, message: "Required *" },
                                         }}
                                         render={({ field: { onChange, value } }) => (
                                             <Select
@@ -211,6 +212,7 @@ export default function ProductsForm(props) {
                                                 value={value || ''}
                                                 options={employeeservice.getSupplierOptions()}
                                                 label="Supplier *"
+                                                size="small"
                                             />
                                         )}
                                     />
@@ -221,7 +223,7 @@ export default function ProductsForm(props) {
                                         name={"addedby"}
                                         control={control}
                                         rules={{
-                                            required: { value: true, message: "Added by is required" },
+                                            required: { value: true, message: "Required *" },
                                         }}
                                         render={({ field: { onChange, value } }) => (
                                             <Select
@@ -233,6 +235,7 @@ export default function ProductsForm(props) {
                                                 value={value || ''}
                                                 options={employeeOptions || []}
                                                 label="Added By"
+                                                size="small"
                                             />
                                         )}
                                     />
@@ -244,7 +247,7 @@ export default function ProductsForm(props) {
                                             name={"status"}
                                             control={control}
                                             rules={{
-                                                required: { value: true, message: "Status is required" },
+                                                required: { value: true, message: "Required *" },
                                             }}
                                             render={({ field: { onChange, value } }) => (
                                                 <Select
@@ -255,6 +258,7 @@ export default function ProductsForm(props) {
                                                     value={value || ''}
                                                     options={employeeservice.getVariantStatusOptions()}
                                                     label="Status *"
+                                                    size="small"
                                                 />
                                             )}
                                         />
@@ -264,7 +268,7 @@ export default function ProductsForm(props) {
                                             name={"addeddate"}
                                             control={control}
                                             rules={{
-                                                required: { value: true, message: "Added date is required" },
+                                                required: { value: true, message: "Required *" },
                                             }}
                                             render={({ field: { onChange, value } }) => (
                                                 <DatePicker
@@ -274,6 +278,7 @@ export default function ProductsForm(props) {
                                                     onChange={onChange}
                                                     value={value || ''}
                                                     label="Added Date *"
+                                                    size="small"
                                                 />
                                             )}
                                         />

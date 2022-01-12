@@ -160,7 +160,7 @@ export default function ManageCustomer() {
 
                     <AutoSizer>
                         {({ height, width }) => {
-                            const pageSize = Math.floor((height - 199.28) / 48);
+                            const pageSize = Math.floor((height - 199.28) / 69.59);
                             return (
                                 <div style={{ height: `${height}px`, width: `${width}px`, overflowY: 'auto' }}>
 

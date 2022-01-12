@@ -122,7 +122,7 @@ export default function CustomerForm(props) {
                 onSubmit={handleSubmit(onSubmit)}
             >
 
-                <div className={style.form}>
+                <div className={designation === "Manager" ? style.form1 : style.form2}>
 
                     <div className={classnames(style.row, style.threecolumns)}>
                         <Controller
@@ -137,6 +137,7 @@ export default function CustomerForm(props) {
                                     onChange={onChange}
                                     placeholder="Ex: C000234"
                                     disabled={true}
+                                    size="small"
                                 />
                             )}
                         />
@@ -144,8 +145,8 @@ export default function CustomerForm(props) {
                             name={"brn"}
                             control={control}
                             rules={{
-                                required: { value: true, message: "BRN is required" },
-                                pattern: { value: /^\d{7}(?:\d{2})?$/, message: "BRN is invalid" }
+                                required: { value: true, message: "Required *" },
+                                pattern: { value: /^\d{7}(?:\d{2})?$/, message: "Invalid" }
                             }}
                             render={({ field: { onChange, value } }) => (
                                 <TextField
@@ -156,13 +157,14 @@ export default function CustomerForm(props) {
                                     placeholder="Ex: 3069002"
                                     error={errors.brn ? true : false}
                                     helperText={errors.brn && errors.brn.message}
+                                    size="small"
                                 />
                             )}
                         />
                         <Controller
                             name={"storename"}
                             control={control}
-                            rules={{ required: { value: true, message: "Store name is required" } }}
+                            rules={{ required: { value: true, message: "Required *" } }}
                             render={({ field: { onChange, value } }) => (
                                 <TextField
                                     fullWidth={true}
@@ -172,6 +174,7 @@ export default function CustomerForm(props) {
                                     placeholder="Ex: Champika Super Center and Pharmacy"
                                     error={errors.storename ? true : false}
                                     helperText={errors.storename && errors.storename.message}
+                                    size="small"
                                 />
                             )}
                         />
@@ -181,7 +184,7 @@ export default function CustomerForm(props) {
                         <Controller
                             name={"route"}
                             control={control}
-                            rules={{ required: { value: true, message: "Route is required" } }}
+                            rules={{ required: { value: true, message: "Required *" } }}
                             render={({ field: { onChange, value } }) => (
                                 <Select
                                     label="Route *"
@@ -190,13 +193,14 @@ export default function CustomerForm(props) {
                                     options={employeeservice.getRouteOptions()}
                                     error={errors.route ? true : false}
                                     helperText={errors.route && errors.route.message}
+                                    size="small"
                                 />
                             )}
                         />
                         <Controller
                             name={"addeddate"}
                             control={control}
-                            rules={{ required: { value: true, message: "Adding date is required" } }}
+                            rules={{ required: { value: true, message: "Required *" } }}
                             render={({ field: { onChange, value } }) => (
                                 <DatePicker
                                     label="Adding Date *"
@@ -204,6 +208,7 @@ export default function CustomerForm(props) {
                                     onChange={onChange}
                                     error={errors.addeddate ? true : false}
                                     helperText={errors.addeddate && errors.addeddate.message}
+                                    size="small"
                                 />
                             )}
                         />
@@ -214,7 +219,7 @@ export default function CustomerForm(props) {
                             name={"fullname"}
                             control={control}
                             rules={{
-                                required: { value: true, message: "Full name is required" },
+                                required: { value: true, message: "Required *" },
                             }}
                             render={({ field: { onChange, value } }) => (
                                 <TextField
@@ -226,6 +231,7 @@ export default function CustomerForm(props) {
                                     onChange={onChange}
                                     value={value || ''}
                                     label="Full Name *"
+                                    size="small"
                                 />
                             )}
                         />
@@ -235,7 +241,7 @@ export default function CustomerForm(props) {
                             <Controller
                                 name={"title"}
                                 control={control}
-                                rules={{ required: { value: true, message: "Title is required" } }}
+                                rules={{ required: { value: true, message: "Required *" } }}
                                 render={({ field: { onChange, value } }) => (
                                     <Select
                                         label="Title *"
@@ -244,6 +250,7 @@ export default function CustomerForm(props) {
                                         options={employeeservice.getTitleOptions()}
                                         error={errors.title ? true : false}
                                         helperText={errors.title && errors.title.message}
+                                        size="small"
                                     />
                                 )}
                             />
@@ -254,7 +261,7 @@ export default function CustomerForm(props) {
                                 name={"firstname"}
                                 control={control}
                                 rules={{
-                                    required: { value: true, message: "First name is required" },
+                                    required: { value: true, message: "Required *" },
                                 }}
                                 render={({ field: { onChange, value } }) => (
                                     <TextField
@@ -266,6 +273,7 @@ export default function CustomerForm(props) {
                                         onChange={onChange}
                                         value={value || ''}
                                         label="First Name *"
+                                        size="small"
                                     />
                                 )}
                             />
@@ -273,7 +281,7 @@ export default function CustomerForm(props) {
                                 name={"lastname"}
                                 control={control}
                                 rules={{
-                                    required: { value: true, message: "Last name is required" },
+                                    required: { value: true, message: "Required *" },
                                 }}
                                 render={({ field: { onChange, value } }) => (
                                     <TextField
@@ -285,6 +293,7 @@ export default function CustomerForm(props) {
                                         onChange={onChange}
                                         value={value || ''}
                                         label="Last Name *"
+                                        size="small"
                                     />
                                 )}
                             />
@@ -296,7 +305,7 @@ export default function CustomerForm(props) {
                             control={control}
                             rules={{
                                 // required: { value: true, message: "Store contact number is required" },
-                                pattern: { value: /^[0-9]{10}$/, message: "Store contact Number is invalid" }
+                                pattern: { value: /^[0-9]{10}$/, message: "Invalid" }
                             }}
                             render={({ field: { onChange, value } }) => (
                                 <TextField
@@ -308,6 +317,7 @@ export default function CustomerForm(props) {
                                     onChange={onChange}
                                     value={value || ''}
                                     label="Store Contact Number"
+                                    size="small"
                                 />
                             )}
                         />
@@ -315,8 +325,8 @@ export default function CustomerForm(props) {
                             name={"customercontactnumber"}
                             control={control}
                             rules={{
-                                required: { value: true, message: "Customer contact number is required" },
-                                pattern: { value: /^[0-9]{10}$/, message: "Customer contact Number is invalid" }
+                                required: { value: true, message: "Required *" },
+                                pattern: { value: /^[0-9]{10}$/, message: "Invalid" }
                             }}
                             render={({ field: { onChange, value } }) => (
                                 <TextField
@@ -328,6 +338,7 @@ export default function CustomerForm(props) {
                                     onChange={onChange}
                                     value={value || ''}
                                     label="Customer Contact Number *"
+                                    size="small"
                                 />
                             )}
                         />
@@ -337,7 +348,7 @@ export default function CustomerForm(props) {
                             name={"billingaddress"}
                             control={control}
                             rules={{
-                                required: { value: true, message: "Billing address is required" },
+                                required: { value: true, message: "Required *" },
                             }}
                             render={({ field: { onChange, value } }) => (
                                 <TextField
@@ -349,6 +360,7 @@ export default function CustomerForm(props) {
                                     onChange={onChange}
                                     value={value || ''}
                                     label="Billing Address *"
+                                    size="small"
                                 />
                             )}
                         />
@@ -358,7 +370,7 @@ export default function CustomerForm(props) {
                             name={"shippingaddress"}
                             control={control}
                             rules={{
-                                required: { value: true, message: "Shipping address is required" },
+                                required: { value: true, message: "Required *" },
                             }}
                             render={({ field: { onChange, value } }) => (
                                 <TextField
@@ -370,6 +382,7 @@ export default function CustomerForm(props) {
                                     onChange={onChange}
                                     value={value || ''}
                                     label="Shipping Address *"
+                                    size="small"
                                 />
                             )}
                         />
@@ -380,7 +393,10 @@ export default function CustomerForm(props) {
                             control={control}
                             rules={{
                                 // required: { value: true, message: "Email is required" },
-                                pattern: { value: /^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, message: "Email is invalid" }
+                                pattern: {
+                                    value: /^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                                    message: "Invalid"
+                                }
                             }}
                             render={({ field: { onChange, value } }) => (
                                 <TextField
@@ -392,6 +408,7 @@ export default function CustomerForm(props) {
                                     placeholder="Ex: abeynayakalasitha@gmail.com"
                                     value={value || ''}
                                     label="Email"
+                                    size="small"
                                 />
                             )}
                         />

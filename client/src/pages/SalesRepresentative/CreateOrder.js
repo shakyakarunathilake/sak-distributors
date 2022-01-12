@@ -195,7 +195,7 @@ export default function CreateOrder(props) {
                                 <Controller
                                     name={"orderno"}
                                     control={control}
-                                    rules={{ required: { value: true, message: "Order No. is required" } }}
+                                    rules={{ required: { value: true, message: "Required *" } }}
                                     render={({ field: { onChange, value } }) => (
                                         <TextField
                                             fullWidth={true}
@@ -219,7 +219,7 @@ export default function CreateOrder(props) {
                                 <Controller
                                     name={"orderplacedat"}
                                     control={control}
-                                    rules={{ required: { value: true, message: "Order placed at is required" } }}
+                                    rules={{ required: { value: true, message: "Required *" } }}
                                     render={({ field: { onChange, value } }) => (
                                         <DatePicker
                                             value={value || ''}
@@ -242,7 +242,7 @@ export default function CreateOrder(props) {
                                 <Controller
                                     name={"deliverydate"}
                                     control={control}
-                                    rules={{ required: { value: true, message: "Delivery date is required" } }}
+                                    rules={{ required: { value: true, message: "Required *" } }}
                                     render={({ field: { onChange, value } }) => (
                                         <DatePicker
                                             value={value || ''}
@@ -264,7 +264,7 @@ export default function CreateOrder(props) {
                                 <Controller
                                     name={"ordercreatedby"}
                                     control={control}
-                                    rules={{ required: true, message: "Sales Representative is required" }}
+                                    rules={{ required: true, message: "Required *" }}
                                     render={({ field: { onChange, value } }) => (
                                         <TextField
                                             fullWidth={true}
@@ -288,7 +288,7 @@ export default function CreateOrder(props) {
                                 <Controller
                                     name={"customertype"}
                                     control={control}
-                                    rules={{ required: { value: true, message: "Customer type is required" } }}
+                                    rules={{ required: { value: true, message: "Required *" } }}
                                     render={({ field: { onChange, value } }) => (
                                         <Select
                                             value={value || ''}
@@ -315,7 +315,7 @@ export default function CreateOrder(props) {
                                     <Controller
                                         name={"customer"}
                                         control={control}
-                                        rules={{ required: "Customer is required" }}
+                                        rules={{ required: { value: true, message: "Required *" } }}
                                         render={({ field: { onChange, value } }) => (
                                             <Autocomplete
                                                 options={customerOptions || []}
@@ -339,7 +339,7 @@ export default function CreateOrder(props) {
                                     <Controller
                                         name={"storename"}
                                         control={control}
-                                        rules={{ required: "Store Name is required" }}
+                                        rules={{ required: { value: true, message: "Required *" } }}
                                         render={({ field: { onChange, value } }) => (
                                             <TextField
                                                 fullWidth={true}
@@ -365,7 +365,7 @@ export default function CreateOrder(props) {
                                 <Controller
                                     name={"shippingaddress"}
                                     control={control}
-                                    rules={{ required: "Shipping address is required" }}
+                                    rules={{ required: { value: true, message: "Required *" } }}
                                     render={({ field: { onChange, value } }) => (
                                         <TextField
                                             fullWidth={true}
@@ -390,8 +390,8 @@ export default function CreateOrder(props) {
                                     name={"contactnumber"}
                                     control={control}
                                     rules={{
-                                        required: { value: true, message: "Contact number is required" },
-                                        pattern: { value: /^[0-9]{10}$/, message: "Contact number is invalid" }
+                                        required: { value: true, message: "Required *" },
+                                        pattern: { value: /^[0-9]{10}$/, message: "Invalid" }
                                     }}
                                     render={({ field: { onChange, value } }) => (
                                         <TextField
@@ -416,7 +416,7 @@ export default function CreateOrder(props) {
                                 <Controller
                                     name={"route"}
                                     control={control}
-                                    rules={{ required: { value: true, message: "Route is required" } }}
+                                    rules={{ required: { value: true, message: "Required *" } }}
                                     render={({ field: { onChange, value } }) => (
                                         <Select
                                             value={value || ''}

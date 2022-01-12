@@ -5,7 +5,7 @@
     grid-template-rows: min-content auto;
     box-sizing: border-box;
     width: 900px;
-    height: 700px;
+    height: min-content;
 }
 
 .container2 {
@@ -44,58 +44,62 @@
     display: grid;
     grid-template-rows: auto min-content;
 
-    .form {
+    .form1 {
         margin: auto 0;
+    }
 
-        .row {
-            padding: 7.5px 0;
-        }
+    .form2 {
+        margin: auto 100px;
+    }
 
-        .gridrow {
-            display: grid;
-            grid-template-columns: 160px auto;
-            grid-column-gap: 20px;
-            padding: 7.5px 0;
-        }
+    .row {
+        padding: 9px 0;
+    }
 
-        .twocolumns {
-            display: grid;
-            grid-template-columns: calc(50% - 10px) calc(50% - 10px);
-            grid-column-gap: 20px;
-        }
+    .gridrow {
+        display: grid;
+        grid-template-columns: 160px auto;
+        grid-column-gap: 20px;
+        padding: 9px 0;
+    }
 
-        .threecolumns {
-            display: grid;
-            grid-template-columns: calc(20% - 10px) calc(20% - 10px) calc(60% - 20px);
-            grid-column-gap: 20px;
+    .twocolumns {
+        display: grid;
+        grid-template-columns: calc(50% - 10px) calc(50% - 10px);
+        grid-column-gap: 20px;
+    }
+
+    .threecolumns {
+        display: grid;
+        grid-template-columns: calc(20% - 10px) calc(20% - 10px) calc(60% - 20px);
+        grid-column-gap: 20px;
+    }
+}
+
+.buttonRow {
+    display: grid;
+    grid-template-columns: auto min-content;
+    grid-column-gap: 30px;
+    text-align: right;
+
+    Button {
+        font-size: 1em;
+        margin: 20px 0px 5px 0px;
+        height: 45px;
+        padding: $formButtonPadding;
+    }
+
+    .resetBtnDiv {
+        .resetBtn {
+            border-color: $primaryMain;
+            color: $primaryMain;
         }
     }
 
-    .buttonRow {
-        display: grid;
-        grid-template-columns: auto min-content;
-        grid-column-gap: 30px;
-        text-align: right;
-
-        Button {
-            font-size: 1em;
-            margin: 20px 0px 5px 0px;
-            height: 45px;
-            padding: $formButtonPadding;
-        }
-
-        .resetBtnDiv {
-            .resetBtn {
-                border-color: $primaryMain;
-                color: $primaryMain;
-            }
-        }
-
-        .submitBtnDiv {
-            .submitBtn {
-                background-color: $primaryMain;
-                color: $inverseFontColor;
-            }
+    .submitBtnDiv {
+        .submitBtn {
+            background-color: $primaryMain;
+            color: $inverseFontColor;
         }
     }
 }

@@ -1,7 +1,7 @@
 @import "../../styles/variables";
 
 .container {
-    width: 800px;
+    width: 700px;
     box-sizing: border-box;
 
     .header {
@@ -27,7 +27,7 @@
             }
 
             .row {
-                padding: 8px 0;
+                padding: 10px 0;
             }
 
             .dividerDiv {
@@ -41,14 +41,14 @@
                 display: grid;
                 grid-template-columns: auto 160px;
                 grid-column-gap: 20px;
-                padding: 8px 0;
+                padding: 10px 0;
             }
 
             .gridrow {
                 display: grid;
                 grid-template-columns: 160px auto;
                 grid-column-gap: 20px;
-                padding: 8px 0;
+                padding: 10px 0;
             }
 
             .twocolumns {
