@@ -358,7 +358,9 @@ export default function StepThree(props) {
                                     ? { isValid: false, helperText: 'Required *' }
                                     : rowData.salesqtypieces === ''
                                         ? { isValid: false, helperText: 'Required *' }
-                                        : true
+                                        : rowData.salesqtypieces > 23
+                                            ? { isValid: false, helperText: 'Invalid *' }
+                                            : true
 
                         },
                         {
@@ -392,7 +394,9 @@ export default function StepThree(props) {
                                     ? { isValid: false, helperText: 'Required *' }
                                     : rowData.freeqtypieces === ''
                                         ? { isValid: false, helperText: 'Required *' }
-                                        : true
+                                        : rowData.freeqtypieces > 23
+                                            ? { isValid: false, helperText: 'Invalid *' }
+                                            : true
 
                         },
                         {
