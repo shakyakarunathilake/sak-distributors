@@ -341,20 +341,17 @@ export default function StepOne(props) {
                                                 },
                                                 editComponent: props => (
                                                     <Autocomplete
-                                                        // options={selectedProductOptions || []}
                                                         options={getProductItemList}
                                                         getOptionLabel={(option) => option.name}
-                                                        onChange={(e, option) => {
-                                                            let data = { ...props.rowData };
-                                                            data.description = e.target.innerText;
-                                                            props.onRowDataChange(data);
-                                                        }}
+                                                        onChange={e =>
+                                                            props.onChange(e.target.innerText)
+                                                        }
                                                         inputValue={props.value}
                                                         renderInput={(params) =>
                                                             <MuiTextField
                                                                 {...params}
-                                                                helperText={props.helperText}
                                                                 error={props.error}
+                                                                helperText={props.helperText}
                                                                 variant="standard"
                                                                 placeholder='Khomba Original Herbal Care Soap'
                                                             />
@@ -495,7 +492,9 @@ export default function StepOne(props) {
                                                         ? { isValid: false, helperText: 'Required *' }
                                                         : rowData.salesqtypieces === ''
                                                             ? { isValid: false, helperText: 'Required *' }
-                                                            : true
+                                                            : rowData.salesqtypieces > 23
+                                                                ? { isValid: false, helperText: 'Invalid *' }
+                                                                : true
 
                                             },
                                             {
@@ -531,7 +530,9 @@ export default function StepOne(props) {
                                                         ? { isValid: false, helperText: 'Required *' }
                                                         : rowData.freeqtypieces === ''
                                                             ? { isValid: false, helperText: 'Required *' }
-                                                            : true
+                                                            : rowData.freeqtypieces > 23
+                                                                ? { isValid: false, helperText: 'Invalid *' }
+                                                                : true
 
                                             },
                                             {
