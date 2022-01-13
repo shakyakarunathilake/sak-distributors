@@ -20,11 +20,48 @@ import DatePicker from '../../shared/DatePicker/DatePicker';
 
 //Styles
 import style from './CreateOrder.module.scss';
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 
 //Form Steps
 import StepTwo from './StepTwo';
 import StepThree from './StepThree';
 import StepFour from './StepFour';
+
+const theme = createTheme({
+    overrides: {
+        MuiFormLabel: {
+            root: {
+                fontSize: '0.9em',
+                fontFamily: 'Roboto, Poppins, sans-serif',
+            }
+        },
+        MuiInputBase: {
+            root: {
+                fontSize: '0.9em',
+                fontFamily: 'Roboto, Poppins, sans-serif',
+            }
+        },
+        MuiFormHelperText: {
+            root: {
+                fontSize: '0.64em',
+                fontFamily: 'Roboto, Poppins, sans-serif',
+            }
+        },
+        MuiOutlinedInput: {
+            inputMarginDense: {
+                paddingTop: "10px",
+                paddingBottom: "10px"
+            }
+        },
+        MuiAutocomplete: {
+            inputRoot: {
+                '&&[class*="MuiOutlinedInput-root"] $input': {
+                    padding: 1
+                }
+            }
+        },
+    }
+});
 
 export default function CreateOrder(props) {
 
@@ -38,10 +75,10 @@ export default function CreateOrder(props) {
     const [customerType, setCustomerType] = useState('');
 
     const today = new Date();
-    const dateTime = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`) + 'T' + (today.getHours() > 9 ? today.getHours() : `0${today.getHours()}`) + ':' + (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`);
+    const dateTime = today.getFullYear() + '-' + (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`) + 'T' + (today.getHours() > 9 ? today.getHours() : `0${today.getHours()}`) + ':' + (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`);
 
     today.setDate(today.getDate() + 3);
-    const deliveryDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+    const deliveryDate = today.getFullYear() + '-' + (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
 
     useEffect(() => {
 
@@ -312,29 +349,36 @@ export default function CreateOrder(props) {
                             </div>
                             <div className={style.textfield}>
                                 {customerType === "Registered Customer" ?
-                                    <Controller
-                                        name={"customer"}
-                                        control={control}
-                                        rules={{ required: { value: true, message: "Required *" } }}
-                                        render={({ field: { onChange, value } }) => (
-                                            <Autocomplete
-                                                options={customerOptions || []}
-                                                fullWidth
-                                                getOptionLabel={(option) => option.title}
-                                                onChange={handleCustomerChange}
-                                                renderInput={(params) => (
-                                                    <MuiTextField
-                                                        {...params}
-                                                        helperText={errors.customer && errors.customer.message}
-                                                        error={errors.customer ? true : false}
-                                                        variant="outlined"
-                                                        margin="dense"
-                                                        placeholder="Ex: C000001 - Champika Super Center and Pharmacy"
-                                                    />
-                                                )}
-                                            />
-                                        )}
-                                    />
+                                    <ThemeProvider theme={theme}>
+                                        <Controller
+                                            name={"customer"}
+                                            control={control}
+                                            defaultValue={''}
+                                            rules={{
+                                                required: { value: true, message: "Required *" }
+                                            }}
+                                            render={({ field: { value } }) => (
+                                                <Autocomplete
+                                                    options={customerOptions || []}
+                                                    fullWidth
+                                                    getOptionLabel={(option) => option.title}
+                                                    onChange={handleCustomerChange}
+                                                    inputValue={value}
+                                                    renderInput={(params) => (
+                                                        <MuiTextField
+                                                            {...params}
+                                                            helperText={errors.customer && errors.customer.message}
+                                                            error={errors.customer ? true : false}
+                                                            variant="outlined"
+                                                            margin="dense"
+                                                            placeholder="Ex: C000001 - Champika Super Center and Pharmacy"
+                                                        />
+                                                    )}
+                                                />
+                                            )}
+                                        />
+                                    </ThemeProvider>
+
                                     :
                                     <Controller
                                         name={"storename"}
