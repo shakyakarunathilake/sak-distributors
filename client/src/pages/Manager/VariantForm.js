@@ -149,13 +149,14 @@ export default function VariantForm(props) {
             variantstatus: '',
             variantaddeddate: '',
             variantaddedby: '',
+            autocomplete: null,
         });
         setShow(false);
         setFile("");
     }
-
+    
     const onSubmit = (values) => {
-
+        
         const productFormData = new formData();
 
         productFormData.append('productid', values.productid);
@@ -285,8 +286,9 @@ export default function VariantForm(props) {
                                         :
                                         <ThemeProvider theme={theme}>
                                             <Controller
-                                                name={"autocomplete"}
                                                 control={control}
+                                                name={"autocomplete"}
+                                                defaultValue={null}
                                                 rules={{
                                                     required: { value: true, message: "Required *" },
                                                 }}
@@ -296,7 +298,7 @@ export default function VariantForm(props) {
                                                         fullWidth
                                                         getOptionLabel={(option) => option.title}
                                                         onChange={handleProductChange}
-                                                        inputValue={value}
+                                                        value={value}
                                                         renderInput={(params) => (
                                                             <MuiTextField
                                                                 {...params}
@@ -311,7 +313,6 @@ export default function VariantForm(props) {
                                                 )}
                                             />
                                         </ThemeProvider>
-
                                 }
 
                             </div>
