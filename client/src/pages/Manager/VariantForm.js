@@ -68,7 +68,7 @@ export default function VariantForm(props) {
 
     const { handleClosePopUp, addVariant, productOptions, employeeOptions, productRecords } = props;
 
-    const { handleSubmit, formState: { errors }, control, reset, setValue } = useForm({ mode: "onBlur" });
+    const { handleSubmit, formState: { errors }, control, getValues, reset, setValue } = useForm({ mode: "onBlur" });
 
     const [file, setFile] = useState();
     const [show, setShow] = useState(false);
@@ -107,6 +107,7 @@ export default function VariantForm(props) {
             setFile(`http://${option.productimage}`);
             setValue("productid", option.productid);
             setValue("name", option.name);
+            setValue("autocomplete", option.name);
             setValue("supplier", option.supplier);
             setValue("productimage", option.productimage);
             setValue("addeddate", option.addeddate);
@@ -131,6 +132,7 @@ export default function VariantForm(props) {
 
     const resetForm = () => {
         reset({
+            autocomplete: '',
             productid: '',
             name: '',
             supplier: '',
@@ -286,16 +288,17 @@ export default function VariantForm(props) {
                                         :
                                         <ThemeProvider theme={theme}>
                                             <Controller
-                                                control={control}
                                                 name={"autocomplete"}
+                                                control={control}
                                                 rules={{
                                                     required: { value: true, message: "Required *" },
                                                 }}
+                                                defaultValue={''}
                                                 render={({ field: { value } }) => (
                                                     <Autocomplete
                                                         options={productOptions || []}
                                                         fullWidth
-                                                        getOptionLabel={(option) => option.title}
+                                                        getOptionLabel={(option) => option.name}
                                                         onChange={handleProductChange}
                                                         inputValue={value}
                                                         renderInput={(params) => (
@@ -312,6 +315,7 @@ export default function VariantForm(props) {
                                                 )}
                                             />
                                         </ThemeProvider>
+
                                 }
 
                             </div>
