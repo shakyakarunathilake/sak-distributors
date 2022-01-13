@@ -25,7 +25,7 @@ export default function CustomerForm(props) {
 
     const { setOpenPopup, addOrEdit, customerRecords, nextCusId } = props;
 
-    const { handleSubmit, formState: { errors }, control, reset, setValue, getValues } = useForm();
+    const { handleSubmit, formState: { errors }, control, reset, setValue, getValues } = useForm({ mode: "onBlur" });
 
     const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
 
