@@ -149,14 +149,13 @@ export default function VariantForm(props) {
             variantstatus: '',
             variantaddeddate: '',
             variantaddedby: '',
-            autocomplete: null,
         });
         setShow(false);
         setFile("");
     }
-    
+
     const onSubmit = (values) => {
-        
+
         const productFormData = new formData();
 
         productFormData.append('productid', values.productid);
@@ -278,6 +277,7 @@ export default function VariantForm(props) {
                                                     error={errors.name ? true : false}
                                                     onChange={onChange}
                                                     value={value || ''}
+                                                    disabled={true}
                                                     label="Product Name *"
                                                     size="small"
                                                 />
@@ -288,7 +288,6 @@ export default function VariantForm(props) {
                                             <Controller
                                                 control={control}
                                                 name={"autocomplete"}
-                                                defaultValue={null}
                                                 rules={{
                                                     required: { value: true, message: "Required *" },
                                                 }}
@@ -298,7 +297,7 @@ export default function VariantForm(props) {
                                                         fullWidth
                                                         getOptionLabel={(option) => option.title}
                                                         onChange={handleProductChange}
-                                                        value={value}
+                                                        inputValue={value}
                                                         renderInput={(params) => (
                                                             <MuiTextField
                                                                 {...params}
