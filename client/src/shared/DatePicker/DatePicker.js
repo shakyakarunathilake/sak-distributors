@@ -22,7 +22,7 @@ export default function DatePicker(props) {
             value={value}
             disabled={disabled}
             variant="outlined"
-            size="small"
+            size={size}
             {...(error && { error: true, helperText: helperText })}
         />
     )

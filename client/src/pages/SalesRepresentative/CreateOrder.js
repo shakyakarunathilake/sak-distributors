@@ -71,7 +71,7 @@ export default function CreateOrder(props) {
             setValue("route", '');
         }
 
-    }, [setValue, nextOrderNo, orderRecords])
+    }, [setValue, nextOrderNo, orderRecords, deliveryDate, dateTime])
 
     const handleReset = () => {
         reset({
