@@ -68,7 +68,7 @@ export default function VariantForm(props) {
 
     const { handleClosePopUp, addVariant, productOptions, employeeOptions, productRecords } = props;
 
-    const { handleSubmit, formState: { errors }, control, getValues, reset, setValue } = useForm({ mode: "onBlur" });
+    const { handleSubmit, formState: { errors }, control, reset, setValue } = useForm({ mode: "onBlur" });
 
     const [file, setFile] = useState();
     const [show, setShow] = useState(false);
@@ -290,10 +290,10 @@ export default function VariantForm(props) {
                                             <Controller
                                                 name={"autocomplete"}
                                                 control={control}
+                                                defaultValue={''}
                                                 rules={{
                                                     required: { value: true, message: "Required *" },
                                                 }}
-                                                defaultValue={''}
                                                 render={({ field: { value } }) => (
                                                     <Autocomplete
                                                         options={productOptions || []}
