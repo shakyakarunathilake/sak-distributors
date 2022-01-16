@@ -39,21 +39,21 @@ export default function StepTwo(props) {
                 {
                     action === "Create" && formStep === 1 &&
                     <div className={style.step}>
-                        Step 2 of 4
+                        Step 2 of 5
                     </div>
                 }
 
                 {
                     action === "Edit" && formStep === 0 &&
                     <div className={style.step}>
-                        Step 1 of 3
+                        Step 1 of 4
                     </div>
                 }
 
                 {
                     action === "View" && formStep === 0 &&
                     <div className={style.step}>
-                        Step 1 of 2
+                        Step 1 of 3
                     </div>
                 }
 

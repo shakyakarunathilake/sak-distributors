@@ -6,9 +6,12 @@ import formData from 'form-data';
 import { Button } from '@material-ui/core';
 import { TextField as MuiTextField } from '@material-ui/core';
 import Autocomplete from '@mui/material/Autocomplete';
+import Tooltip from '@mui/material/Tooltip';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
 
 //Material UI Icons
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import InfoIcon from '@mui/icons-material/Info';
 
 //Development Stage
 import * as employeeservice from "../../services/employeeService";
@@ -26,6 +29,7 @@ import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import StepTwo from './StepTwo';
 import StepThree from './StepThree';
 import StepFour from './StepFour';
+import StepFive from './StepFive';
 
 const theme = createTheme({
     overrides: {
@@ -73,12 +77,21 @@ export default function CreateOrder(props) {
     const [total, setTotal] = useState();
     const [formStep, setFormStep] = useState(0);
     const [customerType, setCustomerType] = useState('');
+    const [open, setOpen] = React.useState(false);
 
     const today = new Date();
     const dateTime = today.getFullYear() + '-' + (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`) + 'T' + (today.getHours() > 9 ? today.getHours() : `0${today.getHours()}`) + ':' + (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`);
 
     today.setDate(today.getDate() + 3);
     const deliveryDate = today.getFullYear() + '-' + (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+
+    const handleTooltipClose = () => {
+        setOpen(false);
+    };
+
+    const handleTooltipOpen = () => {
+        setOpen(true);
+    };
 
     useEffect(() => {
 
@@ -106,6 +119,8 @@ export default function CreateOrder(props) {
             setValue("shippingaddress", '');
             setValue("contactnumber", '');
             setValue("route", '');
+            setValue("currentcreditamount", '');
+
         }
 
     }, [setValue, nextOrderNo, orderRecords, deliveryDate, dateTime])
@@ -151,23 +166,23 @@ export default function CreateOrder(props) {
         setFormStep(x => x - 1);
     }
 
-    const handleFormValidation = () => {
+    // const handleFormValidation = () => {
 
-        trigger();
+    //     trigger();
 
-        if (isValid) {
-            completeFormStep();
-        }
-    }
+    //     if (isValid) {
+    //         completeFormStep();
+    //     }
+    // }
 
     const getTotal = () => {
         let total = 0;
         for (let i = 0; i < data.length; i++) {
-            total = total + data[i].grossamount;
+            total = total + parseInt(data[i].grossamount);
         }
 
-        setTotal(total)
-        return total;
+        setTotal(total.toFixed(2))
+        return total.toFixed(2);
     }
 
     const onSubmit = () => {
@@ -216,7 +231,7 @@ export default function CreateOrder(props) {
                         </div>
 
                         <div className={style.step}>
-                            Step 1 of 4
+                            Step 1 of 5
                         </div>
 
                     </div>
@@ -490,10 +505,30 @@ export default function CreateOrder(props) {
                         </div>
 
                         <div className={style.nextBtn}>
+
+                            <ClickAwayListener onClickAway={handleTooltipClose}>
+                                <Tooltip
+                                    PopperProps={{
+                                        disablePortal: true,
+                                    }}
+                                    onClose={handleTooltipClose}
+                                    open={open}
+                                    disableFocusListener
+                                    disableHoverListener
+                                    disableTouchListener
+                                    title="Please fill the required * fields to proceed"
+                                    arrow
+                                    placement="left"
+                                >
+                                    < InfoIcon onClick={handleTooltipOpen} style={{ fontSize: '1.3em', verticalAlign: 'middle', marginRight: '10px' }} />
+                                </Tooltip>
+                            </ClickAwayListener>
+
                             <Button
+                                disabled={!isValid}
                                 color="primary"
                                 variant="contained"
-                                onClick={handleFormValidation}
+                                onClick={completeFormStep}
                             >
                                 Next
                             </Button>
@@ -547,7 +582,7 @@ export default function CreateOrder(props) {
                         data={data}
                         handleClosePopUp={handleClosePopUp}
                         backFormStep={backFormStep}
-                        onSubmit={onSubmit}
+                        completeFormStep={completeFormStep}
                         total={total}
                         action={action}
                         formStep={formStep}
@@ -555,6 +590,21 @@ export default function CreateOrder(props) {
                 </section>
             }
 
+            {
+                formStep >= 4 &&
+                <section className={formStep === 4 ? style.visible : style.hidden}>
+                    <StepFive
+                        action={action}
+                        formStep={formStep}
+                        handleClosePopUp={handleClosePopUp}
+                        total={total}
+                        errors={errors}
+                        control={control}
+                        getValues={getValues}
+                        onSubmit={onSubmit}
+                    />
+                </section>
+            }
         </form >
 
     )

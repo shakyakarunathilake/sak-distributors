@@ -1,6 +1,6 @@
 @import "../../styles/variables";
 
-.two {
+.five {
     display: grid;
     grid-template-rows: min-content auto min-content;
     width: 100%;
@@ -29,56 +29,41 @@
     }
 
     .body {
-        margin: auto 20vh;
+        margin: auto 25vh;
 
         .row {
             display: grid;
-            grid-template-columns: 250px calc(100% - 250px);
+            grid-template-columns: 320px calc(100% - 320px);
             padding: 15px 20px;
 
+            .redFont {
+                color: red;
+            }
+            
             .boldText {
                 font-size: 1em;
                 font-weight: 700;
+                margin: auto 20px auto 0;
+            }
+
+            .customerData{
+                text-align: right;
             }
         }
     }
 
     .footer {
-        display: grid;
-        grid-template-columns: auto auto;
-        padding: 20px 0px 10px 0px;
+        text-align: right;
+        padding: 30px 0px 10px 0px;
 
-        .backBtn {
-            Button {
-                font-size: 1em;
-                padding: $formButtonPadding2;
-                background-color: #aca9bb;
+        Button {
+            font-size: 1em;
+            height: 40px;
+            padding: $formButtonPadding2;
+
+            &:disabled {
+                background-color: hsl(230, 66%, 57%);
                 color: $inverseFontColor;
-
-                &:disabled {
-                    background-color: #c2c2c2;
-                    color: $inverseFontColor;
-                }
-            }
-        }
-
-        .hideBackBtn {
-            Button {
-                display: none;
-            }
-        }
-
-        .confirmBtn {
-            text-align: right;
-
-            Button {
-                font-size: 1em;
-                padding: $formButtonPadding2;
-
-                &:disabled {
-                    background-color: hsl(230, 66%, 57%);
-                    color: $inverseFontColor;
-                }
             }
         }
     }
