@@ -17,7 +17,7 @@ const orderSchema = mongoose.Schema({
     storename: { type: String, required: true },
     total: { type: String, required: true },
     items: { type: Array, required: true },
-
+    currentcreditamount: { type: String, required: true }
 })
 
 module.exports = mongoose.model('Order', orderSchema);
