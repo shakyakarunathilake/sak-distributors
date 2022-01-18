@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Controller } from 'react-hook-form';
 
 //Material UI Components
 import { Button } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
+import Tooltip from '@mui/material/Tooltip';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
 
 //Material UI Icons
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import InfoSharpIcon from '@mui/icons-material/InfoSharp';
 
 //SCSS Styling
 import style from './StepTwo.module.scss';
@@ -14,6 +17,25 @@ import style from './StepTwo.module.scss';
 export default function StepTwo(props) {
 
     const { action, formStep, handleClosePopUp, control, backFormStep, getValues, completeFormStep } = props;
+
+    // const [open, setOpen] = useState({
+    //     'eligibilityforcredit': false,
+    //     'maximumcreditamount': false
+    // });
+
+    // const handleTooltipClose = (attribute) => {
+    //     setOpen({
+    //         ...open,
+    //         [attribute]: false
+    //     });
+    // };
+
+    // const handleTooltipOpen = (attribute) => {
+    //     setOpen({
+    //         ...open,
+    //         [attribute]: true
+    //     });
+    // };
 
     const onSubmit = () => {
         completeFormStep();
@@ -39,21 +61,21 @@ export default function StepTwo(props) {
                 {
                     action === "Create" && formStep === 1 &&
                     <div className={style.step}>
-                        Step 2 of 4
+                        Step 2 of 5
                     </div>
                 }
 
                 {
                     action === "Edit" && formStep === 0 &&
                     <div className={style.step}>
-                        Step 1 of 3
+                        Step 1 of 4
                     </div>
                 }
 
                 {
                     action === "View" && formStep === 0 &&
                     <div className={style.step}>
-                        Step 1 of 2
+                        Step 1 of 3
                     </div>
                 }
 
@@ -218,6 +240,127 @@ export default function StepTwo(props) {
                     </div>
                 </div>
 
+                {
+                    getValues('customerid') &&
+                    <div className={style.row}>
+                        <div className={style.boldText}>
+                            Loyalty Points
+                        </div>
+                        <div className={style.customerData}>
+                            <Controller
+                                name={"loyaltypoints"}
+                                control={control}
+                                render={({ field: { value } }) => (
+                                    <Typography className={style.input}>
+                                        {value}
+                                    </Typography>
+                                )}
+                            />
+                        </div>
+                    </div>
+                }
+
+                {
+                    getValues('customerid') &&
+                    <div className={style.row}>
+                        <div className={style.boldText}>
+                            Previous credit to settle
+                        </div>
+                        <div className={style.customerData}>
+                            <Controller
+                                name={"creditamounttosettle"}
+                                control={control}
+                                render={({ field: { value } }) => (
+                                    <Typography className={style.input}>
+                                        Rs {value}
+                                    </Typography>
+                                )}
+                            />
+                        </div>
+                    </div>
+                }
+
+                {
+                    getValues('customerid') &&
+                    <div className={style.row}>
+                        <div className={style.boldText}>
+                            Eligibile for credit
+                        </div>
+                        <div className={style.customerData}>
+                            <Controller
+                                name={"eligibilityforcredit"}
+                                control={control}
+                                render={({ field: { value } }) => (
+                                    <Typography className={style.input}>
+                                        {value === true ? 'Yes' : 'No'}
+                                        {/* <ClickAwayListener onClickAway={handleTooltipClose("eligibilityforcredit")}>
+                                        <Tooltip
+                                            PopperProps={{
+                                                disablePortal: true,
+                                            }}
+                                            onClose={handleTooltipClose("eligibilityforcredit")}
+                                            open={open['eligibilityforcredit']}
+                                            disableFocusListener
+                                            disableHoverListener
+                                            disableTouchListener
+                                            title="If the customer has previous amount to settle, he/she won't be eligible for credit"
+                                            arrow
+                                            placement="right"
+                                            className='eligibilityforcredit'
+                                        >
+                                            <InfoSharpIcon
+                                                className={style.infoSharpIcon}
+                                                onClick={handleTooltipOpen("eligibilityforcredit")}
+                                            />
+                                        </Tooltip>
+                                    </ClickAwayListener> */}
+                                    </Typography>
+                                )}
+                            />
+                        </div>
+                    </div>
+                }
+
+                {
+                    getValues('customerid') && getValues('eligibilityforcredit') &&
+                    <div className={style.row}>
+                        <div className={style.boldText}>
+                            Maximum credit amount allowed
+                        </div>
+                        <div className={style.customerData}>
+                            <Controller
+                                name={"maximumcreditamount"}
+                                control={control}
+                                render={({ field: { value } }) => (
+                                    <Typography className={style.input}>
+                                        Rs {value}
+                                        {/* <ClickAwayListener onClickAway={handleTooltipClose('maximumcreditamount')}>
+                                        <Tooltip
+                                            PopperProps={{
+                                                disablePortal: true,
+                                            }}
+                                            onClose={handleTooltipClose('maximumcreditamount')}
+                                            open={open['maximumcreditamount']}
+                                            disableFocusListener
+                                            disableHoverListener
+                                            disableTouchListener
+                                            title="Maximum credit amount depends on number of loyalty point the customer has earned"
+                                            arrow
+                                            placement="right"
+                                        >
+                                            <InfoSharpIcon
+                                                className={style.infoSharpIcon}
+                                                onClick={handleTooltipOpen('maximumcreditamount')}
+                                            />
+                                        </Tooltip>
+                                    </ClickAwayListener> */}
+                                    </Typography>
+                                )}
+                            />
+                        </div>
+                    </div>
+                }
+
             </div>
 
             <div className={style.footer}>
@@ -249,6 +392,6 @@ export default function StepTwo(props) {
 
             </div>
 
-        </div>
+        </div >
     )
 }

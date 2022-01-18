@@ -29,16 +29,22 @@
     }
 
     .body {
-        margin: auto 20vh;
+        margin: auto;
 
         .row {
             display: grid;
-            grid-template-columns: 250px calc(100% - 250px);
-            padding: 15px 20px;
+            grid-template-columns: 300px calc(100% - 300px);
+            padding: 10px 20px;
 
             .boldText {
                 font-size: 1em;
                 font-weight: 700;
+            }
+
+            .infoSharpIcon {
+                margin-left: 5px;
+                font-size: 1.3em;
+                vertical-align: middle;
             }
         }
     }
@@ -51,7 +57,7 @@
         .backBtn {
             Button {
                 font-size: 1em;
-                width: auto;
+                padding: $formButtonPadding2;
                 background-color: #aca9bb;
                 color: $inverseFontColor;
 
@@ -73,7 +79,7 @@
 
             Button {
                 font-size: 1em;
-                width: auto;
+                padding: $formButtonPadding2;
 
                 &:disabled {
                     background-color: hsl(230, 66%, 57%);
