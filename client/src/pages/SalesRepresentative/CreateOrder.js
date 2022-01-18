@@ -26,6 +26,7 @@ import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import StepTwo from './StepTwo';
 import StepThree from './StepThree';
 import StepFour from './StepFour';
+import StepFive from './StepFive';
 
 const theme = createTheme({
     overrides: {
@@ -94,6 +95,10 @@ export default function CreateOrder(props) {
             setValue("shippingaddress", orderRecords.shippingaddress);
             setValue("contactnumber", orderRecords.contactnumber);
             setValue("route", orderRecords.route);
+            setValue("loyaltypoints", orderRecords.loyaltypoints);
+            setValue("creditamounttosettle", orderRecords.creditamounttosettle);
+            setValue("eligibilityforcredit", orderRecords.eligibilityforcredit);
+            setValue("maximumcreditamount", orderRecords.maximumcreditamount);
         } else {
             setValue("customertype", '');
             setValue("orderno", `${JSON.parse(sessionStorage.getItem("Auth")).employeeid}${nextOrderNo}`);
@@ -106,6 +111,10 @@ export default function CreateOrder(props) {
             setValue("shippingaddress", '');
             setValue("contactnumber", '');
             setValue("route", '');
+            setValue("loyaltypoints", 0);
+            setValue("creditamounttosettle", '');
+            setValue("eligibilityforcredit", false);
+            setValue("maximumcreditamount", 0);
         }
 
     }, [setValue, nextOrderNo, orderRecords, deliveryDate, dateTime])
@@ -123,6 +132,10 @@ export default function CreateOrder(props) {
             shippingaddress: '',
             contactnumber: '',
             route: '',
+            loyaltypoints: 0,
+            creditamounttosettle: '',
+            eligibilityforcredit: false,
+            maximumcreditamount: 0
         });
     }
 
@@ -139,6 +152,10 @@ export default function CreateOrder(props) {
             setValue("shippingaddress", option.shippingaddress);
             setValue("route", option.route);
             setValue("contactnumber", option.contactnumber);
+            setValue("loyaltypoints", option.loyaltypoints);
+            setValue("creditamounttosettle", option.creditamounttosettle);
+            setValue("eligibilityforcredit", option.eligibilityforcredit);
+            setValue('maximumcreditamount', option.maximumcreditamount);
             clearErrors();
         }
     }
@@ -163,11 +180,11 @@ export default function CreateOrder(props) {
     const getTotal = () => {
         let total = 0;
         for (let i = 0; i < data.length; i++) {
-            total = total + data[i].grossamount;
+            total = total + parseInt(data[i].grossamount);
         }
 
-        setTotal(total)
-        return total;
+        setTotal(total.toFixed(2))
+        return total.toFixed(2);
     }
 
     const onSubmit = () => {
@@ -186,6 +203,10 @@ export default function CreateOrder(props) {
         customerOrderFormData.append('shippingaddress', getValues('shippingaddress'));
         customerOrderFormData.append('items', JSON.stringify(data));
         customerOrderFormData.append('total', total);
+        customerOrderFormData.append('loyaltypoints', getValues('loyaltypoints'));
+        customerOrderFormData.append('creditamounttosettle', getValues('creditamounttosettle'));
+        customerOrderFormData.append('eligibilityforcredit', getValues('eligibilityforcredit'));
+        customerOrderFormData.append('maximumcreditamount', getValues('maximumcreditamount'));
 
         addOrEdit(customerOrderFormData, getValues('orderno'));
     }
@@ -216,7 +237,7 @@ export default function CreateOrder(props) {
                         </div>
 
                         <div className={style.step}>
-                            Step 1 of 4
+                            Step 1 of 5
                         </div>
 
                     </div>
@@ -371,7 +392,7 @@ export default function CreateOrder(props) {
                                                             error={errors.customer ? true : false}
                                                             variant="outlined"
                                                             margin="dense"
-                                                            placeholder="Ex: C000001 - Champika Super Center and Pharmacy"
+                                                            placeholder="Ex: Mini Co-op City (C00001)"
                                                         />
                                                     )}
                                                 />
@@ -417,7 +438,7 @@ export default function CreateOrder(props) {
                                             onChange={onChange}
                                             error={errors.shippingaddress ? true : false}
                                             helperText={errors.shippingaddress && errors.shippingaddress.message}
-                                            placeholder="Ex: Rambukkana-Katupitiya Rd, Rambukkana"
+                                            placeholder="Ex: 8CG3+XJF, Rambukkana"
                                             margin="dense"
                                         />
                                     )}
@@ -547,10 +568,28 @@ export default function CreateOrder(props) {
                         data={data}
                         handleClosePopUp={handleClosePopUp}
                         backFormStep={backFormStep}
-                        onSubmit={onSubmit}
+                        completeFormStep={completeFormStep}
                         total={total}
                         action={action}
                         formStep={formStep}
+                    />
+                </section>
+            }
+
+            {
+                formStep >= 4 &&
+                <section className={formStep === 4 ? style.visible : style.hidden}>
+                    <StepFive
+                        action={action}
+                        formStep={formStep}
+                        handleClosePopUp={handleClosePopUp}
+                        total={total}
+                        errors={errors}
+                        control={control}
+                        getValues={getValues}
+                        onSubmit={onSubmit}
+                        setValue={setValue}
+                        backFormStep={backFormStep}
                     />
                 </section>
             }
