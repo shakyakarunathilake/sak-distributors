@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 //Form Steps
 import StepTwo from './StepTwo';
 import StepFour from './StepFour';
+import StepFive from './StepFive';
 
 //Styles
 import style from './ViewOrder.module.scss';
@@ -82,6 +83,21 @@ export default function ViewOrder(props) {
                         total={total}
                         action={action}
                         formStep={formStep}
+                    />
+                </section>
+            }
+
+            {
+                formStep >= 4 &&
+                <section className={formStep === 4 ? style.visible : style.hidden}>
+                    <StepFive
+                        action={action}
+                        formStep={formStep}
+                        handleClosePopUp={handleClosePopUp}
+                        total={total}
+                        control={control}
+                        getValues={getValues}
+                        onSubmit={onSubmit}
                     />
                 </section>
             }
