@@ -80,6 +80,7 @@ router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
         items: items,
         total: req.body.total,
         status: 'Pending',
+        currentcreditamount: req.body.currentcreditamount
     });
 
     order
@@ -149,7 +150,7 @@ router.post("/update-by-id/:orderno", formDataBody.fields([]), (req, res, next) 
             {
                 'items': items,
                 'total': req.body.total,
-
+                'currentcreditamount': req.body.currentcreditamount
             },
             { new: true }
         )
@@ -332,6 +333,7 @@ router.get("/:orderno", (req, res, next) => {
                 'items': doc.items,
                 'total': doc.total,
                 'status': doc.status,
+                'currentcreditamount': doc.currentcreditamount
             }
 
             res.status(200).json({

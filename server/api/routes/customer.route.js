@@ -69,6 +69,8 @@ router.post("/create-customer", formDataBody.fields([]), (req, res, next) => {
         billingaddress: req.body.billingaddress,
         shippingaddress: req.body.shippingaddress,
         registeredby: req.body.registeredby,
+        loyaltypoints: 1,
+        creditamounttosettle: 0
     });
 
     customer
@@ -168,6 +170,8 @@ router.get("/:customerid", (req, res, next) => {
                 'customercontactnumber': doc.customercontactnumber,
                 'storecontactnumber': doc.storecontactnumber,
                 'registeredby': doc.registeredby,
+                'loyaltypoints': doc.loyaltypoints,
+                'creditamounttosettle': doc.creditamounttosettle
             }
 
             res.status(200).json({
