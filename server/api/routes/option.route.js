@@ -234,14 +234,36 @@ router.get("/customer-options", (req, res, next) => {
         .exec()
         .then(doc => {
 
+            function MaximumCreditAmount(loyaltypoints) {
+                let maximumcreditamount = 0;
+
+                switch (loyaltypoints) {
+                    case (10 < loyaltypoints < 25):
+                        maximumcreditamount = 2000;
+                        break;
+                    case (25 < loyaltypoints < 50):
+                        break;
+                    default:
+                        maximumcreditamount = 0;
+                }
+
+                return maximumcreditamount.toFixed(2);
+            }
+
             const customeroptions = doc.map(x => ({
                 "id": x.customerid,
                 "storename": x.storename,
                 "route": x.route,
                 "shippingaddress": x.shippingaddress,
                 "contactnumber": x.customercontactnumber,
-                "title": `${x.storename} (${x.customerid})`
+                "title": `${x.storename} (${x.customerid})`,
+                "loyaltypoints": x.loyaltypoints,
+                "creditamounttosettle": x.creditamounttosettle.toFixed(2),
+                'maximumcreditamount': x.creditamounttosettle === 0 ? MaximumCreditAmount(x.loyaltypoints) : 0,
+                'eligibilityforcredit': ((x.creditamounttosettle === 0) && (x.loyaltypoints > 10)) ? true : false,
             }))
+
+            console.log(customeroptions)
 
             res.status(201).json({
                 message: "Handeling GET requests to /customer-options",
