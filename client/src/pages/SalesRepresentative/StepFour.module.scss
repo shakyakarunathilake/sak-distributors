@@ -40,7 +40,7 @@
         .backBtn {
             Button {
                 font-size: 1em;
-                width: auto;
+                padding: $formButtonPadding2;
                 background-color: #aca9bb;
                 color: $inverseFontColor;
 
@@ -56,7 +56,7 @@
 
             Button {
                 font-size: 1em;
-                width: auto;
+                padding: $formButtonPadding2;
 
                 &:disabled {
                     background-color: hsl(230, 66%, 57%);
