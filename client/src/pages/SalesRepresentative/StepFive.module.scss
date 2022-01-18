@@ -1,0 +1,128 @@
+@import "../../styles/variables";
+
+.five {
+    display: grid;
+    grid-template-rows: min-content auto min-content;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+
+    .header {
+        .title {
+            display: grid;
+            grid-template-columns: auto min-content;
+            font-size: 1.55em;
+            font-weight: 600;
+            .icon {
+                color: red;
+                &:hover {
+                    transform: scale(1.1);
+                }
+            }
+        }
+
+        .step {
+            margin: 5px 0 0 0;
+            color: $primaryLight;
+            font-size: 0.75em;
+        }
+    }
+
+    .body {
+        display: grid;
+        grid-template-rows: min-content min-content;
+        grid-row-gap: 30px;
+        margin: auto;
+
+        .cardRow {
+            display: grid;
+            grid-template-columns: min-content min-content;
+            grid-column-gap: 70px;
+
+            .card {
+                display: grid;
+                grid-template-rows: min-content min-content;
+                grid-row-gap: 10px;
+                width: 300px;
+                height: min-content;
+                border-radius: 15px;
+                background-color: $layoutColor;
+                padding: 10px 0;
+
+                .title {
+                    font-size: 1.2em;
+                    font-weight: 600;
+                    text-align: center;
+                }
+
+                .data {
+                    text-align: center;
+                    font-size: 1.6em;
+                    font-weight: 600;
+                    color: $primaryMain;
+                }
+            }
+        }
+
+        .detailRow {
+            .row {
+                display: grid;
+                grid-template-columns: 320px calc(100% - 420px);
+                grid-column-gap: 100px;
+                padding: 15px 20px;
+
+                .redFont {
+                    color: red;
+                }
+
+                .boldText {
+                    font-size: 1em;
+                    font-weight: 700;
+                    margin: auto 20px auto 0;
+                }
+
+                .customerData {
+                    text-align: right;
+                }
+            }
+
+            .dividerDiv {
+                margin: 15px 0;
+            }
+        }
+    }
+
+    .footer {
+        display: grid;
+        grid-template-columns: auto auto;
+        padding: 20px 0px 10px 0px;
+
+        .backBtn {
+            Button {
+                font-size: 1em;
+                padding: $formButtonPadding2;
+                background-color: #aca9bb;
+                color: $inverseFontColor;
+
+                &:disabled {
+                    background-color: #c2c2c2;
+                    color: $inverseFontColor;
+                }
+            }
+        }
+
+        .submitBtn {
+            text-align: right;
+
+            Button {
+                font-size: 1em;
+                padding: $formButtonPadding2;
+
+                &:disabled {
+                    background-color: hsl(230, 66%, 57%);
+                    color: $inverseFontColor;
+                }
+            }
+        }
+    }
+}
