@@ -9,12 +9,13 @@ import style from './CreateOrder.module.scss';
 import StepTwo from './StepTwo';
 import StepThree from './StepThree';
 import StepFour from './StepFour';
+import StepFive from './StepFive';
 
 export default function CreateOrder(props) {
 
     const { addOrEdit, handleClosePopUp, action, productOptions, orderRecords } = props;
 
-    const { control, getValues, setValue, handleSubmit } = useForm({ mode: "all" });
+    const { control, formState: { errors }, getValues, setValue, handleSubmit } = useForm({ mode: "all" });
 
     const [data, setData] = useState([]);
     const [total, setTotal] = useState();
@@ -33,6 +34,7 @@ export default function CreateOrder(props) {
             setValue("shippingaddress", orderRecords.shippingaddress);
             setValue("contactnumber", orderRecords.contactnumber);
             setValue("route", orderRecords.route);
+            setValue("currentcreditamount", orderRecords.currentcreditamount);
         }
 
     }, [setValue, orderRecords])
@@ -61,7 +63,8 @@ export default function CreateOrder(props) {
 
         customerOrderFormData.append('items', JSON.stringify(data));
         customerOrderFormData.append('total', total);
-
+        customerOrderFormData.append('currentcreditamount', getValues('currentcreditamount'));
+        
         addOrEdit(customerOrderFormData, orderRecords.orderno);
     }
 
@@ -116,6 +119,22 @@ export default function CreateOrder(props) {
                         total={total}
                         action={action}
                         formStep={formStep}
+                    />
+                </section>
+            }
+
+            {
+                formStep >= 4 &&
+                <section className={formStep === 4 ? style.visible : style.hidden}>
+                    <StepFive
+                        action={action}
+                        formStep={formStep}
+                        handleClosePopUp={handleClosePopUp}
+                        total={total}
+                        errors={errors}
+                        control={control}
+                        getValues={getValues}
+                        onSubmit={onSubmit}
                     />
                 </section>
             }
