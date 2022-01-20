@@ -4,11 +4,16 @@ import React, { useEffect, useState } from 'react';
 import Page from '../../shared/Page/Page';
 
 //Material UI 
-import { Paper } from '@material-ui/core';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import {
+    Paper,
+    TableCell,
+    TableHead,
+    TableRow
+} from '@material-ui/core';
+import Tooltip from '@mui/material/Tooltip';
 
+//Material Icons
+import InfoIcon from '@mui/icons-material/Info';
 
 //Material Table
 import MaterialTable, { MTableToolbar } from 'material-table';
@@ -38,7 +43,8 @@ const useStyles = makeStyles({
             border: "none",
             padding: "2.5px 0 5px 0"
         },
-    }
+    },
+
 });
 
 export default function ManageStore() {
@@ -87,14 +93,17 @@ export default function ManageStore() {
                                             Prod. ID
                                         </div>
                                     </TableCell>
-                                    <TableCell width="30%" padding="none" rowSpan={2} align="left">
+                                    <TableCell width="28%" padding="none" rowSpan={2} align="left">
                                         <div style={{ padding: '0 10px' }}>
                                             Description
                                         </div>
                                     </TableCell>
-                                    <TableCell width="5%" padding="none" rowSpan={2} align="center">
+                                    <TableCell width="7%" padding="none" rowSpan={2} align="center">
                                         <div style={{ padding: '0 10px' }}>
-                                            List / Selling Price (Rs.)
+                                            List Price / Selling Price
+                                            <Tooltip title="List price for GRN and Selling price for GIN" arrow>
+                                                <InfoIcon style={{ fontSize: '1.3em', verticalAlign: 'top', marginLeft: '5px' }} />
+                                            </Tooltip>
                                         </div>
                                     </TableCell>
                                     <TableCell width="15%" padding="none" rowSpan={2} align="center">
@@ -123,8 +132,18 @@ export default function ManageStore() {
                                     </TableCell> */}
                                 </TableRow>
                                 <TableRow className={classes.row2}>
-                                    <TableCell width="6%" padding="none" align="center">Cs</TableCell>
-                                    <TableCell width="6%" padding="none" align="center">Pcs</TableCell>
+                                    <TableCell width="6%" padding="none" align="center">
+                                        Cs
+                                        <Tooltip title="Sales cases / Free cases" arrow>
+                                            <InfoIcon style={{ fontSize: '1.3em', verticalAlign: 'top', marginLeft: '5px' }} />
+                                        </Tooltip>
+                                    </TableCell>
+                                    <TableCell width="6%" padding="none" align="center">
+                                        Pcs
+                                        <Tooltip title="Sales pieces / Free pieces" arrow>
+                                            <InfoIcon style={{ fontSize: '1.3em', verticalAlign: 'top', marginLeft: '5px' }} />
+                                        </Tooltip>
+                                    </TableCell>
                                     {/* <TableCell width="6%" padding="none" align="center">Cs</TableCell>
                                     <TableCell width="6%" padding="none" align="center">Pcs</TableCell> */}
                                     {/* <TableCell width="6%" padding="none" align="center">R</TableCell> */}
@@ -146,19 +165,18 @@ export default function ManageStore() {
                                 textAlign: 'left'
                             }
                         },
-                        //     const name = item.description;
                         {
                             field: "name",
                             cellStyle: {
-                                width: '30%',
+                                width: '28%',
                                 textAlign: 'left'
                             }
                         },
                         {
                             field: "listorsellingprice",
-                            // render: rowData => parseInt(rowData.listorsellingprice).toFixed(2),
+                            render: rowData => rowData.listorsellingprice ? `Rs. ${rowData.listorsellingprice}` : '',
                             cellStyle: {
-                                width: '5%',
+                                width: '7%',
                                 textAlign: 'right'
                             }
                         },
