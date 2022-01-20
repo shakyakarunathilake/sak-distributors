@@ -12,7 +12,6 @@ import {
     Button,
     Paper,
     TablePagination,
-    TextField as MuiTextField,
     Grid
 } from '@material-ui/core';
 
