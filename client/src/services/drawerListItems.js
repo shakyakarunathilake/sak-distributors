@@ -7,7 +7,6 @@ import PeopleIcon from '@material-ui/icons/People';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import BusinessIcon from '@material-ui/icons/Business';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
-import ViewListIcon from '@material-ui/icons/ViewList';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import PaymentIcon from '@material-ui/icons/Payment';
 import DescriptionIcon from '@material-ui/icons/Description';
