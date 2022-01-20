@@ -89,7 +89,7 @@ export default function SalesAndInvoice() {
                     console.log(error)
                 })
         }
-    }, [reRender]);
+    }, [reRender, firstname, lastname, designation, employeeid]);
 
     const handleClosePopUp = () => {
         setOpenPopup(false)
