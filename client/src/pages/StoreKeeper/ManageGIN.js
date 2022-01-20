@@ -98,7 +98,7 @@ export default function ManageGIN() {
                     console.log(error)
                 })
         }
-    }, [reRender]);
+    }, [reRender, firstname, lastname, designation, employeeid]);
 
     const getInChargeOptions = () => {
         axios
