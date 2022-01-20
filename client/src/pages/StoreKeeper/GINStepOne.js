@@ -22,9 +22,11 @@ import {
 } from '@material-ui/core';
 import Autocomplete from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
+import Tooltip from '@mui/material/Tooltip';
 
 //Material UI Icons
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import InfoIcon from '@mui/icons-material/Info';
 
 //Material Table
 import MaterialTable from 'material-table';
@@ -319,32 +321,34 @@ export default function GINStepOne(props) {
                                     In Charge <span className={style.red}>*</span>
                                 </th>
                                 <td align="left">
-                                    <Controller
-                                        name={"incharge"}
-                                        control={control}
-                                        rules={{ required: "In Charge is required" }}
-                                        render={({ field: { onChange, value } }) => (
-                                            <ThemeProvider theme={theme}>
+                                    <ThemeProvider theme={theme}>
+                                        <Controller
+                                            name={"incharge"}
+                                            control={control}
+                                            rules={{
+                                                required: { value: true, message: "Required *" },
+                                            }}
+                                            render={({ field: { value } }) => (
                                                 <Autocomplete
                                                     options={inChargeOptions || []}
                                                     getOptionLabel={(option) => option.title}
                                                     onChange={handleInChargeChange}
                                                     inputValue={value}
-                                                    size="small"
                                                     renderInput={(params) => (
                                                         <MuiTextField
                                                             {...params}
-                                                            helperText={errors.incharge && errors.incharge.message}
                                                             error={errors.incharge ? true : false}
-                                                            variant="outlined"
-                                                            margin="dense"
+                                                            helperText={errors.incharge && errors.incharge.message}
                                                             placeholder="Ex: Buddhika Bandara (E00006)"
+                                                            variant="outlined"
+                                                            size="small"
+                                                            margin="dense"
                                                         />
                                                     )}
                                                 />
-                                            </ThemeProvider>
-                                        )}
-                                    />
+                                            )}
+                                        />
+                                    </ThemeProvider>
                                 </td>
                             </tr>
                             <tr>
@@ -355,7 +359,9 @@ export default function GINStepOne(props) {
                                     <Controller
                                         name={"vehicle"}
                                         control={control}
-                                        rules={{ required: { value: true, message: "Vehicle is required" } }}
+                                        rules={{
+                                            required: { value: true, message: "Required *" },
+                                        }}
                                         render={({ field: { onChange, value } }) => (
                                             <TextField
                                                 fullWidth={true}
@@ -536,6 +542,13 @@ export default function GINStepOne(props) {
             </div>
 
             <div className={style.footer}>
+                <Tooltip
+                    arrow
+                    placement="top"
+                    title="Please fill the required * fields to proceed"
+                >
+                    <InfoIcon style={{ fontSize: '1.3em', verticalAlign: 'middle', marginRight: '10px' }} />
+                </Tooltip>
                 <Button
                     color="primary"
                     variant="contained"
@@ -544,6 +557,7 @@ export default function GINStepOne(props) {
                 >
                     Next
                 </Button>
+
             </div>
 
         </div>
