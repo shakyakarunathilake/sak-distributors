@@ -83,7 +83,6 @@ router.get("/product-options-for-product", (req, res, next) => {
             }
 
             const productOptions = doc.map(x => ({
-                title: `${x.name} (${x.productid})`,
                 productid: x.productid,
                 name: x.name,
                 supplier: x.supplier,

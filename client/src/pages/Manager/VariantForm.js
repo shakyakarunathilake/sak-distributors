@@ -107,6 +107,7 @@ export default function VariantForm(props) {
             setFile(`http://${option.productimage}`);
             setValue("productid", option.productid);
             setValue("name", option.name);
+            setValue("autocomplete", option.name);
             setValue("supplier", option.supplier);
             setValue("productimage", option.productimage);
             setValue("addeddate", option.addeddate);
@@ -277,6 +278,7 @@ export default function VariantForm(props) {
                                                     error={errors.name ? true : false}
                                                     onChange={onChange}
                                                     value={value || ''}
+                                                    disabled={true}
                                                     label="Product Name *"
                                                     size="small"
                                                 />
@@ -294,7 +296,7 @@ export default function VariantForm(props) {
                                                     <Autocomplete
                                                         options={productOptions || []}
                                                         fullWidth
-                                                        getOptionLabel={(option) => option.title}
+                                                        getOptionLabel={(option) => option.name}
                                                         onChange={handleProductChange}
                                                         inputValue={value}
                                                         renderInput={(params) => (
