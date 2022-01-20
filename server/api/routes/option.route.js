@@ -237,17 +237,22 @@ router.get("/customer-options", (req, res, next) => {
             function MaximumCreditAmount(loyaltypoints) {
                 let maximumcreditamount = 0;
 
-                switch (loyaltypoints) {
-                    case (10 < loyaltypoints < 25):
-                        maximumcreditamount = 2000;
-                        break;
-                    case (25 < loyaltypoints < 50):
-                        break;
-                    default:
-                        maximumcreditamount = 0;
-                }
+                if (loyaltypoints > 50) {
+                    maximumcreditamount = 10000;
+                    return maximumcreditamount.toFixed(2);
 
-                return maximumcreditamount.toFixed(2);
+                } else if (loyaltypoints > 25) {
+                    maximumcreditamount = 5000;
+                    return maximumcreditamount.toFixed(2);
+
+                } else if (loyaltypoints > 10) {
+                    maximumcreditamount = 2000;
+                    return maximumcreditamount.toFixed(2);
+
+                } else {
+                    maximumcreditamount = 0;
+                    return maximumcreditamount.toFixed(2);
+                }
             }
 
             const customeroptions = doc.map(x => ({
@@ -259,7 +264,7 @@ router.get("/customer-options", (req, res, next) => {
                 "title": `${x.storename} (${x.customerid})`,
                 "loyaltypoints": x.loyaltypoints,
                 "creditamounttosettle": x.creditamounttosettle.toFixed(2),
-                'maximumcreditamount': x.creditamounttosettle === 0 ? MaximumCreditAmount(x.loyaltypoints) : 0,
+                'maximumcreditamount': x.creditamounttosettle === 0 ? MaximumCreditAmount(x.loyaltypoints) : '0.00',
                 'eligibilityforcredit': ((x.creditamounttosettle === 0) && (x.loyaltypoints > 10)) ? true : false,
             }))
 
