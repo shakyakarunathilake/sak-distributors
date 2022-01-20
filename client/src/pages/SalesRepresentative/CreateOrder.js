@@ -67,7 +67,7 @@ export default function CreateOrder(props) {
 
     const { addOrEdit, handleClosePopUp, action, customerOptions, productOptions, orderRecords, nextOrderNo } = props;
 
-    const { formState: { isValid, errors }, control, setValue, getValues, reset, clearErrors, trigger, handleSubmit } = useForm({ mode: "all" });
+    const { formState: { isValid, errors }, control, watch, setValue, getValues, reset, clearErrors, trigger, handleSubmit } = useForm({ mode: "all" });
 
     const [data, setData] = useState([]);
     const [total, setTotal] = useState();
@@ -94,42 +94,28 @@ export default function CreateOrder(props) {
             setValue("shippingaddress", orderRecords.shippingaddress);
             setValue("contactnumber", orderRecords.contactnumber);
             setValue("route", orderRecords.route);
-        } else {
-            setValue("customertype", '');
-            setValue("orderno", `${JSON.parse(sessionStorage.getItem("Auth")).employeeid}${nextOrderNo}`);
-            setValue("orderplacedat", dateTime);
-            setValue("deliverydate", deliveryDate);
-            setValue("ordercreatedby", `${JSON.parse(sessionStorage.getItem("Auth")).firstname} ${JSON.parse(sessionStorage.getItem("Auth")).lastname} (${JSON.parse(sessionStorage.getItem("Auth")).employeeid})`);
-            setValue("customer", '');
-            setValue("storename", '');
-            setValue("customerid", '');
-            setValue("shippingaddress", '');
-            setValue("contactnumber", '');
-            setValue("route", '');
         }
+        // else {
+        // setValue("customertype", '');
+        // setValue("orderno", `${JSON.parse(sessionStorage.getItem("Auth")).employeeid}${nextOrderNo}`);
+        // setValue("orderplacedat", dateTime);
+        // setValue("deliverydate", deliveryDate);
+        // setValue("ordercreatedby", `${JSON.parse(sessionStorage.getItem("Auth")).firstname} ${JSON.parse(sessionStorage.getItem("Auth")).lastname} (${JSON.parse(sessionStorage.getItem("Auth")).employeeid})`);
+        // setValue("customer", '');
+        // setValue("storename", '');
+        // setValue("customerid", '');
+        // setValue("shippingaddress", '');
+        // setValue("contactnumber", '');
+        // setValue("route", '');
+        // }
 
     }, [setValue, nextOrderNo, orderRecords, deliveryDate, dateTime])
 
-    const handleReset = () => {
-        reset({
-            orderno: `${JSON.parse(sessionStorage.getItem("Auth")).employeeid}${nextOrderNo}`,
-            orderplacedat: dateTime,
-            deliverydate: deliveryDate,
-            ordercreatedby: `${JSON.parse(sessionStorage.getItem("Auth")).firstname} ${JSON.parse(sessionStorage.getItem("Auth")).lastname} (${JSON.parse(sessionStorage.getItem("Auth")).employeeid})`,
-            customertype: '',
-            customer: '',
-            storename: '',
-            customerid: '',
-            shippingaddress: '',
-            contactnumber: '',
-            route: '',
-        });
-    }
+    const customerTypeWatch = watch('customertype');
 
-    const handleCustomerTypeChange = (event, option) => {
-        setValue("customertype", option.props.value);
-        setCustomerType(option.props.value);
-    }
+    useEffect(() => {
+        setCustomerType(customerTypeWatch);
+    }, [customerTypeWatch, setValue])
 
     const handleCustomerChange = (event, option) => {
         if (option) {
@@ -145,10 +131,16 @@ export default function CreateOrder(props) {
 
     const completeFormStep = () => {
         setFormStep(x => x + 1);
+
+        console.log('FORM STEP: ', formStep);
+        console.log('FORM DATA: ', getValues());
     }
 
     const backFormStep = () => {
         setFormStep(x => x - 1);
+
+        console.log('FORM STEP: ', formStep);
+        console.log('FORM DATA: ', getValues());
     }
 
     const handleFormValidation = () => {
@@ -163,11 +155,27 @@ export default function CreateOrder(props) {
     const getTotal = () => {
         let total = 0;
         for (let i = 0; i < data.length; i++) {
-            total = total + data[i].grossamount;
+            total = total + parseInt(data[i].grossamount);
         }
 
-        setTotal(total)
-        return total;
+        setTotal(total.toFixed(2))
+        return total.toFixed(2);
+    }
+
+    const handleReset = () => {
+        reset({
+            orderno: `${JSON.parse(sessionStorage.getItem("Auth")).employeeid}${nextOrderNo}`,
+            orderplacedat: dateTime,
+            deliverydate: deliveryDate,
+            ordercreatedby: `${JSON.parse(sessionStorage.getItem("Auth")).firstname} ${JSON.parse(sessionStorage.getItem("Auth")).lastname} (${JSON.parse(sessionStorage.getItem("Auth")).employeeid})`,
+            customertype: '',
+            customer: '',
+            storename: '',
+            customerid: '',
+            shippingaddress: '',
+            contactnumber: '',
+            route: '',
+        });
     }
 
     const onSubmit = () => {
@@ -230,20 +238,20 @@ export default function CreateOrder(props) {
                             </div>
                             <div className={style.textfield}>
                                 <Controller
-                                    name={"orderno"}
-                                    control={control}
-                                    rules={{ required: { value: true, message: "Required *" } }}
-                                    render={({ field: { onChange, value } }) => (
+                                    render={({ field }) => (
                                         <TextField
+                                            {...field}
                                             fullWidth={true}
                                             error={errors.orderno ? true : false}
                                             helperText={errors.orderno && errors.orderno.message}
-                                            value={value || ''}
-                                            onChange={onChange}
                                             placeholder="Ex: ON00006211126001"
                                             margin="dense"
                                         />
                                     )}
+                                    control={control}
+                                    name={"orderno"}
+                                    defaultValue={`${JSON.parse(sessionStorage.getItem("Auth")).employeeid}${nextOrderNo}`}
+                                    rules={{ required: { value: true, message: "Required *" } }}
                                 />
                             </div>
                         </div>
@@ -254,19 +262,19 @@ export default function CreateOrder(props) {
                             </div>
                             <div className={style.textfield}>
                                 <Controller
-                                    name={"orderplacedat"}
-                                    control={control}
-                                    rules={{ required: { value: true, message: "Required *" } }}
-                                    render={({ field: { onChange, value } }) => (
+                                    render={({ field }) => (
                                         <DatePicker
-                                            value={value || ''}
-                                            onChange={onChange}
+                                            {...field}
                                             error={errors.orderplacedat ? true : false}
                                             helperText={errors.orderplacedat && errors.orderplacedat.message}
                                             margin="dense"
                                             type="datetime-local"
                                         />
                                     )}
+                                    control={control}
+                                    defaultValue={dateTime}
+                                    name={"orderplacedat"}
+                                    rules={{ required: { value: true, message: "Required *" } }}
                                 />
                             </div>
                         </div>
@@ -277,18 +285,19 @@ export default function CreateOrder(props) {
                             </div>
                             <div className={style.textfield}>
                                 <Controller
-                                    name={"deliverydate"}
-                                    control={control}
-                                    rules={{ required: { value: true, message: "Required *" } }}
-                                    render={({ field: { onChange, value } }) => (
+                                    render={({ field }) => (
                                         <DatePicker
-                                            value={value || ''}
-                                            onChange={onChange}
+                                            {...field}
                                             error={errors.deliverydate ? true : false}
                                             helperText={errors.deliverydate && errors.deliverydate.message}
                                             margin="dense"
                                         />
                                     )}
+                                    control={control}
+                                    name={"deliverydate"}
+                                    defaultValue={deliveryDate}
+                                    rules={{ required: { value: true, message: "Required *" } }}
+
                                 />
                             </div>
                         </div>
@@ -299,20 +308,20 @@ export default function CreateOrder(props) {
                             </div>
                             <div className={style.textfield}>
                                 <Controller
-                                    name={"ordercreatedby"}
-                                    control={control}
-                                    rules={{ required: true, message: "Required *" }}
-                                    render={({ field: { onChange, value } }) => (
+                                    render={({ field }) => (
                                         <TextField
+                                            {...field}
                                             fullWidth={true}
-                                            value={value || ''}
                                             error={errors.ordercreatedby ? true : false}
                                             helperText={errors.ordercreatedby && errors.ordercreatedby.message}
-                                            onChange={onChange}
                                             placeholder="Ex: Buddhika Bandara (E00006)"
                                             margin="dense"
                                         />
                                     )}
+                                    control={control}
+                                    name={"ordercreatedby"}
+                                    defaultValue={`${JSON.parse(sessionStorage.getItem("Auth")).firstname} ${JSON.parse(sessionStorage.getItem("Auth")).lastname} (${JSON.parse(sessionStorage.getItem("Auth")).employeeid})`}
+                                    rules={{ required: true, message: "Required *" }}
                                 />
                             </div>
                         </div>
@@ -323,22 +332,19 @@ export default function CreateOrder(props) {
                             </div>
                             <div className={style.textfield}>
                                 <Controller
-                                    name={"customertype"}
-                                    control={control}
-                                    rules={{ required: { value: true, message: "Required *" } }}
-                                    render={({ field: { onChange, value } }) => (
+                                    render={({ field }) => (
                                         <Select
-                                            value={value || ''}
-                                            onChange={(e, option) => {
-                                                onChange(e, option)
-                                                handleCustomerTypeChange(e, option)
-                                            }}
+                                            {...field}
                                             options={employeeservice.getCustomerTypeOptions()}
                                             error={errors.customertype ? true : false}
                                             helperText={errors.customertype && errors.customertype.message}
                                             size="small"
                                         />
                                     )}
+                                    control={control}
+                                    name={"customertype"}
+                                    defaultValue={''}
+                                    rules={{ required: { value: true, message: "Required *" } }}
                                 />
                             </div>
                         </div>
@@ -351,18 +357,12 @@ export default function CreateOrder(props) {
                                 {customerType === "Registered Customer" ?
                                     <ThemeProvider theme={theme}>
                                         <Controller
-                                            name={"customer"}
-                                            control={control}
-                                            rules={{
-                                                required: { value: true, message: "Required *" }
-                                            }}
-                                            render={({ field: { value } }) => (
+                                            render={({ field }) => (
                                                 <Autocomplete
                                                     options={customerOptions || []}
                                                     fullWidth
                                                     getOptionLabel={(option) => option.title}
                                                     onChange={handleCustomerChange}
-                                                    inputValue={value}
                                                     renderInput={(params) => (
                                                         <MuiTextField
                                                             {...params}
@@ -370,30 +370,35 @@ export default function CreateOrder(props) {
                                                             error={errors.customer ? true : false}
                                                             variant="outlined"
                                                             margin="dense"
-                                                            placeholder="Ex: C000001 - Champika Super Center and Pharmacy"
+                                                            placeholder="Ex: Mini Co-op City (C00001)"
                                                         />
                                                     )}
                                                 />
                                             )}
+                                            control={control}
+                                            name={"customer"}
+                                            defaultValue={''}
+                                            rules={{
+                                                required: { value: true, message: "Required *" }
+                                            }}
                                         />
                                     </ThemeProvider>
-
                                     :
                                     <Controller
-                                        name={"storename"}
-                                        control={control}
-                                        rules={{ required: { value: true, message: "Required *" } }}
-                                        render={({ field: { onChange, value } }) => (
+                                        render={({ field }) => (
                                             <TextField
+                                                {...field}
                                                 fullWidth={true}
-                                                value={value || ''}
-                                                onChange={onChange}
                                                 error={errors.storename ? true : false}
                                                 helperText={errors.storename && errors.storename.message}
-                                                placeholder="Ex: Champika Super Center and Pharmacy"
+                                                placeholder="Ex: Mini Co-op City"
                                                 margin="dense"
                                             />
                                         )}
+                                        control={control}
+                                        name={"storename"}
+                                        defaultValue={''}
+                                        rules={{ required: { value: true, message: "Required *" } }}
                                     />
 
                                 }
@@ -406,20 +411,20 @@ export default function CreateOrder(props) {
                             </div>
                             <div className={style.textfield}>
                                 <Controller
-                                    name={"shippingaddress"}
-                                    control={control}
-                                    rules={{ required: { value: true, message: "Required *" } }}
-                                    render={({ field: { onChange, value } }) => (
+                                    render={({ field }) => (
                                         <TextField
+                                            {...field}
                                             fullWidth={true}
-                                            value={value || ''}
-                                            onChange={onChange}
                                             error={errors.shippingaddress ? true : false}
                                             helperText={errors.shippingaddress && errors.shippingaddress.message}
-                                            placeholder="Ex: Rambukkana-Katupitiya Rd, Rambukkana"
+                                            placeholder="Ex: 8CG3+XJF, Rambukkana"
                                             margin="dense"
                                         />
                                     )}
+                                    control={control}
+                                    name={"shippingaddress"}
+                                    defaultValue={''}
+                                    rules={{ required: { value: true, message: "Required *" } }}
                                 />
                             </div>
                         </div>
@@ -430,23 +435,23 @@ export default function CreateOrder(props) {
                             </div>
                             <div className={style.textfield}>
                                 <Controller
-                                    name={"contactnumber"}
+                                    render={({ field }) => (
+                                        <TextField
+                                            {...field}
+                                            fullWidth={true}
+                                            error={errors.contactnumber ? true : false}
+                                            helperText={errors.contactnumber && errors.contactnumber.message}
+                                            placeholder="Ex: 0763156983"
+                                            margin="dense"
+                                        />
+                                    )}
                                     control={control}
+                                    name={"contactnumber"}
+                                    defaultValue={''}
                                     rules={{
                                         required: { value: true, message: "Required *" },
                                         pattern: { value: /^[0-9]{10}$/, message: "Invalid" }
                                     }}
-                                    render={({ field: { onChange, value } }) => (
-                                        <TextField
-                                            fullWidth={true}
-                                            value={value || ''}
-                                            onChange={onChange}
-                                            error={errors.contactnumber ? true : false}
-                                            helperText={errors.contactnumber && errors.contactnumber.message}
-                                            placeholder="Ex: 0352264589"
-                                            margin="dense"
-                                        />
-                                    )}
                                 />
                             </div>
                         </div>
@@ -457,19 +462,19 @@ export default function CreateOrder(props) {
                             </div>
                             <div className={style.textfield}>
                                 <Controller
-                                    name={"route"}
-                                    control={control}
-                                    rules={{ required: { value: true, message: "Required *" } }}
-                                    render={({ field: { onChange, value } }) => (
+                                    render={({ field }) => (
                                         <Select
-                                            value={value || ''}
-                                            onChange={onChange}
+                                            {...field}
                                             options={employeeservice.getRouteOptions()}
                                             error={errors.route ? true : false}
                                             helperText={errors.route && errors.route.message}
                                             size="small"
                                         />
                                     )}
+                                    control={control}
+                                    name={"route"}
+                                    defaultValue={''}
+                                    rules={{ required: { value: true, message: "Required *" } }}
                                 />
                             </div>
                         </div>
@@ -481,6 +486,7 @@ export default function CreateOrder(props) {
 
                         <div className={style.resetBtn}>
                             <Button
+                                disabled={data.length != 0}
                                 variant="contained"
                                 onClick={handleReset}
                             >

@@ -576,7 +576,7 @@ export default function StepThree(props) {
 
             <div className={style.footer}>
 
-                <div className={action === "Create" ? style.hideBackBtn : style.backBtn}>
+                <div className={style.backBtn}>
                     <Button
                         variant="contained"
                         onClick={backFormStep}
