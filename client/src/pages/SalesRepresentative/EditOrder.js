@@ -21,7 +21,6 @@ export default function CreateOrder(props) {
     const [formStep, setFormStep] = useState(0);
 
     useEffect(() => {
-
         if (orderRecords !== null) {
             setValue("customertype", orderRecords.customertype);
             setValue("orderno", orderRecords.orderno);
@@ -33,26 +32,32 @@ export default function CreateOrder(props) {
             setValue("shippingaddress", orderRecords.shippingaddress);
             setValue("contactnumber", orderRecords.contactnumber);
             setValue("route", orderRecords.route);
+            setData(orderRecords.items);
         }
-
-    }, [setValue, orderRecords])
+    }, [setData, setValue, orderRecords])
 
     const completeFormStep = () => {
         setFormStep(x => x + 1);
+
+        console.log('FORM STEP: ', formStep);
+        console.log('DATA: ', data);
     }
 
     const backFormStep = () => {
         setFormStep(x => x - 1);
+
+        console.log('FORM STEP: ', formStep);
+        console.log('DATA: ', data);
     }
 
     const getTotal = () => {
         let total = 0;
         for (let i = 0; i < data.length; i++) {
-            total = total + data[i].grossamount;
+            total = total + parseInt(data[i].grossamount);
         }
 
-        setTotal(total)
-        return total;
+        setTotal(total.toFixed(2))
+        return total.toFixed(2);
     }
 
     const onSubmit = () => {

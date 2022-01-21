@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 
 //Material UI Components
@@ -60,7 +60,6 @@ export default function StepThree(props) {
         formStep,
         data,
         setData,
-        orderRecords,
         handleClosePopUp,
         productOptions,
         backFormStep,
@@ -70,12 +69,6 @@ export default function StepThree(props) {
 
     const classes = useStyles();
     const addActionRef = useRef();
-
-    useEffect(() => {
-        if (orderRecords != null) {
-            setData(orderRecords.items);
-        }
-    }, [orderRecords, setData]);
 
     const getProductItemList = useMemo(() => {
         const selectedDescriptions = data.map(x => x.description);
