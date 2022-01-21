@@ -1,0 +1,84 @@
+@import "../../styles/variables";
+
+.one {
+    width: calc(100vw - 50px);
+    height: calc(100vh - 20px);
+    display: grid;
+    grid-template-rows: min-content auto min-content;
+    box-sizing: border-box;
+
+    .header {
+        .title {
+            display: grid;
+            grid-template-columns: auto min-content;
+            font-size: 1.55em;
+            font-weight: 600;
+            .icon {
+                color: red;
+                &:hover {
+                    transform: scale(1.1);
+                }
+            }
+        }
+
+        .step {
+            margin: 5px 0 0 0;
+            color: $primaryLight;
+            font-size: 0.75em;
+        }
+    }
+
+    .body {
+        margin: auto 10vh;
+
+        .redFont {
+            color: red;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 250px auto;
+            margin: 8px 0 0 0;
+
+            .label {
+                margin: auto 20px auto 0;
+                font-size: 1em;
+                font-weight: 600;
+            }
+        }
+    }
+
+    .footer {
+        display: grid;
+        grid-template-columns: auto auto;
+        padding: 20px 0px 10px 0px;
+
+        .resetBtn {
+            Button {
+                font-size: 1em;
+                padding: $formButtonPadding2;
+                background-color: #aca9bb;
+                color: $inverseFontColor;
+
+                &:disabled {
+                    background-color: #c2c2c2;
+                    color: $inverseFontColor;
+                }
+            }
+        }
+
+        .nextBtn {
+            text-align: right;
+
+            Button {
+                font-size: 1em;
+                padding: $formButtonPadding2;
+
+                &:disabled {
+                    background-color: hsl(230, 66%, 57%);
+                    color: $inverseFontColor;
+                }
+            }
+        }
+    }
+}
