@@ -124,7 +124,7 @@ export default function GINStepOne(props) {
             setOrderNumbers([...GINRecords.ordernumbers]);
             setValue('incharge', GINRecords.incharge);
         }
-    }, [setData, GINRecords, setValue])
+    }, [setData, GINRecords, setValue, setOrderNumbers])
 
     useEffect(() => {
         if (GINRecords === null) {

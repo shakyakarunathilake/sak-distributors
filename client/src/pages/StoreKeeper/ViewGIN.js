@@ -25,7 +25,7 @@ export default function ViewGIN(props) {
             setData([...GINRecords.items]);
             setOrderNumbers([...GINRecords.ordernumbers]);
         }
-    }, [setValue, setData, setOrderNumbers])
+    }, [setValue, setData, setOrderNumbers, GINRecords])
 
     const onSubmit = () => {
         handleClosePopUp()
