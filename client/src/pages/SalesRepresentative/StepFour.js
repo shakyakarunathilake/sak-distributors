@@ -52,7 +52,7 @@ const useStyles = makeStyles({
 
 export default function StepFour(props) {
 
-    const { action, formStep, handleClosePopUp, data, backFormStep, onSubmit, total } = props;
+    const { action, formStep, handleClosePopUp, data, backFormStep, completeFormStep, total } = props;
 
     const classes = useStyles();
 
@@ -304,7 +304,7 @@ export default function StepFour(props) {
                 <div className={style.submitBtn}>
 
                     <Button
-                        onClick={() => onSubmit()}
+                        onClick={completeFormStep}
                         color="primary"
                         variant="contained"
                     >

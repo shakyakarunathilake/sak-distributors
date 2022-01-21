@@ -17,6 +17,8 @@ const customerSchema = mongoose.Schema({
     shippingaddress: { type: String, required: true },
     email: { type: String, required: false },
     registeredby: { type: String, required: true },
+    creditamounttosettle: { type: Number, required: false },
+    loyaltypoints: { type: Number, required: false }
 })
 
 module.exports = mongoose.model('Customer', customerSchema);
