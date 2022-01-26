@@ -49,7 +49,7 @@ export default function ViewOrder(props) {
             setValue("currentinvoicecreditamount", orderRecords.currentinvoicecreditamount);
 
             setTotal(orderRecords.total);
-            setAdvancePayment((total / 100) * 50);
+            setAdvancePayment(((orderRecords.total / 100) * 50).toFixed(2));
             setData(orderRecords.items);
             setCustomerType(orderRecords.customertype);
         }
