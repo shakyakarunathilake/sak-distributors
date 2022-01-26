@@ -13,8 +13,6 @@ const orderSchema = mongoose.Schema({
     ordercreatedby: { type: String, required: true },
     shippingaddress: { type: String, required: true },
     items: { type: Array, required: true },
-    total: { type: String, required: true },
-    currentinvoicecreditamount: { type: String, required: true },
     deliveredby: { type: String, required: false },
     deliveredat: { type: String, required: false },
     status: { type: String, required: true },
@@ -22,6 +20,8 @@ const orderSchema = mongoose.Schema({
     eligibilityforcredit: { type: Boolean, required: true },
     maximumcreditamount: { type: String, required: true },
     creditamounttosettle: { type: String, required: true },
+    currentinvoicecreditamount: { type: String, required: true },
+    total: { type: String, required: true },
 })
 
 module.exports = mongoose.model('Order', orderSchema);
