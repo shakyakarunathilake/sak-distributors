@@ -46,7 +46,6 @@ export default function StepFive(props) {
 
     const [open, setOpen] = useState(false);
 
-
     const handleTooltipClose = () => {
         setOpen(false);
     };
@@ -57,21 +56,32 @@ export default function StepFive(props) {
 
     const calculatePayments = () => {
         let creditamounttosettle = getValues('creditamounttosettle');
-        let currentinvoicecreditamount = getValues('currentinvoicecreditamount');
+        let currentinvoicecreditamount = parseInt(getValues('currentinvoicecreditamount'));
+        let minimumpayment = 0.00;
+        let invoicesettlementvalue = 0.00;
 
-        if (creditamounttosettle === '0.00' && currentinvoicecreditamount === '0.00') {
-            setMinimumPayment(advancePayment);
-            setInvoiceSettlementValue(total);
+        if (creditamounttosettle === '0.00' && currentinvoicecreditamount === 0) {
+            minimumpayment = parseInt(advancePayment);
+            invoicesettlementvalue = parseInt(total);
+
+            setMinimumPayment(minimumpayment.toFixed(2));
+            setInvoiceSettlementValue(invoicesettlementvalue.toFixed(2));
         }
 
-        if (creditamounttosettle !== '0.00' && currentinvoicecreditamount === '0.00') {
-            setMinimumPayment(advancePayment + parseInt(creditamounttosettle));
-            setInvoiceSettlementValue(total + parseInt(creditamounttosettle));
+        if (creditamounttosettle !== '0.00' && currentinvoicecreditamount === 0) {
+            minimumpayment = parseInt(advancePayment) + parseInt(creditamounttosettle);
+            invoicesettlementvalue = parseInt(total) + parseInt(creditamounttosettle);
+
+            setMinimumPayment(minimumpayment.toFixed(2));
+            setInvoiceSettlementValue(invoicesettlementvalue.toFixed(2));
         };
 
-        if (creditamounttosettle === '0.00' && currentinvoicecreditamount !== '0.00') {
-            setMinimumPayment((parseInt(advancePayment) - parseInt(currentinvoicecreditamount)).toFixed(2));
-            setInvoiceSettlementValue(total);
+        if (creditamounttosettle === '0.00' && currentinvoicecreditamount !== 0) {
+            minimumpayment = parseInt(advancePayment) - parseInt(currentinvoicecreditamount);
+            invoicesettlementvalue = parseInt(total);
+
+            setMinimumPayment(minimumpayment.toFixed(2));
+            setInvoiceSettlementValue(invoicesettlementvalue.toFixed(2));
         };
     }
 
@@ -202,7 +212,6 @@ export default function StepFive(props) {
 
                     {
                         action !== "View" &&
-                        getValues('maximumcreditamount') !== 0 &&
                         <div className={style.row}>
                             <div className={style.boldText}>
                                 Current Invoice Credit Amount  <span className={style.redFont}>*</span>
@@ -212,6 +221,8 @@ export default function StepFive(props) {
                                     render={({ field }) => (
                                         <TextField
                                             {...field}
+                                            focused={getValues('maximumcreditamount') !== '0.00'}
+                                            disabled={getValues('maximumcreditamount') === '0.00'}
                                             type="number"
                                             error={errors.currentinvoicecreditamount ? true : false}
                                             helperText={errors.currentinvoicecreditamount && errors.currentinvoicecreditamount.message}
@@ -237,6 +248,7 @@ export default function StepFive(props) {
                                 <CalculateIcon
                                     className={style.icon}
                                     onClick={() => calculatePayments()}
+                                    disabled={getValues('maximumcreditamount') === '0.00'}
                                 />
                             </div>
                         </div>
