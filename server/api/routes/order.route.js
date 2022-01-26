@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const multer = require("multer");
 
 const Order = require("../models/order.model");
+const Customer = require("../models/customer.model");
 const MetaData = require("../models/metadata.model");
 
 const formDataBody = multer();
@@ -66,7 +67,7 @@ router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
     const order = new Order({
         _id: new mongoose.Types.ObjectId(),
         contactnumber: req.body.contactnumber,
-        customerid: req.body.customerid,
+        customerid: req.body.customerid ? req.body.customerid : '',
         customertype: req.body.customertype,
         deliverydate: req.body.deliverydate,
         deliveredby: '',
@@ -79,14 +80,17 @@ router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
         storename: req.body.storename,
         items: items,
         total: req.body.total,
+        currentinvoicecreditamount: req.body.currentinvoicecreditamount,
+        loyaltypoints: req.body.loyaltypoints,
+        eligibilityforcredit: req.body.eligibilityforcredit,
+        maximumcreditamount: req.body.maximumcreditamount,
         status: 'Pending',
+        creditamounttosettle: req.body.creditamounttosettle
     });
 
     order
         .save()
         .then(result => {
-
-            console.log("ORDER ADDED: ", result)
 
             MetaData
                 .findOneAndUpdate(
@@ -115,6 +119,33 @@ router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
                         alert: error,
                     });
                 })
+
+            return result;
+        })
+        .then(result => {
+
+            if (result.customertype === "Registered Customer" && result.currentinvoicecreditamount !== 0.00) {
+
+                Customer
+                    .findOneAndUpdate(
+                        { customerid: result.customerid },
+                        { 'creditamounttosettle': result.currentinvoicecreditamount },
+                        { new: true }
+                    )
+                    .exec()
+                    .then(result => {
+                        console.log("CUSTOMER UPDATED: ", result)
+                    })
+                    .catch(error => {
+
+                        console.log("CUSTOMER ERROR: ", error)
+
+                        res.status(200).json({
+                            type: 'error',
+                            alert: error,
+                        });
+                    });
+            }
 
             return result;
         })
@@ -148,17 +179,44 @@ router.post("/update-by-id/:orderno", formDataBody.fields([]), (req, res, next) 
             { orderno: req.params.orderno },
             {
                 'items': items,
+                'currentinvoicecreditamount': req.body.currentinvoicecreditamount,
                 'total': req.body.total,
-
             },
             { new: true }
         )
         .exec()
-        .then(doc => {
+        .then(result => {
+
+            if (result.customertype === "Registered Customer" && result.currentinvoicecreditamount !== 0.00) {
+
+                Customer
+                    .findOneAndUpdate(
+                        { customerid: result.customerid },
+                        { 'creditamounttosettle': result.currentinvoicecreditamount },
+                        { new: true }
+                    )
+                    .exec()
+                    .then(result => {
+                        console.log("CUSTOMER UPDATED: ", result)
+                    })
+                    .catch(error => {
+
+                        console.log("CUSTOMER ERROR: ", error)
+
+                        res.status(200).json({
+                            type: 'error',
+                            alert: error,
+                        });
+                    });
+            }
+
+            return result;
+        })
+        .then(result => {
             res.status(200).json({
                 message: "Handling POST requests to /orders/update-by-orderno/:orderno, ORDER UPDATED",
                 type: 'success',
-                alert: `${doc.orderno} updated`,
+                alert: `${result.orderno} updated`,
             });
         })
         .catch(err => {
@@ -332,6 +390,11 @@ router.get("/:orderno", (req, res, next) => {
                 'items': doc.items,
                 'total': doc.total,
                 'status': doc.status,
+                'currentinvoicecreditamount': doc.currentinvoicecreditamount,
+                'loyaltypoints': doc.loyaltypoints,
+                'eligibilityforcredit': doc.eligibilityforcredit,
+                'maximumcreditamount': doc.maximumcreditamount,
+                'creditamounttosettle': doc.creditamounttosettle
             }
 
             res.status(200).json({
