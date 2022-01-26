@@ -45,16 +45,10 @@ export default function CreateOrder(props) {
 
     const completeFormStep = () => {
         setFormStep(x => x + 1);
-
-        console.log('FORM STEP: ', formStep);
-        console.log('FORM DATA: ', getValues());
     }
 
     const backFormStep = () => {
         setFormStep(x => x - 1);
-
-        console.log('FORM STEP: ', formStep);
-        console.log('FORM DATA: ', getValues());
     }
 
     const getTotal = () => {
