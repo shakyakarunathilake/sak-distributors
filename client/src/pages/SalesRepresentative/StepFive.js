@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Controller, get } from 'react-hook-form';
+import React, { useEffect, useState } from 'react';
+import { Controller } from 'react-hook-form';
 
 //Material UI Components
 import { Button } from '@material-ui/core';
@@ -33,10 +33,19 @@ export default function StepFive(props) {
         errors,
         control,
         getValues,
-        backFormStep
+        backFormStep,
+        minimumPayment,
+        setMinimumPayment,
+        invoiceSettlementValue,
+        setInvoiceSettlementValue,
     } = props;
 
-    const [open, setOpen] = React.useState(false);
+    useEffect(() => {
+        calculatePayments();
+    }, [])
+
+    const [open, setOpen] = useState(false);
+
 
     const handleTooltipClose = () => {
         setOpen(false);
@@ -46,30 +55,24 @@ export default function StepFive(props) {
         setOpen(true);
     };
 
-    const getMinimumPayment = () => {
-        let minimumpayment = 0;
+    const calculatePayments = () => {
         let creditamounttosettle = getValues('creditamounttosettle');
+        let currentinvoicecreditamount = getValues('currentinvoicecreditamount');
 
-        if (creditamounttosettle = '0.00') {
-            minimumpayment = advancePayment;
-        } else {
-            minimumpayment = advancePayment + creditamounttosettle;
+        if (creditamounttosettle === '0.00' && currentinvoicecreditamount === '0.00') {
+            setMinimumPayment(advancePayment);
+            setInvoiceSettlementValue(total);
+        }
+
+        if (creditamounttosettle !== '0.00' && currentinvoicecreditamount === '0.00') {
+            setMinimumPayment(advancePayment + parseInt(creditamounttosettle));
+            setInvoiceSettlementValue(total + parseInt(creditamounttosettle));
         };
 
-        return minimumpayment;
-    }
-
-    const getInvoiceSettlementValue = () => {
-        let invoicesettlementvalue = 0;
-        let creditamounttosettle = getValues('creditamounttosettle');
-
-        if (creditamounttosettle = '0.00') {
-            invoicesettlementvalue = total;
-        } else {
-            invoicesettlementvalue = total + creditamounttosettle;
+        if (creditamounttosettle === '0.00' && currentinvoicecreditamount !== '0.00') {
+            setMinimumPayment((parseInt(advancePayment) - parseInt(currentinvoicecreditamount)).toFixed(2));
+            setInvoiceSettlementValue(total);
         };
-
-        return invoicesettlementvalue;
     }
 
     return (
@@ -183,11 +186,11 @@ export default function StepFive(props) {
                             </div>
                             <div className={style.customerData}>
                                 <Controller
-                                    name={"orderno"}
+                                    name={"currentinvoicecreditamount"}
                                     control={control}
                                     render={({ field: { value } }) => (
                                         <Typography className={style.input}>
-                                            {value}
+                                            Rs. {value}
                                         </Typography>
                                     )}
                                 />
@@ -198,8 +201,8 @@ export default function StepFive(props) {
 
 
                     {
-                        action != "View" &&
-                        getValues('maximumcreditamount') != 0 &&
+                        action !== "View" &&
+                        getValues('maximumcreditamount') !== 0 &&
                         <div className={style.row}>
                             <div className={style.boldText}>
                                 Current Invoice Credit Amount  <span className={style.redFont}>*</span>
@@ -225,7 +228,7 @@ export default function StepFive(props) {
                                     )}
                                     control={control}
                                     name={"currentinvoicecreditamount"}
-                                    defaultValue={0}
+                                    defaultValue={0.00}
                                     rules={
                                         { required: true, message: "Required *" },
                                         { pattern: { value: /^[0-9]+\.[0-9]{2}$/, message: "Invalid" } }
@@ -233,7 +236,7 @@ export default function StepFive(props) {
                                 />
                                 <CalculateIcon
                                     className={style.icon}
-                                // onClick={ }
+                                    onClick={() => calculatePayments()}
                                 />
                             </div>
                         </div>
@@ -248,7 +251,7 @@ export default function StepFive(props) {
                             Minimum Payment
                         </div>
                         <div className={style.customerData}>
-                            Rs. {getMinimumPayment()}
+                            Rs. {minimumPayment}
                         </div>
                     </div>
 
@@ -257,7 +260,7 @@ export default function StepFive(props) {
                             Invoice Settlement Value
                         </div>
                         <div className={style.customerData}>
-                            Rs. {getInvoiceSettlementValue()}
+                            Rs. {invoiceSettlementValue}
                         </div>
                     </div>
 
@@ -283,8 +286,8 @@ export default function StepFive(props) {
                 <div className={style.submitBtn}>
 
                     {
-                        action != "View" &&
-                        getValues('maximumcreditamount') != 0 &&
+                        action !== "View" &&
+                        getValues('maximumcreditamount') !== 0 &&
                         <ClickAwayListener onClickAway={handleTooltipClose}>
                             <Tooltip
                                 PopperProps={{
@@ -304,7 +307,6 @@ export default function StepFive(props) {
                     }
 
                     <Button
-                        // disabled={getValues('currentinvoicecreditamount') == ''}
                         color="primary"
                         variant="contained"
                         onClick={() => onSubmit()}
