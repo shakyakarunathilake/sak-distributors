@@ -198,7 +198,6 @@ export default function CreateOrder(props) {
                         invoiceSettlementValue={invoiceSettlementValue}
                         setInvoiceSettlementValue={setInvoiceSettlementValue}
                         isValid={isValid}
-                        dirtyFields={dirtyFields}
                     />
                 </section>
             }
