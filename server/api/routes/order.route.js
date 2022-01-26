@@ -80,7 +80,7 @@ router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
         storename: req.body.storename,
         items: items,
         total: req.body.total,
-        currentinvoicecreditamount: req.body.currentinvoicecreditamount,
+        currentinvoicecreditamount: req.body.currentinvoicecreditamount === '0' ? '0.00' : req.body.currentinvoicecreditamount,
         loyaltypoints: req.body.loyaltypoints,
         eligibilityforcredit: req.body.eligibilityforcredit,
         maximumcreditamount: req.body.maximumcreditamount,
