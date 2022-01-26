@@ -150,7 +150,7 @@ export default function StepOne(props) {
                 </div>
 
                 <div className={style.step}>
-                    Step 1 of 4
+                    Step 1 of 5
                 </div>
 
             </div>
