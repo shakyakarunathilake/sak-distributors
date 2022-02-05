@@ -246,6 +246,9 @@ export default function ManageGIN() {
                                                     width: '3%',
                                                     textAlign: 'left'
                                                 },
+                                                render: rowData => {
+                                                    return rowData.tableData.id + 1
+                                                }
                                             },
                                             {
                                                 title: "GIN",
