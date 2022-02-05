@@ -97,14 +97,14 @@ export default function StepThree(props) {
                 {
                     action === "Create" && formStep === 2 &&
                     <div className={style.step}>
-                        Step 3 of 4
+                        Step 3 of 5
                     </div>
                 }
 
                 {
                     action === "Edit" && formStep === 1 &&
                     <div className={style.step}>
-                        Step 2 of 3
+                        Step 2 of 4
                     </div>
                 }
 

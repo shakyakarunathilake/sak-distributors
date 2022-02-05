@@ -75,21 +75,21 @@ export default function StepFour(props) {
                 {
                     action === "Create" && formStep === 3 &&
                     <div className={style.step}>
-                        Step 4 of 4
+                        Step 4 of 5
                     </div>
                 }
 
                 {
                     action === "Edit" && formStep === 2 &&
                     <div className={style.step}>
-                        Step 3 of 3
+                        Step 3 of 4
                     </div>
                 }
 
                 {
                     action === "View" && formStep === 1 &&
                     <div className={style.step}>
-                        Step 2 of 2
+                        Step 2 of 3
                     </div>
                 }
 
@@ -308,7 +308,7 @@ export default function StepFour(props) {
                         color="primary"
                         variant="contained"
                     >
-                        {action === 'View' ? 'Done' : 'Confirm and Submit'}
+                        {action === 'View' ? 'Next' : 'Confirm'}
                     </Button>
 
                 </div>

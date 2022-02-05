@@ -40,19 +40,15 @@ export default function CreateOrder(props) {
     const [advancePayment, setAdvancePayment] = useState();
     const [formStep, setFormStep] = useState(0);
     const [customerType, setCustomerType] = useState('');
+    const [minimumPayment, setMinimumPayment] = useState();
+    const [invoiceSettlementValue, setInvoiceSettlementValue] = useState();
 
     const completeFormStep = () => {
         setFormStep(x => x + 1);
-
-        console.log('FORM STEP: ', formStep);
-        console.log('FORM DATA: ', getValues());
     }
 
     const backFormStep = () => {
         setFormStep(x => x - 1);
-
-        console.log('FORM STEP: ', formStep);
-        console.log('FORM DATA: ', getValues());
     }
 
     const getTotal = () => {
@@ -87,6 +83,11 @@ export default function CreateOrder(props) {
         customerOrderFormData.append('shippingaddress', getValues('shippingaddress'));
         customerOrderFormData.append('items', JSON.stringify(data));
         customerOrderFormData.append('total', total);
+        customerOrderFormData.append('creditamounttosettle', getValues('creditamounttosettle'));
+        customerOrderFormData.append('loyaltypoints', getValues('loyaltypoints'));
+        customerOrderFormData.append('eligibilityforcredit', getValues('eligibilityforcredit'));
+        customerOrderFormData.append('maximumcreditamount', getValues('maximumcreditamount'));
+        customerOrderFormData.append('currentinvoicecreditamount', getValues('currentinvoicecreditamount'));
 
         addOrEdit(customerOrderFormData, getValues('orderno'));
     }
@@ -186,6 +187,11 @@ export default function CreateOrder(props) {
                         getValues={getValues}
                         backFormStep={backFormStep}
                         advancePayment={advancePayment}
+                        minimumPayment={minimumPayment}
+                        setMinimumPayment={setMinimumPayment}
+                        invoiceSettlementValue={invoiceSettlementValue}
+                        setInvoiceSettlementValue={setInvoiceSettlementValue}
+                        isValid={isValid}
                     />
                 </section>
             }
