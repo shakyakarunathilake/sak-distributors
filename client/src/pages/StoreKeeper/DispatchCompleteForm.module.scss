@@ -27,6 +27,13 @@
             font-weight: 600;
             color: $primaryMain;
         }
+
+        .fields {
+            display: grid;
+            grid-template-rows: min-content min-content;
+            grid-row-gap: 10px;
+            padding: 20px 10px;
+        }
     }
 
     .footer {

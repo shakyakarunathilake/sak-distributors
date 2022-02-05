@@ -32,7 +32,9 @@ export default function ViewGIN(props) {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} >
+        <form
+            onSubmit={handleSubmit(onSubmit)}
+        >
 
             <GINStepTwo
                 onSubmit={onSubmit}

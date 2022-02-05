@@ -3,10 +3,11 @@
 .container {
     display: grid;
     grid-template-rows: min-content auto min-content;
-    width: 80vw;
-    height: max-content;
+    width: calc(100vw - 50px);
+    height: calc(100vh - 25px);
     box-sizing: border-box;
-
+    overflow: hidden;
+    
     .header {
         .title {
             display: grid;
@@ -20,17 +21,18 @@
                 }
             }
         }
-
+        
         .step {
             margin: 5px 0 0 0;
             color: $primaryLight;
             font-size: 0.75em;
         }
     }
-
+    
     .body {
         display: grid;
         grid-template-rows: min-content min-content;
+        height: calc(100vh - 316px);
 
         .orderDetails {
             display: grid;
@@ -68,7 +70,7 @@
 
                         div {
                             width: 100%;
-                            height: 188.56px;
+                            height: 107.28px;
                             margin: 0;
                             padding: 0;
                             overflow: auto;

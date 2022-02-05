@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { Controller } from 'react-hook-form';
+import AutoSizer from 'react-virtualized-auto-sizer';
 
 //Development Stage
 import * as employeeservice from "../../services/employeeService";
 
 //Shared Components
-import TextField from '../../shared/TextField/TextField';
 import Select from '../../shared/Select/Select';
 
 //Material UI 
@@ -18,9 +18,7 @@ import {
     Button,
     Grid,
     Typography,
-    TextField as MuiTextField
 } from '@material-ui/core';
-import Autocomplete from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
 import Tooltip from '@mui/material/Tooltip';
 
@@ -33,38 +31,7 @@ import MaterialTable from 'material-table';
 
 //Styles
 import style from './GINStepOne.module.scss';
-import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import { makeStyles } from '@material-ui/core/styles';
-
-const theme = createTheme({
-    overrides: {
-        MuiInputBase: {
-            root: {
-                fontSize: '0.9em',
-                fontFamily: 'Roboto, Poppins, sans-serif',
-            }
-        },
-        MuiFormHelperText: {
-            root: {
-                fontSize: '0.64em',
-                fontFamily: 'Roboto, Poppins, sans-serif',
-            }
-        },
-        MuiOutlinedInput: {
-            inputMarginDense: {
-                paddingTop: "10px",
-                paddingBottom: "10px"
-            }
-        },
-        MuiAutocomplete: {
-            inputRoot: {
-                '&&[class*="MuiOutlinedInput-root"] $input': {
-                    padding: 1
-                }
-            }
-        },
-    }
-});
 
 const useStyles = makeStyles({
     tablehead: {
@@ -105,7 +72,6 @@ export default function GINStepOne(props) {
         completeFormStep,
         orderRecords,
         GINRecords,
-        inChargeOptions,
         orderNumbers,
         setOrderNumbers,
         action,
@@ -122,7 +88,7 @@ export default function GINStepOne(props) {
         if (GINRecords !== null) {
             setData([...GINRecords.items]);
             setOrderNumbers([...GINRecords.ordernumbers]);
-            setValue('incharge', GINRecords.incharge);
+            // setValue('incharge', GINRecords.incharge);
         }
     }, [setData, GINRecords, setValue, setOrderNumbers])
 
@@ -131,12 +97,6 @@ export default function GINStepOne(props) {
             getOrderNumbers();
         }
     }, [watch('route'), GINRecords]);
-
-    const handleInChargeChange = (event, option) => {
-        if (option) {
-            setValue("incharge", option.title);
-        }
-    }
 
     const handleChipClick = () => { }
 
@@ -213,7 +173,8 @@ export default function GINStepOne(props) {
         let total = 0;
 
         for (let i = 0; i < data.length; i++) {
-            total = total + (isNaN(data[i].grossamount) ? 0 : data[i].grossamount);
+            total = total + parseInt(data[i].grossamount);
+            total = total.toFixed(2);
         }
 
         setValue("total", total);
@@ -316,7 +277,7 @@ export default function GINStepOne(props) {
                                 </td>
                             </tr>
 
-                            <tr>
+                            {/* <tr>
                                 <th align="left">
                                     In Charge <span className={style.red}>*</span>
                                 </th>
@@ -375,15 +336,15 @@ export default function GINStepOne(props) {
                                         )}
                                     />
                                 </td>
-                            </tr>
+                            </tr> */}
                         </tbody>
                     </table>
 
                     <table className={style.details}>
                         <tbody>
                             <tr>
-                                <th rowSpan={5} className={style.thAlign}>Order Numbers</th>
-                                <td rowSpan={5} className={style.tdAlign}>
+                                <th rowSpan={3} className={style.thAlign}>Order Numbers</th>
+                                <td rowSpan={3} className={style.tdAlign}>
                                     <div>
                                         {
                                             orderNumbers.map(x =>
@@ -398,146 +359,154 @@ export default function GINStepOne(props) {
 
                 </div>
 
-                <MaterialTable
-                    components={{
-                        Container: props => <Paper {...props} elevation={1} />,
-                        Pagination: props => (
-                            <td style={{
-                                display: "flex",
-                                flexDirection: "column",
-                            }} >
-                                <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
-                                    <Grid item align="Right" style={{ margin: "0px 220px 0px auto" }}>
-                                        <Typography style={{ fontWeight: 600 }}> Total (Rs.) </Typography>
-                                    </Grid>
-                                    <Grid item align="Right" style={{ margin: "0px 20px 0px 0px" }}>
-                                        <Typography style={{ fontWeight: 600 }}> {getTotal()} </Typography>
-                                    </Grid>
-                                </Grid>
-                                <TablePagination {...props} />
-                            </td>
-                        ),
-                        Header: props => (
-                            <TableHead {...props} className={classes.tablehead} >
-                                <TableRow className={classes.row1}>
-                                    <TableCell width="42%" padding="none" rowSpan={2}>
-                                        <div style={{ padding: '0 10px' }}>
-                                            Description
-                                        </div>
-                                    </TableCell>
-                                    <TableCell width="8%" padding="none" rowSpan={2} align="center">
-                                        <div style={{ padding: '0 10px' }}>
-                                            Selling Price (Rs.)
-                                        </div>
-                                    </TableCell>
-                                    <TableCell width="8%" padding="none" rowSpan={2} align="center">
-                                        <div style={{ padding: '0 10px' }}>
-                                            Pieces per Case
-                                        </div>
-                                    </TableCell>
-                                    <TableCell padding="none" colSpan={2} align="center">
-                                        Sales Qty.
-                                    </TableCell>
-                                    <TableCell padding="none" colSpan={2} align="center">
-                                        Free Qty.
-                                    </TableCell>
-                                    <TableCell padding="none" width="10%" rowSpan={2} align="center">
-                                        <div style={{ padding: '0 10px' }}>
-                                            Gross Amount (Rs.)
-                                        </div>
-                                    </TableCell>
-                                </TableRow>
-                                <TableRow className={classes.row2}>
-                                    <TableCell width="8%" padding="none" align="center">Cs</TableCell>
-                                    <TableCell width="8%" padding="none" align="center">Pcs</TableCell>
-                                    <TableCell width="8%" padding="none" align="center">Cs</TableCell>
-                                    <TableCell width="8%" padding="none" align="center">Pcs</TableCell>
-                                </TableRow>
-                            </TableHead>
-                        ),
+                <AutoSizer>
+                    {({ height, width }) => {
+                        const pageSize = Math.floor((height - 199.27) / 48);
+                        return (
+                            <div style={{ height: `${height}px`, width: `${width}px` }}>
+
+                                <MaterialTable
+                                    components={{
+                                        Container: props => <Paper {...props} elevation={1} />,
+                                        Pagination: props => (
+                                            <td style={{
+                                                display: "flex",
+                                                flexDirection: "column",
+                                            }} >
+                                                <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
+                                                    <Grid item align="Right" style={{ margin: "0px 220px 0px auto" }}>
+                                                        <Typography style={{ fontWeight: 600 }}> Total (Rs.) </Typography>
+                                                    </Grid>
+                                                    <Grid item align="Right" style={{ margin: "0px 20px 0px 0px" }}>
+                                                        <Typography style={{ fontWeight: 600 }}> {getTotal()} </Typography>
+                                                    </Grid>
+                                                </Grid>
+                                                <TablePagination {...props} />
+                                            </td>
+                                        ),
+                                        Header: props => (
+                                            <TableHead {...props} className={classes.tablehead} >
+                                                <TableRow className={classes.row1}>
+                                                    <TableCell width="42%" padding="none" rowSpan={2}>
+                                                        <div style={{ padding: '0 10px' }}>
+                                                            Description
+                                                        </div>
+                                                    </TableCell>
+                                                    <TableCell width="8%" padding="none" rowSpan={2} align="center">
+                                                        <div style={{ padding: '0 10px' }}>
+                                                            Selling Price (Rs.)
+                                                        </div>
+                                                    </TableCell>
+                                                    <TableCell width="8%" padding="none" rowSpan={2} align="center">
+                                                        <div style={{ padding: '0 10px' }}>
+                                                            Pieces per Case
+                                                        </div>
+                                                    </TableCell>
+                                                    <TableCell padding="none" colSpan={2} align="center">
+                                                        Sales Qty.
+                                                    </TableCell>
+                                                    <TableCell padding="none" colSpan={2} align="center">
+                                                        Free Qty.
+                                                    </TableCell>
+                                                    <TableCell padding="none" width="10%" rowSpan={2} align="center">
+                                                        <div style={{ padding: '0 10px' }}>
+                                                            Gross Amount (Rs.)
+                                                        </div>
+                                                    </TableCell>
+                                                </TableRow>
+                                                <TableRow className={classes.row2}>
+                                                    <TableCell width="8%" padding="none" align="center">Cs</TableCell>
+                                                    <TableCell width="8%" padding="none" align="center">Pcs</TableCell>
+                                                    <TableCell width="8%" padding="none" align="center">Cs</TableCell>
+                                                    <TableCell width="8%" padding="none" align="center">Pcs</TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                        ),
+                                    }}
+                                    columns={[
+                                        {
+                                            field: "description",
+                                            cellStyle: {
+                                                width: "42%",
+                                                textAlign: 'left'
+                                            }
+                                        },
+                                        {
+                                            field: 'sellingprice',
+                                            cellStyle: {
+                                                width: "8%",
+                                                textAlign: 'right'
+                                            }
+                                        },
+                                        {
+                                            field: 'piecespercase',
+                                            cellStyle: {
+                                                width: "8%",
+                                                textAlign: 'right'
+                                            }
+                                        },
+                                        {
+                                            field: 'salesqtycases',
+                                            cellStyle: {
+                                                width: "8%",
+                                                textAlign: 'right'
+                                            }
+                                        },
+                                        {
+                                            field: 'salesqtypieces',
+                                            cellStyle: {
+                                                width: "8%",
+                                                textAlign: 'right'
+                                            }
+                                        },
+                                        {
+                                            field: 'freeqtycases',
+                                            cellStyle: {
+                                                width: "8%",
+                                                textAlign: 'right'
+                                            }
+                                        },
+                                        {
+                                            field: 'freeqtypieces',
+                                            cellStyle: {
+                                                width: "8%",
+                                                textAlign: 'right'
+                                            }
+                                        },
+                                        {
+                                            field: 'grossamount',
+                                            cellStyle: {
+                                                width: "10%",
+                                                textAlign: 'right'
+                                            }
+                                        }
+                                    ]}
+                                    data={data}
+                                    options={{
+                                        pageSize: pageSize,
+                                        pageSizeOptions: [],
+                                        paging: true,
+                                        toolbar: false,
+                                        filtering: true,
+                                        search: false,
+                                        headerStyle: {
+                                            position: "sticky",
+                                            top: "0",
+                                            backgroundColor: '#20369f',
+                                            color: '#FFF',
+                                            fontSize: "0.8em"
+                                        },
+                                        rowStyle: rowData => ({
+                                            fontSize: "0.8em",
+                                            backgroundColor: (rowData.tableData.id % 2 === 1) ? '#ebebeb' : '#ffffff'
+                                        })
+                                    }}
+                                />
+
+                            </div>
+                        );
                     }}
-                    columns={[
-                        {
-                            field: "description",
-                            cellStyle: {
-                                width: "42%",
-                                textAlign: 'left'
-                            }
-                        },
-                        {
-                            field: 'sellingprice',
-                            cellStyle: {
-                                width: "8%",
-                                textAlign: 'right'
-                            }
-                        },
-                        {
-                            field: 'piecespercase',
-                            cellStyle: {
-                                width: "8%",
-                                textAlign: 'right'
-                            }
-                        },
-                        {
-                            field: 'salesqtycases',
-                            cellStyle: {
-                                width: "8%",
-                                textAlign: 'right'
-                            }
-                        },
-                        {
-                            field: 'salesqtypieces',
-                            cellStyle: {
-                                width: "8%",
-                                textAlign: 'right'
-                            }
-                        },
-                        {
-                            field: 'freeqtycases',
-                            cellStyle: {
-                                width: "8%",
-                                textAlign: 'right'
-                            }
-                        },
-                        {
-                            field: 'freeqtypieces',
-                            cellStyle: {
-                                width: "8%",
-                                textAlign: 'right'
-                            }
-                        },
-                        {
-                            field: 'grossamount',
-                            cellStyle: {
-                                width: "10%",
-                                textAlign: 'right'
-                            }
-                        }
-                    ]}
-                    data={data}
-                    options={{
-                        tableLayout: 'auto',
-                        toolbar: false,
-                        filtering: true,
-                        search: false,
-                        paging: true,
-                        pageSize: 5,
-                        pageSizeOptions: [5],
-                        // minBodyHeight: "calc(100vh - 500px)",
-                        // maxBodyHeight: "calc(100vh - 500px)",
-                        headerStyle: {
-                            position: "sticky",
-                            top: "0",
-                            backgroundColor: '#20369f',
-                            color: '#FFF',
-                            fontSize: "0.8em"
-                        },
-                        rowStyle: rowData => ({
-                            fontSize: "0.8em",
-                            backgroundColor: (rowData.tableData.id % 2 === 1) ? '#ebebeb' : '#ffffff'
-                        })
-                    }}
-                />
+                </AutoSizer>
 
             </div>
 
@@ -545,7 +514,7 @@ export default function GINStepOne(props) {
                 <Tooltip
                     arrow
                     placement="top"
-                    title="Please fill the required * fields to proceed"
+                    title="Please select a route with orders to proceed"
                 >
                     <InfoIcon style={{ fontSize: '1.3em', verticalAlign: 'middle', marginRight: '10px' }} />
                 </Tooltip>
@@ -553,7 +522,7 @@ export default function GINStepOne(props) {
                     color="primary"
                     variant="contained"
                     onClick={onSubmit}
-                    disabled={!isValid}
+                    disabled={data.length === 0}
                 >
                     Next
                 </Button>

@@ -3,57 +3,54 @@
 .container {
     display: grid;
     grid-template-rows: min-content auto min-content;
-    height: min-content;
-    width: 80vw;
-    height: max-content;
-    box-sizing: border-box;
-}
-
-.tablet {
-    display: grid;
-    grid-template-rows: min-content auto min-content;
-    height: min-content;
     width: calc(100vw - 50px);
     height: calc(100vh - 25px);
     box-sizing: border-box;
-}
 
-Button {
-    width: max-content;
-    height: 40px;
-    font-size: 1em;
-    white-space: nowrap;
-    padding: $formButtonPadding;
-}
+    Button {
+        width: max-content;
+        height: 40px;
+        font-size: 1em;
+        white-space: nowrap;
+        padding: $formButtonPadding;
+    }
 
-.hidden {
-    display: none;
-}
+    .hidden {
+        display: none;
+    }
 
-.header {
-    .title {
-        display: grid;
-        grid-template-columns: auto min-content;
-        font-size: 1.55em;
-        font-weight: 600;
-        .icon {
-            color: red;
-            &:hover {
-                transform: scale(1.1);
+    .header {
+        .title {
+            display: grid;
+            grid-template-columns: auto min-content;
+            font-size: 1.55em;
+            font-weight: 600;
+            .icon {
+                color: red;
+                &:hover {
+                    transform: scale(1.1);
+                }
             }
+        }
+
+        .step {
+            margin: 5px 0 0 0;
+            color: $primaryLight;
+            font-size: 0.75em;
         }
     }
 
-    .step {
-        margin: 5px 0 0 0;
-        color: $primaryLight;
-        font-size: 0.75em;
+    .threebody {
+        display: grid;
+        grid-template-rows: min-content min-content;
+        height: calc(100vh - 316px);
     }
-}
 
-.body {
-    display: grid;
-    grid-template-rows: min-content min-content;
+    .fivebody {
+        display: grid;
+        grid-template-rows: min-content min-content;
+        height: calc(100vh - 351px);
+    }
 
     .orderDetails {
         display: grid;
@@ -84,17 +81,17 @@ Button {
                     text-align: left;
                     // overflow: auto;
 
-                    .pc {
+                    .three {
                         width: 100%;
-                        height: 188.56px;
+                        height: 102px;
                         margin: 0;
                         padding: 0;
                         overflow: auto;
                     }
 
-                    .tablet {
+                    .five {
                         width: 100%;
-                        height: 138px;
+                        height: 168px;
                         margin: 0;
                         padding: 0;
                         overflow: auto;
@@ -125,43 +122,43 @@ Button {
             }
         }
     }
-}
 
-.doneBtn {
-    text-align: right;
-    padding: 30px 0px 10px 0px;
-    Button {
-        font-size: 1em;
-    }
-}
-
-.footer {
-    display: grid;
-    grid-template-columns: auto auto;
-    padding: 30px 0px 10px 0px;
-
-    .backBtn {
-        text-align: left;
+    .doneBtn {
+        text-align: right;
+        padding: 30px 0px 10px 0px;
         Button {
-            background-color: #aca9bb;
-            color: $inverseFontColor;
             font-size: 1em;
-
-            &:disabled {
-                background-color: #c2c2c2;
-                color: $inverseFontColor;
-            }
         }
     }
 
-    .nextBtn {
-        text-align: right;
-        Button {
-            font-size: 1em;
+    .footer {
+        display: grid;
+        grid-template-columns: auto auto;
+        padding: 30px 0px 10px 0px;
 
-            &:disabled {
-                background-color: hsl(230, 66%, 57%);
+        .backBtn {
+            text-align: left;
+            Button {
+                background-color: #aca9bb;
                 color: $inverseFontColor;
+                font-size: 1em;
+
+                &:disabled {
+                    background-color: #c2c2c2;
+                    color: $inverseFontColor;
+                }
+            }
+        }
+
+        .nextBtn {
+            text-align: right;
+            Button {
+                font-size: 1em;
+
+                &:disabled {
+                    background-color: hsl(230, 66%, 57%);
+                    color: $inverseFontColor;
+                }
             }
         }
     }

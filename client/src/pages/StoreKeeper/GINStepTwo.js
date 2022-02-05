@@ -1,5 +1,6 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
+import AutoSizer from 'react-virtualized-auto-sizer';
 
 //Material UI 
 import {
@@ -54,12 +55,21 @@ export default function GINStepTwo(props) {
 
     const classes = useStyles();
 
-    const { onSubmit, backFormStep, control, getValues, handleClosePopUp, data, action, orderNumbers } = props;
+    const {
+        onSubmit,
+        backFormStep,
+        control,
+        getValues,
+        handleClosePopUp,
+        data,
+        action,
+        orderNumbers
+    } = props;
 
     const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
 
     return (
-        <div className={designation === "Delivery Representative" ? style.tablet : style.container}>
+        <div className={style.container}>
 
             <div className={style.header}>
 
@@ -83,7 +93,7 @@ export default function GINStepTwo(props) {
 
             </div>
 
-            <div className={style.body}>
+            <div className={designation !== "Delivery Representative" && action === "View" ? style.fivebody : style.threebody}>
 
                 <div className={style.orderDetails}>
 
@@ -104,23 +114,20 @@ export default function GINStepTwo(props) {
                                 </td>
                             </tr>
 
-                            {
-                                designation !== "Delivery Representative" &&
-                                <tr>
-                                    <th align="left">GIN Created at</th>
-                                    <td align="left">
-                                        <Controller
-                                            name={"createdat"}
-                                            control={control}
-                                            render={({ field: { value } }) => (
-                                                <Typography className={style.input}>
-                                                    {value}
-                                                </Typography>
-                                            )}
-                                        />
-                                    </td>
-                                </tr>
-                            }
+                            <tr>
+                                <th align="left">GIN Created at</th>
+                                <td align="left">
+                                    <Controller
+                                        name={"createdat"}
+                                        control={control}
+                                        render={({ field: { value } }) => (
+                                            <Typography className={style.input}>
+                                                {value}
+                                            </Typography>
+                                        )}
+                                    />
+                                </td>
+                            </tr>
 
                             <tr>
                                 <th align="left">Route</th>
@@ -136,43 +143,49 @@ export default function GINStepTwo(props) {
                                     />
                                 </td>
                             </tr>
-                            <tr>
-                                <th align="left">In Charge</th>
-                                <td align="left">
-                                    <Controller
-                                        name={"incharge"}
-                                        control={control}
-                                        render={({ field: { value } }) => (
-                                            <Typography className={style.input}>
-                                                {value}
-                                            </Typography>
-                                        )}
-                                    />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th align="left">Vehicle</th>
-                                <td align="left">
-                                    <Controller
-                                        name={"vehicle"}
-                                        control={control}
-                                        render={({ field: { value } }) => (
-                                            <Typography className={style.input}>
-                                                {value}
-                                            </Typography>
-                                        )}
-                                    />
-                                </td>
-                            </tr>
+                            {
+                                designation !== "Delivery Representative" && action === "View" &&
+                                <tr>
+                                    <th align="left">In Charge</th>
+                                    <td align="left">
+                                        <Controller
+                                            name={"incharge"}
+                                            control={control}
+                                            render={({ field: { value } }) => (
+                                                <Typography className={style.input}>
+                                                    {value}
+                                                </Typography>
+                                            )}
+                                        />
+                                    </td>
+                                </tr>
+                            }
+                            {
+                                designation !== "Delivery Representative" && action === "View" &&
+                                <tr>
+                                    <th align="left">Vehicle</th>
+                                    <td align="left">
+                                        <Controller
+                                            name={"vehicle"}
+                                            control={control}
+                                            render={({ field: { value } }) => (
+                                                <Typography className={style.input}>
+                                                    {value}
+                                                </Typography>
+                                            )}
+                                        />
+                                    </td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
 
                     <table className={style.details}>
                         <tbody>
                             <tr>
-                                <th rowSpan={designation === "Delivery Representative" ? 4 : 5} className={style.thAlign}>Order Numbers</th>
-                                <td rowSpan={designation === "Delivery Representative" ? 4 : 5} className={style.tdAlign}>
-                                    <div className={designation === "Delivery Representative" ? style.tablet : style.pc}>
+                                <th rowSpan={designation === "Delivery Representative" ? 3 : 5} className={style.thAlign}>Order Numbers</th>
+                                <td rowSpan={designation === "Delivery Representative" ? 3 : 5} className={style.tdAlign}>
+                                    <div className={designation !== "Delivery Representative" && action === "View" ? style.five : style.three}>
 
                                         {
                                             orderNumbers.map(x =>
@@ -188,143 +201,154 @@ export default function GINStepTwo(props) {
 
                 </div>
 
-                <MaterialTable
-                    components={{
-                        Container: props => <Paper {...props} elevation={1} />,
-                        Pagination: props => (
-                            <td style={{
-                                display: "flex",
-                                flexDirection: "column",
-                            }} >
-                                <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
-                                    <Grid item align="Right" style={{ margin: "0px 220px 0px auto" }}>
-                                        <Typography style={{ fontWeight: 600 }}> Total (Rs.) </Typography>
-                                    </Grid>
-                                    <Grid item align="Right" style={{ margin: "0px 20px 0px 0px" }}>
-                                        <Typography style={{ fontWeight: 600 }}> {getValues("total")} </Typography>
-                                    </Grid>
-                                </Grid>
-                                <TablePagination {...props} />
-                            </td>
-                        ),
-                        Header: props => (
-                            <TableHead {...props} className={classes.tablehead} >
-                                <TableRow className={classes.row1}>
-                                    <TableCell width="42%" padding="none" rowSpan={2}>
-                                        <div style={{ padding: '0 10px' }}>
-                                            Description
-                                        </div>
-                                    </TableCell>
-                                    <TableCell width="8%" padding="none" rowSpan={2} align="center">
-                                        <div style={{ padding: '0 10px' }}>
-                                            Selling Price (Rs.)
-                                        </div>
-                                    </TableCell>
-                                    <TableCell width="8%" padding="none" rowSpan={2} align="center">
-                                        <div style={{ padding: '0 10px' }}>
-                                            Pieces per Case
-                                        </div>
-                                    </TableCell>
-                                    <TableCell padding="none" colSpan={2} align="center">
-                                        Sales Qty.
-                                    </TableCell>
-                                    <TableCell padding="none" colSpan={2} align="center">
-                                        Free Qty.
-                                    </TableCell>
-                                    <TableCell padding="none" width="10%" rowSpan={2} align="center">
-                                        <div style={{ padding: '0 10px' }}>
-                                            Gross Amount (Rs.)
-                                        </div>
-                                    </TableCell>
-                                </TableRow>
-                                <TableRow className={classes.row2}>
-                                    <TableCell width="8%" padding="none" align="center">Cs</TableCell>
-                                    <TableCell width="8%" padding="none" align="center">Pcs</TableCell>
-                                    <TableCell width="8%" padding="none" align="center">Cs</TableCell>
-                                    <TableCell width="8%" padding="none" align="center">Pcs</TableCell>
-                                </TableRow>
-                            </TableHead>
-                        ),
+                <AutoSizer>
+                    {({ height, width }) => {
+                        const pageSize = Math.floor((height - 199.27) / 48);
+                        return (
+                            <div style={{ height: `${height}px`, width: `${width}px` }}>
+
+                                <MaterialTable
+                                    components={{
+                                        Container: props => <Paper {...props} elevation={1} />,
+                                        Pagination: props => (
+                                            <td style={{
+                                                display: "flex",
+                                                flexDirection: "column",
+                                            }} >
+                                                <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
+                                                    <Grid item align="Right" style={{ margin: "0px 220px 0px auto" }}>
+                                                        <Typography style={{ fontWeight: 600 }}> Total (Rs.) </Typography>
+                                                    </Grid>
+                                                    <Grid item align="Right" style={{ margin: "0px 20px 0px 0px" }}>
+                                                        <Typography style={{ fontWeight: 600 }}> {getValues("total")} </Typography>
+                                                    </Grid>
+                                                </Grid>
+                                                <TablePagination {...props} />
+                                            </td>
+                                        ),
+                                        Header: props => (
+                                            <TableHead {...props} className={classes.tablehead} >
+                                                <TableRow className={classes.row1}>
+                                                    <TableCell width="42%" padding="none" rowSpan={2}>
+                                                        <div style={{ padding: '0 10px' }}>
+                                                            Description
+                                                        </div>
+                                                    </TableCell>
+                                                    <TableCell width="8%" padding="none" rowSpan={2} align="center">
+                                                        <div style={{ padding: '0 10px' }}>
+                                                            Selling Price (Rs.)
+                                                        </div>
+                                                    </TableCell>
+                                                    <TableCell width="8%" padding="none" rowSpan={2} align="center">
+                                                        <div style={{ padding: '0 10px' }}>
+                                                            Pieces per Case
+                                                        </div>
+                                                    </TableCell>
+                                                    <TableCell padding="none" colSpan={2} align="center">
+                                                        Sales Qty.
+                                                    </TableCell>
+                                                    <TableCell padding="none" colSpan={2} align="center">
+                                                        Free Qty.
+                                                    </TableCell>
+                                                    <TableCell padding="none" width="10%" rowSpan={2} align="center">
+                                                        <div style={{ padding: '0 10px' }}>
+                                                            Gross Amount (Rs.)
+                                                        </div>
+                                                    </TableCell>
+                                                </TableRow>
+                                                <TableRow className={classes.row2}>
+                                                    <TableCell width="8%" padding="none" align="center">Cs</TableCell>
+                                                    <TableCell width="8%" padding="none" align="center">Pcs</TableCell>
+                                                    <TableCell width="8%" padding="none" align="center">Cs</TableCell>
+                                                    <TableCell width="8%" padding="none" align="center">Pcs</TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                        ),
+                                    }}
+                                    columns={[
+                                        {
+                                            field: "description",
+                                            cellStyle: {
+                                                width: "42%",
+                                                textAlign: 'left'
+                                            }
+                                        },
+                                        {
+                                            field: 'sellingprice',
+                                            cellStyle: {
+                                                width: "8%",
+                                                textAlign: 'right'
+                                            }
+                                        },
+                                        {
+                                            field: 'piecespercase',
+                                            cellStyle: {
+                                                width: "8%",
+                                                textAlign: 'right'
+                                            }
+                                        },
+                                        {
+                                            field: 'salesqtycases',
+                                            cellStyle: {
+                                                width: "8%",
+                                                textAlign: 'right'
+                                            }
+                                        },
+                                        {
+                                            field: 'salesqtypieces',
+                                            cellStyle: {
+                                                width: "8%",
+                                                textAlign: 'right'
+                                            }
+                                        },
+                                        {
+                                            field: 'freeqtycases',
+                                            cellStyle: {
+                                                width: "8%",
+                                                textAlign: 'right'
+                                            }
+                                        },
+                                        {
+                                            field: 'freeqtypieces',
+                                            cellStyle: {
+                                                width: "8%",
+                                                textAlign: 'right'
+                                            }
+                                        },
+                                        {
+                                            field: 'grossamount',
+                                            cellStyle: {
+                                                width: "10%",
+                                                textAlign: 'right'
+                                            }
+                                        }
+                                    ]}
+                                    data={data}
+                                    options={{
+                                        pageSize: pageSize,
+                                        pageSizeOptions: [],
+                                        paging: true,
+                                        toolbar: false,
+                                        filtering: true,
+                                        search: false,
+                                        headerStyle: {
+                                            position: "sticky",
+                                            top: "0",
+                                            backgroundColor: '#20369f',
+                                            color: '#FFF',
+                                            fontSize: "0.8em"
+                                        },
+                                        rowStyle: rowData => ({
+                                            fontSize: "0.8em",
+                                            backgroundColor: (rowData.tableData.id % 2 === 1) ? '#ebebeb' : '#ffffff'
+                                        })
+                                    }}
+                                />
+
+                            </div>
+                        );
                     }}
-                    columns={[
-                        {
-                            field: "description",
-                            cellStyle: {
-                                width: "42%",
-                                textAlign: 'left'
-                            }
-                        },
-                        {
-                            field: 'sellingprice',
-                            cellStyle: {
-                                width: "8%",
-                                textAlign: 'right'
-                            }
-                        },
-                        {
-                            field: 'piecespercase',
-                            cellStyle: {
-                                width: "8%",
-                                textAlign: 'right'
-                            }
-                        },
-                        {
-                            field: 'salesqtycases',
-                            cellStyle: {
-                                width: "8%",
-                                textAlign: 'right'
-                            }
-                        },
-                        {
-                            field: 'salesqtypieces',
-                            cellStyle: {
-                                width: "8%",
-                                textAlign: 'right'
-                            }
-                        },
-                        {
-                            field: 'freeqtycases',
-                            cellStyle: {
-                                width: "8%",
-                                textAlign: 'right'
-                            }
-                        },
-                        {
-                            field: 'freeqtypieces',
-                            cellStyle: {
-                                width: "8%",
-                                textAlign: 'right'
-                            }
-                        },
-                        {
-                            field: 'grossamount',
-                            cellStyle: {
-                                width: "10%",
-                                textAlign: 'right'
-                            }
-                        }
-                    ]}
-                    data={data}
-                    options={{
-                        toolbar: false,
-                        filtering: true,
-                        search: false,
-                        paging: true,
-                        pageSize: designation === "Delivery Representative" ? 4 : 5,
-                        pageSizeOptions: [],
-                        headerStyle: {
-                            position: "sticky",
-                            top: "0",
-                            backgroundColor: '#20369f',
-                            color: '#FFF',
-                            fontSize: "0.8em"
-                        },
-                        rowStyle: rowData => ({
-                            fontSize: "0.8em",
-                            backgroundColor: (rowData.tableData.id % 2 === 1) ? '#ebebeb' : '#ffffff'
-                        })
-                    }}
-                />
+                </AutoSizer>
 
             </div>
 

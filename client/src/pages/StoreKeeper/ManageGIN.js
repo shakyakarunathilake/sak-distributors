@@ -219,7 +219,6 @@ export default function ManageGIN() {
                         onClick={
                             () => {
                                 getOrderRecords();
-                                getInChargeOptions();
                                 setAction('Create');
                                 setOpenPopup(true);
                             }
@@ -335,21 +334,22 @@ export default function ManageGIN() {
                                                     openInPopup(rowData.ginnumber);
                                                 }
                                             },
-                                            (rowData) => ({
-                                                disabled: rowData.status === 'Dispatched' || rowData.status === 'Complete' || designation === "Delivery Representative",
-                                                icon: 'edit',
-                                                tooltip: 'Edit',
-                                                onClick: (event, rowData) => {
-                                                    setAction('Edit');
-                                                    openInPopup(rowData.ginnumber);
-                                                }
-                                            }),
+                                            // (rowData) => ({
+                                            //     disabled: rowData.status === 'Dispatched' || rowData.status === 'Complete' || designation === "Delivery Representative",
+                                            //     icon: 'edit',
+                                            //     tooltip: 'Edit',
+                                            //     onClick: (event, rowData) => {
+                                            //         setAction('Edit');
+                                            //         openInPopup(rowData.ginnumber);
+                                            //     }
+                                            // }),
                                             (rowData) => ({
                                                 disabled: rowData.status !== 'Processing' || designation === "Delivery Representative",
                                                 icon: LocalShippingIcon,
                                                 tooltip: 'Dispatch',
                                                 onClick: (event, rowData) => {
                                                     setAction('Dispatch');
+                                                    getInChargeOptions();
                                                     openInPopup(rowData.ginnumber);
                                                 }
                                             }),
@@ -374,7 +374,7 @@ export default function ManageGIN() {
 
                 <PopUp
                     openPopup={openPopup}
-                    fullScreen={(designation === "Delivery Representative" && action === 'View') ? true : false}
+                    fullScreen={action === 'Dispatch' ? false : true}
                     setOpenPopup={setOpenPopup}
                 >
 
@@ -394,7 +394,6 @@ export default function ManageGIN() {
                             action={action}
                             addOrEdit={addOrEdit}
                             orderRecords={orderRecords}
-                            inChargeOptions={inChargeOptions}
                         />
                     }
                     {
@@ -404,6 +403,7 @@ export default function ManageGIN() {
                             handleClosePopUp={handleClosePopUp}
                             addOrEdit={addOrEdit}
                             action={action}
+                            inChargeOptions={inChargeOptions}
                         />
                     }
 

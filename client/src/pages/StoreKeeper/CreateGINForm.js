@@ -11,7 +11,7 @@ import GINStepTwo from './GINStepTwo';
 
 export default function GINForm(props) {
 
-    const { GINRecords, handleClosePopUp, addOrEdit, action, orderRecords, inChargeOptions } = props;
+    const { GINRecords, handleClosePopUp, addOrEdit, action, orderRecords } = props;
 
     const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
     const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
@@ -30,8 +30,6 @@ export default function GINForm(props) {
             createdat: GINRecords ? GINRecords.createdat : dateTime,
             createdby: GINRecords ? GINRecords.createdby : `${firstname} ${lastname} (${employeeid})`,
             route: GINRecords ? GINRecords.route : '',
-            incharge: GINRecords ? GINRecords.incharge : '',
-            vehicle: GINRecords ? GINRecords.vehicle : '',
             total: GINRecords ? GINRecords.total : ''
         }
     });
@@ -55,21 +53,14 @@ export default function GINForm(props) {
 
             const ginFormData = new formData();
 
-            if (action === "Create") {
-                ginFormData.append('ginnumber', orderFormData.ginnumber);
-                ginFormData.append('createdat', orderFormData.createdat);
-                ginFormData.append('createdby', orderFormData.createdby);
-                ginFormData.append('route', orderFormData.route);
-                ginFormData.append('vehicle', orderFormData.vehicle);
-                ginFormData.append('incharge', orderFormData.incharge);
-                ginFormData.append('ordernumbers', JSON.stringify(orderNumbers));
-                ginFormData.append('items', JSON.stringify(data));
-                ginFormData.append('total', orderFormData.total);
-                ginFormData.append('status', 'Processing');
-            } else {
-                ginFormData.append('vehicle', orderFormData.vehicle);
-                ginFormData.append('incharge', orderFormData.incharge);
-            }
+            ginFormData.append('ginnumber', orderFormData.ginnumber);
+            ginFormData.append('createdat', orderFormData.createdat);
+            ginFormData.append('createdby', orderFormData.createdby);
+            ginFormData.append('route', orderFormData.route);
+            ginFormData.append('ordernumbers', JSON.stringify(orderNumbers));
+            ginFormData.append('items', JSON.stringify(data));
+            ginFormData.append('total', orderFormData.total);
+            ginFormData.append('status', 'Processing');
 
             addOrEdit(ginFormData, orderFormData.ginnumber);
         }
@@ -93,7 +84,6 @@ export default function GINForm(props) {
                         handleClosePopUp={handleClosePopUp}
                         completeFormStep={completeFormStep}
                         GINRecords={GINRecords}
-                        inChargeOptions={inChargeOptions}
                         orderRecords={orderRecords}
                         orderNumbers={orderNumbers}
                         setOrderNumbers={setOrderNumbers}

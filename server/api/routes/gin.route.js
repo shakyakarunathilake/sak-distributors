@@ -107,8 +107,6 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
         createdat: req.body.createdat,
         createdby: req.body.createdby,
         route: req.body.route,
-        vehicle: req.body.vehicle,
-        incharge: req.body.incharge,
         ordernumbers: ordernumbers,
         items: items,
         total: req.body.total,
@@ -237,6 +235,8 @@ router.post("/approve-dispatch/:ginnumber", formDataBody.fields([]), (req, res, 
             {
                 '$set': {
                     'status': req.body.status,
+                    'vehicle': req.body.vehicle,
+                    'incharge': req.body.incharge,
                 }
             },
             { upsert: true }
