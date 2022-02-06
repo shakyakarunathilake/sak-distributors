@@ -55,8 +55,15 @@ export default function StepFive(props) {
     };
 
     const calculatePayments = () => {
-        let creditamounttosettle = getValues('creditamounttosettle');
-        let currentinvoicecreditamount = parseInt(getValues('currentinvoicecreditamount'));
+
+        let creditamounttosettle = 0;
+        let currentinvoicecreditamount = 0;
+
+        if (customerType === "Registered Customer") {
+            creditamounttosettle = getValues('creditamounttosettle');
+            currentinvoicecreditamount = parseInt(getValues('currentinvoicecreditamount'));
+        }
+
         let minimumpayment = 0.00;
         let invoicesettlementvalue = 0.00;
 
@@ -212,6 +219,7 @@ export default function StepFive(props) {
 
                     {
                         action !== "View" &&
+                        customerType === "Registered Customer" &&
                         <div className={style.row}>
                             <div className={style.boldText}>
                                 Current Invoice Credit Amount  <span className={style.redFont}>*</span>
