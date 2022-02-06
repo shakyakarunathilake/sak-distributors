@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const emailNotify = require("./email.notify");
 
 const router = express.Router();
 
@@ -34,7 +35,7 @@ router.put("/change-password/", (req, res, next) => {
                                 .exec()
                                 .then(doc => {
                                     console.log(doc);
-                                    
+
                                     function emailIntegration() {
                                         console.log("Email Sent");
                                     }
@@ -69,14 +70,27 @@ router.put("/change-password/", (req, res, next) => {
 
 //Forgot Password
 router.post("/forgot-password", (req, res, next) => {
+
     Employee
         .find({ email: req.body.email })
         .exec()
+        .then(employee => {
+
+            emailNotify.sendEmail({
+                "tomail": "amsmk1999@gmail.com;tutor4u.edu.service@gmail.com",
+                "subject": "Forget Password",
+                "content": "IT WORKS",
+            })
+
+            return employee;
+        })
         .then(employee =>
+
             res.status(200).json({
                 type: "success",
                 message: `Hi ${employee[0].firstname} ${employee[0].lastname}. The reset instruction has been sent to your email address. Have a nice day`
             })
+
         )
         .catch(err => {
             console.log(err);
