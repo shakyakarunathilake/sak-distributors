@@ -174,11 +174,10 @@ export default function GINStepOne(props) {
 
         for (let i = 0; i < data.length; i++) {
             total = total + parseInt(data[i].grossamount);
-            total = total.toFixed(2);
         }
 
-        setValue("total", total);
-        return total;
+        setValue("total", total.toFixed(2));
+        return total.toFixed(2);
     }
 
     const onSubmit = () => {
