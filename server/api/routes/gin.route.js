@@ -110,7 +110,9 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
         ordernumbers: ordernumbers,
         items: items,
         total: req.body.total,
-        status: req.body.status
+        status: req.body.status,
+        incharge: '',
+        vehicle: ''
     })
 
     gin
@@ -239,7 +241,7 @@ router.post("/approve-dispatch/:ginnumber", formDataBody.fields([]), (req, res, 
                     'incharge': req.body.incharge,
                 }
             },
-            { upsert: true }
+            { new: true, upsert: true }
         )
         .exec()
         .then(doc => {
@@ -261,8 +263,8 @@ router.post("/approve-dispatch/:ginnumber", formDataBody.fields([]), (req, res, 
                     )
                     .exec()
                     .then(doc => {
-                        console.log("******** UPDATED ORDER STATUS OF ORDER NUMBER ********")
-                        console.log(doc.orderno);
+                        // console.log("******** UPDATED ORDER STATUS OF ORDER NUMBER ********")
+                        // console.log(doc.orderno);
                     })
                     .catch(err => {
                         res.status(200).json({
@@ -309,8 +311,8 @@ router.post("/approve-dispatch/:ginnumber", formDataBody.fields([]), (req, res, 
                     )
                     .exec()
                     .then(doc => {
-                        console.log("******** ITEMS ADDED TO STORE ********");
-                        console.log(doc);
+                        // console.log("******** ITEMS ADDED TO STORE ********");
+                        // console.log(doc);
                     })
                     .catch(err => {
                         res.status(200).json({
