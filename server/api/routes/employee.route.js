@@ -124,7 +124,6 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
                             message: "Handling POST requests to /employees/create-employee, EMPLOYEE SAVED",
                             type: 'success',
                             alert: `${result.firstname} ${result.lastname} added`,
-                            addedEmployee: result
                         });
                     })
                     .catch(err => {
@@ -168,7 +167,6 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
                     message: "Handling POST requests to /employees/create-employee, EMPLOYEE SAVED",
                     type: 'success',
                     alert: `${result.firstname} ${result.lastname} added`,
-                    addedEmployee: result
                 });
             })
             .catch(err => {
@@ -188,20 +186,13 @@ router.get("/get-all-employees-table-data", (req, res, next) => {
         .find()
         .exec()
         .then(doc => {
-            const thead = [
-                "Emp. ID",
-                "Title",
-                "Name",
-                "Designation",
-                "Status",
-                "Hired Date",
-            ]
 
             const tbody = doc.map(x => ({
                 "employeeid": x.employeeid,
                 "title": x.title,
                 "name": x.firstname + " " + x.lastname,
                 "designation": x.designation,
+                "contactnumber": x.contactnumber,
                 "status": x.employeestatus,
                 "hireddate": x.hireddate,
             }))
@@ -265,7 +256,7 @@ router.get("/:employeeid", (req, res, next) => {
 //Update employee data by Employee ID
 router.post("/update-by-id/:employeeid", uploads.single('employeeimage'), (req, res, next) => {
     console.log("UPDATE: ", req.body);
-    // formDataBody.fields([])
+
     Employee
         .findOneAndUpdate({ employeeid: req.params.employeeid }, req.body, { new: true })
         .exec()

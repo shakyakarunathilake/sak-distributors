@@ -3,8 +3,8 @@
 .two {
     display: grid;
     grid-template-rows: min-content auto min-content;
-    height: inherit;
-    // box-sizing: border-box;
+    height: 100%;
+    overflow: hidden;
 
     Button {
         width: max-content;

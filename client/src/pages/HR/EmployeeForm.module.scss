@@ -132,21 +132,21 @@
                 }
 
                 .row {
-                    padding: 8px 0;
+                    padding: 10px 0;
                 }
 
                 .rowminicolumns {
                     display: grid;
                     grid-template-columns: calc(25% - 20px) calc(40% - 25px) calc(40% - 25px);
                     grid-column-gap: 20px;
-                    padding: 8px 0;
+                    padding: 10px 0;
                 }
 
                 .gridrow {
                     display: grid;
                     grid-template-columns: calc(50% - 10px) calc(50% - 10px);
                     grid-column-gap: 20px;
-                    padding: 8px 0;
+                    padding: 10px 0;
                 }
 
                 .buttonRow {
@@ -159,7 +159,7 @@
                         font-size: 1em;
                         margin: 20px 0px 5px 0px;
                         height: 45px;
-                        width: 190px;
+                        padding: 0 40px;
                     }
 
                     .resetBtnDiv {

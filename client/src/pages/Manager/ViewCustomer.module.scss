@@ -1,9 +1,18 @@
 @import "../../styles/variables";
 
-.container {
-    width: 900px;
+.container1 {
+    display: grid;
+    grid-template-rows: min-content auto;
     box-sizing: border-box;
-    grid-template-columns: min-content auto;
+    width: 900px;
+    height: 700px;
+}
+
+.container2 {
+    display: grid;
+    grid-template-rows: min-content auto;
+    height: calc(100vh - 20px);
+    box-sizing: border-box;
 }
 
 .header {
@@ -16,19 +25,18 @@
         color: red;
 
         &:hover {
-        transform: scale(1.1);
+            transform: scale(1.1);
         }
     }
 }
 
-.body {
-    .form {
-        display: grid;
-        grid-template-rows: auto min-content;
+.form {
+    display: grid;
+    grid-template-rows: auto min-content;
 
-        .formFields {
-            margin-top: 30px;
-        }
+    .formFields {
+        width: 710px;
+        margin: auto auto;
 
         .input {
             text-align: left;
@@ -38,26 +46,26 @@
 
         .row {
             display: grid;
-            grid-template-columns: 250px calc(100% - 250px);
-            padding: 8px 20px;
+            grid-template-columns: 300px calc(100% - 300px);
+            padding: 8px 25px;
 
             .boldText {
                 font-size: 1em;
                 font-weight: 700;
             }
         }
+    }
 
-        .buttonRow {
-            text-align: right;
+    .buttonRow {
+        text-align: right;
 
-            Button {
-                font-size: 1em;
-                margin: 20px 0px 5px 0px;
-                height: 45px;
-                width: 190px;
-                background-color: $primaryMain;
-                color: $inverseFontColor;
-            }
+        Button {
+            font-size: 1em;
+            margin: 20px 0px 5px 0px;
+            height: 45px;
+            padding: $formButtonPadding;
+            background-color: $primaryMain;
+            color: $inverseFontColor;
         }
     }
 }

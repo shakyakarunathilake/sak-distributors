@@ -24,15 +24,51 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 //Default Image
 import product from '../../images/product.svg';
 
-//SCSS Styles
+//Styles
 import style from './VariantForm.module.scss';
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 
+const theme = createTheme({
+    overrides: {
+        MuiFormLabel: {
+            root: {
+                fontSize: '0.9em',
+                fontFamily: 'Roboto, Poppins, sans-serif',
+            }
+        },
+        MuiInputBase: {
+            root: {
+                fontSize: '0.9em',
+                fontFamily: 'Roboto, Poppins, sans-serif',
+            }
+        },
+        MuiFormHelperText: {
+            root: {
+                fontSize: '0.64em',
+                fontFamily: 'Roboto, Poppins, sans-serif',
+            }
+        },
+        MuiOutlinedInput: {
+            inputMarginDense: {
+                paddingTop: "10px",
+                paddingBottom: "10px"
+            }
+        },
+        MuiAutocomplete: {
+            inputRoot: {
+                '&&[class*="MuiOutlinedInput-root"] $input': {
+                    padding: 1
+                }
+            }
+        },
+    }
+});
 
 export default function VariantForm(props) {
 
     const { handleClosePopUp, addVariant, productOptions, employeeOptions, productRecords } = props;
 
-    const { handleSubmit, formState: { errors }, control, reset, setValue } = useForm();
+    const { handleSubmit, formState: { errors }, control, reset, setValue } = useForm({ mode: "onBlur" });
 
     const [file, setFile] = useState();
     const [show, setShow] = useState(false);
@@ -52,6 +88,7 @@ export default function VariantForm(props) {
             setValue("productstatus", productRecords.status);
             setValue("variantid", productRecords.variant.variantid);
             setValue("type", productRecords.variant.type);
+            setValue("piecespercase", productRecords.variant.piecespercase);
             setValue("bulkprice", productRecords.variant.bulkprice);
             setValue("mrp", productRecords.variant.mrp);
             setValue("sellingprice", productRecords.variant.sellingprice);
@@ -70,6 +107,7 @@ export default function VariantForm(props) {
             setFile(`http://${option.productimage}`);
             setValue("productid", option.productid);
             setValue("name", option.name);
+            setValue("autocomplete", option.name);
             setValue("supplier", option.supplier);
             setValue("productimage", option.productimage);
             setValue("addeddate", option.addeddate);
@@ -103,6 +141,7 @@ export default function VariantForm(props) {
             productstatus: '',
             variantid: '',
             type: '',
+            piecespercase: '',
             bulkprice: '',
             mrp: '',
             sellingprice: '',
@@ -112,6 +151,7 @@ export default function VariantForm(props) {
             variantaddeddate: '',
             variantaddedby: '',
         });
+        setShow(false);
         setFile("");
     }
 
@@ -124,6 +164,7 @@ export default function VariantForm(props) {
         productFormData.append("variantid", values.variantid);
         productFormData.append('type', values.type);
         productFormData.append("offercaption", values.offercaption ? values.offercaption : "");
+        productFormData.append("piecespercase", values.piecespercase);
         productFormData.append("bulkprice", values.bulkprice);
         productFormData.append("purchaseprice", values.purchaseprice);
         productFormData.append("sellingprice", values.sellingprice);
@@ -167,7 +208,9 @@ export default function VariantForm(props) {
                                             name={"productimage"}
                                             control={control}
                                             defaultValue=""
-                                            rules={{ required: { value: true, message: "Product Image is required" } }}
+                                            rules={{
+                                                required: { value: true, message: "Required *" }
+                                            }}
                                             render={({ field: { onChange } }) => (
                                                 <input
                                                     disabled
@@ -190,11 +233,6 @@ export default function VariantForm(props) {
                                     </div>
                                 </div>
                                 <div className={style.partialCircle}></div>
-                            </div>
-                            <div className={style.redFontCenter}>
-                                {
-                                    errors.productimage && errors.productimage.message
-                                }
                             </div>
 
                             <div className={style.productId}>
@@ -229,7 +267,7 @@ export default function VariantForm(props) {
                                             name={"name"}
                                             control={control}
                                             rules={{
-                                                required: { value: true, message: "Product Name is required" },
+                                                required: { value: true, message: "Required *" },
                                             }}
                                             render={({ field: { onChange, value } }) => (
                                                 <TextField
@@ -240,29 +278,42 @@ export default function VariantForm(props) {
                                                     error={errors.name ? true : false}
                                                     onChange={onChange}
                                                     value={value || ''}
+                                                    disabled={true}
                                                     label="Product Name *"
+                                                    size="small"
                                                 />
                                             )}
                                         />
                                         :
-                                        <Controller
-                                            name={"autocomplete"}
-                                            control={control}
-                                            render={() => (
-                                                <Autocomplete
-                                                    options={productOptions || []}
-                                                    fullWidth
-                                                    getOptionLabel={(option) => option.title}
-                                                    onChange={handleProductChange}
-                                                    renderInput={(params) => (
-                                                        <MuiTextField
-                                                            {...params}
-                                                            label="Product"
-                                                            variant="outlined" />
-                                                    )}
-                                                />
-                                            )}
-                                        />
+                                        <ThemeProvider theme={theme}>
+                                            <Controller
+                                                name={"autocomplete"}
+                                                control={control}
+                                                rules={{
+                                                    required: { value: true, message: "Required *" },
+                                                }}
+                                                render={({ field: { value } }) => (
+                                                    <Autocomplete
+                                                        options={productOptions || []}
+                                                        fullWidth
+                                                        getOptionLabel={(option) => option.name}
+                                                        onChange={handleProductChange}
+                                                        inputValue={value}
+                                                        renderInput={(params) => (
+                                                            <MuiTextField
+                                                                {...params}
+                                                                error={errors.autocomplete ? true : false}
+                                                                helperText={errors.autocomplete && errors.autocomplete.message}
+                                                                label="Product"
+                                                                variant="outlined"
+                                                                size="small"
+                                                            />
+                                                        )}
+                                                    />
+                                                )}
+                                            />
+                                        </ThemeProvider>
+
                                 }
 
                             </div>
@@ -272,18 +323,17 @@ export default function VariantForm(props) {
                                     name={"supplier"}
                                     control={control}
                                     rules={{
-                                        required: { value: true, message: "Supplier is required" },
+                                        required: { value: true, message: "Required *" },
                                     }}
                                     render={({ field: { onChange, value } }) => (
                                         <Select
                                             disabled={true}
                                             className={style.field}
-                                            helperText={errors.supplier && errors.supplier.message}
-                                            error={errors.supplier ? true : false}
                                             onChange={onChange}
                                             value={value || ''}
                                             options={employeeservice.getSupplierOptions()}
                                             label="Supplier *"
+                                            size="small"
                                         />
                                     )}
                                 />
@@ -294,20 +344,19 @@ export default function VariantForm(props) {
                                     name={"addedby"}
                                     control={control}
                                     rules={{
-                                        required: { value: true, message: "Added by is required" },
+                                        required: { value: true, message: "Required *" },
                                     }}
                                     render={({ field: { onChange, value } }) => (
                                         <Select
                                             disabled={true}
                                             fullWidth={true}
                                             className={style.field}
-                                            helperText={errors.addedby && errors.addedby.message}
                                             placeholder="Ex: Shakya Karunathilake"
-                                            error={errors.addedby ? true : false}
                                             onChange={onChange}
                                             value={value || ''}
                                             options={employeeOptions || []}
                                             label="Added By"
+                                            size="small"
                                         />
                                     )}
                                 />
@@ -319,17 +368,16 @@ export default function VariantForm(props) {
                                         name={"addeddate"}
                                         control={control}
                                         rules={{
-                                            required: { value: true, message: "Added date is required" },
+                                            required: { value: true, message: "Required *" },
                                         }}
                                         render={({ field: { onChange, value } }) => (
                                             <DatePicker
                                                 disabled={true}
                                                 className={style.field}
-                                                helperText={errors.addeddate && errors.addeddate.message}
-                                                error={errors.addeddate ? true : false}
                                                 onChange={onChange}
                                                 value={value || ''}
                                                 label="Added Date *"
+                                                size="small"
                                             />
                                         )}
                                     />
@@ -339,17 +387,17 @@ export default function VariantForm(props) {
                                         name={"productstatus"}
                                         control={control}
                                         rules={{
-                                            required: { value: true, message: "Status is required" },
+                                            required: { value: true, message: "Required *" },
                                         }}
                                         render={({ field: { onChange, value } }) => (
                                             <Select
+                                                disabled={true}
                                                 className={style.field}
-                                                helperText={errors.productstatus && errors.productstatus.message}
-                                                error={errors.productstatus ? true : false}
                                                 onChange={onChange}
                                                 value={value || ''}
                                                 options={employeeservice.getProductStatusOptions()}
                                                 label="Status *"
+                                                size="small"
                                             />
                                         )}
                                     />
@@ -377,6 +425,7 @@ export default function VariantForm(props) {
                                                 value={value || ''}
                                                 disabled={true}
                                                 label="Variant ID *"
+                                                size="small"
                                             />
                                         )}
                                     />
@@ -386,7 +435,7 @@ export default function VariantForm(props) {
                                         name={"type"}
                                         control={control}
                                         rules={{
-                                            required: { value: true, message: "Type is required" },
+                                            required: { value: true, message: "Required *" },
                                         }}
                                         render={({ field: { onChange, value } }) => (
                                             <Select
@@ -400,6 +449,7 @@ export default function VariantForm(props) {
                                                 value={value || ''}
                                                 options={employeeservice.getVariantTypeOptions()}
                                                 label="Type *"
+                                                size="small"
                                             />
                                         )}
                                     />
@@ -419,6 +469,7 @@ export default function VariantForm(props) {
                                                 onChange={onChange}
                                                 value={value || ''}
                                                 label="Offer Caption"
+                                                size="small"
                                             />
                                         )}
                                     />
@@ -428,11 +479,34 @@ export default function VariantForm(props) {
                             <div className={style.gridrow}>
                                 <div>
                                     <Controller
+                                        name={"piecespercase"}
+                                        control={control}
+                                        rules={{
+                                            required: { value: true, message: "Required *" },
+                                            pattern: { value: /^[0-9]*$/, message: "Invalid" }
+                                        }}
+                                        render={({ field: { onChange, value } }) => (
+                                            <TextField
+                                                className={style.field}
+                                                helperText={errors.piecespercase && errors.piecespercase.message}
+                                                error={errors.piecespercase ? true : false}
+                                                onChange={onChange}
+                                                value={value || ''}
+                                                label="Pieces/Case *"
+                                                placeholder="24"
+                                                fullWidth={true}
+                                                size="small"
+                                            />
+                                        )}
+                                    />
+                                </div>
+                                <div>
+                                    <Controller
                                         name={"bulkprice"}
                                         control={control}
                                         rules={{
-                                            required: { value: true, message: "Bulk price is required" },
-                                            pattern: { value: /^[0-9]+\.[0-9]{2}$/, message: "Bulk price is invalid" }
+                                            required: { value: true, message: "Required *" },
+                                            pattern: { value: /^[0-9]+\.[0-9]{2}$/, message: "Invalid" }
                                         }}
                                         render={({ field: { onChange, value } }) => (
                                             <TextField
@@ -444,35 +518,7 @@ export default function VariantForm(props) {
                                                 label="Bulk Price *"
                                                 placeholder="999.99"
                                                 fullWidth={true}
-                                                InputProps={{
-                                                    endAdornment: (
-                                                        <InputAdornment position="start">
-                                                            Rs
-                                                        </InputAdornment>
-                                                    ),
-                                                }}
-                                            />
-                                        )}
-                                    />
-                                </div>
-                                <div>
-                                    <Controller
-                                        name={"purchaseprice"}
-                                        control={control}
-                                        rules={{
-                                            required: { value: true, message: "Purchase Price is required" },
-                                            pattern: { value: /^[0-9]+\.[0-9]{2}$/, message: "Purchase Price is invalid" }
-                                        }}
-                                        render={({ field: { onChange, value } }) => (
-                                            <TextField
-                                                className={style.field}
-                                                helperText={errors.purchaseprice && errors.purchaseprice.message}
-                                                error={errors.purchaseprice ? true : false}
-                                                onChange={onChange}
-                                                value={value || ''}
-                                                label="Purchase Price *"
-                                                placeholder="999.99"
-                                                fullWidth={true}
+                                                size="small"
                                                 InputProps={{
                                                     endAdornment: (
                                                         <InputAdornment position="start">
@@ -486,14 +532,44 @@ export default function VariantForm(props) {
                                 </div>
                             </div>
 
-                            <div className={style.gridrow}>
+                            <div className={style.rowminicolumns}>
+                                <div>
+                                    <Controller
+                                        name={"purchaseprice"}
+                                        control={control}
+                                        rules={{
+                                            required: { value: true, message: "Required *" },
+                                            pattern: { value: /^[0-9]+\.[0-9]{2}$/, message: "Invalid" }
+                                        }}
+                                        render={({ field: { onChange, value } }) => (
+                                            <TextField
+                                                className={style.field}
+                                                helperText={errors.purchaseprice && errors.purchaseprice.message}
+                                                error={errors.purchaseprice ? true : false}
+                                                onChange={onChange}
+                                                value={value || ''}
+                                                label="Purchase Price *"
+                                                placeholder="999.99"
+                                                fullWidth={true}
+                                                size="small"
+                                                InputProps={{
+                                                    endAdornment: (
+                                                        <InputAdornment position="start">
+                                                            Rs
+                                                        </InputAdornment>
+                                                    ),
+                                                }}
+                                            />
+                                        )}
+                                    />
+                                </div>
                                 <div>
                                     <Controller
                                         name={"sellingprice"}
                                         control={control}
                                         rules={{
-                                            required: { value: true, message: "Selling Price is required" },
-                                            pattern: { value: /^[0-9]+\.[0-9]{2}$/, message: "Selling Price is invalid" }
+                                            required: { value: true, message: "Required *" },
+                                            pattern: { value: /^[0-9]+\.[0-9]{2}$/, message: "Invalid" }
                                         }}
                                         render={({ field: { onChange, value } }) => (
                                             <TextField
@@ -505,6 +581,7 @@ export default function VariantForm(props) {
                                                 label="Selling Price *"
                                                 placeholder="999.99"
                                                 fullWidth={true}
+                                                size="small"
                                                 InputProps={{
                                                     endAdornment: (
                                                         <InputAdornment position="start">
@@ -521,8 +598,8 @@ export default function VariantForm(props) {
                                         name={"mrp"}
                                         control={control}
                                         rules={{
-                                            required: { value: true, message: "MRP is required" },
-                                            pattern: { value: /^[0-9]+\.[0-9]{2}$/, message: "MRP is invalid" }
+                                            required: { value: true, message: "Required *" },
+                                            pattern: { value: /^[0-9]+\.[0-9]{2}$/, message: "Invalid" }
                                         }}
                                         render={({ field: { onChange, value } }) => (
                                             <TextField
@@ -534,6 +611,7 @@ export default function VariantForm(props) {
                                                 onChange={onChange}
                                                 value={value || ''}
                                                 label="MRP *"
+                                                size="small"
                                                 InputProps={{
                                                     endAdornment: (
                                                         <InputAdornment position="start">
@@ -552,7 +630,7 @@ export default function VariantForm(props) {
                                     name={"variantaddedby"}
                                     control={control}
                                     rules={{
-                                        required: { value: true, message: "Added by is required" },
+                                        required: { value: true, message: "Required *" },
                                     }}
                                     render={({ field: { onChange, value } }) => (
                                         <Select
@@ -562,6 +640,7 @@ export default function VariantForm(props) {
                                             error={errors.variantaddedby ? true : false}
                                             onChange={onChange}
                                             value={value || ''}
+                                            size="small"
                                             options={employeeOptions || []}
                                             label="Added By"
                                         />
@@ -575,14 +654,14 @@ export default function VariantForm(props) {
                                         name={"variantstatus"}
                                         control={control}
                                         rules={{
-                                            required: { value: true, message: "Status is required" },
+                                            required: { value: true, message: "Required *" },
                                         }}
                                         render={({ field: { onChange, value } }) => (
                                             <Select
                                                 className={style.field}
                                                 helperText={errors.variantstatus && errors.variantstatus.message}
                                                 error={errors.variantstatus ? true : false}
-
+                                                size="small"
                                                 onChange={onChange}
                                                 value={value || ''}
                                                 options={employeeservice.getVariantStatusOptions()}
@@ -596,7 +675,7 @@ export default function VariantForm(props) {
                                         name={"variantaddeddate"}
                                         control={control}
                                         rules={{
-                                            required: { value: true, message: "Added date is required" },
+                                            required: { value: true, message: "Required *" },
                                         }}
                                         render={({ field: { onChange, value } }) => (
                                             <DatePicker
@@ -606,6 +685,7 @@ export default function VariantForm(props) {
                                                 onChange={onChange}
                                                 value={value || ''}
                                                 label="Added Date *"
+                                                size="small"
                                             />
                                         )}
                                     />

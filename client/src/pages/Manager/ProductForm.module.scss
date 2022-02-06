@@ -1,7 +1,7 @@
 @import "../../styles/variables";
 
 .container {
-    width: 900px;
+    width: 860px;
     box-sizing: border-box;
     grid-template-columns: min-content auto;
 }
@@ -109,19 +109,19 @@
                     }
 
                     .row {
-                        padding: 8px 0;
+                        padding: 10px 0;
                     }
 
                     .gridrow {
                         display: grid;
                         grid-template-columns: calc(50% - 10px) calc(50% - 10px);
                         grid-column-gap: 20px;
-                        padding: 8px 0;
+                        padding: 10px 0;
                     }
                 }
             }
         }
-        
+
         .buttonRow {
             display: grid;
             grid-template-columns: auto min-content;
@@ -132,7 +132,7 @@
                 font-size: 1em;
                 margin: 20px 0px 5px 0px;
                 height: 45px;
-                width: 190px;
+                padding: $formButtonPadding;
             }
 
             .resetBtnDiv {

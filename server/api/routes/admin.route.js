@@ -21,14 +21,6 @@ router.get("/get-all-admin-table-data", (req, res, next) => {
         .find()
         .exec()
         .then(doc => {
-            const thead = [
-                "Emp. ID",
-                "Title",
-                "Name",
-                "Designation",
-                "Status",
-                "Hired Date",
-            ]
 
             const data = doc.filter(x => x.adminprivileges === true);
 
@@ -37,6 +29,7 @@ router.get("/get-all-admin-table-data", (req, res, next) => {
                 "title": x.title,
                 "name": x.firstname + " " + x.lastname,
                 "designation": x.designation,
+                "contactnumber": x.contactnumber,
                 "status": x.employeestatus,
                 "hireddate": x.hireddate,
             }))

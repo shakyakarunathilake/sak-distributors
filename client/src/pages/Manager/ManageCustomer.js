@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import AutoSizer from 'react-virtualized-auto-sizer';
 import MaterialTable from 'material-table';
 
 //Shared Components
@@ -44,6 +44,8 @@ export default function ManageCustomer() {
     const [nextCusId, setNextCusId] = useState();
     const [reRender, setReRender] = useState(null);
 
+    const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
+
     const handleAlert = () => {
         setOpen(true);
     };
@@ -69,7 +71,7 @@ export default function ManageCustomer() {
     }, [reRender]);
 
     const addOrEdit = (customer, customerid) => {
-        
+
         for (let [key, value] of customer.entries()) {
             console.log(key, value);
         }
@@ -134,7 +136,7 @@ export default function ManageCustomer() {
         <Page title="Manage Customers">
             <div className={style.container}>
 
-                <div className={style.actionRow}>
+                <div className={designation === "Manager" ? style.hidden : style.actionRow}>
                     <Button
                         className={style.button}
                         color="primary"
@@ -154,72 +156,124 @@ export default function ManageCustomer() {
                     </Button>
                 </div>
 
-                <div className={style.pagecontent}>
-                    <MaterialTable
-                        columns={[
-                            {
-                                title: "Customer ID", field: "customerid", render: rowData => {
-                                    return (
-                                        <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.customerid}</p>
-                                    )
-                                }
-                            },
-                            { title: "Store Name", field: "storename" },
-                            { title: "Title", field: "title" },
-                            { title: "Customer Name", field: "customername" },
-                            { title: "Shipping Address", field: "shippingaddress" },
-                            { title: "Contact No.", field: "contactnumber" },
-                        ]}
-                        data={records}
-                        options={{
-                            toolbar: false,
-                            filtering: true,
-                            search: false,
-                            paging: false,
-                            actionsColumnIndex: -1,
-                            maxBodyHeight: "calc(100vh - 199.27px)",
-                            headerStyle: {
-                                position: "sticky",
-                                top: "0",
-                                backgroundColor: '#20369f',
-                                color: '#FFF',
-                                fontSize: "0.8em"
-                            },
-                            rowStyle: rowData => ({
-                                fontSize: "0.8em",
-                                backgroundColor: (rowData.tableData.id % 2 === 0) ? '#ebebeb' : '#ffffff'
-                            })
+                <div className={designation === "Manager" ? style.pagecontent1 : style.pagecontent2}>
+
+                    <AutoSizer>
+                        {({ height, width }) => {
+                            const pageSize = Math.floor((height - 199.28) / 69.59);
+                            return (
+                                <div style={{ height: `${height}px`, width: `${width}px`, overflowY: 'auto' }}>
+
+                                    <MaterialTable
+                                        columns={[
+                                            {
+                                                title: "Customer ID",
+                                                field: "customerid",
+                                                cellStyle: {
+                                                    width: "13%",
+                                                    textAlign: 'left'
+                                                },
+                                                render: rowData => {
+                                                    return (
+                                                        <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.customerid}</p>
+                                                    )
+                                                }
+                                            },
+                                            {
+                                                title: "Store Name",
+                                                field: "storename",
+                                                cellStyle: {
+                                                    width: "32%",
+                                                    textAlign: 'left'
+                                                }
+                                            },
+                                            {
+                                                title: "Customer Name",
+                                                field: "customername",
+                                                cellStyle: {
+                                                    width: "15%",
+                                                    textAlign: 'left'
+                                                }
+                                            },
+                                            {
+                                                title: "Shipping Address",
+                                                field: "shippingaddress",
+                                                cellStyle: {
+                                                    width: "30%",
+                                                    textAlign: 'left'
+                                                }
+                                            },
+                                            {
+                                                title: "Contact No.",
+                                                field: "contactnumber",
+                                                cellStyle: {
+                                                    width: "10%",
+                                                    textAlign: 'left'
+                                                }
+                                            },
+                                        ]}
+                                        data={records}
+                                        options={{
+                                            pageSize: pageSize,
+                                            pageSizeOptions: [],
+                                            paging: true,
+                                            toolbar: false,
+                                            filtering: true,
+                                            search: false,
+                                            actionsColumnIndex: -1,
+                                            headerStyle: {
+                                                position: "sticky",
+                                                top: "0",
+                                                backgroundColor: '#20369f',
+                                                color: '#FFF',
+                                                fontSize: "0.8em"
+                                            },
+                                            rowStyle: rowData => ({
+                                                fontSize: "0.8em",
+                                                backgroundColor: (rowData.tableData.id % 2 === 0) ? '#ebebeb' : '#ffffff'
+                                            })
+                                        }}
+                                        actions={[
+                                            {
+                                                icon: VisibilityIcon,
+                                                tooltip: 'View',
+                                                onClick: (event, rowData) => {
+                                                    setAction('View');
+                                                    openInPopup(rowData.customerid);
+                                                }
+                                            },
+                                            {
+                                                icon: 'edit',
+                                                tooltip: 'Edit',
+                                                onClick: (event, rowData) => {
+                                                    setAction('Edit');
+                                                    openInPopup(rowData.customerid);
+                                                }
+                                            }
+                                        ]}
+                                    />
+
+                                </div>
+                            );
                         }}
-                        actions={[
-                            {
-                                icon: VisibilityIcon,
-                                tooltip: 'View',
-                                onClick: (event, rowData) => {
-                                    setAction('View');
-                                    openInPopup(rowData.customerid);
-                                }
-                            },
-                            {
-                                icon: 'edit',
-                                tooltip: 'Edit',
-                                onClick: (event, rowData) => {
-                                    setAction('Edit');
-                                    openInPopup(rowData.customerid);
-                                }
-                            }
-                        ]}
-                    />
+                    </AutoSizer>
+
                 </div>
                 <PopUp
                     openPopup={openPopup}
                     setOpenPopup={setOpenPopup}
+                    fullScreen={designation === "Manager" ? false : true}
                 >
-                    {action === 'View' ?
+                    {
+                        action === 'View' &&
                         <ViewCustomer
                             customerRecords={customerRecords}
                             setOpenPopup={setOpenPopup}
                             setAction={setAction}
-                        /> :
+                        />
+                    }
+                    {
+                        (action === 'Edit' || action === 'Create') &&
                         <CustomerForm
                             addOrEdit={addOrEdit}
                             customerRecords={customerRecords}

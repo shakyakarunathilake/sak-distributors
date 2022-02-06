@@ -100,6 +100,7 @@ router.get("/get-all-supplier-table-data", (req, res, next) => {
                 "abbreviation": x.abbreviation,
                 "contactperson": x.title + ' ' + x.contactperson,
                 "contactnumber": x.contactnumber,
+                "email": x.email
             }))
 
             res.status(201).json({

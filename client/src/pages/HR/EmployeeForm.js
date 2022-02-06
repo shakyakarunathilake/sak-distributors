@@ -166,7 +166,7 @@ export default function EmployeesForm(props) {
                                             name={"employeeimage"}
                                             control={control}
                                             defaultValue=""
-                                            rules={{ required: { value: true, message: "Employee Image is required" } }}
+                                            rules={{ required: { value: true, message: "Required *" } }}
                                             render={({ field: { onChange } }) => (
                                                 <input
                                                     type="file"
@@ -253,7 +253,7 @@ export default function EmployeesForm(props) {
                                     name={"fullname"}
                                     control={control}
                                     rules={{
-                                        required: { value: true, message: "Full name is required" },
+                                        required: { value: true, message: "Required *" },
                                     }}
                                     render={({ field: { onChange, value } }) => (
                                         <TextField
@@ -265,6 +265,7 @@ export default function EmployeesForm(props) {
                                             onChange={onChange}
                                             value={value}
                                             label="Full Name *"
+                                            size="small"
                                         />
                                     )}
                                 />
@@ -277,7 +278,7 @@ export default function EmployeesForm(props) {
                                         name={"title"}
                                         control={control}
                                         rules={{
-                                            required: { value: true, message: "Title is required" },
+                                            required: { value: true, message: "Required *" },
                                         }}
                                         render={({ field: { onChange, value } }) => (
                                             <Select
@@ -288,6 +289,7 @@ export default function EmployeesForm(props) {
                                                 value={value}
                                                 options={employeeservice.getTitleOptions()}
                                                 label="Title *"
+                                                size="small"
                                             />
                                         )}
                                     />
@@ -298,7 +300,7 @@ export default function EmployeesForm(props) {
                                         name={"firstname"}
                                         control={control}
                                         rules={{
-                                            required: { value: true, message: "First name is required" },
+                                            required: { value: true, message: "Required *" },
                                         }}
                                         render={({ field: { onChange, value } }) => (
                                             <TextField
@@ -310,6 +312,7 @@ export default function EmployeesForm(props) {
                                                 onChange={onChange}
                                                 value={value}
                                                 label="First Name *"
+                                                size="small"
                                             />
                                         )}
                                     />
@@ -320,7 +323,7 @@ export default function EmployeesForm(props) {
                                         name={"lastname"}
                                         control={control}
                                         rules={{
-                                            required: { value: true, message: "Last name is required" },
+                                            required: { value: true, message: "Required *" },
                                         }}
                                         render={({ field: { onChange, value } }) => (
                                             <TextField
@@ -332,6 +335,7 @@ export default function EmployeesForm(props) {
                                                 onChange={onChange}
                                                 value={value}
                                                 label="Last Name *"
+                                                size="small"
                                             />
                                         )}
                                     />
@@ -345,7 +349,7 @@ export default function EmployeesForm(props) {
                                         name={"nic"}
                                         control={control}
                                         rules={{
-                                            required: { value: true, message: "NIC is required" },
+                                            required: { value: true, message: "Required *" },
                                         }}
                                         render={({ field: { onChange, value } }) => (
                                             <TextField
@@ -357,6 +361,7 @@ export default function EmployeesForm(props) {
                                                 onChange={onChange}
                                                 value={value}
                                                 label="NIC *"
+                                                size="small"
                                             />
                                         )}
                                     />
@@ -367,7 +372,7 @@ export default function EmployeesForm(props) {
                                         name={"dob"}
                                         control={control}
                                         rules={{
-                                            required: { value: true, message: "Date of birth is required" },
+                                            required: { value: true, message: "Required *" },
                                         }}
                                         render={({ field: { onChange, value } }) => (
                                             <DatePicker
@@ -377,6 +382,7 @@ export default function EmployeesForm(props) {
                                                 onChange={onChange}
                                                 value={value}
                                                 label="Date of Birth *"
+                                                size="small"
                                             />
                                         )}
                                     />
@@ -391,7 +397,7 @@ export default function EmployeesForm(props) {
                                         name={"gender"}
                                         control={control}
                                         rules={{
-                                            required: { value: true, message: "Gender is required" },
+                                            required: { value: true, message: "Required *" },
                                         }}
                                         render={({ field: { onChange, value } }) => (
                                             <Select
@@ -402,6 +408,7 @@ export default function EmployeesForm(props) {
                                                 onChange={onChange}
                                                 value={value}
                                                 label="Gender *"
+                                                size="small"
                                             />
                                         )}
                                     />
@@ -413,7 +420,7 @@ export default function EmployeesForm(props) {
                                         name={"civilstatus"}
                                         control={control}
                                         rules={{
-                                            required: { value: true, message: "Civil Status is required" },
+                                            required: { value: true, message: "Required *" },
                                         }}
                                         render={({ field: { onChange, value } }) => (
                                             <Select
@@ -424,6 +431,7 @@ export default function EmployeesForm(props) {
                                                 options={employeeservice.getCivilStatusOptions()}
                                                 value={value}
                                                 label="Civil Status *"
+                                                size="small"
                                             />
                                         )}
                                     />
@@ -438,7 +446,7 @@ export default function EmployeesForm(props) {
                                         name={"designation"}
                                         control={control}
                                         rules={{
-                                            required: { value: true, message: "Designation is required" },
+                                            required: { value: true, message: "Required *" },
                                         }}
                                         render={({ field: { onChange, value } }) => (
                                             <Select
@@ -452,6 +460,7 @@ export default function EmployeesForm(props) {
                                                 options={employeeservice.getDesignationOptions()}
                                                 value={value}
                                                 label="Designation *"
+                                                size="small"
                                             />
                                         )}
                                     />
@@ -463,8 +472,8 @@ export default function EmployeesForm(props) {
                                         name={"contactnumber"}
                                         control={control}
                                         rules={{
-                                            required: { value: true, message: "Contact Number is required" },
-                                            pattern: { value: /^[0-9]{10}$/, message: "Contact Number is invalid" }
+                                            required: { value: true, message: "Required *" },
+                                            pattern: { value: /^[0-9]{10}$/, message: "Invalid" }
                                         }}
                                         render={({ field: { onChange, value } }) => (
                                             <TextField
@@ -476,6 +485,7 @@ export default function EmployeesForm(props) {
                                                 placeholder="Ex: 071 2686790"
                                                 value={value}
                                                 label="Contact Number *"
+                                                size="small"
                                             />
                                         )}
                                     />
@@ -490,7 +500,7 @@ export default function EmployeesForm(props) {
                                     name={"address"}
                                     control={control}
                                     rules={{
-                                        required: { value: true, message: "Address is required" },
+                                        required: { value: true, message: "Required *" },
                                     }}
                                     render={({ field: { onChange, value } }) => (
                                         <TextField
@@ -502,6 +512,7 @@ export default function EmployeesForm(props) {
                                             placeholder="Ex: Weekadawatta, Kansalagamuwa, Rambukkana"
                                             value={value}
                                             label="Address *"
+                                            size="small"
                                         />
                                     )}
                                 />
@@ -513,8 +524,11 @@ export default function EmployeesForm(props) {
                                     name={"email"}
                                     control={control}
                                     rules={{
-                                        required: { value: true, message: "Email is required" },
-                                        pattern: { value: /^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, message: "Email is invalid" }
+                                        required: { value: true, message: "Required *" },
+                                        pattern: {
+                                            value: /^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                                            message: "Invalid"
+                                        }
                                     }}
                                     render={({ field: { onChange, value } }) => (
                                         <TextField
@@ -526,6 +540,7 @@ export default function EmployeesForm(props) {
                                             placeholder="Ex: karunathilakeshakya@gmail.com"
                                             value={value}
                                             label="Email *"
+                                            size="small"
                                         />
                                     )}
                                 />
@@ -539,7 +554,7 @@ export default function EmployeesForm(props) {
                                         name={"employeestatus"}
                                         control={control}
                                         rules={{
-                                            required: { value: true, message: "Employee Status is required" },
+                                            required: { value: true, message: "Required *" },
                                         }}
                                         render={({ field: { onChange, value } }) => (
                                             <Select
@@ -550,6 +565,7 @@ export default function EmployeesForm(props) {
                                                 options={employeeservice.getEmployeeStatusOptions()}
                                                 value={limitedAccess ? "Limited Access" : value}
                                                 label="Employee Status *"
+                                                size="small"
                                             />
                                         )}
                                     />
@@ -560,7 +576,7 @@ export default function EmployeesForm(props) {
                                         name={"hireddate"}
                                         control={control}
                                         rules={{
-                                            required: { value: true, message: "Hired date is required" },
+                                            required: { value: true, message: "Required *" },
                                         }}
                                         render={({ field: { onChange, value } }) => (
                                             <DatePicker
@@ -570,6 +586,7 @@ export default function EmployeesForm(props) {
                                                 onChange={onChange}
                                                 value={value}
                                                 label="Hired Date *"
+                                                size="small"
                                             />
                                         )}
                                     />

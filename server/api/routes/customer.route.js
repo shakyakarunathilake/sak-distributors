@@ -69,6 +69,9 @@ router.post("/create-customer", formDataBody.fields([]), (req, res, next) => {
         billingaddress: req.body.billingaddress,
         shippingaddress: req.body.shippingaddress,
         registeredby: req.body.registeredby,
+        creditamounttosettle: req.body.creditamounttosettle,
+        loyaltypoints: req.body.loyaltypoints,
+
     });
 
     customer
@@ -83,7 +86,6 @@ router.post("/create-customer", formDataBody.fields([]), (req, res, next) => {
                 message: "Handeling POST requests to /customers/create-customer, CUSTOMER SAVED",
                 type: 'success',
                 alert: `${result.storename} added`,
-                addedCustomer: result
             });
         })
         .catch(err => {
@@ -133,8 +135,7 @@ router.get("/get-all-customer-table-data", (req, res, next) => {
             const tbody = doc.map(x => ({
                 "customerid": x.customerid,
                 "storename": x.storename,
-                "title": x.title,
-                "customername": x.firstname + " " + x.lastname,
+                "customername": x.title + " " + x.firstname + " " + x.lastname,
                 "shippingaddress": x.shippingaddress,
                 "contactnumber": x.customercontactnumber,
             }))
@@ -175,6 +176,9 @@ router.get("/:customerid", (req, res, next) => {
                 'customercontactnumber': doc.customercontactnumber,
                 'storecontactnumber': doc.storecontactnumber,
                 'registeredby': doc.registeredby,
+                'creditamounttosettle': doc.creditamounttosettle,
+                'loyaltypoints': doc.loyaltypoints,
+
             }
 
             res.status(200).json({
@@ -200,7 +204,6 @@ router.post("/update-by-id/:customerid", formDataBody.fields([]), (req, res, nex
                 message: "Handling POST requests to /customers/update-by-id/:customerid, CUSTOMER UPDATED",
                 type: 'success',
                 alert: `${doc.firstname} ${doc.lastname} updated`,
-                updatedCustomer: doc
             });
         })
         .catch(err => {

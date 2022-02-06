@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const multer = require("multer");
 
 const Product = require("../models/product.model");
+const Store = require("../models/store.model");
 
 const storage = multer.diskStorage({
     destination: function (req, file, callback) {
@@ -55,6 +56,7 @@ router.get("/get-all-product-table-data", (req, res, next) => {
                         name: main.name,
                         supplier: main.supplier,
                         variantid: sub.variantid,
+                        offercaption: sub.offercaption,
                         type: sub.type,
                         status: sub.status,
                     })
@@ -73,7 +75,6 @@ router.get("/get-all-product-table-data", (req, res, next) => {
             res.status(500).json({ "Error": err });
         })
 })
-
 
 // Get next product id
 router.get("/get-next-productid", (req, res, next) => {
@@ -114,9 +115,6 @@ router.get("/get-next-productid", (req, res, next) => {
 //Create a product
 router.post("/create-product", uploads.single("productimage"), (req, res, next) => {
 
-    console.log("Body: ", req.body);
-    console.log("Added Date: ", req.body.addeddate);
-
     const addeddate = new Date(req.body.addeddate).toISOString().split('T')[0];
 
     const product = new Product({
@@ -134,15 +132,48 @@ router.post("/create-product", uploads.single("productimage"), (req, res, next) 
         .save()
         .then(result => {
 
-            console.log("Product Created: ", result);
+            const store = new Store({
+                _id: mongoose.Types.ObjectId(),
+                productid: result.productid,
+                name: result.name,
+                storequantity: [{
+                    salesqtycases: 0,
+                    salesqtypieces: 0,
+                    freeqtycases: 0,
+                    freeqtypieces: 0,
+                }]
+            })
+
+            store
+                .save()
+                .then(result => {
+
+                    console.log("********  STORE UPDATED  ********")
+                    console.log(result)
+
+                })
+                .catch(error => {
+
+                    console.log("******** ERROR WHILE UPDATING THE STORE  ********")
+                    console.log(error)
+
+                    res.status(200).json({
+                        type: 'error',
+                        alert: `Something went wrong. Could not update store`
+                    });
+                });
+
+            return result;
+        })
+        .then(result =>
 
             res.status(201).json({
                 message: "Handeling POST requests to /products/create-product, PRODUCT SAVED",
                 type: 'success',
                 alert: `${result.name} (${result.productid}) added`,
-                addedProduct: result,
             })
-        })
+
+        )
         .catch(err => {
             res.status(200).json({
                 type: 'error',
@@ -165,6 +196,7 @@ router.post("/add-new-variant/:productid", uploads.single("productimage"), (req,
                     'variants': {
                         'variantid': req.body.variantid,
                         'type': req.body.type,
+                        'piecespercase': req.body.piecespercase,
                         'bulkprice': req.body.bulkprice,
                         'mrp': req.body.mrp,
                         'sellingprice': req.body.sellingprice,
@@ -179,14 +211,13 @@ router.post("/add-new-variant/:productid", uploads.single("productimage"), (req,
             { upsert: true }
         )
         .exec()
-        .then(doc => {
+        .then(doc =>
             res.status(200).json({
                 message: "Handling POST requests to /products/add-new-variant/:productid , VARIANT SAVED",
                 type: 'success',
                 alert: `${doc.name} (${doc.productid}): ${req.body.variantid} added`,
-                addedVariant: doc
-            });
-        })
+            })
+        )
         .catch(err => {
             res.status(200).json({
                 type: 'error',
@@ -255,7 +286,19 @@ router.get("/:productid/:variantid", (req, res, next) => {
 
             product = {
                 ...product,
-                variant
+                'variant': {
+                    'variantid': variant.variantid,
+                    'type': variant.type,
+                    'piecespercase': variant.piecespercase,
+                    'bulkprice': variant.bulkprice.toFixed(2),
+                    'mrp': variant.mrp.toFixed(2),
+                    'sellingprice': variant.sellingprice.toFixed(2),
+                    'purchaseprice': variant.purchaseprice.toFixed(2),
+                    'offercaption': variant.offercaption,
+                    'status': variant.status,
+                    'addeddate': variant.addeddate,
+                    'addedby': variant.addedby
+                }
             }
 
             console.log("Document: ", doc);
@@ -292,13 +335,13 @@ router.post("/update-by-id/:productid", uploads.single("productimage"), (req, re
             { upsert: true }
         )
         .exec()
-        .then(doc => {
+        .then(doc =>
             res.status(200).json({
                 message: "Handling POST requests to /products/update-by-id/:productid, PRODUCT UPDATED",
                 type: 'success',
                 alert: `${doc.name} (${doc.productid}) Updated`,
-            });
-        })
+            })
+        )
         .catch(err => {
             res.status(200).json({
                 type: 'error',
@@ -319,6 +362,7 @@ router.post("/update-by-id/:productid/:variantid", uploads.single("productimage"
                     'productid': req.body.productid,
                     'status': req.body.productstatus,
                     'variants.$.type': req.body.type,
+                    'variants.$.piecespercase': req.body.piecespercase,
                     'variants.$.bulkprice': req.body.bulkprice,
                     'variants.$.mrp': req.body.mrp,
                     'variants.$.price': req.body.price,
@@ -331,14 +375,13 @@ router.post("/update-by-id/:productid/:variantid", uploads.single("productimage"
             { upsert: true }
         )
         .exec()
-        .then(doc => {
+        .then(doc =>
             res.status(200).json({
                 message: "Handling POST requests to /products/update-by-id/:productid, PRODUCT UPDATED",
                 type: 'success',
                 alert: `${doc.name} (${doc.productid}) : ${req.params.variantid} Updated`,
-                updatedProduct: doc
-            });
-        })
+            })
+        )
         .catch(err => {
             res.status(200).json({
                 type: 'error',

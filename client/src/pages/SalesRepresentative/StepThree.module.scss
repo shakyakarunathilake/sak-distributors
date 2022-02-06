@@ -3,8 +3,8 @@
 .three {
     display: grid;
     grid-template-rows: min-content auto min-content;
-    width: calc(100vw - 48px);
-    height: calc(100vh - 20px);
+    width: 100%;
+    height: 100%;
     box-sizing: border-box;
 
     .header {
@@ -29,7 +29,7 @@
     }
 
     .body {
-        margin: 20px 0px 0px 0px;
+        margin: 10px 0px 0px 0px;
     }
 
     .btndiv {
@@ -55,9 +55,10 @@
         .backBtn {
             Button {
                 font-size: 1em;
-                width: auto;
+                padding: $formButtonPadding2;
                 background-color: #aca9bb;
                 color: $inverseFontColor;
+                height: 40px;
 
                 &:disabled {
                     background-color: #c2c2c2;
@@ -73,7 +74,8 @@
                 background-color: $primaryMain;
                 color: $inverseFontColor;
                 font-size: 1em;
-                width: auto;
+                padding: $formButtonPadding2;
+                height: 40px;
 
                 &:disabled {
                     background-color: hsl(230, 66%, 57%);

@@ -1,0 +1,48 @@
+@import "../../styles/variables";
+
+.container {
+    display: grid;
+    grid-template-rows: min-content auto min-content;
+    width: 500px;
+    height: min-content;
+    box-sizing: border-box;
+
+    .header {
+        display: grid;
+        grid-template-columns: auto min-content;
+        font-size: 1.55em;
+        font-weight: 600;
+        .icon {
+            color: red;
+            &:hover {
+                transform: scale(1.1);
+            }
+        }
+    }
+
+    .body {
+        padding: 20px 0;
+
+        .blue {
+            font-weight: 600;
+            color: $primaryMain;
+        }
+    }
+
+    .footer {
+        text-align: right;
+        padding: 10px 0px 10px 0px;
+
+        Button {
+            font-size: 1em;
+           padding: $formButtonPadding;
+            height: 40px;
+            width: auto;
+
+            &:disabled {
+                background-color: hsl(230, 66%, 57%);
+                color: $inverseFontColor;
+            }
+        }
+    }
+}

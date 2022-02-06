@@ -7,11 +7,17 @@ import PopUp from '../../shared/PopUp/PopUp';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
-//SCSS styles
+//Styles
 import style from './ManageProduct.module.scss';
+import { makeStyles } from '@material-ui/core/styles';
 
 //Material UI 
-import Button from '@material-ui/core/Button';
+import {
+    TableHead,
+    TableRow,
+    TableCell,
+    Button,
+} from '@material-ui/core';
 
 //Material UI Icons
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -31,8 +37,26 @@ const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
+const useStyles = makeStyles({
+    tablehead: {
+        position: 'sticky',
+        top: 0,
+        zIndex: 999
+    },
+    row: {
+        "& .MuiTableCell-head": {
+            color: "white",
+            backgroundColor: "#20369f",
+            fontSize: "0.8em",
+            border: "none",
+            padding: "16px"
+        },
+    },
+});
 
 export default function ManageProduct() {
+
+    const classes = useStyles();
 
     const [type, setType] = useState();
     const [open, setOpen] = useState(false);
@@ -51,6 +75,8 @@ export default function ManageProduct() {
 
     const [nextId, setNextId] = useState([]);
     const [reRender, setReRender] = useState(null);
+
+    const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
 
     const handleAlert = () => {
         setOpen(true);
@@ -87,6 +113,7 @@ export default function ManageProduct() {
         for (let [key, value] of product.entries()) {
             console.log(key, value);
         }
+
         if (action === "Create") {
             axios
                 .post("http://localhost:8080/products/create-product", product)
@@ -100,8 +127,9 @@ export default function ManageProduct() {
                     console.log(err);
                 });
             ;
+        }
 
-        } if (action === "Edit") {
+        if (action === "Edit") {
             axios
                 .post(`http://localhost:8080/products/update-by-id/${productid}`, product)
                 .then(res => {
@@ -140,7 +168,8 @@ export default function ManageProduct() {
                 });
             ;
             setOpenPopup(false);
-        } else {
+        }
+        else {
             axios
                 .post(`http://localhost:8080/products/update-by-id/${productid}/${variantid}`, product)
                 .then(res => {
@@ -239,7 +268,7 @@ export default function ManageProduct() {
                 <div className={style.actionRow}>
 
                     <Button
-                        className={JSON.parse(sessionStorage.getItem("Auth")).designation !== 'Purchasing Manager' ? style.hidden : style.productbutton}
+                        className={designation !== 'Purchasing Manager' ? style.hidden : style.productbutton}
                         color="primary"
                         size="medium"
                         variant="contained"
@@ -259,7 +288,7 @@ export default function ManageProduct() {
                     </Button>
 
                     <Button
-                        className={JSON.parse(sessionStorage.getItem("Auth")).designation !== 'Purchasing Manager' ? style.hidden : style.variantbutton}
+                        className={designation !== 'Purchasing Manager' ? style.hidden : style.variantbutton}
                         color="primary"
                         size="medium"
                         variant="contained"
@@ -280,32 +309,133 @@ export default function ManageProduct() {
                 </div>
 
                 <div className={style.pagecontent}>
+
                     <MaterialTable
+                        components={{
+                            Header: props => (
+                                <TableHead {...props} className={classes.tablehead}>
+                                    <TableRow className={classes.row}>
+                                        <TableCell width="auto" padding="none">
+                                            <div style={{ padding: '0 10px' }}>
+
+                                            </div>
+                                        </TableCell>
+                                        <TableCell width="8%" padding="none">
+                                            <div style={{ padding: '0 10px' }}>
+                                                Product ID
+                                            </div>
+                                        </TableCell>
+                                        <TableCell width="8%" padding="none">
+                                            <div style={{ padding: '0 10px' }}>
+                                                Variant ID
+                                            </div>
+                                        </TableCell>
+                                        <TableCell width="26%" padding="none">
+                                            <div style={{ padding: '0 10px' }}>
+                                                Name
+                                            </div>
+                                        </TableCell>
+                                        <TableCell width="17%" padding="none">
+                                            <div style={{ padding: '0 10px' }}>
+                                                Supplier
+                                            </div>
+                                        </TableCell>
+                                        <TableCell width="8%" padding="none">
+                                            <div style={{ padding: '0 10px' }}>
+                                                Type
+                                            </div>
+                                        </TableCell>
+                                        <TableCell width="24%" padding="none">
+                                            <div style={{ padding: '0 10px' }}>
+                                                Offer Caption
+                                            </div>
+                                        </TableCell>
+                                        <TableCell width="8%" padding="none">
+                                            <div style={{ padding: '0 10px' }}>
+                                                Status
+                                            </div>
+                                        </TableCell>
+                                        <TableCell width="8%" padding="none" textAlign="center">
+                                            <div style={{ padding: '0 10px' }}>
+                                                Action
+                                            </div>
+                                        </TableCell>
+                                    </TableRow>
+                                </TableHead>
+                            ),
+                        }}
                         columns={[
                             {
-                                title: "Product ID", field: "productid", render: rowData => {
+                                title: "Product ID",
+                                field: "productid",
+                                render: rowData => {
                                     return (
                                         <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.productid}</p>
                                     )
+                                },
+                                cellStyle: {
+                                    width: "8%",
+                                    textAlign: 'left'
                                 }
                             },
                             {
-                                title: "Variant ID", field: "variantid", render: rowData => {
+                                title: "Variant ID",
+                                field: "variantid",
+                                render: rowData => {
                                     return (
                                         <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.variantid}</p>
                                     )
+                                },
+                                cellStyle: {
+                                    width: "8%",
+                                    textAlign: 'left'
                                 }
                             },
-                            { title: "Name", field: "name" },
-                            { title: "Supplier", field: "supplier" },
-                            { title: "Type", field: "type" },
                             {
-                                title: "Status", field: "status", render: rowData => {
+                                title: "Name",
+                                field: "name",
+                                cellStyle: {
+                                    width: "26%",
+                                    textAlign: 'left'
+                                }
+                            },
+                            {
+                                title: "Supplier",
+                                field: "supplier",
+                                cellStyle: {
+                                    width: "17%",
+                                    textAlign: 'left'
+                                }
+                            },
+                            {
+                                title: "Type",
+                                field: "type",
+                                cellStyle: {
+                                    width: "8%",
+                                    textAlign: 'left'
+                                }
+                            },
+                            {
+                                title: "Offer Caption",
+                                field: "offercaption",
+                                cellStyle: {
+                                    width: "24%",
+                                    textAlign: 'left'
+                                }
+                            },
+                            {
+                                title: "Status",
+                                field: "status",
+                                render: rowData => {
                                     return (
                                         rowData.status === "Active" ?
                                             <p style={{ padding: "0", margin: "0", color: "#4cbb17", fontWeight: "700" }}>{rowData.status}</p> :
                                             <p style={{ padding: "0", margin: "0", color: "red", fontWeight: "700" }}>{rowData.status}</p>
                                     )
+                                },
+                                cellStyle: {
+                                    width: "8%",
+                                    textAlign: 'left'
                                 }
                             },
                         ]}
@@ -318,7 +448,7 @@ export default function ManageProduct() {
                             search: false,
                             paging: false,
                             actionsColumnIndex: -1,
-                            maxBodyHeight: JSON.parse(sessionStorage.getItem("Auth")).designation !== 'Purchasing Manager' ? "calc(100vh - 126px)" :"calc(100vh - 199.27px)",
+                            maxBodyHeight: designation !== 'Purchasing Manager' ? "calc(100vh - 126px)" : "calc(100vh - 199.27px)",
                             headerStyle: {
                                 position: "sticky",
                                 top: "0",
@@ -328,7 +458,7 @@ export default function ManageProduct() {
                             },
                             rowStyle: rowData => ({
                                 fontSize: "0.8em",
-                                backgroundColor: (rowData.tableData.id % 2 === 0) ? '#ebebeb' : '#ffffff'
+                                backgroundColor: !!rowData.variantid ? '#ebebeb' : '#ffffff'
                             })
                         }}
                         actions={[
@@ -341,7 +471,7 @@ export default function ManageProduct() {
                                 }
                             },
                             {
-                                disabled: JSON.parse(sessionStorage.getItem("Auth")).designation !== 'Purchasing Manager',
+                                disabled: designation !== 'Purchasing Manager',
                                 icon: 'edit',
                                 tooltip: 'Edit',
                                 onClick: (event, rowData) => {
@@ -352,6 +482,7 @@ export default function ManageProduct() {
                             }
                         ]}
                     />
+
                 </div>
                 <PopUp
                     openPopup={openPopup}

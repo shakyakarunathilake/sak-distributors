@@ -1,0 +1,8 @@
+@import "../../styles/variables";
+
+.container {
+    height: calc(100vh - 86px);
+    width: 100vw;
+    padding: 20px;
+    box-sizing: border-box;
+}

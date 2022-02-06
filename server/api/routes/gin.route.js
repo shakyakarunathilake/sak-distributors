@@ -3,9 +3,10 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const multer = require("multer");
 
-const MetaData = require("../models/metadata.model")
 const Order = require("../models/order.model");
 const GIN = require("../models/gin.model");
+const MetaData = require("../models/metadata.model");
+const Store = require("../models/store.model");
 
 const formDataBody = multer();
 
@@ -25,13 +26,41 @@ router.get("/get-all-gin-table-data", (req, res, next) => {
         .then(doc => {
 
             const tbody = doc.map(x => ({
-                orderno: x.orderno,
                 ginnumber: x.ginnumber,
-                customer: x.customerid ? `${x.storename} (${x.customerid})` : x.storename,
+                route: x.route,
+                incharge: x.incharge,
                 status: x.status,
+                createdby: x.createdby
             }))
 
-            console.log("TBODY: ", tbody);
+            res.status(201).json({
+                message: "Handeling GET requests to /get-all-gin-table-data",
+                tbody: tbody,
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        })
+
+})
+
+router.get("/get-all-gin-table-data/:employee", (req, res, next) => {
+
+    GIN
+        .find({ incharge: req.params.employee })
+        .exec()
+        .then(doc => {
+
+            const candidates = doc.filter(x => x.status === "Dispatched" || "Complete")
+
+            const tbody = candidates.map(x => ({
+                ginnumber: x.ginnumber,
+                route: x.route,
+                incharge: x.incharge,
+                status: x.status,
+                createdby: x.createdby
+            }))
 
             res.status(201).json({
                 message: "Handeling GET requests to /get-all-gin-table-data",
@@ -53,41 +82,9 @@ router.get("/:ginnumber", (req, res, next) => {
         .findOne({ ginnumber: id })
         .exec()
         .then(doc => {
-
-            const gin = {
-                'orderno': doc.orderno,
-                'status': doc.status,
-                'ginnumber': doc.ginnumber,
-                'customer':  doc.customerid ? `${doc.storename} (${doc.customerid})` : doc.storename,
-                'createdat': doc.createdat,
-                'createdby': doc.createdby,
-                'total': doc.total,
-                'gintotal': doc.total,
-                'items': [
-                    {
-                        "freeqtycases": doc.items[0].freeqtycases,
-                        "deliveringfreeqtycases": doc.items[0].deliveringfreeqtycases ? doc.items[0].deliveringfreeqtycases : doc.items[0].freeqtycases,
-                        "freeqtypieces": doc.items[0].freeqtypieces,
-                        "deliveringfreeqtypieces": doc.items[0].deliveringfreeqtypieces ? doc.items[0].deliveringfreeqtypieces : doc.items[0].freeqtypieces,
-                        "description": doc.items[0].description,
-                        "piecespercase": doc.items[0].piecespercase,
-                        "price": doc.items[0].price,
-                        "salesqtycases": doc.items[0].salesqtycases,
-                        "deliveringsalesqtycases": doc.items[0].deliveringsalesqtycases ? doc.items[0].deliveringsalesqtycases : doc.items[0].salesqtycases,
-                        "grossamount": doc.items[0].grossamount,
-                        "gingrossamount": doc.items[0].grossamount,
-                        "salesqtypieces": doc.items[0].salesqtypieces,
-                        "deliveringsalesqtypieces": doc.items[0].deliveringsalesqtypieces ? doc.items[0].deliveringsalesqtypieces : doc.items[0].salesqtypieces,
-                        "tableData": doc.items[0].tableData
-                    }
-                ]
-            }
-
-            console.log("GIN RECORDS: ", gin);
-
             res.status(200).json({
                 message: "Handeling GET requests to /:ginnumber",
-                gin: gin
+                gin: doc
             });
         })
         .catch(err => {
@@ -96,85 +93,276 @@ router.get("/:ginnumber", (req, res, next) => {
         })
 })
 
-//Update GIN by GIN Number
-router.post("/update-by-ginnumber/:ginnumber", formDataBody.fields([]), (req, res, next) => {
-    console.log("UPDATE: ", req.body);
+//Create GIN
+router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
 
     const items = JSON.parse(req.body.items);
+    const ordernumbers = JSON.parse(req.body.ordernumbers);
+
+    console.log(req.body)
+
+    const gin = new GIN({
+        _id: new mongoose.Types.ObjectId(),
+        ginnumber: req.body.ginnumber,
+        createdat: req.body.createdat,
+        createdby: req.body.createdby,
+        route: req.body.route,
+        ordernumbers: ordernumbers,
+        items: items,
+        total: req.body.total,
+        status: req.body.status,
+        incharge: '',
+        vehicle: ''
+    })
+
+    gin
+        .save()
+        .then(result => {
+
+            result.ordernumbers.map(order => {
+
+                Order
+                    .findOneAndUpdate(
+                        { orderno: order },
+                        {
+                            'status': result.status,
+                        },
+                        { new: true }
+                    )
+                    .exec()
+                    .then(doc => {
+                        console.log("ORDER STATUS UPDATED: ", doc);
+                    })
+                    .catch(err => {
+
+                        console.log("ORDER STATUS UPDATE ERROR: ", err);
+
+                        res.status(200).json({
+                            type: 'error',
+                            alert: `Something went wrong. Could not update order status`,
+                        });
+                    });
+            })
+
+            return result;
+
+        })
+        .then(result => {
+
+            result.ordernumbers.map(order => {
+
+                MetaData
+                    .findOneAndUpdate(
+                        {},
+                        {
+                            $pull: {
+                                'noofcustomerorders': {
+                                    'orderno': order
+                                }
+                            }
+                        },
+                        { upsert: true }
+                    )
+                    .exec()
+                    .then(doc => {
+                        console.log("****** META DATA ADDED ******");
+                        console.log(doc);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        res.status(200).json({
+                            type: 'error',
+                            alert: `Something went wrong. Could not update Meta Data `,
+                        })
+                    });
+            })
+
+            return result;
+        })
+        .then(result =>
+            res.status(201).json({
+                message: "Handeling POST requests to /gin/create-gin, GIN CREATED",
+                type: 'success',
+                alert: `${result.ginnumber} added`,
+            })
+        )
+        .catch(err => {
+
+            console.log("CREATE GIN ERROR: ", err);
+
+            res.status(200).json({
+                type: 'error',
+                alert: `Something went wrong. Could not create GIN`,
+            });
+        })
+})
+
+//Update GIN by GIN Number
+router.post("/update-by-ginnumber/:ginnumber", formDataBody.fields([]), (req, res, next) => {
 
     GIN
         .findOneAndUpdate(
             { "ginnumber": req.params.ginnumber },
             {
                 '$set': {
-                    'createdat': req.body.createdat,
-                    'createdby': req.body.createdby,
-                    'status': req.body.status,
-                    'items': items,
-                    'gintotal': req.body.gintotal,
+                    'vehicle': req.body.vehicle,
+                    'incharge': req.body.incharge,
                 }
             },
             { upsert: true }
         )
         .exec()
-        .then(doc => {
-
-            Order
-                .findOneAndUpdate(
-                    { "orderno": doc.orderno },
-                    {
-                        '$set': {
-                            'status': 'Completed',
-                        }
-                    },
-                    { upsert: true }
-                )
-                .exec()
-                .then(doc => {
-
-                    console.log("ORDER ADDED: ", doc)
-
-                    MetaData
-                        .findOneAndUpdate(
-                            {},
-                            {
-                                $pull: {
-                                    'customerorders': {
-                                        'orderno': doc.orderno
-                                    },
-                                    'awaitinggindata': {
-                                        'orderno': doc.orderno
-                                    },
-                                }
-                            },
-                            { upsert: true }
-                        )
-                        .exec()
-                        .then(result =>
-                            console.log("META DATA ADDED: ", result)
-                        )
-                        .catch(err => {
-                            console.log(err);
-                            res.status(200).json({
-                                type: 'error',
-                                alert: `Something went wrong. Could not update Meta Data `,
-                            })
-                        })
-                })
-                .catch(err => {
-                    res.status(200).json({
-                        type: 'error',
-                        alert: `Something went wrong. Could not update relevant Order `,
-                    });
-                    console.log(err);
-                })
-
+        .then(doc =>
             res.status(200).json({
                 message: "Handling POST requests to /gin/update-by-id/:ginnumber, GIN UPDATED",
                 type: 'success',
                 alert: `${doc.ginnumber} updated`,
+            })
+        )
+        .catch(err => {
+            res.status(200).json({
+                type: 'error',
+                alert: `Something went wrong. Could not update GIN`,
             });
+            console.log(err);
+        });
+});
+
+//Approve dispatch GIN by GIN Number
+router.post("/approve-dispatch/:ginnumber", formDataBody.fields([]), (req, res, next) => {
+
+    GIN
+        .findOneAndUpdate(
+            { "ginnumber": req.params.ginnumber },
+            {
+                '$set': {
+                    'status': req.body.status,
+                    'vehicle': req.body.vehicle,
+                    'incharge': req.body.incharge,
+                }
+            },
+            { new: true, upsert: true }
+        )
+        .exec()
+        .then(doc => {
+
+            const incharge = doc.incharge;
+
+            doc.ordernumbers.map(orderno => {
+
+                Order
+                    .findOneAndUpdate(
+                        { "orderno": orderno },
+                        {
+                            '$set': {
+                                'status': 'Dispatched',
+                                'deliveredby': incharge,
+                            }
+                        },
+                        { upsert: true }
+                    )
+                    .exec()
+                    .then(doc => {
+                        // console.log("******** UPDATED ORDER STATUS OF ORDER NUMBER ********")
+                        // console.log(doc.orderno);
+                    })
+                    .catch(err => {
+                        res.status(200).json({
+                            type: 'error',
+                            alert: `Something went wrong. Could not update status of relevant orders`,
+                        });
+                        console.log(err);
+                    });
+
+            });
+
+            return doc;
         })
+        .then(doc => {
+
+            doc.items.map(item => {
+
+                const name = item.description.substring(item.description.indexOf("-") + 1);
+
+                Store
+                    .findOneAndUpdate(
+                        { name: name },
+                        {
+                            $inc: {
+                                'storequantity.salesqtycases': -parseInt(item.salesqtycases),
+                                'storequantity.salesqtypieces': -parseInt(item.salesqtypieces),
+                                'storequantity.freeqtypieces': -parseInt(item.freeqtypieces),
+                                'storequantity.freeqtycases': -parseInt(item.freeqtycases)
+                            },
+                            $push: {
+                                'grngin': {
+                                    'grnnumberginnumber': doc.ginnumber,
+                                    'date': doc.createdat,
+                                    'piecespercase': item.piecespercase,
+                                    'listorsellingprice': item.sellingprice,
+                                    'salesqtycases': item.salesqtycases,
+                                    'salesqtypieces': item.salesqtypieces,
+                                    'freeqtycases': item.freeqtycases,
+                                    'freeqtypieces': item.freeqtypieces,
+                                }
+                            }
+                        },
+                        { new: true }
+                    )
+                    .exec()
+                    .then(doc => {
+                        // console.log("******** ITEMS ADDED TO STORE ********");
+                        // console.log(doc);
+                    })
+                    .catch(err => {
+                        res.status(200).json({
+                            type: 'error',
+                            alert: `Something went wrong. Could not update store`,
+                        });
+                        console.log(err);
+                    })
+            })
+
+            return doc;
+        })
+        .then(doc =>
+            res.status(200).json({
+                message: "Handling POST requests to /gin/approve-dispatch/:ginnumber, GIN STATUS CHANGED TO DISPATCHED",
+                type: 'success',
+                alert: `${doc.ginnumber} status updated`,
+            })
+        )
+        .catch(err => {
+            res.status(200).json({
+                type: 'error',
+                alert: `Something went wrong. Could not update GIN`,
+            });
+            console.log(err);
+        });
+});
+
+
+//Approve complete GIN by GIN Number
+router.post("/approve-complete/:ginnumber", formDataBody.fields([]), (req, res, next) => {
+
+    GIN
+        .findOneAndUpdate(
+            { "ginnumber": req.params.ginnumber },
+            {
+                '$set': {
+                    'status': req.body.status,
+                }
+            },
+            { upsert: true }
+        )
+        .exec()
+        .then(doc =>
+            res.status(200).json({
+                message: "Handling POST requests to /gin/approve-complete/:ginnumber, GIN STATUS CHANGED TO COMPLETED",
+                type: 'success',
+                alert: `${doc.ginnumber} status updated`,
+            })
+        )
         .catch(err => {
             res.status(200).json({
                 type: 'error',

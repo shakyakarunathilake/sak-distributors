@@ -20,12 +20,11 @@ import ManageEmployee from '../pages/HR/ManageEmployee';
 import ManageCustomer from '../pages/Manager/ManageCustomer';
 import ManageProduct from '../pages/Manager/ManageProduct';
 import ManageSupplier from '../pages/Manager/ManageSupplier';
-import OrderHistory from '../pages/Manager/OrderHistory';
+import ManageSales from '../pages/Manager/ManageSales';
 
 //Purchasing Manager
 import ManagePurchaseOrder from '../pages/PurchasingManager/ManagePurchaseOrder';
 import ManageQuotations from '../pages/PurchasingManager/ManageQuotations';
-import ManageSales from '../pages/PurchasingManager/ManageSales';
 import SalesTrendAnalytics from '../pages/PurchasingManager/SalesTrendAnalytics';
 import SupplierPayment from '../pages/PurchasingManager/SupplierPayment';
 
@@ -88,12 +87,11 @@ function App() {
             <Route exact path='/manager/manage-suppliers' component={ManageSupplier} />
             <Route exact path='/manager/manage-products' component={ManageProduct} />
             <Route exact path='/manager/manage-customers' component={ManageCustomer} />
-            <Route exact path='/manager/order-history' component={OrderHistory} />
+            <Route exact path='/manager/manage-sales' component={ManageSales} />
 
             {/* Purchasing Manager */}
             <Route exact path='/purchasing-manager/dashboard' component={Dashboard} />
             <Route exact path='/purchasing-manager/manage-products' component={ManageProduct} />
-            <Route exact path='/purchasing-manager/manage-sales' component={ManageSales} />
             <Route exact path='/purchasing-manager/manage-purchase-orders' component={ManagePurchaseOrder} />
             <Route exact path='/purchasing-manager/manage-quotations' component={ManageQuotations} />
             <Route exact path='/purchasing-manager/supplier-payment' component={SupplierPayment} />
@@ -109,6 +107,12 @@ function App() {
             <Route exact path='/sales-representative/dashboard' component={Dashboard} />
             <Route exact path='/sales-representative/manage-customers' component={ManageCustomer} />
             <Route exact path='/sales-representative/sales-and-invoice' component={SalesAndInvoice} />
+
+            {/* Delivery Representative */}
+            <Route exact path='/delivery-representative/dashboard' component={Dashboard} />
+            <Route exact path='/delivery-representative/manage-gin' component={ManageGIN} />
+            <Route exact path='/delivery-representative/sales-and-invoice' component={SalesAndInvoice} />
+
           </Switch>
         </BrowserRouter>
       }

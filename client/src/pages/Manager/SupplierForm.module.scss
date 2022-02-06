@@ -1,7 +1,7 @@
 @import "../../styles/variables";
 
 .container {
-    width: 900px;
+    width: 700px;
     box-sizing: border-box;
 
     .header {
@@ -23,14 +23,15 @@
             .redFont {
                 color: red;
                 font-size: 0.7em;
+                margin: 2px 0 20px 0;
             }
 
             .row {
-                padding: 8px 0;
+                padding: 10px 0;
             }
 
             .dividerDiv {
-                margin: 15px 0;
+                margin: 25px 0 15px 0;
                 font-weight: 600;
                 font-size: 1em;
                 // text-align: center;
@@ -40,14 +41,14 @@
                 display: grid;
                 grid-template-columns: auto 160px;
                 grid-column-gap: 20px;
-                padding: 8px 0;
+                padding: 10px 0;
             }
 
             .gridrow {
                 display: grid;
                 grid-template-columns: 160px auto;
                 grid-column-gap: 20px;
-                padding: 8px 0;
+                padding: 10px 0;
             }
 
             .twocolumns {
@@ -72,7 +73,7 @@
                     font-size: 1em;
                     margin: 20px 0px 5px 0px;
                     height: 45px;
-                    width: 190px;
+                    padding: 0 40px;
                 }
 
                 .resetBtnDiv {

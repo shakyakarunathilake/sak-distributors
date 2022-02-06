@@ -13,9 +13,10 @@ export const getDesignationOptions = () => ([
     { id: "d04", title: "Purchasing Manager" },
     { id: "d05", title: "Store Keeper" },
     { id: "d06", title: "Sales Representative" },
-    { id: "d07", title: "Warehouse Worker" },
-    { id: "d08", title: "Driver" },
-    { id: "d09", title: "Product Handler" },
+    { id: "d07", title: "Delivery Representative" },
+    { id: "d08", title: "Warehouse Worker" },
+    { id: "d09", title: "Driver" },
+    { id: "d10", title: "Product Handler" },
 
 ])
 

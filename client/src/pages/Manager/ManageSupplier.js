@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import AutoSizer from 'react-virtualized-auto-sizer';
 import MaterialTable from 'material-table';
 
 //Shared Components
@@ -169,71 +169,124 @@ export default function ManageSupplier() {
                 </div>
 
                 <div className={style.pagecontent}>
-                    <MaterialTable
-                        columns={[
-                            {
-                                title: "Sup. ID", field: "supplierid", render: rowData => {
-                                    return (
-                                        <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.supplierid}</p>
-                                    )
-                                }
-                            },
-                            { title: "Name", field: "name" },
-                            {
-                                title: "Abbreviation", field: "abbreviation", render: rowData => {
-                                    return (
-                                        <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.abbreviation}</p>
-                                    )
-                                }
-                            },
-                            { title: "Contact Person", field: "contactperson" },
-                            {
-                                title: "Contact No.", field: "contactnumber", render: rowData => {
-                                    return (
-                                        <p>0{rowData.contactnumber}</p>
-                                    )
-                                }
-                            },
-                        ]}
-                        data={records}
-                        options={{
-                            toolbar: false,
-                            filtering: true,
-                            search: false,
-                            paging: false,
-                            actionsColumnIndex: -1,
-                            maxBodyHeight: "calc(100vh - 199.27px)",
-                            headerStyle: {
-                                position: "sticky",
-                                top: "0",
-                                backgroundColor: '#20369f',
-                                color: '#FFF',
-                                fontSize: "0.8em"
-                            },
-                            rowStyle: rowData => ({
-                                fontSize: "0.8em",
-                                backgroundColor: (rowData.tableData.id % 2 === 0) ? '#ebebeb' : '#ffffff'
-                            })
+
+                    <AutoSizer>
+                        {({ height, width }) => {
+                            const pageSize = Math.floor((height - 199.28) / 48);
+                            return (
+                                <div style={{ height: `${height}px`, width: `${width}px`, overflowY: 'auto' }}>
+
+                                    <MaterialTable
+                                        columns={[
+                                            {
+                                                title: "Sup. ID",
+                                                field: "supplierid",
+                                                cellStyle: {
+                                                    width: "10%",
+                                                    textAlign: 'left'
+                                                },
+                                                render: rowData => {
+                                                    return (
+                                                        <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.supplierid}</p>
+                                                    )
+                                                }
+                                            },
+                                            {
+                                                title: "Name",
+                                                field: "name",
+                                                cellStyle: {
+                                                    width: "23%",
+                                                    textAlign: 'left'
+                                                },
+                                            },
+                                            {
+                                                title: "Abbreviation",
+                                                field: "abbreviation",
+                                                cellStyle: {
+                                                    width: "10%",
+                                                    textAlign: 'left'
+                                                },
+                                                render: rowData => {
+                                                    return (
+                                                        <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.abbreviation}</p>
+                                                    )
+                                                }
+                                            },
+                                            {
+                                                title: "Contact Person",
+                                                field: "contactperson",
+                                                cellStyle: {
+                                                    width: "20%",
+                                                    textAlign: 'left'
+                                                },
+                                            },
+                                            {
+                                                title: "Contact No.",
+                                                field: "contactnumber",
+                                                cellStyle: {
+                                                    width: "10%",
+                                                    textAlign: 'left'
+                                                },
+                                                render: rowData => {
+                                                    return (
+                                                        <p style={{ padding: "0", margin: "0" }}>0{rowData.contactnumber}</p>
+                                                    )
+                                                }
+                                            },
+                                            {
+                                                title: "Email",
+                                                field: "email",
+                                                cellStyle: {
+                                                    width: "22%",
+                                                    textAlign: 'left'
+                                                },
+                                            },
+                                        ]}
+                                        data={records}
+                                        options={{
+                                            pageSize: pageSize,
+                                            pageSizeOptions: [],
+                                            paging: true,
+                                            toolbar: false,
+                                            filtering: true,
+                                            search: false,
+                                            actionsColumnIndex: -1,
+                                            headerStyle: {
+                                                position: "sticky",
+                                                top: "0",
+                                                backgroundColor: '#20369f',
+                                                color: '#FFF',
+                                                fontSize: "0.8em"
+                                            },
+                                            rowStyle: rowData => ({
+                                                fontSize: "0.8em",
+                                                backgroundColor: (rowData.tableData.id % 2 === 0) ? '#ebebeb' : '#ffffff'
+                                            })
+                                        }}
+                                        actions={[
+                                            {
+                                                icon: VisibilityIcon,
+                                                tooltip: 'View',
+                                                onClick: (event, rowData) => {
+                                                    setAction('View');
+                                                    openInPopup(rowData.supplierid);
+                                                }
+                                            },
+                                            {
+                                                icon: 'edit',
+                                                tooltip: 'Edit',
+                                                onClick: (event, rowData) => {
+                                                    setAction('Edit');
+                                                    openInPopup(rowData.supplierid);
+                                                }
+                                            }
+                                        ]}
+                                    />
+                                </div>
+                            );
                         }}
-                        actions={[
-                            {
-                                icon: VisibilityIcon,
-                                tooltip: 'View',
-                                onClick: (event, rowData) => {
-                                    setAction('View');
-                                    openInPopup(rowData.supplierid);
-                                }
-                            },
-                            {
-                                icon: 'edit',
-                                tooltip: 'Edit',
-                                onClick: (event, rowData) => {
-                                    setAction('Edit');
-                                    openInPopup(rowData.supplierid);
-                                }
-                            }
-                        ]}
-                    />
+                    </AutoSizer>
+
                 </div>
                 <PopUp
                     openPopup={openPopup}

@@ -7,7 +7,6 @@ import PeopleIcon from '@material-ui/icons/People';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import BusinessIcon from '@material-ui/icons/Business';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
-import ViewListIcon from '@material-ui/icons/ViewList';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import PaymentIcon from '@material-ui/icons/Payment';
 import DescriptionIcon from '@material-ui/icons/Description';
@@ -90,10 +89,10 @@ const getManagerListItems = [
         icon: <PersonIcon />,
     },
     {
-        id: "Order History",
-        title: "Order History",
-        path: "http://localhost:3000/manager/order-history",
-        icon: <ViewListIcon />,
+        id: "Manage Sales",
+        title: "Manage Sales",
+        path: "http://localhost:3000/manager/manage-sales",
+        icon: <ReceiptIcon />,
     },
     {
         id: "Sales Rep. Analytics",
@@ -115,12 +114,6 @@ const getPurchasingManagerListItems = [
         title: "Manage Products",
         path: "http://localhost:3000/purchasing-manager/manage-products",
         icon: <AssignmentIcon />,
-    },
-    {
-        id: "Manage Sales",
-        title: "Manage Sales",
-        path: "http://localhost:3000/purchasing-manager/manage-sales",
-        icon: <ReceiptIcon />
     },
     {
         id: "Manage Purchase Order",
@@ -221,6 +214,27 @@ const getSalesRepresentativeListItems = [
 
 ];
 
+const getDeliveryRepresentativeListItems = [
+    {
+        id: "Dashboard",
+        title: "Dashboard",
+        path: "http://localhost:3000/delivery-representative/dashboard",
+        icon: <DashboardIcon />
+    },
+    {
+        id: "Manage GIN",
+        title: "Manage GIN",
+        path: "http://localhost:3000/delivery-representative/manage-gin",
+        icon: <InsertDriveFileIcon />,
+    },
+    {
+        id: "Sales and Invoice",
+        title: "Sales and Invoice",
+        path: "http://localhost:3000/delivery-representative/sales-and-invoice",
+        icon: <DescriptionIcon />,
+    },
+];
+
 export function drawerListItems(designation) {
     if (designation === "Distributor") {
         return (getDistributorListItems)
@@ -239,5 +253,8 @@ export function drawerListItems(designation) {
     }
     if (designation === "Sales Representative") {
         return (getSalesRepresentativeListItems)
+    }
+    if (designation === "Delivery Representative") {
+        return (getDeliveryRepresentativeListItems)
     }
 }

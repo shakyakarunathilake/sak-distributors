@@ -98,7 +98,7 @@ export default function SupplierForm(props) {
                     className={style.form}
                     onSubmit={handleSubmit(onSubmit)}
                 >
-                    <div className={classnames(style.row, style.redFont)}>
+                    <div className={style.redFont}>
                         The fields with "*" are required
                     </div>
                     <div className={classnames(style.row, style.threecolumns)}>
@@ -114,13 +114,14 @@ export default function SupplierForm(props) {
                                     onChange={onChange}
                                     placeholder="Ex: S000234"
                                     disabled={true}
+                                    size="small"
                                 />
                             )}
                         />
                         <Controller
                             name={"abbreviation"}
                             control={control}
-                            rules={{ required: { value: true, message: "Abbreviation is required" } }}
+                            rules={{ required: { value: true, message: "Required *" } }}
                             render={({ field: { onChange, value } }) => (
                                 <TextField
                                     fullWidth={true}
@@ -130,6 +131,7 @@ export default function SupplierForm(props) {
                                     placeholder="Ex: SIWPLC"
                                     error={errors.abbreviation ? true : false}
                                     helperText={errors.abbreviation && errors.abbreviation.message}
+                                    size="small"
                                 />
                             )}
                         />
@@ -137,7 +139,7 @@ export default function SupplierForm(props) {
                             name={"name"}
                             control={control}
                             rules={{
-                                required: { value: true, message: "Supplier is required" },
+                                required: { value: true, message: "Required *" },
                             }}
                             render={({ field: { onChange, value } }) => (
                                 <TextField
@@ -148,6 +150,7 @@ export default function SupplierForm(props) {
                                     placeholder="Ex: Swadeshi Industrial Works PLC"
                                     error={errors.name ? true : false}
                                     helperText={errors.name && errors.name.message}
+                                    size="small"
                                 />
                             )}
                         />
@@ -159,7 +162,7 @@ export default function SupplierForm(props) {
                             name={"addedby"}
                             control={control}
                             rules={{
-                                required: { value: true, message: "Added by is required" },
+                                required: { value: true, message: "Required *" },
                             }}
                             render={({ field: { onChange, value } }) => (
                                 <Select
@@ -169,6 +172,7 @@ export default function SupplierForm(props) {
                                     value={value || ''}
                                     options={employeeOptions || []}
                                     label="Added By"
+                                    size="small"
                                 />
                             )}
                         />
@@ -176,7 +180,7 @@ export default function SupplierForm(props) {
                         <Controller
                             name={"addeddate"}
                             control={control}
-                            rules={{ required: { value: true, message: "Adding date is required" } }}
+                            rules={{ required: { value: true, message: "Required *" } }}
                             render={({ field: { onChange, value } }) => (
                                 <DatePicker
                                     label="Adding Date *"
@@ -184,6 +188,7 @@ export default function SupplierForm(props) {
                                     onChange={onChange}
                                     error={errors.addeddate ? true : false}
                                     helperText={errors.addeddate && errors.addeddate.message}
+                                    size="small"
                                 />
                             )}
                         />
@@ -202,8 +207,8 @@ export default function SupplierForm(props) {
                                 name={"contactnumber"}
                                 control={control}
                                 rules={{
-                                    required: { value: true, message: "Contact number is required" },
-                                    pattern: { value: /^[0-9]{10}$/, message: "Contact number is invalid" }
+                                    required: { value: true, message: "Required *" },
+                                    pattern: { value: /^[0-9]{10}$/, message: "Invalid" }
                                 }}
                                 render={({ field: { onChange, value } }) => (
                                     <TextField
@@ -215,6 +220,7 @@ export default function SupplierForm(props) {
                                         onChange={onChange}
                                         value={value || ''}
                                         label="Contact Number"
+                                        size="small"
                                     />
                                 )}
                             />
@@ -223,7 +229,7 @@ export default function SupplierForm(props) {
                                 name={"contactperson"}
                                 control={control}
                                 rules={{
-                                    required: { value: true, message: "Contact Person is required" },
+                                    required: { value: true, message: "Required *" },
                                 }}
                                 render={({ field: { onChange, value } }) => (
                                     <TextField
@@ -235,6 +241,7 @@ export default function SupplierForm(props) {
                                         onChange={onChange}
                                         value={value || ''}
                                         label="Contact Person *"
+                                        size="small"
                                     />
                                 )}
                             />
@@ -244,7 +251,7 @@ export default function SupplierForm(props) {
                             <Controller
                                 name={"title"}
                                 control={control}
-                                rules={{ required: { value: true, message: "Title is required" } }}
+                                rules={{ required: { value: true, message: "Required *" } }}
                                 render={({ field: { onChange, value } }) => (
                                     <Select
                                         label="Title *"
@@ -253,6 +260,7 @@ export default function SupplierForm(props) {
                                         options={employeeservice.getTitleOptions()}
                                         error={errors.title ? true : false}
                                         helperText={errors.title && errors.title.message}
+                                        size="small"
                                     />
                                 )}
                             />
@@ -266,7 +274,7 @@ export default function SupplierForm(props) {
                             name={"address"}
                             control={control}
                             rules={{
-                                required: { value: true, message: "Address is required" },
+                                required: { value: true, message: "Required *" },
                             }}
                             render={({ field: { onChange, value } }) => (
                                 <TextField
@@ -278,6 +286,7 @@ export default function SupplierForm(props) {
                                     onChange={onChange}
                                     value={value || ''}
                                     label="Address*"
+                                    size="small"
                                 />
                             )}
                         />
@@ -288,8 +297,8 @@ export default function SupplierForm(props) {
                             name={"email"}
                             control={control}
                             rules={{
-                                required: { value: true, message: "Email is required" },
-                                pattern: { value: /\S+@\S+\.\S+/, message: "Email is invalid" }
+                                required: { value: true, message: "Required *" },
+                                pattern: { value: /\S+@\S+\.\S+/, message: "Invalid" }
                             }}
                             render={({ field: { onChange, value } }) => (
                                 <TextField
@@ -301,6 +310,7 @@ export default function SupplierForm(props) {
                                     placeholder="Ex: swadeshi@sltnet.lk"
                                     value={value || ''}
                                     label="Email"
+                                    size="small"
                                 />
                             )}
                         />

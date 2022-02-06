@@ -6,13 +6,6 @@
     height: inherit;
     // box-sizing: border-box;
 
-    Button {
-        width: max-content;
-        height: 40px;
-        font-size: 1em;
-        white-space: nowrap;
-    }
-
     .header {
         .title {
             display: grid;
@@ -48,6 +41,12 @@
                 display: grid;
                 grid-template-columns: 270px auto min-content;
                 margin: 15px 0;
+
+                Button {
+                    padding: 0 25px;
+                    font-size: 1em;
+                    white-space: nowrap;
+                }
             }
 
             .deleteItemBtn {
@@ -69,7 +68,9 @@
 
         .resetBtn {
             Button {
-                width: auto;
+                padding: 0 25px;
+                font-size: 1em;
+                white-space: nowrap;
                 background-color: #aca9bb;
                 color: $inverseFontColor;
 
@@ -83,7 +84,9 @@
         .nextBtn {
             text-align: right;
             Button {
-                width: auto;
+                padding: 0 25px;
+                font-size: 1em;
+                white-space: nowrap;
 
                 &:disabled {
                     background-color: hsl(230, 66%, 57%);

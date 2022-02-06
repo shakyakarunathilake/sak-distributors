@@ -30,7 +30,6 @@ router.get("/product-options-for-purchase-order", (req, res, next) => {
                 productid: x.productid,
                 name: x.name,
                 supplier: x.supplier,
-                piecespercase: 10,
             }))
 
             res.status(200).json({
@@ -84,7 +83,6 @@ router.get("/product-options-for-product", (req, res, next) => {
             }
 
             const productOptions = doc.map(x => ({
-                title: `${x.name} (${x.productid})`,
                 productid: x.productid,
                 name: x.name,
                 supplier: x.supplier,
@@ -211,7 +209,7 @@ router.get("/product-options", (req, res, next) => {
                         sellingprice: variant.sellingprice,
                         type: variant.type,
                         offercaption: variant.offercaption,
-                        piecespercase: 10,
+                        piecespercase: variant.piecespercase,
                         title: `${product.productid}${variant.variantid}-${product.name}`,
                     })
                 })
@@ -236,18 +234,71 @@ router.get("/customer-options", (req, res, next) => {
         .exec()
         .then(doc => {
 
+            function MaximumCreditAmount(loyaltypoints) {
+                let maximumcreditamount = 0;
+
+                if (loyaltypoints > 50) {
+                    maximumcreditamount = 10000;
+                    return maximumcreditamount.toFixed(2);
+
+                } else if (loyaltypoints > 25) {
+                    maximumcreditamount = 5000;
+                    return maximumcreditamount.toFixed(2);
+
+                } else if (loyaltypoints > 10) {
+                    maximumcreditamount = 2000;
+                    return maximumcreditamount.toFixed(2);
+
+                } else {
+                    maximumcreditamount = 0;
+                    return maximumcreditamount.toFixed(2);
+                }
+            }
+
             const customeroptions = doc.map(x => ({
                 "id": x.customerid,
                 "storename": x.storename,
                 "route": x.route,
                 "shippingaddress": x.shippingaddress,
                 "contactnumber": x.customercontactnumber,
-                "title": `${x.storename} (${x.customerid})`
+                "title": `${x.storename} (${x.customerid})`,
+                "loyaltypoints": x.loyaltypoints,
+                "creditamounttosettle": x.creditamounttosettle.toFixed(2),
+                'maximumcreditamount': x.creditamounttosettle === 0 ? MaximumCreditAmount(x.loyaltypoints) : '0.00',
+                'eligibilityforcredit': ((x.creditamounttosettle === 0) && (x.loyaltypoints > 10)) ? true : false,
             }))
 
             res.status(201).json({
                 message: "Handeling GET requests to /customer-options",
                 customeroptions: customeroptions
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        })
+})
+
+//Get all employee options for admin
+router.get("/employee-options-for-gin", (req, res, next) => {
+
+    Employee
+        .find()
+        .exec()
+        .then(doc => {
+
+            const candidates = doc.filter(x =>
+                x.designation === 'Delivery Representative' && x.employeestatus === 'Active'
+            );
+
+            const employeeOptions = candidates.map(x => ({
+                title: `${x.firstname} ${x.lastname} (${x.employeeid})`,
+                id: x.employeeid
+            }))
+
+            res.status(201).json({
+                message: "Handeling GET requests to /employee-options-for-gin",
+                employeeOptions: employeeOptions,
             })
         })
         .catch(err => {

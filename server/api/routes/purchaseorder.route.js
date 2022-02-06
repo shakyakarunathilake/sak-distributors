@@ -28,7 +28,9 @@ router.get("/get-all-purchaseorder-table-data", (req, res, next) => {
                 ponumber: x.ponumber,
                 supplier: x.supplier,
                 createdby: x.createdby,
+                createdat: x.createdat,
                 approvedby: x.approvedby,
+                approvedat: x.approvedat,
                 status: x.status,
             }))
 
@@ -46,11 +48,9 @@ router.get("/get-all-purchaseorder-table-data", (req, res, next) => {
 
 })
 
-
 //Create a purchaseorder
 router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) => {
 
-    console.log("PURCHASE ORDER Body: ", req.body);
     const items = JSON.parse(req.body.items);
 
     const purchaseorder = new PurchaseOrder({
@@ -82,7 +82,7 @@ router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) =
                     {},
                     {
                         $push: {
-                            'purchaseorderapprovaldata': {
+                            'noofpurchaseordertobeapproved': {
                                 'ponumber': result.ponumber,
                                 'createdat': result.createdat,
                                 'createdby': result.createdby
@@ -92,18 +92,23 @@ router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) =
                     { upsert: true }
                 )
                 .exec()
-                .then(result => { console.log("META DATA ADDED: ", result) })
+                .then(() => {
+                    console.log("******** CREATE PURCHASE ORDER METADATA ADDED ********");
+                })
                 .catch(err => {
                     console.log(err);
                     res.status(500).json({ "Error": err });
                 })
 
+            return result;
+        })
+        .then(result =>
             res.status(201).json({
                 message: "Handeling POST requests to /purchaseorders/create-purchaseorder, PURCHASE ORDER CREATED",
                 type: 'success',
                 alert: `${result.ponumber} added`,
-            });
-        })
+            })
+        )
         .catch(err => {
 
             console.log("ERROR: ", err);
@@ -159,8 +164,6 @@ router.get("/:ponumber", (req, res, next) => {
 //Update purchase order details by po number
 router.post("/update-by-ponumber/:ponumber", formDataBody.fields([]), (req, res, next) => {
 
-    console.log("UPDATE:", req.body);
-
     const items = JSON.parse(req.body.items);
 
     PurchaseOrder
@@ -173,13 +176,13 @@ router.post("/update-by-ponumber/:ponumber", formDataBody.fields([]), (req, res,
             { new: true }
         )
         .exec()
-        .then(doc => {
+        .then(doc =>
             res.status(200).json({
                 message: "Handling POST requests to /purchaseorders/update-by-ponumber/:ponumber, PURCHASE ORDER UPDATED",
                 type: 'success',
                 alert: `${doc.ponumber} updated`,
-            });
-        })
+            })
+        )
         .catch(err => {
             res.status(200).json({
                 type: 'error',
@@ -191,8 +194,6 @@ router.post("/update-by-ponumber/:ponumber", formDataBody.fields([]), (req, res,
 
 //Update purchase order details by po number
 router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res, next) => {
-
-    console.log("APPROVE PURCHASE ORDER:", req.body);
 
     const items = JSON.parse(req.body.items);
 
@@ -210,9 +211,29 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
         .exec()
         .then(result => {
 
-            function emailIntegration() {
-                console.log("Email Sent");
-            }
+            const items = [];
+
+            result.items.forEach(item => {
+
+                items.push({
+                    "freeqtycases": item.freeqtycases,
+                    "deliveredfreeqtycases": item.deliveredfreeqtycases ? item.deliveredfreeqtycases : item.freeqtycases,
+                    "freeqtypieces": item.freeqtypieces,
+                    "deliveredfreeqtypieces": item.deliveredfreeqtypieces ? item.deliveredfreeqtypieces : item.freeqtypieces,
+                    "damaged": item.damaged ? item.damaged : 0,
+                    "description": item.description,
+                    "piecespercase": parseInt(item.piecespercase),
+                    "listprice": item.listprice,
+                    "salesqtycases": parseInt(item.salesqtycases),
+                    "deliveredsalesqtycases": item.deliveredsalesqtycases ? item.deliveredsalesqtycases : parseInt(item.salesqtycases),
+                    "value": item.value,
+                    "grnvalue": item.value,
+                    "salesqtypieces": parseInt(item.salesqtypieces),
+                    "deliveredsalesqtypieces": item.deliveredsalesqtypieces ? item.deliveredsalesqtypieces : parseInt(item.salesqtypieces),
+                    "tableData": item.tableData
+                })
+
+            });
 
             const grn = new GRN({
                 _id: new mongoose.Types.ObjectId(),
@@ -231,50 +252,60 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
             grn
                 .save()
                 .then(result => {
-
-                    console.log("GRN ADDED: ", result)
-
-                    MetaData
-                        .findOneAndUpdate(
-                            {},
-                            {
-                                $push: {
-                                    'awaitinggrndata': {
-                                        'ponumber': result.ponumber,
-                                        'grnnumber': result.grnnumber,
-                                        'status': result.status,
-                                    }
-                                },
-                                $pull: {
-                                    'purchaseorderapprovaldata': {
-                                        'ponumber': result.ponumber
-                                    }
-                                }
-                            },
-                            { upsert: true }
-                        )
-                        .exec()
-                        .then(result =>
-                            console.log("META DATA ADDED: ", result)
-                        )
-                        .catch(err =>
-                            console.log("META DATA ERROR: ", err)
-                        )
+                    console.log("********  APPROVE PURCHASE ORDER ********");
+                    console.log(result)
                 })
                 .catch(err => {
-                    console.log("GRN ERROR: ", err);
+                    console.log("********  APPROVE PURCHASE ORDER GRN ERROR ********");
+                    console.log(err);
                 })
 
+            return result;
+
+        })
+        .then(result => {
+
+            MetaData
+                .findOneAndUpdate(
+                    {},
+                    {
+                        $push: {
+                            'noofawaitinggrn': {
+                                'ponumber': result.ponumber,
+                                'grnnumber': `GRN-${result.ponumber}`,
+                                'status': result.status,
+                            }
+                        },
+                        $pull: {
+                            'noofpurchaseordertobeapproved': {
+                                'ponumber': result.ponumber
+                            }
+                        }
+                    },
+                    { upsert: true }
+                )
+                .exec()
+                .then(() => {
+                    console.log("********  APPROVE PURCHASE ORDER METADATA ADDED ********")
+                })
+                .catch(err => {
+                    console.log("********  APPROVE PURCHASE ORDER METADATA ERROR ********")
+                    console.log(err)
+                })
+
+            return result;
+        })
+        .then(result =>
             res.status(200).json({
                 message: "Handling POST requests to /employees/approved-by-ponumber/:ponumber, PURCHASE ORDER APPROVED",
                 type: 'success',
                 alert: `${result.ponumber} approved`,
-            });
-        })
+            })
+        )
         .catch(err => {
             res.status(200).json({
                 type: 'error',
-                alert: `Something went wrong. Could not update purchase order`,
+                alert: `Something went wrong. Could not approve purchase order`,
             });
             console.log(err);
         });

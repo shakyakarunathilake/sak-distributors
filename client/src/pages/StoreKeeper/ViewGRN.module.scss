@@ -3,15 +3,9 @@
 .container {
     display: grid;
     grid-template-rows: min-content auto min-content;
-    height: inherit;
-    // box-sizing: border-box;
-
-    Button {
-        width: max-content;
-        height: 40px;
-        font-size: 1em;
-        white-space: nowrap;
-    }
+    height: calc(100vh - 20px);
+    box-sizing: border-box;
+    overflow: hidden;
 
     .header {
         display: grid;
@@ -62,7 +56,8 @@
         text-align: right;
 
         Button {
-            width: auto;
+            padding: $formButtonPadding;
+            font-size: 1em;
 
             &:disabled {
                 background-color: hsl(230, 66%, 57%);

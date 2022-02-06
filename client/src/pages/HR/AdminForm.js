@@ -19,12 +19,13 @@ export default function AdminForm(props) {
 
     const { handleClosePopUp, employeeOptions, addAdmin, action, employeeID, employeeName } = props;
 
-    const { handleSubmit, control, setValue } = useForm();
+    const { formState: { errors }, handleSubmit, control, setValue, clearErrors } = useForm({ mode: "onChange" });
 
     const handleEmployeeChange = (event, option) => {
         if (option) {
             setValue('employeeid', option.employeeid);
             setValue('adminprivileges', true);
+            clearErrors('autocomplete');
         }
     }
 
@@ -47,103 +48,113 @@ export default function AdminForm(props) {
     }
 
     return (
-        <div className={style.container}>
+        <>
             {
                 action === 'Add' &&
-                <form
-                    className={style.form}
-                    onSubmit={handleSubmit(onSubmit)}
-                >
-                    <div className={style.header}>
-                        <div> Add New Admin </div>
-                        <div>
-                            <HighlightOffIcon
-                                className={style.icon}
-                                onClick={() => { handleClosePopUp() }}
-                            />
-                        </div>
-                    </div>
-
-                    <div className={style.body}>
-
-                        <div className={style.row}>
-
-                            <Controller
-                                name={"autocomplete"}
-                                control={control}
-                                render={() => (
-                                    <Autocomplete
-                                        options={employeeOptions || []}
-                                        fullWidth
-                                        getOptionLabel={(option) => option.title}
-                                        onChange={handleEmployeeChange}
-                                        renderInput={(params) => (
-                                            <MuiTextField
-                                                {...params}
-                                                label="Employee"
-                                                variant="outlined" />
-                                        )}
-                                    />
-                                )}
-                            />
-
+                <div className={style.container}>
+                    <form
+                        className={style.form}
+                        onSubmit={handleSubmit(onSubmit)}
+                    >
+                        <div className={style.header}>
+                            <div> Add New Admin </div>
+                            <div>
+                                <HighlightOffIcon
+                                    className={style.icon}
+                                    onClick={() => { handleClosePopUp() }}
+                                />
+                            </div>
                         </div>
 
-                        <div className={style.buttonRow}>
-                            <Button
-                                className={style.submitBtn}
-                                type="submit"
-                                variant="contained"
-                            >
-                                Submit
-                            </Button>
+                        <div className={style.body}>
+
+                            <div className={style.row}>
+
+                                <Controller
+                                    name={"autocomplete"}
+                                    control={control}
+                                    rules={{
+                                        required: { value: true, message: "Required *" },
+                                    }}
+                                    render={() => (
+                                        <Autocomplete
+                                            options={employeeOptions || []}
+                                            fullWidth
+                                            getOptionLabel={(option) => option.title}
+                                            onChange={handleEmployeeChange}
+                                            renderInput={(params) => (
+                                                <MuiTextField
+                                                    {...params}
+                                                    error={errors.autocomplete ? true : false}
+                                                    helperText={errors.autocomplete && errors.autocomplete.message}
+                                                    label="Employee"
+                                                    variant="outlined"
+                                                />
+                                            )}
+                                        />
+                                    )}
+                                />
+
+                            </div>
+
+                            <div className={style.buttonRow}>
+                                <Button
+                                    className={style.submitBtn}
+                                    type="submit"
+                                    variant="contained"
+                                >
+                                    Submit
+                                </Button>
+                            </div>
+
                         </div>
 
-                    </div>
-
-                </form>
+                    </form>
+                </div>
             }
 
-            {action === 'Remove' &&
-                <form
-                    className={style.form}
-                    onSubmit={handleSubmit(onSubmit)}
-                >
-                    <div className={style.header}>
-                        <div> Remove Admin </div>
-                        <div>
-                            <HighlightOffIcon
-                                className={style.icon}
-                                onClick={() => { handleClosePopUp() }}
-                            />
-                        </div>
-                    </div>
-
-                    <div className={style.body}>
-
-                        <div className={style.row}>
-
-                            <Typography>
-                                Are you sure you want to remove admin privileges for {employeeName} ({employeeID})?
-                            </Typography>
-
+            {
+                action === 'Remove' &&
+                <div className={style.container}>
+                    <form
+                        className={style.form}
+                        onSubmit={handleSubmit(onSubmit)}
+                    >
+                        <div className={style.header}>
+                            <div> Remove Admin </div>
+                            <div>
+                                <HighlightOffIcon
+                                    className={style.icon}
+                                    onClick={() => { handleClosePopUp() }}
+                                />
+                            </div>
                         </div>
 
-                        <div className={style.buttonRow}>
-                            <Button
-                                className={style.submitBtn}
-                                type="submit"
-                                variant="contained"
-                            >
-                                Remove Privileges
-                            </Button>
+                        <div className={style.body}>
+
+                            <div className={style.row}>
+
+                                <Typography>
+                                    Are you sure you want to remove admin privileges for {employeeName} ({employeeID})?
+                                </Typography>
+
+                            </div>
+
+                            <div className={style.buttonRow}>
+                                <Button
+                                    className={style.submitBtn}
+                                    type="submit"
+                                    variant="contained"
+                                >
+                                    Remove Privileges
+                                </Button>
+                            </div>
+
                         </div>
 
-                    </div>
-
-                </form>
+                    </form>
+                </div>
             }
-
-        </div>
+        </>
     )
 }
