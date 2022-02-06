@@ -187,6 +187,7 @@ export default function ManageGIN() {
                     console.log(err);
                 })
         }
+        
         if (action === "Complete") {
             axios
                 .post(`http://localhost:8080/gin/approve-complete/${ginnumber}`, gin)
