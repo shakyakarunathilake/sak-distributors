@@ -43,6 +43,7 @@
                 padding: $formButtonPadding2;
                 background-color: #aca9bb;
                 color: $inverseFontColor;
+                height: 40px;
 
                 &:disabled {
                     background-color: #c2c2c2;
@@ -57,6 +58,7 @@
             Button {
                 font-size: 1em;
                 padding: $formButtonPadding2;
+                height: 40px;
 
                 &:disabled {
                     background-color: hsl(230, 66%, 57%);
