@@ -83,11 +83,14 @@ export default function CreateOrder(props) {
         customerOrderFormData.append('shippingaddress', getValues('shippingaddress'));
         customerOrderFormData.append('items', JSON.stringify(data));
         customerOrderFormData.append('total', total);
-        customerOrderFormData.append('creditamounttosettle', getValues('creditamounttosettle'));
-        customerOrderFormData.append('loyaltypoints', getValues('loyaltypoints'));
-        customerOrderFormData.append('eligibilityforcredit', getValues('eligibilityforcredit'));
-        customerOrderFormData.append('maximumcreditamount', getValues('maximumcreditamount'));
-        customerOrderFormData.append('currentinvoicecreditamount', getValues('currentinvoicecreditamount'));
+
+        if (customerType === "Registered Customer") {
+            customerOrderFormData.append('creditamounttosettle', getValues('creditamounttosettle'));
+            customerOrderFormData.append('loyaltypoints', getValues('loyaltypoints'));
+            customerOrderFormData.append('eligibilityforcredit', getValues('eligibilityforcredit'));
+            customerOrderFormData.append('maximumcreditamount', getValues('maximumcreditamount'));
+            customerOrderFormData.append('currentinvoicecreditamount', getValues('currentinvoicecreditamount'));
+        }
 
         addOrEdit(customerOrderFormData, getValues('orderno'));
     }
