@@ -16,11 +16,11 @@ const orderSchema = mongoose.Schema({
     deliveredby: { type: String, required: false },
     deliveredat: { type: String, required: false },
     status: { type: String, required: true },
-    loyaltypoints: { type: Number, required: true },
-    eligibilityforcredit: { type: Boolean, required: true },
-    maximumcreditamount: { type: String, required: true },
-    creditamounttosettle: { type: String, required: true },
-    currentinvoicecreditamount: { type: String, required: true },
+    loyaltypoints: { type: Number, required: false },
+    eligibilityforcredit: { type: Boolean, required: false },
+    maximumcreditamount: { type: String, required: false },
+    creditamounttosettle: { type: String, required: false },
+    currentinvoicecreditamount: { type: String, required: false },
     total: { type: String, required: true },
 })
 
