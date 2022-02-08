@@ -34,11 +34,12 @@ router.put("/change-password/", (req, res, next) => {
                                 .findOneAndUpdate({ employeeid: req.body.employeeid }, { password: hash, firsttimelogin: req.body.firsttimelogin }, { new: true })
                                 .exec()
                                 .then(doc => {
-                                    console.log(doc);
 
-                                    function emailIntegration() {
-                                        console.log("Email Sent");
-                                    }
+                                    emailNotify.sendEmail({
+                                        "tomail": doc.email,
+                                        "subject": "Change Password",
+                                        "content": `This email is an auto generated email to inform you that your password to SAK Distributors Site has been changed. Thank you.`,
+                                    })
 
                                     res.status(200).json({
                                         type: "success",
@@ -77,9 +78,9 @@ router.post("/forgot-password", (req, res, next) => {
         .then(employee => {
 
             emailNotify.sendEmail({
-                "tomail": "amsmk1999@gmail.com;tutor4u.edu.service@gmail.com",
-                "subject": "Forget Password",
-                "content": "IT WORKS",
+                "tomail": employee[0].email,
+                "subject": "Instructions to reset your password",
+                "content": `Please use this one time password with your username to login to your account`,
             })
 
             return employee;
