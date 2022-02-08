@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt"); /* For Passwords */
 
 const multer = require("multer");  /* For images */
 
-const notifyEmail = require("../services/notifyEmail");
+const emailNotify = require("./email.notify");
 const Employee = require("../models/employee.model");
 
 const storage = multer.diskStorage({
@@ -65,7 +65,7 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
     const dob = new Date(req.body.dob).toISOString().split('T')[0];
     const hireddate = new Date(req.body.hireddate).toISOString().split('T')[0];
 
-    if (!req.body.employeestatus === "Limited Access") {
+    if (req.body.employeestatus !== "Limited Access") {
         var nic = req.body.nic;
         var firstpassword = "";
 
@@ -107,19 +107,13 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
                 employee
                     .save()
                     .then(result => {
-                        // notifyEmail.notifyCreateEmployee({
-                        //     firstname: result.firstname,
-                        //     lastname: result.lastname,
-                        //     designation: result.designation,
-                        //     username: result.employeeid,
-                        //     password: firstpassword
-                        // });
 
-                        function emailIntegration() {
-                            console.log("Email Sent");
-                        }
+                        emailNotify.sendEmail({
+                            "tomail": result.email,
+                            "subject": "Welcome to SAK Distributors",
+                            "content": `This email is an auto generated email to inform you that your password to SAK Distributors Site is ${firstpassword}. Thank you.`,
+                        })
 
-                        console.log("Employee Created");
                         res.status(201).json({
                             message: "Handling POST requests to /employees/create-employee, EMPLOYEE SAVED",
                             type: 'success',
@@ -162,7 +156,7 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
         employee
             .save()
             .then(result => {
-                console.log("Employee Created");
+
                 res.status(201).json({
                     message: "Handling POST requests to /employees/create-employee, EMPLOYEE SAVED",
                     type: 'success',
