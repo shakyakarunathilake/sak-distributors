@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import React from 'react';
+import { Controller } from 'react-hook-form';
 import AutoSizer from 'react-virtualized-auto-sizer';
+import classnames from 'classnames';
 
 //Material UI 
 import {
@@ -23,7 +24,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import MaterialTable, { MTableToolbar } from 'material-table';
 
 //SCSS styles
-import style from './StepOne.module.scss';
+import style from './GRNStepOne.module.scss';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
@@ -47,51 +48,19 @@ const useStyles = makeStyles({
     }
 });
 
-export default function StepOne(props) {
+export default function GRNStepOne(props) {
 
     const classes = useStyles();
 
     const {
         data,
         setData,
-        setConfirmation,
-        setOrderFormData,
         handleClosePopUp,
         completeFormStep,
-        GRNRecords,
+        control,
+        getValues,
+        setValue
     } = props;
-
-    const { control, getValues, setValue } = useForm();
-
-    const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
-    const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
-    const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
-
-    useEffect(() => {
-
-        setValue("ponumber", GRNRecords.ponumber);
-        setValue("grnnumber", GRNRecords.grnnumber);
-        setValue("supplier", GRNRecords.supplier);
-        setValue("total", GRNRecords.total);
-        setValue("createdat", GRNRecords.createdat);
-        setValue("createdby", GRNRecords.createdby);
-        setValue("customername", "S.A.K Distributors");
-        setValue("customeraddress", "No.233, Kiriwallapitiya, Rambukkana, Srilanka");
-        setValue("contactnumber", "0352264009");
-        setValue("status", "Delivered");
-
-        setData(GRNRecords.items);
-
-    }, [GRNRecords, setValue, setData])
-
-    const getTime = () => {
-        const today = new Date();
-        const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-        const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        const dateTime = date + ' ' + time;
-
-        return dateTime;
-    }
 
     const getGRNTotal = () => {
         let total = 0;
@@ -105,14 +74,12 @@ export default function StepOne(props) {
     }
 
     const getDamagedMissingItems = () => {
-
         let pototal = 0;
         let grntotal = 0;
 
         for (let i = 0; i < data.length; i++) {
             pototal = pototal + (isNaN(data[i].value) ? 0 : data[i].value);
             grntotal = grntotal + (isNaN(data[i].grnvalue) ? 0 : data[i].grnvalue);
-
         }
 
         let damagedmissingitems = (pototal - grntotal).toFixed(2);
@@ -122,12 +89,6 @@ export default function StepOne(props) {
     }
 
     const onSubmit = () => {
-
-        setValue("createdat", getTime());
-        setValue("createdby", `${firstname} ${lastname} (${employeeid})`);
-
-        setOrderFormData(getValues());
-        setConfirmation(true);
         completeFormStep();
     }
 
@@ -228,7 +189,7 @@ export default function StepOne(props) {
                                         name={"ponumber"}
                                         control={control}
                                         render={({ field: { value } }) => (
-                                            <Typography className={style.input && style.blue}>
+                                            <Typography className={classnames(style.input, style.blue)}>
                                                 {value}
                                             </Typography>
                                         )}
@@ -242,7 +203,7 @@ export default function StepOne(props) {
                                         name={"grnnumber"}
                                         control={control}
                                         render={({ field: { value } }) => (
-                                            <Typography className={style.input && style.blue}>
+                                            <Typography className={classnames(style.input, style.blue)}>
                                                 {value}
                                             </Typography>
                                         )}
@@ -256,7 +217,7 @@ export default function StepOne(props) {
                                         name={"createdat"}
                                         control={control}
                                         render={({ field: { value } }) => (
-                                            <Typography className={value === 'Pending' ? style.red : style.input}>
+                                            <Typography className={style.input}>
                                                 {value}
                                             </Typography>
                                         )}
@@ -270,7 +231,7 @@ export default function StepOne(props) {
                                         name={"createdby"}
                                         control={control}
                                         render={({ field: { value } }) => (
-                                            <Typography className={value === 'Pending' ? style.red : style.input}>
+                                            <Typography className={style.input}>
                                                 {value}
                                             </Typography>
                                         )}
@@ -308,26 +269,38 @@ export default function StepOne(props) {
                                             }} >
                                                 <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
                                                     <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '200px' }}>
-                                                        <Typography style={{ fontWeight: 600 }}> Purchase Order Total (Rs.) </Typography>
+                                                        <Typography style={{ fontWeight: 600 }}>
+                                                            Purchase Order Total (Rs.)
+                                                        </Typography>
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 102.56px 0px 0px", width: '200px' }}>
-                                                        <Typography style={{ fontWeight: 600 }}> {parseInt(getValues("total")).toFixed(2)} </Typography>
+                                                        <Typography style={{ fontWeight: 600 }}>
+                                                            {parseInt(getValues("total")).toFixed(2)}
+                                                        </Typography>
                                                     </Grid>
                                                 </Grid>
                                                 <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
                                                     <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '200px' }}>
-                                                        <Typography style={{ fontWeight: 600 }}> Damaged Expired Items (Rs.) </Typography>
+                                                        <Typography style={{ fontWeight: 600 }}>
+                                                            Damaged / Expired Items (Rs.)
+                                                        </Typography>
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 102.56px 0px 0px", width: '200px' }}>
-                                                        <Typography style={{ fontWeight: 600 }}> {getDamagedMissingItems()} </Typography>
+                                                        <Typography style={{ fontWeight: 600 }}>
+                                                            {getDamagedMissingItems()}
+                                                        </Typography>
                                                     </Grid>
                                                 </Grid>
                                                 <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
                                                     <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '200px' }}>
-                                                        <Typography style={{ fontSize: '1.05em', fontWeight: 600 }}> GRN Total (Rs.) </Typography>
+                                                        <Typography style={{ fontSize: '1.05em', fontWeight: 600 }}>
+                                                            GRN Total (Rs.)
+                                                        </Typography>
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 102.56px 0px 0px", width: '200px' }}>
-                                                        <Typography style={{ fontSize: '1.05em', fontWeight: 600 }}> {getGRNTotal()} </Typography>
+                                                        <Typography style={{ fontSize: '1.05em', fontWeight: 600 }}>
+                                                            {getGRNTotal()}
+                                                        </Typography>
                                                     </Grid>
                                                 </Grid>
                                                 <TablePagination {...props} />
@@ -402,13 +375,15 @@ export default function StepOne(props) {
                                     }}
                                     columns={[
                                         {
+                                            title: "#",
                                             field: "tableData.id",
-                                            editable: 'never',
                                             cellStyle: {
-                                                padding: "10px 5px 10px 7px",
-                                                width: '2%',
-                                                textAlign: 'center'
+                                                width: '3%',
+                                                textAlign: 'left'
                                             },
+                                            render: rowData => {
+                                                return rowData.tableData.id + 1
+                                            }
                                         },
                                         {
                                             field: "description",

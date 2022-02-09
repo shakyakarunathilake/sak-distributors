@@ -17,7 +17,7 @@ import MaterialTable from 'material-table';
 import style from './ManageGRN.module.scss';
 
 //Pop Up Forms
-import ViewGRN from './ViewGRN';
+import ViewGRNForm from './ViewGRNForm';
 import CreateGRNForm from './CreateGRNForm';
 
 //Connecting to Backend
@@ -176,7 +176,7 @@ export default function ManageGRN() {
                                             render: rowData => {
                                                 return (
                                                     rowData.status === 'Pending' ?
-                                                        <p style={{ padding: "0", margin: "0", color: 'red', fontWeight: "700" }}>{rowData.status}</p>
+                                                        <p style={{ padding: "0", margin: "0", color: '#FC6A03', fontWeight: "700" }}>{rowData.status}</p>
                                                         : <p style={{ padding: "0", margin: "0", color: "#4caf50", fontWeight: "700" }}>{rowData.status}</p>
                                                 )
                                             }
@@ -213,7 +213,7 @@ export default function ManageGRN() {
                                             }
                                         },
                                         (rowData) => ({
-                                            disabled: rowData.status === 'Complete',
+                                            disabled: rowData.status === 'Delivered',
                                             icon: 'edit',
                                             tooltip: 'Edit',
                                             onClick: (event, rowData) => {
@@ -236,17 +236,17 @@ export default function ManageGRN() {
                 >
                     {
                         action === 'View' &&
-                        <ViewGRN
+                        <ViewGRNForm
                             GRNRecords={GRNRecords}
                             handleClosePopUp={handleClosePopUp}
-                            setAction={setAction}
+                            action={action}
                         />}
                     {
                         action === 'Edit' &&
                         <CreateGRNForm
                             GRNRecords={GRNRecords}
                             handleClosePopUp={handleClosePopUp}
-                            setAction={setAction}
+                            action={action}
                             updateGRN={updateGRN}
                         />
                     }

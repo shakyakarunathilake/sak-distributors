@@ -1,15 +1,16 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import AutoSizer from 'react-virtualized-auto-sizer';
+import classnames from 'classnames';
 
 //Material UI 
 import {
-    Paper,
     Typography,
     TableRow,
     TableHead,
     TableCell,
     Button,
+    Paper,
     TablePagination,
     Grid
 } from '@material-ui/core';
@@ -20,10 +21,9 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 //Material Table
 import MaterialTable, { MTableToolbar } from 'material-table';
 
-//Styles
-import style from './ViewGRN.module.scss';
+//SCSS styles
+import style from './GRNStepTwo.module.scss';
 import { makeStyles } from '@material-ui/core/styles';
-
 
 const useStyles = makeStyles({
     row1: {
@@ -46,30 +46,44 @@ const useStyles = makeStyles({
     }
 });
 
-export default function ViewGRN(props) {
+export default function GRNStepTwo(props) {
 
     const classes = useStyles();
 
-    const { GRNRecords, handleClosePopUp } = props;
-
-    const { handleSubmit } = useForm({ mode: "all" });
-
-    const onSubmit = () => {
-        handleClosePopUp()
-    };
+    const {
+        data,
+        handleClosePopUp,
+        control,
+        backFormStep,
+        getValues,
+        action
+    } = props;
 
     return (
-        <form className={style.container} onSubmit={handleSubmit(onSubmit)}>
+        <div className={style.two}>
+
             <div className={style.header}>
-                <div>
-                    View GRN Form
+
+                <div className={style.title}>
+                    <div>
+                        {action === "Edit" && "Create GRN Form"}
+                        {action === "View" && "View GRN Form"}
+                    </div>
+                    <div>
+                        <HighlightOffIcon
+                            className={style.icon}
+                            onClick={() => { handleClosePopUp() }}
+                        />
+                    </div>
                 </div>
-                <div>
-                    <HighlightOffIcon
-                        className={style.icon}
-                        onClick={() => { handleClosePopUp() }}
-                    />
-                </div>
+
+                {
+                    action === "Edit" &&
+                    <div className={style.step}>
+                        Step 2 of 2
+                    </div>
+                }
+
             </div>
 
             <div className={style.body}>
@@ -81,33 +95,57 @@ export default function ViewGRN(props) {
                             <tr>
                                 <th align="left">Name</th>
                                 <td align="left">
-                                    <Typography className={style.input}>
-                                        S.A.K Distributors
-                                    </Typography>
+                                    <Controller
+                                        name={"customername"}
+                                        control={control}
+                                        render={({ field: { value } }) => (
+                                            <Typography className={style.input}>
+                                                {value}
+                                            </Typography>
+                                        )}
+                                    />
                                 </td>
                             </tr>
                             <tr>
                                 <th align="left">Address</th>
                                 <td align="left">
-                                    <Typography className={style.input}>
-                                        No.233, Kiriwallapitiya, Rambukkana, Srilanka
-                                    </Typography>
+                                    <Controller
+                                        name={"customeraddress"}
+                                        control={control}
+                                        render={({ field: { value } }) => (
+                                            <Typography className={style.input}>
+                                                {value}
+                                            </Typography>
+                                        )}
+                                    />
                                 </td>
                             </tr>
                             <tr>
                                 <th align="left">Contact No.</th>
                                 <td align="left">
-                                    <Typography className={style.input}>
-                                        0352264009
-                                    </Typography>
+                                    <Controller
+                                        name={"contactnumber"}
+                                        control={control}
+                                        render={({ field: { value } }) => (
+                                            <Typography className={style.input}>
+                                                {value}
+                                            </Typography>
+                                        )}
+                                    />
                                 </td>
                             </tr>
                             <tr>
                                 <th align="left">Supplier</th>
                                 <td align="left">
-                                    <Typography className={style.input}>
-                                        {GRNRecords.supplier}
-                                    </Typography>
+                                    <Controller
+                                        name={"supplier"}
+                                        control={control}
+                                        render={({ field: { value } }) => (
+                                            <Typography className={style.input}>
+                                                {value}
+                                            </Typography>
+                                        )}
+                                    />
                                 </td>
                             </tr>
                         </tbody>
@@ -118,41 +156,57 @@ export default function ViewGRN(props) {
                             <tr>
                                 <th align="left">PO No.</th>
                                 <td align="left">
-                                    <Typography className={style.input && style.blue}>
-                                        {GRNRecords.ponumber}
-                                    </Typography>
+                                    <Controller
+                                        name={"ponumber"}
+                                        control={control}
+                                        render={({ field: { value } }) => (
+                                            <Typography className={classnames(style.input, style.blue)}>
+                                                {value}
+                                            </Typography>
+                                        )}
+                                    />
                                 </td>
                             </tr>
                             <tr>
                                 <th align="left">GRN No.</th>
                                 <td align="left">
-                                    <Typography className={style.input && style.blue}>
-                                        {GRNRecords.grnnumber}
-                                    </Typography>
+                                    <Controller
+                                        name={"grnnumber"}
+                                        control={control}
+                                        render={({ field: { value } }) => (
+                                            <Typography className={classnames(style.input, style.blue)}>
+                                                {value}
+                                            </Typography>
+                                        )}
+                                    />
                                 </td>
                             </tr>
                             <tr>
                                 <th align="left">GRN Created at</th>
                                 <td align="left">
-                                    <Typography className={style.input}>
-                                        {
-                                            GRNRecords.createdat === 'Pending' ?
-                                                <span className={style.red}> {GRNRecords.createdat}</span> :
-                                                GRNRecords.createdat
-                                        }
-                                    </Typography>
+                                    <Controller
+                                        name={"createdat"}
+                                        control={control}
+                                        render={({ field: { value } }) => (
+                                            <Typography className={style.input}>
+                                                {value}
+                                            </Typography>
+                                        )}
+                                    />
                                 </td>
                             </tr>
                             <tr>
                                 <th align="left">GRN Created by</th>
                                 <td align="left">
-                                    <Typography className={style.input}>
-                                        {
-                                            GRNRecords.createdby === 'Pending' ?
-                                                <span className={style.red}> {GRNRecords.createdby}</span> :
-                                                GRNRecords.createdby
-                                        }
-                                    </Typography>
+                                    <Controller
+                                        name={"createdby"}
+                                        control={control}
+                                        render={({ field: { value } }) => (
+                                            <Typography className={style.input}>
+                                                {value}
+                                            </Typography>
+                                        )}
+                                    />
                                 </td>
                             </tr>
                         </tbody>
@@ -162,7 +216,7 @@ export default function ViewGRN(props) {
 
                 <AutoSizer>
                     {({ height, width }) => {
-                        const pageSize = Math.floor((height - 410) / 48);
+                        const pageSize = Math.floor((height - (action === 'View' ? 450 : 440)) / 48);
 
                         return (
                             <div style={{ height: `${height}px`, width: `${width}px`, overflowY: 'auto' }}>
@@ -186,26 +240,38 @@ export default function ViewGRN(props) {
                                             }} >
                                                 <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
                                                     <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '200px' }}>
-                                                        <Typography style={{ fontWeight: 600 }}> Gross Total (Rs.) </Typography>
+                                                        <Typography style={{ fontWeight: 600 }}>
+                                                            Purchase Order Total (Rs.)
+                                                        </Typography>
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 10px 0px 0px", width: '200px' }}>
-                                                        <Typography style={{ fontWeight: 600 }}> {parseInt(GRNRecords.total).toFixed(2)} </Typography>
+                                                        <Typography style={{ fontWeight: 600 }}>
+                                                            {parseInt(getValues("total")).toFixed(2)}
+                                                        </Typography>
                                                     </Grid>
                                                 </Grid>
                                                 <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
                                                     <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '200px' }}>
-                                                        <Typography style={{ fontWeight: 600 }}> Damaged / Expired Items (Rs.) </Typography>
+                                                        <Typography style={{ fontWeight: 600 }}>
+                                                            Damaged / Expired Items (Rs.)
+                                                        </Typography>
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 10px 0px 0px", width: '200px' }}>
-                                                        <Typography style={{ fontWeight: 600 }}> {parseInt(GRNRecords.damagedmissingitems).toFixed(2)} </Typography>
+                                                        <Typography style={{ fontWeight: 600 }}>
+                                                            {getValues("damagedmissingitems")}
+                                                        </Typography>
                                                     </Grid>
                                                 </Grid>
                                                 <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
                                                     <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '200px' }}>
-                                                        <Typography style={{ fontSize: '1.05em', fontWeight: 600 }}> Total (Rs.) </Typography>
+                                                        <Typography style={{ fontSize: '1.05em', fontWeight: 600 }}>
+                                                            GRN Total (Rs.)
+                                                        </Typography>
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 10px 0px 0px", width: '200px' }}>
-                                                        <Typography style={{ fontSize: '1.05em', fontWeight: 600 }}> {parseInt(GRNRecords.grntotal).toFixed(2)} </Typography>
+                                                        <Typography style={{ fontSize: '1.05em', fontWeight: 600 }}>
+                                                            {getValues("grntotal")}
+                                                        </Typography>
                                                     </Grid>
                                                 </Grid>
                                                 <TablePagination {...props} />
@@ -219,7 +285,7 @@ export default function ViewGRN(props) {
                                                             #
                                                         </div>
                                                     </TableCell>
-                                                    <TableCell width="27%" padding="none" rowSpan={2}>
+                                                    <TableCell width="25%" padding="none" rowSpan={2}>
                                                         <div style={{ padding: '0 10px' }}>
                                                             Description
                                                         </div>
@@ -251,12 +317,12 @@ export default function ViewGRN(props) {
                                                             Damaged Qty.
                                                         </div>
                                                     </TableCell>
-                                                    <TableCell padding="none" width="7%" rowSpan={2} align="center">
+                                                    <TableCell padding="none" width="8%" rowSpan={2} align="center">
                                                         <div style={{ padding: '0 10px' }}>
                                                             GRN Value (Rs.)
                                                         </div>
                                                     </TableCell>
-                                                    <TableCell padding="none" width="7%" rowSpan={2} align="center">
+                                                    <TableCell padding="none" width="8%" rowSpan={2} align="center">
                                                         <div style={{ padding: '0 10px' }}>
                                                             PO Value (Rs.)
                                                         </div>
@@ -277,24 +343,27 @@ export default function ViewGRN(props) {
                                     }}
                                     columns={[
                                         {
+                                            title: "#",
                                             field: "tableData.id",
                                             cellStyle: {
-                                                padding: "10px 5px 10px 7px",
-                                                width: '2%',
-                                                textAlign: 'center'
+                                                width: '3%',
+                                                textAlign: 'left'
                                             },
+                                            render: rowData => {
+                                                return rowData.tableData.id + 1
+                                            }
                                         },
                                         {
                                             field: "description",
                                             cellStyle: {
                                                 padding: "10px 7px 10px 7px",
-                                                width: '25%',
+                                                width: '27%',
                                                 textAlign: 'left'
                                             }
                                         },
                                         {
                                             field: "piecespercase",
-                                            type: 'numeric',
+                                            editable: 'never',
                                             cellStyle: {
                                                 padding: "10px 7px 10px 7px",
                                                 width: '5%',
@@ -303,11 +372,11 @@ export default function ViewGRN(props) {
                                         },
                                         {
                                             field: "listprice",
-                                            type: 'numeric',
                                             render: rowData => rowData.listprice.toFixed(2),
+                                            type: 'numeric',
                                             cellStyle: {
                                                 padding: "10px 7px 10px 7px",
-                                                width: '5%',
+                                                width: '6%',
                                                 textAlign: 'right'
                                             }
                                         },
@@ -348,6 +417,7 @@ export default function ViewGRN(props) {
                                             }
                                         },
                                         {
+                                            title: "Free Cs",
                                             field: "freeqtycases",
                                             type: 'numeric',
                                             cellStyle: {
@@ -395,26 +465,26 @@ export default function ViewGRN(props) {
                                         },
                                         {
                                             field: "grnvalue",
-                                            render: rowData => rowData.grnvalue.toFixed(2),
                                             type: 'numeric',
+                                            render: rowData => rowData.grnvalue.toFixed(2),
                                             cellStyle: {
-                                                width: '7%',
+                                                width: '8%',
                                                 padding: "10px 7px 10px 7px",
                                                 textAlign: 'right'
                                             }
                                         },
                                         {
                                             field: "value",
-                                            render: rowData => rowData.value.toFixed(2),
                                             type: 'numeric',
+                                            render: rowData => rowData.value.toFixed(2),
                                             cellStyle: {
-                                                width: '7%',
+                                                width: '8%',
                                                 padding: "10px 7px 10px 7px",
                                                 textAlign: 'right'
                                             }
                                         }
                                     ]}
-                                    data={GRNRecords.items}
+                                    data={data}
                                     options={{
                                         pageSize: pageSize,
                                         pageSizeOptions: [],
@@ -446,14 +516,36 @@ export default function ViewGRN(props) {
             </div>
 
             <div className={style.footer}>
-                <Button
-                    type="submit"
-                    color="primary"
-                    variant="contained"
-                >
-                    Done
-                </Button>
+
+                <div className={style.backBtn}>
+                    {
+                        action === "Edit" &&
+                        <Button
+                            variant="contained"
+                            onClick={backFormStep}
+                            style={{
+                                backgroundColor: '#ACA9BB',
+                                color: 'white'
+                            }}
+                        >
+                            Back
+                        </Button>
+                    }
+                </div>
+
+                <div className={style.nextBtn}>
+                    <Button
+                        type="submit"
+                        color="primary"
+                        variant="contained"
+                    >
+                        {action === "View" && "Done"}
+                        {action === "Edit" && "Confirm and Submit"}
+                    </Button>
+                </div>
+
             </div>
-        </form>
+
+        </div >
     )
 }

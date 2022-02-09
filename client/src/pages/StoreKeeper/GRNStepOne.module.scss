@@ -3,20 +3,29 @@
 .container {
     display: grid;
     grid-template-rows: min-content auto min-content;
+    width: calc(100vw - 50px);
     height: calc(100vh - 20px);
     box-sizing: border-box;
     overflow: hidden;
 
     .header {
-        display: grid;
-        grid-template-columns: auto min-content;
-        font-size: 1.55em;
-        font-weight: 600;
-        .icon {
-            color: red;
-            &:hover {
-                transform: scale(1.1);
+        .title {
+            display: grid;
+            grid-template-columns: auto min-content;
+            font-size: 1.55em;
+            font-weight: 600;
+            .icon {
+                color: red;
+                &:hover {
+                    transform: scale(1.1);
+                }
             }
+        }
+
+        .step {
+            margin: 5px 0 0 0;
+            color: $primaryLight;
+            font-size: 0.75em;
         }
     }
 
@@ -24,7 +33,7 @@
         .orderDetails {
             display: grid;
             grid-template-columns: 50% 50%;
-            padding: 25px 20px;
+            padding: 20px;
 
             .details {
                 table-layout: auto !important;
@@ -52,17 +61,15 @@
     }
 
     .footer {
-        padding: 30px 0px 10px 0px;
         text-align: right;
+        padding: 20px 0px 10px 0px;
 
         Button {
-            padding: $formButtonPadding;
             font-size: 1em;
-
-            &:disabled {
-                background-color: hsl(230, 66%, 57%);
-                color: $inverseFontColor;
-            }
+            white-space: nowrap;
+            padding: $formButtonPadding2;
+            height: 40px;
+            color: $inverseFontColor;
         }
     }
 }

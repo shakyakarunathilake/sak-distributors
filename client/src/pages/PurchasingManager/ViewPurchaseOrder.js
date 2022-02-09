@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-//SCSS styles
-import style from './ViewPurchaseOrder.module.scss';
-
 //Form Step
 import StepTwo from './PurchaseOrderStepTwo';
 
@@ -17,14 +14,13 @@ export default function ViewPurchaseOrder(props) {
         if (poRecords !== null) {
             setData([...poRecords.items])
         }
-    }, []);
+    }, [poRecords]);
 
     const {
         handleSubmit,
         getValues,
         control,
     } = useForm({
-        mode: "onChange",
         defaultValues: {
             ponumber: poRecords.ponumber,
             supplier: poRecords.supplier,
@@ -53,7 +49,6 @@ export default function ViewPurchaseOrder(props) {
 
     return (
         <form
-            className={style.form}
             onSubmit={handleSubmit(onSubmit)}
         >
             <StepTwo
