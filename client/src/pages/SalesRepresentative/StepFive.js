@@ -318,7 +318,7 @@ export default function StepFive(props) {
                                 disableFocusListener
                                 disableHoverListener
                                 disableTouchListener
-                                title="Please fill the required * fields to proceed"
+                                title="Please fill the required * fields to proceed. If Maximum Credit Allowed is Rs 0.00 field will be disabled."
                                 arrow
                             >
                                 < InfoIcon onClick={handleTooltipOpen} style={{ fontSize: '1.3em', verticalAlign: 'middle', marginRight: '10px' }} />
