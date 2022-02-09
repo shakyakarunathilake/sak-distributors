@@ -22,7 +22,6 @@ export default function CreatePurchaseOrder(props) {
     const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
     const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
     const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
-    const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
 
     const {
         handleSubmit,
@@ -32,7 +31,7 @@ export default function CreatePurchaseOrder(props) {
         control,
         formState: { errors }
     } = useForm({
-        mode: "onChange",
+        mode: "all",
         defaultValues: {
             ponumber: poRecords ? poRecords.ponumber : '',
             supplier: poRecords ? poRecords.supplier : '',
@@ -143,7 +142,6 @@ export default function CreatePurchaseOrder(props) {
                         data={data}
                         action={action}
                         handleClosePopUp={handleClosePopUp}
-                        designation={designation}
                         control={control}
                         getValues={getValues}
                     />

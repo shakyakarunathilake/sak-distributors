@@ -52,7 +52,6 @@ export default function PurchaseOrderStepTwo(props) {
         data,
         action,
         handleClosePopUp,
-        designation,
         backFormStep,
         control,
         getValues

@@ -249,7 +249,7 @@ export default function StepFive(props) {
                                     name={"currentinvoicecreditamount"}
                                     defaultValue={0.00}
                                     rules={
-                                        { required: true, message: "Required *" },
+                                        { required: { value: true, message: "Required *" } },
                                         { pattern: { value: /^[0-9]+\.[0-9]{2}$/, message: "Invalid" } }
                                     }
                                 />
