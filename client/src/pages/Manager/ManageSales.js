@@ -104,7 +104,7 @@ export default function ManageSales() {
                             render: rowData => {
                                 return (
                                     rowData.status === 'Pending' ?
-                                        <p style={{ padding: "0", margin: "0", color: 'red', fontWeight: "700" }}>{rowData.status}</p>
+                                        <p style={{ padding: "0", margin: "0", color: "#eed202", fontWeight: "700" }}>{rowData.status}</p>
                                         : rowData.status === 'Processing' ?
                                             <p style={{ padding: "0", margin: "0", color: "#2196F3", fontWeight: "700" }}>{rowData.status}</p>
                                             : rowData.status === 'Shipping' ?
