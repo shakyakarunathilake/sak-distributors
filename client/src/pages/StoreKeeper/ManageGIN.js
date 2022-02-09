@@ -187,7 +187,7 @@ export default function ManageGIN() {
                     console.log(err);
                 })
         }
-        
+
         if (action === "Complete") {
             axios
                 .post(`http://localhost:8080/gin/approve-complete/${ginnumber}`, gin)
@@ -290,11 +290,11 @@ export default function ManageGIN() {
                                                 render: rowData => {
                                                     return (
                                                         rowData.status === 'Pending' ?
-                                                            <p style={{ padding: "0", margin: "0", color: 'red', fontWeight: "700" }}>{rowData.status}</p>
+                                                            <p style={{ padding: "0", margin: "0", color: '#eed202', fontWeight: "700" }}>{rowData.status}</p>
                                                             : rowData.status === 'Processing' ?
-                                                                <p style={{ padding: "0", margin: "0", color: "#2196F3", fontWeight: "700" }}>{rowData.status}</p>
+                                                                <p style={{ padding: "0", margin: "0", color: "#FF8400", fontWeight: "700" }}>{rowData.status}</p>
                                                                 : rowData.status === 'Shipping' ?
-                                                                    <p style={{ padding: "0", margin: "0", color: "#FF8400", fontWeight: "700" }}>{rowData.status}</p>
+                                                                    <p style={{ padding: "0", margin: "0", color: "#2196F3", fontWeight: "700" }}>{rowData.status}</p>
                                                                     : <p style={{ padding: "0", margin: "0", color: "#4caf50", fontWeight: "700" }}>{rowData.status}</p>
                                                     )
                                                 }
