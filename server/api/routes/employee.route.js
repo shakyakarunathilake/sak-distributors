@@ -111,7 +111,7 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
                         emailNotify.sendEmail({
                             "tomail": result.email,
                             "subject": "Welcome to SAK Distributors",
-                            "content": `This email is an auto generated email to inform you that your password to SAK Distributors Site is ${firstpassword}. Thank you.`,
+                            "content": `This email is an auto generated email to inform you that your one time password to SAK Distributors Site is ${firstpassword}. Thank you.`,
                         })
 
                         res.status(201).json({
