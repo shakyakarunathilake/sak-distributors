@@ -17,6 +17,7 @@ import MuiAlert from '@mui/material/Alert';
 //Material UI Icons
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import ApprovalIcon from '@mui/icons-material/Approval';
 
 //Form
 import ViewPurchaseOrder from './ViewPurchaseOrder';
@@ -125,7 +126,7 @@ export default function ManagePurchaseOrder() {
             ;
         }
 
-        if (designation === 'Distributor' && action === "Edit") {
+        if (action === "Approve") {
             axios
                 .post(`http://localhost:8080/purchaseorder/approve-by-ponumber/${ponumber}`, purchaseorder)
                 .then(res => {
@@ -263,7 +264,7 @@ export default function ManagePurchaseOrder() {
                                                         rowData.status === "Delivered" ?
                                                             <p style={{ padding: "0", margin: "0", color: "#4cbb17", fontWeight: "700" }}>{rowData.status}</p> :
                                                             rowData.status === "Pending" ?
-                                                                <p style={{ padding: "0", margin: "0", color: "red", fontWeight: "700" }}>{rowData.status}</p> :
+                                                                <p style={{ padding: "0", margin: "0", color: "#FC6A03", fontWeight: "700" }}>{rowData.status}</p> :
                                                                 <p style={{ padding: "0", margin: "0", color: "#eed202", fontWeight: "700" }}>{rowData.status}</p>
 
                                                     )
@@ -308,7 +309,17 @@ export default function ManagePurchaseOrder() {
                                                     getOptions();
                                                     openInPopup(rowData.ponumber);
                                                 },
-                                                disabled: rowData.status !== 'Waiting For Approval'
+                                                disabled: rowData.status !== 'Waiting For Approval' || designation === 'Distributor'
+                                            }),
+                                            rowData => ({
+                                                icon: ApprovalIcon,
+                                                tooltip: 'Approve',
+                                                onClick: (event, rowData) => {
+                                                    setAction('Approve');
+                                                    getOptions();
+                                                    openInPopup(rowData.ponumber);
+                                                },
+                                                disabled: rowData.status !== 'Waiting For Approval' || designation !== 'Distributor'
                                             })
                                         ]}
                                     />
@@ -326,18 +337,21 @@ export default function ManagePurchaseOrder() {
                 setOpenPopup={setOpenPopup}
                 fullScreen={true}
             >
-                {action === 'View' ?
-                    <ViewPurchaseOrder
-                        handleClosePopUp={handleClosePopUp}
-                        poRecords={poRecords}
-                    /> :
-                    <CreatePurchaseOrder
-                        addOrEdit={addOrEdit}
-                        handleClosePopUp={handleClosePopUp}
-                        productOptions={productOptions}
-                        supplierOptions={supplierOptions}
-                        poRecords={poRecords}
-                    />
+                {
+                    action === 'View' ?
+                        <ViewPurchaseOrder
+                            handleClosePopUp={handleClosePopUp}
+                            poRecords={poRecords}
+                            action={action}
+                        /> :
+                        <CreatePurchaseOrder
+                            addOrEdit={addOrEdit}
+                            handleClosePopUp={handleClosePopUp}
+                            productOptions={productOptions}
+                            supplierOptions={supplierOptions}
+                            poRecords={poRecords}
+                            action={action}
+                        />
                 }
             </PopUp>
             <Snackbar

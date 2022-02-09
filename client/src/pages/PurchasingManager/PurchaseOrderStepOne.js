@@ -1,9 +1,6 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { useForm, Controller } from 'react-hook-form';
-
-//Shared Components
-import PopUp from '../../shared/PopUp/PopUp';
+import { Controller } from 'react-hook-form';
 
 //Material UI 
 import Divider from '@mui/material/Divider';
@@ -26,14 +23,13 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 //Dialog Content
-import ResetForm from './ResetForm';
 import Quotations from './Quotations';
 
 //Material Table
 import MaterialTable, { MTableAction, MTableToolbar } from 'material-table';
 
 //SCSS styles
-import style from './StepOne.module.scss';
+import style from './PurchaseOrderStepOne.module.scss';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
@@ -57,59 +53,34 @@ const useStyles = makeStyles({
     }
 });
 
-export default function StepOne(props) {
+export default function PurchaseOrderStepOne(props) {
 
     const classes = useStyles();
 
     const {
+        action,
         data,
         setData,
         poRecords,
         setOrderFormData,
         setConfirmation,
         handleClosePopUp,
-        resetFormOpenPopup,
-        setResetFormOpenPopup,
-        handleResetFormClosePopUp,
         completeFormStep,
         supplierOptions,
         productOptions,
+        getValues,
+        setValue,
+        trigger,
+        control,
+        errors,
+        podate,
+        dateTime,
+        firstname,
+        lastname,
+        employeeid
     } = props;
 
     const addActionRef = useRef();
-
-    const today = new Date();
-    const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-    const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    const dateTime = date + ' ' + time;
-    const podate = today.getFullYear().toString().substr(-2) + (today.getMonth() + 1) + today.getDate() + today.getHours() + today.getMinutes();
-
-    const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
-    const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
-    const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
-    const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
-
-    const { getValues, setValue, reset, trigger, control, formState: { errors, isValid } } = useForm({
-        mode: "onChange",
-        defaultValues: {
-            ponumber: poRecords ? poRecords.ponumber : '',
-            supplier: poRecords ? poRecords.supplier : '',
-            grosstotal: poRecords ? poRecords.grosstotal : 0,
-            receiveddiscounts: poRecords ? poRecords.receiveddiscounts : 0,
-            damagedmissingitems: poRecords ? poRecords.damagedmissingitems : 0,
-            total: poRecords ? poRecords.total : 0,
-            // customerid: poRecords ? poRecords.customerid : '',
-            customername: poRecords ? poRecords.customername : "S.A.K Distributors",
-            customeraddress: poRecords ? poRecords.customeraddress : "No.233, Kiriwallapitiya, Rambukkana, Sri Lanka",
-            contactnumber: poRecords ? poRecords.contactnumber : "0352264009",
-            status: poRecords ? poRecords.status : '',
-            createdby: poRecords ? poRecords.createdby : `${firstname} ${lastname} (${employeeid})`,
-            createdat: poRecords ? poRecords.createdat : '',
-            approvedby: poRecords ? poRecords.approvedby : '',
-            approvedat: poRecords ? poRecords.approvedat : '',
-            deliveredat: poRecords ? poRecords.deliveredat : '',
-        }
-    });
 
     useEffect(() => {
         if (poRecords != null) {
@@ -128,19 +99,24 @@ export default function StepOne(props) {
         return productItemList;
     }, [data, getValues('supplier'), getValues, productOptions]);
 
-    const resetForm = () => {
-        handleResetFormClosePopUp();
-        reset();
-        setData([]);
-    }
-
     const getGrossTotal = () => {
         let grosstotal = 0;
         for (let i = 0; i < data.length; i++) {
             grosstotal = grosstotal + data[i].value;
         }
-        setValue("grosstotal", grosstotal);
-        return grosstotal;
+        setValue("grosstotal", grosstotal.toFixed(2));
+        return grosstotal.toFixed(2);
+    }
+
+    const getTotal = () => {
+        let total = 0;
+        let grosstotal = getValues('grosstotal');
+        let receiveddiscounts = getValues('receiveddiscounts');
+        let damagedmissingitems = getValues('damagedmissingitems');
+
+        total = parseInt(grosstotal) - (parseInt(receiveddiscounts) + parseInt(damagedmissingitems));
+
+        return total.toFixed(2);
     }
 
     const handleAddNewItem = () => {
@@ -155,20 +131,20 @@ export default function StepOne(props) {
 
         const supplier = supplierOptions.filter(x => x.title === getValues("supplier"))
 
-        if (poRecords === null) {
+        if (action === 'Create') {
             setValue("ponumber", supplier[0].abbreviation + podate);
             setValue("createdat", dateTime);
             setValue("status", 'Waiting For Approval');
         }
 
-        if (designation === 'Distributor') {
+        if (action === 'Approve') {
             setValue("approvedby", `${firstname} ${lastname} (${employeeid})`);
             setValue("approvedat", dateTime);
             setValue("status", 'Pending');
         }
 
 
-        setValue('total', getValues('grosstotal') - (getValues('receiveddiscounts') + getValues('damagedmissingitems')));
+        setValue('total', getTotal());
 
         setOrderFormData(getValues());
         setConfirmation(true);
@@ -182,7 +158,9 @@ export default function StepOne(props) {
 
                 <div className={style.title}>
                     <div>
-                        Create Purchase Order
+                        {action === "Create" && "Create Purchase Order"}
+                        {action === "Edit" && "Edit Purchase Order"}
+                        {action === "Approve" && "Edit & Approve Purchase Order"}
                     </div>
                     <div>
                         <HighlightOffIcon
@@ -205,28 +183,22 @@ export default function StepOne(props) {
                     <div className={style.btnRow}>
 
                         <Controller
-                            defaultValue=''
-                            name={'supplier'}
-                            control={control}
-                            rules={{
-                                required: { value: true, message: "Required *" },
-                            }}
-                            render={({ field: { onChange, value } }) => (
+                            render={({ field }) => (
                                 <Select
+                                    {...field}
                                     fullWidth
-                                    helperText={errors.supplier && errors.supplier.message}
-                                    error={errors.supplier ? true : false}
                                     options={supplierOptions || []}
-                                    onChange={e => {
-                                        onChange(e);
-                                        // setSelectedProductOptions(productOptions.filter(x => x.supplier === getValues('supplier')));
-                                    }}
+                                    error={errors.supplier ? true : false}
+                                    helperText={errors.supplier && errors.supplier.message}
                                     size="small"
                                     label="Supplier *"
-                                    value={value}
                                     disabled={data.length > 0 ? true : false}
                                 />
                             )}
+                            control={control}
+                            name={'supplier'}
+                            defaultValue={''}
+                            rules={{ required: { value: true, message: "Required *" } }}
                         />
 
                         <div> </div>
@@ -243,7 +215,10 @@ export default function StepOne(props) {
 
                     <AutoSizer>
                         {({ height, width }) => {
-                            const pageSize = Math.floor((height - 310) / 48);
+
+                            const bodyHeight = height - 170;
+                            const pageSize = Math.floor((bodyHeight) / 48);
+                            // const pageSize = Math.floor((height - 310) / 48);
                             return (
                                 <div style={{ height: `${height}px`, width: `${width}px`, overflowY: 'auto' }}>
 
@@ -274,10 +249,14 @@ export default function StepOne(props) {
                                                 }} >
                                                     <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
                                                         <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '200px' }}>
-                                                            <Typography style={{ fontSize: "1.05em", fontWeight: 600 }}> Gross Total (Rs.) </Typography>
+                                                            <Typography style={{ fontSize: "1.05em", fontWeight: 600 }}>
+                                                                Gross Total (Rs.)
+                                                            </Typography>
                                                         </Grid>
                                                         <Grid item align="Right" style={{ margin: "0px 102.56px  0px 0px", width: '200px' }}>
-                                                            <Typography style={{ fontSize: "1.05em", fontWeight: 600 }}>  {getGrossTotal().toFixed(2)} </Typography>
+                                                            <Typography style={{ fontSize: "1.05em", fontWeight: 600 }}>
+                                                                {getGrossTotal()}
+                                                            </Typography>
                                                         </Grid>
                                                     </Grid>
                                                     <TablePagination {...props} />
@@ -623,9 +602,11 @@ export default function StepOne(props) {
                                             )
                                         }}
                                         options={{
+                                            paging: true,
                                             pageSize: pageSize,
                                             pageSizeOptions: [],
-                                            paging: true,
+                                            minBodyHeight: bodyHeight,
+                                            maxBodyHeight: bodyHeight,
                                             addRowPosition: "first",
                                             toolbar: true,
                                             filtering: true,
@@ -648,6 +629,7 @@ export default function StepOne(props) {
                             );
                         }}
                     </AutoSizer>
+
                 </div>
 
                 <Divider
@@ -662,40 +644,16 @@ export default function StepOne(props) {
 
             <div className={style.footer}>
 
-                <div className={style.resetBtn}>
-                    <Button
-                        // disabled={!isValid && data.length === 0}
-                        variant="contained"
-                        onClick={e => setResetFormOpenPopup(true)}
-                    >
-                        Reset
-                    </Button>
-                </div>
-
-                <div className={style.nextBtn}>
-                    <Button
-                        disabled={!isValid && data.length === 0}
-                        color="primary"
-                        variant="contained"
-                        onClick={onSubmit}
-                    >
-                        Next
-                    </Button>
-                </div>
+                <Button
+                    disabled={(data.length === 0)}
+                    color="primary"
+                    variant="contained"
+                    onClick={onSubmit}
+                >
+                    Next
+                </Button>
 
             </div>
-
-            <PopUp
-                openPopup={resetFormOpenPopup}
-                setOpenPopup={setResetFormOpenPopup}
-            >
-
-                <ResetForm
-                    handleClosePopUp={handleResetFormClosePopUp}
-                    resetForm={resetForm}
-                />
-
-            </PopUp>
 
         </div >
     )

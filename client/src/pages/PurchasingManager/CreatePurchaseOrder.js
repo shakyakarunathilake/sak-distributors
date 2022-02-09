@@ -1,68 +1,62 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import AutoSizer from 'react-virtualized-auto-sizer';
 import formData from 'form-data';
-
-//Material UI 
-import {
-    TableHead,
-    TableRow,
-    TableCell,
-    TablePagination,
-    Button,
-    Grid,
-    Typography,
-} from '@material-ui/core';
-
-//Material UI Icons
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-
-//Material Table
-import MaterialTable from 'material-table';
 
 //SCSS styles
 import style from './CreatePurchaseOrder.module.scss';
-import { makeStyles } from '@material-ui/core/styles';
 
 //Form Step
-import StepOne from './StepOne';
-
-const useStyles = makeStyles({
-    row1: {
-        "& .MuiTableCell-head": {
-            color: "white",
-            backgroundColor: "#20369f",
-            fontSize: "0.8em",
-            border: "none",
-            padding: "5px 0 2.5px 0"
-        },
-    },
-    row2: {
-        "& .MuiTableCell-head": {
-            color: "white",
-            backgroundColor: "#20369f",
-            fontSize: "0.8em",
-            border: "none",
-            padding: "2.5px 0 5px 0"
-        },
-    }
-});
+import StepOne from './PurchaseOrderStepOne';
+import StepTwo from './PurchaseOrderStepTwo';
 
 export default function CreatePurchaseOrder(props) {
 
-    const classes = useStyles();
+    const { productOptions, supplierOptions, addOrEdit, handleClosePopUp, poRecords, action } = props;
 
-    const { productOptions, supplierOptions, addOrEdit, handleClosePopUp, poRecords } = props;
+    const today = new Date();
+    const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    const dateTime = date + ' ' + time;
+    const podate = today.getFullYear().toString().substr(-2) + (today.getMonth() + 1) + today.getDate() + today.getHours() + today.getMinutes();
 
-    const { handleSubmit } = useForm({ mode: "all" });
+    const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
+    const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
+    const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
+    const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
+
+    const {
+        handleSubmit,
+        getValues,
+        setValue,
+        trigger,
+        control,
+        formState: { errors }
+    } = useForm({
+        mode: "onChange",
+        defaultValues: {
+            ponumber: poRecords ? poRecords.ponumber : '',
+            supplier: poRecords ? poRecords.supplier : '',
+            grosstotal: poRecords ? poRecords.grosstotal : 0.00,
+            receiveddiscounts: poRecords ? parseInt(poRecords.receiveddiscounts).toFixed(2) : 0.00,
+            damagedmissingitems: poRecords ? parseInt(poRecords.damagedmissingitems).toFixed(2) : 0.00,
+            total: poRecords ? poRecords.total : 0.00,
+            // customerid: poRecords ? poRecords.customerid : '',
+            customername: poRecords ? poRecords.customername : "S.A.K Distributors",
+            customeraddress: poRecords ? poRecords.customeraddress : "No.233, Kiriwallapitiya, Rambukkana, Sri Lanka",
+            contactnumber: poRecords ? poRecords.contactnumber : "0352264009",
+            status: poRecords ? poRecords.status : '',
+            createdby: poRecords ? poRecords.createdby : `${firstname} ${lastname} (${employeeid})`,
+            createdat: poRecords ? poRecords.createdat : '',
+            approvedby: poRecords ? poRecords.approvedby : '',
+            approvedat: poRecords ? poRecords.approvedat : '',
+            deliveredat: poRecords ? poRecords.deliveredat : '',
+        }
+    });
 
     const [data, setData] = useState([]);
     const [formStep, setFormStep] = useState(0);
     const [confirmation, setConfirmation] = useState(false);
     const [orderFormData, setOrderFormData] = useState({});
-    const [resetFormOpenPopup, setResetFormOpenPopup] = useState(false);
-
-    const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
 
     const completeFormStep = () => {
         setFormStep(x => x + 1);
@@ -70,10 +64,6 @@ export default function CreatePurchaseOrder(props) {
 
     const backFormStep = () => {
         setFormStep(x => x - 1);
-    }
-
-    const handleResetFormClosePopUp = () => {
-        setResetFormOpenPopup(false)
     }
 
     const onSubmit = () => {
@@ -123,13 +113,21 @@ export default function CreatePurchaseOrder(props) {
                         setConfirmation={setConfirmation}
                         setOrderFormData={setOrderFormData}
                         handleClosePopUp={handleClosePopUp}
-                        resetFormOpenPopup={resetFormOpenPopup}
-                        setResetFormOpenPopup={setResetFormOpenPopup}
-                        handleResetFormClosePopUp={handleResetFormClosePopUp}
                         completeFormStep={completeFormStep}
                         supplierOptions={supplierOptions}
                         productOptions={productOptions}
                         poRecords={poRecords}
+                        getValues={getValues}
+                        setValue={setValue}
+                        trigger={trigger}
+                        control={control}
+                        errors={errors}
+                        podate={podate}
+                        dateTime={dateTime}
+                        firstname={firstname}
+                        lastname={lastname}
+                        employeeid={employeeid}
+                        action={action}
                     />
 
                 </section>
@@ -138,369 +136,17 @@ export default function CreatePurchaseOrder(props) {
 
             {
                 formStep >= 1 &&
-                <section className={formStep === 1 ? style.two : style.hidden}>
+                <section className={formStep === 1 ? style.visible : style.hidden}>
 
-                    <div className={style.header}>
-
-                        <div className={style.title}>
-                            <div>
-                                {designation === "Distributor" ? "Approve & Edit Purchase Order" : (poRecords ? "Edit Purchase Order" : "Create Purchase Order")}
-                            </div>
-                            <div>
-                                <HighlightOffIcon
-                                    className={style.icon}
-                                    onClick={() => { handleClosePopUp() }}
-                                />
-                            </div>
-                        </div>
-
-                        <div className={style.step}>
-                            Step 2 of 2
-                        </div>
-
-                    </div>
-
-
-                    <div className={style.body}>
-
-                        <div className={style.orderDetails}>
-
-                            <table className={style.details}>
-                                <tbody>
-                                    <tr>
-                                        <th align="left">Name</th>
-                                        <td align="left">
-                                            <Typography className={style.input}>
-                                                {orderFormData.customername}
-                                            </Typography>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th align="left">Address</th>
-                                        <td align="left">
-                                            <Typography className={style.input}>
-                                                {orderFormData.customeraddress}
-                                            </Typography>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th align="left">Contact No.</th>
-                                        <td align="left">
-                                            <Typography className={style.input}>
-                                                {orderFormData.contactnumber}
-                                            </Typography>
-                                        </td>
-                                    </tr>
-                                    {poRecords &&
-                                        <tr>
-                                            <th align="left">Delivered at</th>
-                                            <td align="left">
-                                                {/* {dateTime} */}
-                                                <Typography className={style.input}>
-                                                    <p style={{ padding: "0", margin: "0", color: "#eed202", fontWeight: "700" }}>{poRecords.status}</p>
-                                                </Typography>
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-
-                            <table className={style.details}>
-                                <tbody>
-                                    <tr>
-                                        <th align="left">PO No.</th>
-                                        <td align="left">
-                                            {/* PO2110/004 */}
-                                            <Typography className={style.input}>
-                                                {orderFormData.ponumber}
-                                            </Typography>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th align="left">Supplier</th>
-                                        <td align="left">
-                                            <Typography className={style.input}>
-                                                {orderFormData.supplier}
-                                            </Typography>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th align="left">Created By</th>
-                                        <td align="left">
-                                            <Typography className={style.input}>
-                                                {orderFormData.createdby} ({orderFormData.createdat})
-                                            </Typography>
-                                        </td>
-                                    </tr>
-                                    {poRecords &&
-                                        <tr>
-                                            <th align="left">Approved By</th>
-                                            <td align="left">
-                                                <Typography className={style.input}>
-                                                    <p style={{ padding: "0", margin: "0", color: "#eed202", fontWeight: "700" }}>{poRecords.status}</p>
-                                                </Typography>
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-
-                        </div>
-
-                        <AutoSizer>
-                            {({ height, width }) => {
-                                const pageSize = Math.floor((height - 470) / 48);
-                                return (
-                                    <div style={{ height: `${height}px`, width: `${width}px`, overflowY: 'auto' }}>
-
-                                        <MaterialTable
-                                            components={{
-                                                Pagination: props => (
-                                                    <td style={{
-                                                        display: "flex",
-                                                        flexDirection: "column"
-                                                    }} >
-                                                        <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
-                                                            <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '200px' }}>
-                                                                <Typography style={{ fontWeight: 600 }}> Gross Total (Rs.) </Typography>
-                                                            </Grid>
-                                                            <Grid item align="Right" style={{ margin: "0px 10px  0px 0px", width: '200px' }}>
-                                                                <Typography style={{ fontWeight: 600 }}> {parseInt(orderFormData.grosstotal).toFixed(2)} </Typography>
-                                                            </Grid>
-                                                        </Grid>
-                                                        <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
-                                                            <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '200px' }}>
-                                                                <Typography style={{ fontWeight: 600 }}> Received Discounts (Rs.)</Typography>
-                                                            </Grid>
-                                                            <Grid item align="Right" style={{ margin: "0px 10px  0px 0px", width: '200px' }}>
-                                                                <Typography style={{ fontWeight: 600 }}> {parseInt(orderFormData.receiveddiscounts).toFixed(2)} </Typography>
-                                                            </Grid>
-                                                        </Grid>
-                                                        <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
-                                                            <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '200px' }}>
-                                                                <Typography style={{ fontWeight: 600 }}> Damaged / Expired Items (Rs.) </Typography>
-                                                            </Grid>
-                                                            <Grid item align="Right" style={{ margin: "0px 10px  0px 0px", width: '200px' }}>
-                                                                <Typography style={{ fontWeight: 600 }}> {parseInt(orderFormData.damagedmissingitems).toFixed(2)} </Typography>
-                                                            </Grid>
-                                                        </Grid>
-                                                        <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
-                                                            <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '200px' }}>
-                                                                <Typography style={{ fontSize: '1.05em', fontWeight: 600 }}> Total (Rs.) </Typography>
-                                                            </Grid>
-                                                            <Grid item align="Right" style={{ margin: "0px 10px  0px 0px", width: '200px' }}>
-                                                                <Typography style={{ fontSize: '1.05em', fontWeight: 600 }}> {parseInt(orderFormData.total).toFixed(2)} </Typography>
-                                                            </Grid>
-                                                        </Grid>
-                                                        <TablePagination {...props} />
-                                                    </td>
-                                                ),
-                                                Header: props => (
-                                                    <TableHead {...props} style={{ position: 'sticky', top: '0', zIndex: 99999 }}>
-                                                        <TableRow className={classes.row1}>
-                                                            <TableCell width="2%" padding="none" rowSpan={2} align="center">
-                                                                <div style={{ padding: '0 10px' }}>
-                                                                    #
-                                                                </div>
-                                                            </TableCell>
-                                                            <TableCell width="32%" padding="none" rowSpan={2}>
-                                                                <div style={{ padding: '0 10px' }}>
-                                                                    Description
-                                                                </div>
-                                                            </TableCell>
-                                                            <TableCell width="7%" padding="none" rowSpan={2} align="center">
-                                                                <div style={{ padding: '0 10px' }}>
-                                                                    Pieces per Case
-                                                                </div>
-                                                            </TableCell>
-                                                            <TableCell width="7%" padding="none" rowSpan={2} align="center">
-                                                                <div style={{ padding: '0 10px' }}>
-                                                                    List Price
-                                                                </div>
-                                                            </TableCell>
-                                                            <TableCell padding="none" colSpan={2} align="center">
-                                                                Sales Qty.
-                                                            </TableCell>
-                                                            <TableCell padding="none" colSpan={2} align="center">
-                                                                Free Qty.
-                                                            </TableCell>
-                                                            <TableCell padding="none" colSpan={2} align="center">
-                                                                Return Qty.
-                                                            </TableCell>
-                                                            <TableCell padding="none" width="12%" rowSpan={2} align="center">
-                                                                <div style={{ padding: '0 10px' }}>
-                                                                    Value
-                                                                </div>
-                                                            </TableCell>
-                                                        </TableRow>
-                                                        <TableRow className={classes.row2}>
-                                                            <TableCell width="7%" padding="none" align="center">Cs</TableCell>
-                                                            <TableCell width="7%" padding="none" align="center">Pcs</TableCell>
-                                                            <TableCell width="7%" padding="none" align="center">Cs</TableCell>
-                                                            <TableCell width="7%" padding="none" align="center">Pcs</TableCell>
-                                                            <TableCell width="6%" padding="none" align="center">D</TableCell>
-                                                            <TableCell width="6%" padding="none" align="center">R</TableCell>
-                                                        </TableRow>
-                                                    </TableHead>
-                                                ),
-                                            }}
-                                            columns={[
-                                                {
-                                                    field: "tableData.id",
-                                                    cellStyle: {
-                                                        padding: "10px 5px 10px 7px",
-                                                        width: '2%',
-                                                        textAlign: 'left'
-                                                    },
-                                                },
-                                                {
-                                                    field: "description",
-                                                    cellStyle: {
-                                                        padding: "10px 5px 10px 7px",
-                                                        width: '32%',
-                                                        textAlign: 'left'
-                                                    },
-                                                },
-                                                {
-                                                    title: "Pieces Per Cases",
-                                                    field: "piecespercase",
-                                                    cellStyle: {
-                                                        padding: "10px 5px 10px 7px",
-                                                        width: '7%',
-                                                        textAlign: 'right'
-                                                    },
-                                                },
-                                                {
-                                                    field: "listprice",
-                                                    type: 'numeric',
-                                                    render: rowData => rowData.listprice.toFixed(2),
-                                                    cellStyle: {
-                                                        padding: "10px 5px 10px 7px",
-                                                        width: '7%',
-                                                        textAlign: 'right'
-                                                    },
-                                                },
-                                                {
-                                                    field: "salesqtycases",
-                                                    type: 'numeric',
-                                                    cellStyle: {
-                                                        padding: "10px 5px 10px 7px",
-                                                        width: '7%',
-                                                        textAlign: 'right'
-                                                    },
-                                                },
-                                                {
-                                                    field: "salesqtypieces",
-                                                    type: 'numeric',
-                                                    cellStyle: {
-                                                        width: '7%',
-                                                        padding: "10px 5px 10px 7px",
-                                                        textAlign: 'right'
-                                                    },
-                                                },
-                                                {
-                                                    field: "freeqtycases",
-                                                    type: 'numeric',
-                                                    cellStyle: {
-                                                        width: '7%',
-                                                        padding: "10px 5px 10px 7px",
-                                                        textAlign: 'right'
-                                                    },
-                                                },
-                                                {
-                                                    field: "freeqtypieces",
-                                                    type: 'numeric',
-                                                    cellStyle: {
-                                                        width: '7%',
-                                                        padding: "10px 5px 10px 7px",
-                                                        textAlign: 'right'
-                                                    },
-                                                },
-                                                {
-                                                    field: "damaged",
-                                                    type: 'numeric',
-                                                    cellStyle: {
-                                                        width: '6%',
-                                                        padding: "10px 5px 10px 7px",
-                                                        textAlign: 'right'
-                                                    },
-                                                },
-                                                {
-                                                    field: "return",
-                                                    type: 'numeric',
-                                                    cellStyle: {
-                                                        width: '6%',
-                                                        padding: "10px 5px 10px 7px",
-                                                        textAlign: 'right'
-                                                    },
-                                                },
-                                                {
-                                                    field: "value",
-                                                    type: 'numeric',
-                                                    render: rowData => rowData.value ? rowData.value.toFixed(2) : '',
-                                                    cellStyle: {
-                                                        width: '12%',
-                                                        padding: "10px 15px 10px 12px",
-                                                        textAlign: 'right'
-                                                    },
-                                                }
-                                            ]}
-                                            data={data}
-                                            options={{
-                                                pageSize: pageSize,
-                                                pageSizeOptions: [],
-                                                paging: true,
-                                                toolbar: false,
-                                                filtering: true,
-                                                search: false,
-                                                headerStyle: {
-                                                    position: "sticky",
-                                                    top: "0",
-                                                    backgroundColor: '#20369f',
-                                                    color: '#FFF',
-                                                    fontSize: "0.8em"
-                                                },
-                                                rowStyle: rowData => ({
-                                                    fontSize: "0.8em",
-                                                    backgroundColor: (rowData.tableData.id % 2 === 0) ? '#ebebeb' : '#ffffff'
-                                                })
-                                            }}
-                                        />
-
-                                    </div>
-                                );
-                            }}
-                        </AutoSizer>
-
-                    </div>
-
-
-                    <div className={style.footer}>
-
-                        <div>
-                            <Button
-                                variant="contained"
-                                onClick={backFormStep}
-                                style={{
-                                    backgroundColor: '#ACA9BB',
-                                    color: 'white'
-                                }}
-                            >
-                                Back
-                            </Button>
-                        </div>
-
-                        <div className={style.nextBtn}>
-                            <Button
-                                type="submit"
-                                color="primary"
-                                variant="contained"
-                            >
-                                {designation === 'Distributor' ? 'Approve and Submit' : 'Confirm and Submit'}
-                            </Button>
-                        </div>
-
-                    </div>
+                    <StepTwo
+                        backFormStep={backFormStep}
+                        data={data}
+                        action={action}
+                        handleClosePopUp={handleClosePopUp}
+                        designation={designation}
+                        control={control}
+                        getValues={getValues}
+                    />
 
                 </section>
 
