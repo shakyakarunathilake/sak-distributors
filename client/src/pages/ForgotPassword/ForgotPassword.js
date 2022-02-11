@@ -52,7 +52,7 @@ export default function Login() {
 
     const onSubmit = (values) => {
         axios
-            .post("http://localhost:8080/password/forgot-password/", {
+            .post("http://localhost:8080/auth/forgot-password/", {
                 "email": values.email,
             })
             .then(res => {

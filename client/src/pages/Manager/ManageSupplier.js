@@ -58,7 +58,11 @@ export default function ManageSupplier() {
 
     useEffect(() => {
         axios
-            .get("http://localhost:8080/suppliers/get-all-supplier-table-data")
+            .get("http://localhost:8080/suppliers/get-all-supplier-table-data", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 sessionStorage.setItem("SupplierTableData", JSON.stringify(res.data));
                 setRecords(res.data.tbody);
@@ -75,7 +79,11 @@ export default function ManageSupplier() {
         }
         if (action === "Create") {
             axios
-                .post("http://localhost:8080/suppliers/create-supplier", supplier)
+                .post("http://localhost:8080/suppliers/create-supplier", supplier, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
                 .then(res => {
                     setAlert(res.data.alert);
                     setType(res.data.type);
@@ -88,7 +96,11 @@ export default function ManageSupplier() {
             ;
         } if (action === "Edit") {
             axios
-                .post(`http://localhost:8080/suppliers/update-by-id/${supplierid}`, supplier)
+                .post(`http://localhost:8080/suppliers/update-by-id/${supplierid}`, supplier, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
                 .then(res => {
                     setAlert(res.data.alert);
                     setType(res.data.type);
@@ -108,7 +120,11 @@ export default function ManageSupplier() {
 
     const openInPopup = supplierid => {
         axios
-            .get(`http://localhost:8080/suppliers/${supplierid}`)
+            .get(`http://localhost:8080/suppliers/${supplierid}`, {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 setSupplierRecords(res.data.supplier);
                 setOpenPopup(true);
@@ -120,7 +136,11 @@ export default function ManageSupplier() {
 
     const getNextSupplierId = () => {
         axios
-            .get("http://localhost:8080/suppliers/get-next-regno")
+            .get("http://localhost:8080/suppliers/get-next-regno", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 setNextSupId(res.data.nextsupplierid);
             })
@@ -131,7 +151,11 @@ export default function ManageSupplier() {
 
     const getEmployeeOptions = () => {
         axios
-            .get("http://localhost:8080/options/employee-options-for-supplier")
+            .get("http://localhost:8080/options/employee-options-for-supplier", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 setEmployeeOptions(res.data.employeeOptions);
                 setOpenPopup(true);

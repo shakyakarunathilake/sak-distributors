@@ -68,7 +68,6 @@ router.put("/change-password/", (req, res, next) => {
         });
 });
 
-
 //Forgot Password
 router.post("/forgot-password", (req, res, next) => {
 

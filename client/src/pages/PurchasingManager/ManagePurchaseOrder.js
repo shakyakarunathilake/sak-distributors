@@ -58,7 +58,11 @@ export default function ManagePurchaseOrder() {
 
     useEffect(() => {
         axios
-            .get("http://localhost:8080/purchaseorder/get-all-purchaseorder-table-data")
+            .get("http://localhost:8080/purchaseorder/get-all-purchaseorder-table-data", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 setRecords(res.data.purchaseorder);
                 setReRender(null);
@@ -70,7 +74,11 @@ export default function ManagePurchaseOrder() {
 
     const getOptions = () => {
         axios
-            .get("http://localhost:8080/options/supplier-options-for-purchase-order")
+            .get("http://localhost:8080/options/supplier-options-for-purchase-order", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 setSupplierOptions(res.data.supplierOptions);
             })
@@ -99,7 +107,11 @@ export default function ManagePurchaseOrder() {
         }
         if (action === "Create") {
             axios
-                .post("http://localhost:8080/purchaseorder/create-purchaseorder", purchaseorder)
+                .post("http://localhost:8080/purchaseorder/create-purchaseorder", purchaseorder, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
                 .then(res => {
                     setAlert(res.data.alert);
                     setType(res.data.type);
@@ -113,7 +125,11 @@ export default function ManagePurchaseOrder() {
         }
         if (action === "Edit") {
             axios
-                .post(`http://localhost:8080/purchaseorder/update-by-ponumber/${ponumber}`, purchaseorder)
+                .post(`http://localhost:8080/purchaseorder/update-by-ponumber/${ponumber}`, purchaseorder, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
                 .then(res => {
                     setAlert(res.data.alert);
                     setType(res.data.type);
@@ -128,7 +144,11 @@ export default function ManagePurchaseOrder() {
 
         if (action === "Approve") {
             axios
-                .post(`http://localhost:8080/purchaseorder/approve-by-ponumber/${ponumber}`, purchaseorder)
+                .post(`http://localhost:8080/purchaseorder/approve-by-ponumber/${ponumber}`, purchaseorder, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
                 .then(res => {
                     setAlert(res.data.alert);
                     setType(res.data.type);
@@ -152,7 +172,11 @@ export default function ManagePurchaseOrder() {
 
     const openInPopup = ponumber => {
         axios
-            .get(`http://localhost:8080/purchaseorder/${ponumber}`)
+            .get(`http://localhost:8080/purchaseorder/${ponumber}`, {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 setPORecords(res.data.purchaseorder);
                 setOpenPopup(true);

@@ -91,7 +91,11 @@ export default function ManageProduct() {
 
     useEffect(() => {
         axios
-            .get("http://localhost:8080/products/get-all-product-table-data")
+            .get("http://localhost:8080/products/get-all-product-table-data", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 sessionStorage.setItem("ProductsTableData", JSON.stringify(res.data));
                 setRecords(res.data.tbody);
@@ -116,7 +120,11 @@ export default function ManageProduct() {
 
         if (action === "Create") {
             axios
-                .post("http://localhost:8080/products/create-product", product)
+                .post("http://localhost:8080/products/create-product", product, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
                 .then(res => {
                     setAlert(res.data.alert);
                     setType(res.data.type);
@@ -131,7 +139,11 @@ export default function ManageProduct() {
 
         if (action === "Edit") {
             axios
-                .post(`http://localhost:8080/products/update-by-id/${productid}`, product)
+                .post(`http://localhost:8080/products/update-by-id/${productid}`, product, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
                 .then(res => {
                     setAlert(res.data.alert);
                     setType(res.data.type);
@@ -156,7 +168,11 @@ export default function ManageProduct() {
 
         if (action === "Create") {
             axios
-                .post(`http://localhost:8080/products/add-new-variant/${productid}`, product)
+                .post(`http://localhost:8080/products/add-new-variant/${productid}`, product, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
                 .then(res => {
                     setAlert(res.data.alert);
                     setType(res.data.type);
@@ -171,7 +187,11 @@ export default function ManageProduct() {
         }
         else {
             axios
-                .post(`http://localhost:8080/products/update-by-id/${productid}/${variantid}`, product)
+                .post(`http://localhost:8080/products/update-by-id/${productid}/${variantid}`, product, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
                 .then(res => {
                     setAlert(res.data.alert);
                     setType(res.data.type);
@@ -195,7 +215,11 @@ export default function ManageProduct() {
         if (typeof variantid === 'undefined') {
             setFormType('Product')
             axios
-                .get(`http://localhost:8080/products/${productid}`)
+                .get(`http://localhost:8080/products/${productid}`, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
                 .then(res => {
                     setProductRecords(res.data.product);
                 })
@@ -206,7 +230,11 @@ export default function ManageProduct() {
         } else {
             setFormType('Variant')
             axios
-                .get(`http://localhost:8080/products/${productid}/${variantid}`)
+                .get(`http://localhost:8080/products/${productid}/${variantid}`, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
                 .then(res => {
                     setProductRecords(res.data.product);
                 })
@@ -218,7 +246,11 @@ export default function ManageProduct() {
 
     const getProductEmployeeOptions = () => {
         axios
-            .get("http://localhost:8080/options/product-options-for-product")
+            .get("http://localhost:8080/options/product-options-for-product", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 setProductOptions(res.data.productOptions);
                 setEmployeeOptions(res.data.employeeOptions);
@@ -233,7 +265,11 @@ export default function ManageProduct() {
 
     const getEmployeeOptions = () => {
         axios
-            .get("http://localhost:8080/options/employee-options-for-product")
+            .get("http://localhost:8080/options/employee-options-for-product", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 setEmployeeOptions(res.data.employeeOptions);
                 setOpenPopup(true);
@@ -245,7 +281,11 @@ export default function ManageProduct() {
 
     const getNextProductId = () => {
         axios
-            .get("http://localhost:8080/products/get-next-productid")
+            .get("http://localhost:8080/products/get-next-productid", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 setNextId(res.data.nextproductid);
             })

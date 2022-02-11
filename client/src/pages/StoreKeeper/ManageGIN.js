@@ -102,7 +102,11 @@ export default function ManageGIN() {
 
     const getInChargeOptions = () => {
         axios
-            .get('http://localhost:8080/options/employee-options-for-gin')
+            .get("http://localhost:8080/gin/get-all-gin-table-data", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 setInChargeOptions(res.data.employeeOptions)
             })
@@ -113,7 +117,11 @@ export default function ManageGIN() {
 
     const getOrderRecords = () => {
         axios
-            .get('http://localhost:8080/orders/get-order-records')
+            .get(`http://localhost:8080/gin/${ginnumber}`, {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 setOrderRecords(res.data.orderRecords)
             })
@@ -148,7 +156,11 @@ export default function ManageGIN() {
 
         if (action === "Create") {
             axios
-                .post(`http://localhost:8080/gin/create-gin`, gin)
+                .post(`http://localhost:8080/gin/create-gin`, gin, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
                 .then(res => {
                     setAlert(res.data.alert);
                     setType(res.data.type);
@@ -162,7 +174,11 @@ export default function ManageGIN() {
 
         if (action === "Edit") {
             axios
-                .post(`http://localhost:8080/gin/update-by-ginnumber/${ginnumber}`, gin)
+                .post(`http://localhost:8080/gin/update-by-ginnumber/${ginnumber}`, gin, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
                 .then(res => {
                     setAlert(res.data.alert);
                     setType(res.data.type);
@@ -176,7 +192,11 @@ export default function ManageGIN() {
 
         if (action === "Dispatch") {
             axios
-                .post(`http://localhost:8080/gin/approve-dispatch/${ginnumber}`, gin)
+                .post(`http://localhost:8080/gin/approve-dispatch/${ginnumber}`, gin, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
                 .then(res => {
                     setAlert(res.data.alert);
                     setType(res.data.type);
@@ -190,7 +210,11 @@ export default function ManageGIN() {
 
         if (action === "Complete") {
             axios
-                .post(`http://localhost:8080/gin/approve-complete/${ginnumber}`, gin)
+                .post(`http://localhost:8080/gin/approve-complete/${ginnumber}`, gin, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
                 .then(res => {
                     setAlert(res.data.alert);
                     setType(res.data.type);
