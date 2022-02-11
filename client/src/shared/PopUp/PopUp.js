@@ -19,6 +19,9 @@ const useStyles = makeStyles({
         },
         "& .MuiDialogTitle-root": {
             padding: "4px !important"
+        },
+        "& .MuiDialog-paperScrollPaper": {
+            maxHeight: "100%"
         }
     },
     content: {
