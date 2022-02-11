@@ -69,9 +69,11 @@ export default function ManageEmployee() {
     }, [reRender]);
 
     const addOrEdit = (employee, employeeid) => {
+
         for (let [key, value] of employee.entries()) {
             console.log(key, value);
         }
+
         if (action === "Create") {
             axios
                 .post("http://localhost:8080/employees/create-employee", employee)
@@ -85,8 +87,9 @@ export default function ManageEmployee() {
                     console.log(err);
                 });
             ;
+        }
 
-        } if (action === "Edit") {
+        if (action === "Edit") {
             axios
                 .post(`http://localhost:8080/employees/update-by-id/${employeeid}`, employee)
                 .then(res => {
@@ -123,6 +126,9 @@ export default function ManageEmployee() {
             .get("http://localhost:8080/employees/get-next-regno")
             .then(res => {
                 setNextEmpId(res.data.nextemployeeid);
+                setAction('Create');
+                setEmployeeRecords(null);
+                setOpenPopup(true);
             })
             .catch(err => {
                 console.log(err);
@@ -141,10 +147,7 @@ export default function ManageEmployee() {
                         variant="contained"
                         onClick={
                             () => {
-                                setAction('Create');
                                 getNextEmployeeId();
-                                setOpenPopup(true);
-                                setEmployeeRecords(null);
                             }
                         }
                     >
@@ -282,24 +285,32 @@ export default function ManageEmployee() {
                     </AutoSizer>
 
                 </div>
+
                 <PopUp
                     openPopup={openPopup}
                     setOpenPopup={setOpenPopup}
                 >
-                    {action === 'View' ?
+                    {
+                        action === 'View' &&
                         <ViewEmployee
                             employeeRecords={employeeRecords}
                             setOpenPopup={setOpenPopup}
                             setAction={setAction}
-                        /> :
+                            action={action}
+                        />
+                    }
+                    {
+                        (action === 'Create' || action === "Edit") &&
                         <EmployeeForm
                             addOrEdit={addOrEdit}
                             employeeRecords={employeeRecords}
                             setOpenPopup={setOpenPopup}
                             nextEmpId={nextEmpId}
+                            action={action}
                         />
                     }
                 </PopUp>
+
                 <Snackbar
                     open={open}
                     autoHideDuration={1500}
@@ -317,7 +328,9 @@ export default function ManageEmployee() {
                         {alert}
                     </Alert>
                 </Snackbar>
+
             </div>
+
         </Page>
     )
 }
