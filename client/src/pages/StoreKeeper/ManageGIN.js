@@ -115,7 +115,7 @@ export default function ManageGIN() {
             })
     }
 
-    const getOrderRecords = () => {
+    const getOrderRecords = (ginnumber) => {
         axios
             .get(`http://localhost:8080/gin/${ginnumber}`, {
                 headers: {
@@ -362,15 +362,6 @@ export default function ManageGIN() {
                                                     openInPopup(rowData.ginnumber);
                                                 }
                                             },
-                                            // (rowData) => ({
-                                            //     disabled: rowData.status === 'Dispatched' || rowData.status === 'Complete' || designation === "Delivery Representative",
-                                            //     icon: 'edit',
-                                            //     tooltip: 'Edit',
-                                            //     onClick: (event, rowData) => {
-                                            //         setAction('Edit');
-                                            //         openInPopup(rowData.ginnumber);
-                                            //     }
-                                            // }),
                                             (rowData) => ({
                                                 disabled: rowData.status !== 'Processing' || designation === "Delivery Representative",
                                                 icon: LocalShippingIcon,
