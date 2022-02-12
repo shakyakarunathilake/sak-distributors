@@ -27,6 +27,9 @@ export default function EmployeesForm(props) {
     const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
     const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
 
+    const today = new Date();
+    const date = today.getFullYear() + '-' + (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+
     const { handleSubmit, formState: { errors, isValid }, control, reset, setValue, trigger, getValues, clearErrors } = useForm({
         mode: "all",
         defaultValues: {
@@ -39,7 +42,7 @@ export default function EmployeesForm(props) {
             lastname: employeeRecords ? employeeRecords.lastname : '',
             email: employeeRecords ? employeeRecords.email : '',
             dob: employeeRecords ? employeeRecords.dob : '',
-            hireddate: employeeRecords ? employeeRecords.hireddate : '',
+            hireddate: employeeRecords ? employeeRecords.hireddate : date,
             address: employeeRecords ? employeeRecords.address : '',
             nic: employeeRecords ? employeeRecords.nic : '',
             gender: employeeRecords ? employeeRecords.gender : '',
