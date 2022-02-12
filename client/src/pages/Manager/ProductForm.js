@@ -1,322 +1,123 @@
-import React, { useState, useEffect } from 'react';
-
-import { useForm, Controller } from 'react-hook-form';
+import { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import formData from 'form-data';
-
-//Development Stage
-import * as employeeservice from "../../services/employeeService";
-
-//Shared Components
-import TextField from '../../shared/TextField/TextField';
-import Select from '../../shared/Select/Select';
-import DatePicker from '../../shared/DatePicker/DatePicker';
-
-//Material UI Components
-import Button from '@material-ui/core/Button';
-
-//Material UI Icons
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-
-//Default Image
-import product from '../../images/product.svg';
 
 //SCSS Styles
 import style from './ProductForm.module.scss';
 
-
-
+//Steps
+import StepOne from './ProductFormStepOne';
+import StepTwo from './ProductFormStepTwo';
 
 export default function ProductsForm(props) {
 
-    const { handleClosePopUp, addOrEdit, productRecords, nextId, employeeOptions } = props;
+    const { handleClosePopUp, addOrEdit, productRecords, nextId, employeeOptions, action } = props;
 
-    const { handleSubmit, formState: { errors }, control, reset, setValue, getValues } = useForm({ mode: "onBlur" });
+    const today = new Date();
+    const date = today.getFullYear() + '-' + (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+
+    const { handleSubmit, formState: { errors, isValid }, control, reset, trigger, getValues } = useForm({
+        mode: "all",
+        defaultValues: {
+            addedby: productRecords ? productRecords.addedby : '',
+            addeddate: productRecords ? productRecords.addeddate : date,
+            name: productRecords ? productRecords.name : '',
+            productid: productRecords ? productRecords.productid : nextId,
+            productimage: productRecords ? productRecords.productimage : '',
+            status: productRecords ? productRecords.status : '',
+            supplier: productRecords ? productRecords.supplier : '',
+        }
+    });
 
     const [file, setFile] = useState("");
+    const [formStep, setFormStep] = useState(0);
 
     useEffect(() => {
         if (productRecords != null) {
             setFile(`http://${productRecords.productimage}`);
+        }
+    }, [productRecords])
 
-            setValue("productid", productRecords.productid);
-            setValue("name", productRecords.name);
-            setValue("supplier", productRecords.supplier);
-            setValue("productimage", productRecords.productimage);
-            setValue("addeddate", productRecords.addeddate);
-            setValue("addedby", productRecords.addedby);
-            setValue("status", productRecords.status);
-
-
+    const completeFormStep = () => {
+        if (isValid) {
+            setFormStep(x => x + 1);
         } else {
-            setValue("productid", nextId);
-        };
-    }, [productRecords, nextId, setValue])
+            trigger();
+        }
+    }
+
+    const backFormStep = () => {
+        setFormStep(x => x - 1);
+    }
 
     const resetForm = () => {
-        reset({
-            productid: getValues("productid"),
-            name: '',
-            supplier: '',
-            productimage: '',
-            addeddate: '',
-            addedby: '',
-            status: '',
-        });
+        reset();
         setFile("");
     }
 
     // Handle Image Upload
-    const handleChange = e => {
+    const handleImageChange = e => {
         setFile(URL.createObjectURL(e.target.files[0]));
     }
 
-    const onSubmit = (values) => {
+    const onSubmit = () => {
 
         const productFormData = new formData();
 
-        productFormData.append('productid', values.productid);
-        productFormData.append('productimage', values.productimage);
-        productFormData.append('name', values.name);
-        productFormData.append('supplier', values.supplier);
-        productFormData.append('addeddate', values.addeddate);
-        productFormData.append("addedby", values.addedby);
-        productFormData.append("status", values.status);
+        productFormData.append('productid', getValues('productid'));
+        productFormData.append('productimage', getValues('productimage'));
+        productFormData.append('name', getValues('name'));
+        productFormData.append('supplier', getValues('supplier'));
+        productFormData.append('addeddate', getValues('addeddate'));
+        productFormData.append("addedby", getValues('addedby'));
+        productFormData.append("status", getValues('status'));
 
-        resetForm();
-        addOrEdit(productFormData, getValues("productid"));
+        addOrEdit(productFormData, getValues('productid'));
     };
 
     return (
-        <div className={style.container}>
 
-            <div className={style.header}>
-                <div>{productRecords ? "Edit Product" : "Add New Product"}</div>
-                <div>
-                    <HighlightOffIcon
-                        className={style.icon}
-                        onClick={() => { handleClosePopUp() }}
+        <form
+            className={style.container}
+            onSubmit={handleSubmit(onSubmit)}
+        >
+
+            {
+                formStep >= 0 &&
+                <section className={formStep === 0 ? style.visible : style.hidden}>
+
+                    <StepOne
+                        errors={errors}
+                        control={control}
+                        handleClosePopUp={handleClosePopUp}
+                        action={action}
+                        file={file}
+                        completeFormStep={completeFormStep}
+                        handleImageChange={handleImageChange}
+                        resetForm={resetForm}
+                        employeeOptions={employeeOptions}
                     />
-                </div>
-            </div>
 
-            <div className={style.body}>
-                <form
-                    className={style.form}
-                    onSubmit={handleSubmit(onSubmit)}
-                >
-                    <div className={style.formFields}>
+                </section>
+            }
 
-                        <div className={style.columnA}>
+            {
+                formStep >= 1 &&
+                <section className={formStep === 1 ? style.visible : style.hidden}>
 
-                            <div className={style.image}>
-                                <div className={style.imgWrapper}>
-                                    <img src={file ? file : product} alt="" />
-                                    <div className={style.uploadWrapper}>
-                                        <Controller
-                                            name={"productimage"}
-                                            control={control}
-                                            defaultValue=""
-                                            rules={{ required: { value: true, message: "Required *" } }}
-                                            render={({ field: { onChange } }) => (
-                                                <input
-                                                    type="file"
-                                                    id="product-image"
-                                                    hidden
-                                                    onChange={(e) => {
-                                                        onChange(e.target.files[0]);
-                                                        handleChange(e);
-                                                    }}
-                                                // value={value || ''}
-                                                />
-                                            )}
-                                        />
-                                        <label
-                                            className={style.label}
-                                            htmlFor="product-image"
-                                        >
-                                            Upload *
-                                        </label>
-                                    </div>
-                                </div>
-                                <div className={style.partialCircle}></div>
-                            </div>
-                            <div className={style.redFontCenter}>
-                                {
-                                    errors.productimage && errors.productimage.message
-                                }
-                            </div>
+                    <StepTwo
+                        action={action}
+                        handleClosePopUp={handleClosePopUp}
+                        control={control}
+                        backFormStep={backFormStep}
+                        onSubmit={onSubmit}
+                        file={file}
+                    />
 
-                            <div className={style.productId}>
-                                <Controller
-                                    name={"productid"}
-                                    control={control}
-                                    rules={{ required: true }}
-                                    render={({ field: { onChange, value } }) => (
-                                        <input
-                                            disabled
-                                            type="text"
-                                            className={style.input}
-                                            onChange={onChange}
-                                            value={`ID: ${value}`}
-                                        />
-                                    )}
-                                />
-                            </div>
+                </section >
+            }
 
-                        </div>
-
-                        <div className={style.columnB}>
-
-                            <div className={style.textFields}>
-
-                                <div className={style.redFont}>
-                                    The fields with "*" are required
-                                </div>
-
-                                <div className={style.row}>
-                                    <Controller
-                                        name={"name"}
-                                        control={control}
-                                        rules={{
-                                            required: { value: true, message: "Required *" },
-                                        }}
-                                        render={({ field: { onChange, value } }) => (
-                                            <TextField
-                                                fullWidth={true}
-                                                className={style.field}
-                                                helperText={errors.name && errors.name.message}
-                                                placeholder="Ex: Ice Cream – Butter Scotch"
-                                                error={errors.name ? true : false}
-                                                onChange={onChange}
-                                                value={value || ''}
-                                                label="Product Name *"
-                                                size="small"
-                                            />
-                                        )}
-                                    />
-                                </div>
-
-                                <div className={style.row}>
-                                    <Controller
-                                        name={"supplier"}
-                                        control={control}
-                                        rules={{
-                                            required: { value: true, message: "Required *" },
-                                        }}
-                                        render={({ field: { onChange, value } }) => (
-                                            <Select
-                                                className={style.field}
-                                                helperText={errors.supplier && errors.supplier.message}
-                                                error={errors.supplier ? true : false}
-                                                onChange={onChange}
-                                                value={value || ''}
-                                                options={employeeservice.getSupplierOptions()}
-                                                label="Supplier *"
-                                                size="small"
-                                            />
-                                        )}
-                                    />
-                                </div>
-
-                                <div className={style.row}>
-                                    <Controller
-                                        name={"addedby"}
-                                        control={control}
-                                        rules={{
-                                            required: { value: true, message: "Required *" },
-                                        }}
-                                        render={({ field: { onChange, value } }) => (
-                                            <Select
-                                                fullWidth={true}
-                                                className={style.field}
-                                                helperText={errors.addedby && errors.addedby.message}
-                                                error={errors.addedby ? true : false}
-                                                onChange={onChange}
-                                                value={value || ''}
-                                                options={employeeOptions || []}
-                                                label="Added By"
-                                                size="small"
-                                            />
-                                        )}
-                                    />
-                                </div>
-
-                                <div className={style.gridrow}>
-                                    <div>
-                                        <Controller
-                                            name={"status"}
-                                            control={control}
-                                            rules={{
-                                                required: { value: true, message: "Required *" },
-                                            }}
-                                            render={({ field: { onChange, value } }) => (
-                                                <Select
-                                                    className={style.field}
-                                                    helperText={errors.status && errors.status.message}
-                                                    error={errors.status ? true : false}
-                                                    onChange={onChange}
-                                                    value={value || ''}
-                                                    options={employeeservice.getVariantStatusOptions()}
-                                                    label="Status *"
-                                                    size="small"
-                                                />
-                                            )}
-                                        />
-                                    </div>
-                                    <div>
-                                        <Controller
-                                            name={"addeddate"}
-                                            control={control}
-                                            rules={{
-                                                required: { value: true, message: "Required *" },
-                                            }}
-                                            render={({ field: { onChange, value } }) => (
-                                                <DatePicker
-                                                    className={style.field}
-                                                    helperText={errors.addeddate && errors.addeddate.message}
-                                                    error={errors.addeddate ? true : false}
-                                                    onChange={onChange}
-                                                    value={value || ''}
-                                                    label="Added Date *"
-                                                    size="small"
-                                                />
-                                            )}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div className={style.buttonRow}>
-
-                        <div className={style.resetBtnDiv}>
-                            <Button
-                                className={style.resetBtn}
-                                onClick={resetForm}
-                                variant="outlined"
-                            >
-                                Reset
-                            </Button>
-                        </div>
-
-                        <div className={style.submitBtnDiv}>
-                            <Button
-                                className={style.submitBtn}
-                                type="submit"
-                                variant="contained"
-                            >
-                                Submit
-                            </Button>
-                        </div>
-
-                    </div>
-
-                </form>
-            </div>
-        </div>
+        </form >
 
     );
 };

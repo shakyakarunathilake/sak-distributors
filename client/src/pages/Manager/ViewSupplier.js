@@ -1,7 +1,5 @@
+import React from 'react';
 import { useForm } from 'react-hook-form';
-
-//SCSS Styles
-import style from './ViewSupplier.module.scss';
 
 //Steps
 import StepTwo from './SupplierFormStepTwo';
@@ -33,10 +31,7 @@ export default function ViewSupplier(props) {
     };
 
     return (
-        <form
-            className={style.container}
-            onSubmit={handleSubmit(onSubmit)}
-        >
+        <form onSubmit={handleSubmit(onSubmit)}>
 
             <StepTwo
                 control={control}

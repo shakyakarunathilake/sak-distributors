@@ -69,9 +69,13 @@ export default function EmployeeFormStepOne(props) {
                 <div className={style.columnA}>
 
                     <div className={style.image}>
+
                         <div className={style.imgWrapper}>
+
                             <img src={file ? file : user} alt="" />
+
                             <div className={style.uploadWrapper}>
+
                                 <Controller
                                     render={({ field }) => (
                                         <input
@@ -82,23 +86,29 @@ export default function EmployeeFormStepOne(props) {
                                                 field.onChange(e.target.files[0]);
                                                 handleImageChange(e);
                                             }}
-                                        // value={value}
                                         />
                                     )}
                                     control={control}
                                     name={"employeeimage"}
                                     rules={{ required: { value: true, message: "Required *" } }}
                                 />
+
                                 <label
                                     className={style.label}
                                     htmlFor="employee-image"
                                 >
                                     Upload *
                                 </label>
+
                             </div>
+
                         </div>
-                        <div className={style.partialCircle}></div>
+
+                        <div className={style.partialCircle}>
+                        </div>
+
                     </div>
+
                     <div className={style.redFontCenter}>
                         {
                             errors.employeeimage && errors.employeeimage.message
@@ -106,6 +116,7 @@ export default function EmployeeFormStepOne(props) {
                     </div>
 
                     <div className={style.employeeId}>
+
                         <Controller
                             name={"employeeid"}
                             control={control}
@@ -120,6 +131,7 @@ export default function EmployeeFormStepOne(props) {
                                 />
                             )}
                         />
+
                     </div>
 
                     {limitedAccess ? '' :

@@ -1,8 +1,6 @@
 @import "../../styles/variables";
 
 .container {
-    display: grid;
-    grid-template-rows: min-content auto;
     height: calc(100vh - 86px);
     box-sizing: border-box;
 }
@@ -14,20 +12,8 @@
     flex-direction: row-reverse;
     padding: 0px 25px;
 
-    .hidden {
-        display: none;
-    }
-
-    .variantbutton {
-       padding: $manageButtonPadding;
-        height: 53.28px;
-        color: $inverseFontColor;
-        font-size: 0.95em;
-        margin: 20px 0px 0px 20px;
-    }
-
-    .productbutton {
-       padding: $manageButtonPadding;
+    Button {
+        padding: $manageButtonPadding;
         height: 53.28px;
         color: $inverseFontColor;
         font-size: 0.95em;
@@ -44,4 +30,3 @@
     box-sizing: border-box;
     padding: 20px 20px;
 }
-

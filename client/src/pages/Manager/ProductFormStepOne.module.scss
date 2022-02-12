@@ -1,0 +1,152 @@
+@import "../../styles/variables";
+
+.container {
+    display: grid;
+    grid-template-rows: min-content auto min-content;
+    box-sizing: border-box;
+    width: 860px;
+
+    .header {
+        .title {
+            display: grid;
+            grid-template-columns: auto min-content;
+            font-size: 1.55em;
+            font-weight: 600;
+            .icon {
+                color: red;
+                &:hover {
+                    transform: scale(1.1);
+                }
+            }
+        }
+
+        .step {
+            margin: 5px 0 0 0;
+            color: $primaryLight;
+            font-size: 0.75em;
+        }
+    }
+
+    .body {
+        display: grid;
+        grid-template-columns: min-content auto;
+        grid-column-gap: 40px;
+
+        .columnA {
+            display: grid;
+            grid-template-rows: min-content min-content min-content auto;
+            padding: 20px 0;
+
+            .image {
+                border-radius: 50%;
+                color: #6d6d6d;
+                padding: 0 10px;
+                // position: relative;
+
+                .imgWrapper {
+                    height: 260px;
+                    width: 260px;
+                    border-radius: 50%;
+                    overflow: hidden;
+
+                    img {
+                        height: 260px;
+                        width: 260px;
+                        object-fit: contained;
+                    }
+
+                    .uploadWrapper {
+                        background-color: #c4c4c4;
+                        height: 60px;
+                        width: 260px;
+                        margin-top: -45px;
+                        position: relative;
+                        padding-top: 5px;
+                        text-align: center;
+                    }
+
+                    .label {
+                        font-size: 1.2em;
+                        font-weight: 600;
+                        color: $secondaryMain;
+                        cursor: pointer;
+                    }
+                }
+            }
+
+            .redFontCenter {
+                color: red;
+                text-align: center;
+                font-size: 0.7em;
+            }
+
+            .productId {
+                margin-top: 20px;
+                font-size: 1em;
+                text-align: center;
+
+                .input {
+                    border: none;
+                    border-color: transparent;
+                    text-align: center;
+                    font-size: 1em;
+                    font-weight: 600;
+
+                    &:disabled {
+                        background: #ffffff;
+                    }
+                }
+            }
+        }
+
+        .columnB {
+            display: grid;
+            grid-template-rows: auto min-content;
+            margin: auto 0;
+
+            .redFont {
+                color: red;
+                font-size: 0.7em;
+            }
+
+            .row {
+                padding: 10px 0;
+            }
+
+            .gridrow {
+                display: grid;
+                grid-template-columns: calc(50% - 10px) calc(50% - 10px);
+                grid-column-gap: 20px;
+                padding: 10px 0;
+            }
+        }
+    }
+
+    .footer {
+        display: grid;
+        grid-template-columns: auto auto;
+        padding: 20px 0px 5px 0px;
+
+        Button {
+            font-size: 1em;
+            height: 40px;
+            padding: $formButtonPadding2;
+        }
+
+        .resetBtn {
+            text-align: left;
+            Button {
+                background-color: #c2c2c2;
+                color: $inverseFontColor;
+            }
+        }
+
+        .nextBtn {
+            text-align: right;
+            Button {
+                background-color: $primaryMain;
+                color: $inverseFontColor;
+            }
+        }
+    }
+}

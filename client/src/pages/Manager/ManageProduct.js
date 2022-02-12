@@ -109,11 +109,12 @@ export default function ManageProduct() {
     useEffect(() => {
         if (productRecords != null) {
             console.log('Action: ', action);
-            setOpenPopup(true);
+            console.log('Form Type: ', formType);
         }
     }, [productRecords, action])
 
     const addOrEdit = (product, productid) => {
+
         for (let [key, value] of product.entries()) {
             console.log(key, value);
         }
@@ -166,51 +167,46 @@ export default function ManageProduct() {
             console.log(key, value);
         }
 
-        if (action === "Create") {
-            axios
-                .post(`http://localhost:8080/products/add-new-variant/${productid}`, product, {
-                    headers: {
-                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
-                    }
-                })
-                .then(res => {
-                    setAlert(res.data.alert);
-                    setType(res.data.type);
-                    handleAlert();
-                    setReRender(productid);
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-            ;
-            setOpenPopup(false);
-        }
-        else {
-            axios
-                .post(`http://localhost:8080/products/update-by-id/${productid}/${variantid}`, product, {
-                    headers: {
-                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
-                    }
-                })
-                .then(res => {
-                    setAlert(res.data.alert);
-                    setType(res.data.type);
-                    handleAlert();
-                    setReRender(productid);
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-            ;
-            setOpenPopup(false);
-        }
+        // if (action === "Create") {
+        //     axios
+        //         .post(`http://localhost:8080/products/add-new-variant/${productid}`, product, {
+        //             headers: {
+        //                 'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+        //             }
+        //         })
+        //         .then(res => {
+        //             setAlert(res.data.alert);
+        //             setType(res.data.type);
+        //             handleAlert();
+        //             setReRender(productid);
+        //         })
+        //         .catch(err => {
+        //             console.log(err);
+        //         });
+        //     ;
+        //     setOpenPopup(false);
+        // } else {
+        //     axios
+        //         .post(`http://localhost:8080/products/update-by-id/${productid}/${variantid}`, product, {
+        //             headers: {
+        //                 'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+        //             }
+        //         })
+        //         .then(res => {
+        //             setAlert(res.data.alert);
+        //             setType(res.data.type);
+        //             handleAlert();
+        //             setReRender(productid);
+        //         })
+        //         .catch(err => {
+        //             console.log(err);
+        //         });
+        //     ;
+        //     setOpenPopup(false);
+        // }
     }
 
     const openInPopup = (productid, variantid) => {
-        console.log(
-            "Variant ID: ", variantid,
-            "Product ID: ", productid
-        );
 
         if (typeof variantid === 'undefined') {
             setFormType('Product')
@@ -222,6 +218,7 @@ export default function ManageProduct() {
                 })
                 .then(res => {
                     setProductRecords(res.data.product);
+                    setOpenPopup(true);
                 })
                 .catch(err => {
                     console.log(err);
@@ -237,6 +234,7 @@ export default function ManageProduct() {
                 })
                 .then(res => {
                     setProductRecords(res.data.product);
+                    setOpenPopup(true);
                 })
                 .catch(err => {
                     console.log(err);
@@ -244,7 +242,7 @@ export default function ManageProduct() {
         }
     }
 
-    const getProductEmployeeOptions = () => {
+    const getProductOptions = () => {
         axios
             .get("http://localhost:8080/options/product-options-for-product", {
                 headers: {
@@ -253,14 +251,10 @@ export default function ManageProduct() {
             })
             .then(res => {
                 setProductOptions(res.data.productOptions);
-                setEmployeeOptions(res.data.employeeOptions);
-                setOpenPopup(true);
             })
             .catch(err => {
                 console.log(err);
             });
-        console.log(productOptions)
-
     }
 
     const getEmployeeOptions = () => {
@@ -303,50 +297,50 @@ export default function ManageProduct() {
 
     return (
         <Page title="Manage Products">
+
             <div className={style.container}>
 
-                <div className={style.actionRow}>
+                {
+                    designation === 'Purchasing Manager' &&
 
-                    <Button
-                        className={designation !== 'Purchasing Manager' ? style.hidden : style.productbutton}
-                        color="primary"
-                        size="medium"
-                        variant="contained"
-                        onClick={
-                            () => {
-                                setAction('Create');
-                                setFormType('Product')
-                                getNextProductId();
-                                getEmployeeOptions();
-                                setOpenPopup(true);
+                    <div className={style.actionRow}>
+
+                        <Button
+                            color="primary"
+                            size="medium"
+                            variant="contained"
+                            onClick={() => {
                                 setProductRecords(null);
-                            }
-                        }
-                    >
-                        <AddCircleIcon className={style.icon} />
-                        Add New Product
-                    </Button>
-
-                    <Button
-                        className={designation !== 'Purchasing Manager' ? style.hidden : style.variantbutton}
-                        color="primary"
-                        size="medium"
-                        variant="contained"
-                        onClick={
-                            () => {
+                                getNextProductId();
                                 setAction('Create');
-                                setFormType('Variant')
-                                getProductEmployeeOptions();
+                                setFormType('Product');
                                 getEmployeeOptions();
-                                setOpenPopup(true);
-                            }
-                        }
-                    >
-                        <NewReleasesIcon className={style.icon} />
-                        Add New Variant
-                    </Button>
+                            }}
+                        >
+                            <AddCircleIcon className={style.icon} />
+                            Add New Product
+                        </Button>
 
-                </div>
+                        <Button
+                            color="primary"
+                            size="medium"
+                            variant="contained"
+                            onClick={
+                                () => {
+                                    setAction('Create');
+                                    setFormType('Variant')
+                                    getProductOptions();
+                                    getEmployeeOptions();
+                                }
+                            }
+                        >
+                            <NewReleasesIcon className={style.icon} />
+                            Add New Variant
+                        </Button>
+
+                    </div>
+
+                }
 
                 <div className={style.pagecontent}>
 
@@ -481,7 +475,6 @@ export default function ManageProduct() {
                         ]}
                         data={records}
                         parentChildData={(row, rows) => rows.find(a => a.id === row.parentid)}
-                        // onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow.tableData.id))}
                         options={{
                             toolbar: false,
                             filtering: true,
@@ -516,47 +509,64 @@ export default function ManageProduct() {
                                 tooltip: 'Edit',
                                 onClick: (event, rowData) => {
                                     setAction('Edit');
-                                    getEmployeeOptions();
                                     openInPopup(rowData.productid, rowData.variantid);
+                                    getEmployeeOptions();
                                 }
                             }
                         ]}
                     />
 
                 </div>
+
                 <PopUp
                     openPopup={openPopup}
                     setOpenPopup={setOpenPopup}
                 >
+
                     {
-
-                        formType === "Product" && action === 'View' ?
-                            <ViewProduct
-                                productRecords={productRecords}
-                                handleClosePopUp={handleClosePopUp}
-                            />
-                            : formType === "Product" && (action === 'Create' || action === 'Edit') ?
-                                <ProductForm
-                                    addOrEdit={addOrEdit}
-                                    productRecords={productRecords}
-                                    employeeOptions={employeeOptions}
-                                    handleClosePopUp={handleClosePopUp}
-                                    nextId={nextId}
-                                /> : formType === "Variant" && (action === 'Create' || action === 'Edit') ?
-                                    <VariantForm
-                                        productRecords={productRecords}
-                                        addVariant={addVariant}
-                                        productOptions={productOptions}
-                                        employeeOptions={employeeOptions}
-                                        handleClosePopUp={handleClosePopUp}
-                                    /> : formType === "Variant" && action === 'View' ?
-                                        <ViewProductVariant
-                                            productRecords={productRecords}
-                                            handleClosePopUp={handleClosePopUp}
-                                        /> : ''
-
+                        formType === "Product" && action === 'View' &&
+                        <ViewProduct
+                            productRecords={productRecords}
+                            handleClosePopUp={handleClosePopUp}
+                            action={action}
+                        />
                     }
+
+                    {
+                        formType === "Product" && (action === 'Create' || action === 'Edit') &&
+                        <ProductForm
+                            addOrEdit={addOrEdit}
+                            productRecords={productRecords}
+                            employeeOptions={employeeOptions}
+                            handleClosePopUp={handleClosePopUp}
+                            nextId={nextId}
+                            action={action}
+                        />
+                    }
+
+                    {
+                        formType === "Variant" && action === 'View' &&
+                        <ViewProductVariant
+                            productRecords={productRecords}
+                            handleClosePopUp={handleClosePopUp}
+                            action={action}
+                        />
+                    }
+
+                    {
+                        formType === "Variant" && (action === 'Create' || action === 'Edit') &&
+                        <VariantForm
+                            productRecords={productRecords}
+                            addVariant={addVariant}
+                            productOptions={productOptions}
+                            employeeOptions={employeeOptions}
+                            handleClosePopUp={handleClosePopUp}
+                            action={action}
+                        />
+                    }
+
                 </PopUp>
+
                 <Snackbar
                     open={open}
                     autoHideDuration={2500}
@@ -574,7 +584,9 @@ export default function ManageProduct() {
                         {alert}
                     </Alert>
                 </Snackbar>
+
             </div>
+
         </Page >
     )
 }

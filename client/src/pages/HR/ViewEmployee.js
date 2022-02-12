@@ -1,9 +1,5 @@
 import React from 'react';
-
 import { useForm } from 'react-hook-form';
-
-//SCSS Styles
-import style from './ViewEmployee.module.scss';
 
 //Steps 
 import StepTwo from './EmployeeFormStepTwo';
@@ -48,10 +44,7 @@ export default function ViewEmployee(props) {
     };
 
     return (
-        <form
-            className={style.container}
-            onSubmit={handleSubmit(onSubmit)}
-        >
+        <form onSubmit={handleSubmit(onSubmit)}>
 
             <StepTwo
                 action={action}

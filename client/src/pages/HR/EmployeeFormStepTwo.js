@@ -55,13 +55,13 @@ export default function EmployeeFormStepTwo(props) {
                     <div className={style.image}>
                         <div className={style.imgWrapper}>
                             <Controller
-                                name={"employeeimage"}
-                                control={control}
                                 render={({ field: { value } }) => (
                                     action === "Create" ?
                                         <img src={value ? file : user} alt="" />
                                         : <img src={value ? `http://${value}` : user} alt="" />
                                 )}
+                                name={"employeeimage"}
+                                control={control}
                             />
                         </div>
                     </div>
