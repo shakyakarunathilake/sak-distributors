@@ -65,9 +65,8 @@ export default function Login() {
                 console.log(error)
             })
             ;
-        reset({
-            email: "",
-        });
+
+        reset();
     };
 
     return (
