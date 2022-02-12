@@ -90,6 +90,10 @@ export default function ChangePassword() {
                     "currentpassword": values.currentpassword,
                     "newpassword": values.newpassword,
                     "firsttimelogin": false
+                }, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
                 })
                 .then(res => {
                     setAlert(res.data.message);
@@ -113,8 +117,11 @@ export default function ChangePassword() {
             <div className={style.container} onLoad={handleFirstTimeLogin}>
 
                 <form onSubmit={handleSubmit(onSubmit)}>
+
                     <div className={style.blurDiv}>
+
                         <div className={style.paper}>
+
                             <div className={style.logo}>
                                 <img src={logo} alt="" />
                             </div>
@@ -232,9 +239,13 @@ export default function ChangePassword() {
                                     Submit
                                 </Button>
                             </div>
+
                         </div>
+
                     </div>
+
                 </form>
+
                 <Snackbar
                     open={open}
                     autoHideDuration={2500}
@@ -252,6 +263,7 @@ export default function ChangePassword() {
                         {alert}
                     </Alert>
                 </Snackbar>
+
             </div>
         </Page>
     )
