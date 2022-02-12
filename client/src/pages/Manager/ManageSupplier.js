@@ -74,9 +74,11 @@ export default function ManageSupplier() {
     }, [reRender]);
 
     const addOrEdit = (supplier, supplierid) => {
+
         for (let [key, value] of supplier.entries()) {
             console.log(key, value);
         }
+
         if (action === "Create") {
             axios
                 .post("http://localhost:8080/suppliers/create-supplier", supplier, {
@@ -94,7 +96,9 @@ export default function ManageSupplier() {
                     console.log(err);
                 });
             ;
-        } if (action === "Edit") {
+        }
+
+        if (action === "Edit") {
             axios
                 .post(`http://localhost:8080/suppliers/update-by-id/${supplierid}`, supplier, {
                     headers: {
@@ -163,15 +167,15 @@ export default function ManageSupplier() {
             .catch(err => {
                 console.log(err);
             });
-        console.log(employeeOptions)
-
     }
 
     return (
         <Page title="Manage Suppliers">
+
             <div className={style.container}>
 
                 <div className={style.actionRow}>
+
                     <Button
                         className={style.button}
                         color="primary"
@@ -187,9 +191,12 @@ export default function ManageSupplier() {
                             }
                         }
                     >
+
                         <AddCircleIcon className={style.icon} />
                         Add New Supplier
+
                     </Button>
+
                 </div>
 
                 <div className={style.pagecontent}>
@@ -312,25 +319,36 @@ export default function ManageSupplier() {
                     </AutoSizer>
 
                 </div>
+
                 <PopUp
                     openPopup={openPopup}
                     setOpenPopup={setOpenPopup}
                 >
-                    {action === 'View' ?
+
+                    {
+                        action === 'View' &&
                         <ViewSupplier
                             supplierRecords={supplierRecords}
                             setOpenPopup={setOpenPopup}
                             setAction={setAction}
-                        /> :
+                            action={action}
+                        />
+                    }
+
+                    {
+                        (action === 'Create' || action === 'Edit') &&
                         <SupplierForm
                             addOrEdit={addOrEdit}
                             supplierRecords={supplierRecords}
                             employeeOptions={employeeOptions}
                             setOpenPopup={setOpenPopup}
                             nextSupId={nextSupId}
+                            action={action}
                         />
                     }
+
                 </PopUp>
+
                 <Snackbar
                     open={open}
                     autoHideDuration={2500}
@@ -348,7 +366,9 @@ export default function ManageSupplier() {
                         {alert}
                     </Alert>
                 </Snackbar>
+
             </div>
+
         </Page>
     )
 }

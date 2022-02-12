@@ -1,63 +1,7 @@
 @import "../../styles/variables";
 
 .container {
-    width: 800px;
-    box-sizing: border-box;
-    grid-template-columns: min-content auto;
-}
-
-.header {
-    display: grid;
-    grid-template-columns: auto min-content;
-    font-size: 1.8em;
-    font-weight: 600;
-
-    .icon {
-        color: red;
-
-        &:hover {
-            transform: scale(1.1);
-        }
-    }
-}
-
-.body {
-    .form {
-        display: grid;
-        grid-template-rows: auto min-content;
-
-        .formFields {
-            margin-top: 30px;
-        }
-
-        .input {
-            text-align: left;
-            font-size: 1em;
-            white-space: nowrap;
-        }
-
-        .row {
-            display: grid;
-            grid-template-columns: 250px calc(100% - 250px);
-            padding: 8px 20px;
-
-            .boldText {
-                font-size: 1em;
-                font-weight: 700;
-            }
-        }
-
-        .buttonRow {
-            text-align: right;
-
-            Button {
-                font-size: 1em;
-                margin: 20px 0px 5px 0px;
-                height: 45px;
-                padding: 0 40px;
-                background-color: $primaryMain;
-                color: $inverseFontColor;
-            }
-        }
+    .hidden {
+        display: none;
     }
 }
