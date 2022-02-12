@@ -87,7 +87,7 @@ export default function StepOne(props) {
 
     useEffect(() => {
         setCustomerType(customerTypeWatch);
-    }, [customerTypeWatch, setCustomerType, setValue])
+    }, [customerTypeWatch, setCustomerType])
 
     const handleCustomerChange = (event, option) => {
         if (option) {
