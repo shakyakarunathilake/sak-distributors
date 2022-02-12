@@ -235,7 +235,6 @@ export default function ManageAdmin() {
                                             filtering: true,
                                             search: false,
                                             actionsColumnIndex: -1,
-                                            // maxBodyHeight: "calc(100vh - 199.27px)",
                                             headerStyle: {
                                                 position: "sticky",
                                                 top: "0",
@@ -265,10 +264,12 @@ export default function ManageAdmin() {
                     </AutoSizer>
 
                 </div>
+
                 <PopUp
                     openPopup={openPopup}
                     setOpenPopup={setOpenPopup}
                 >
+
                     <AdminForm
                         employeeID={employeeID}
                         employeeName={employeeName}
@@ -277,7 +278,9 @@ export default function ManageAdmin() {
                         addAdmin={addAdmin}
                         action={action}
                     />
+
                 </PopUp>
+
                 <Snackbar
                     open={open}
                     autoHideDuration={1500}
@@ -287,6 +290,7 @@ export default function ManageAdmin() {
                         horizontal: 'center',
                     }}
                 >
+
                     <Alert
                         onClose={handleClose}
                         severity={type}
@@ -294,8 +298,11 @@ export default function ManageAdmin() {
                     >
                         {alert}
                     </Alert>
+
                 </Snackbar>
+
             </div>
+
         </Page>
     )
 }

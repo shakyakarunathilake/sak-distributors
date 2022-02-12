@@ -19,13 +19,17 @@ export default function AdminForm(props) {
 
     const { handleClosePopUp, employeeOptions, addAdmin, action, employeeID, employeeName } = props;
 
-    const { formState: { errors }, handleSubmit, control, setValue, clearErrors } = useForm({ mode: "onChange" });
+    const { formState: { errors }, handleSubmit, control, setValue, clearErrors } = useForm({
+        mode: "all",
+        defaultValues: {
+            employeeid: employeeID ? employeeID : '',
+        }
+    });
 
     const handleEmployeeChange = (event, option) => {
         if (option) {
             setValue('employeeid', option.employeeid);
-            setValue('adminprivileges', true);
-            clearErrors('autocomplete');
+            clearErrors('employeeid');
         }
     }
 
@@ -35,15 +39,15 @@ export default function AdminForm(props) {
 
         if (action === 'Add') {
             adminFormData.append("employeeid", values.employeeid);
-            adminFormData.append("adminprivileges", values.adminprivileges);
+            adminFormData.append("adminprivileges", true);
         }
 
         if (action === 'Remove') {
-            adminFormData.append("employeeid", employeeID);
+            adminFormData.append("employeeid", values.employeeid);
             adminFormData.append("adminprivileges", false);
         }
 
-        addAdmin(adminFormData, employeeID ? employeeID : values.employeeid);
+        addAdmin(adminFormData, values.employeeid);
         handleClosePopUp()
     }
 
@@ -52,18 +56,22 @@ export default function AdminForm(props) {
             {
                 action === 'Add' &&
                 <div className={style.container}>
+
                     <form
                         className={style.form}
                         onSubmit={handleSubmit(onSubmit)}
                     >
                         <div className={style.header}>
+
                             <div> Add New Admin </div>
+
                             <div>
                                 <HighlightOffIcon
                                     className={style.icon}
                                     onClick={() => { handleClosePopUp() }}
                                 />
                             </div>
+
                         </div>
 
                         <div className={style.body}>
@@ -71,11 +79,6 @@ export default function AdminForm(props) {
                             <div className={style.row}>
 
                                 <Controller
-                                    name={"autocomplete"}
-                                    control={control}
-                                    rules={{
-                                        required: { value: true, message: "Required *" },
-                                    }}
                                     render={() => (
                                         <Autocomplete
                                             options={employeeOptions || []}
@@ -85,19 +88,25 @@ export default function AdminForm(props) {
                                             renderInput={(params) => (
                                                 <MuiTextField
                                                     {...params}
-                                                    error={errors.autocomplete ? true : false}
-                                                    helperText={errors.autocomplete && errors.autocomplete.message}
-                                                    label="Employee"
+                                                    helperText={errors.employeeid && errors.employeeid.message}
+                                                    error={errors.employeeid ? true : false}
                                                     variant="outlined"
+                                                    label="Employee"
                                                 />
                                             )}
                                         />
                                     )}
+                                    control={control}
+                                    name={"employeeid"}
+                                    rules={{
+                                        required: { value: true, message: "Required *" },
+                                    }}
                                 />
 
                             </div>
 
                             <div className={style.buttonRow}>
+
                                 <Button
                                     className={style.submitBtn}
                                     type="submit"
@@ -105,6 +114,7 @@ export default function AdminForm(props) {
                                 >
                                     Submit
                                 </Button>
+
                             </div>
 
                         </div>
@@ -116,18 +126,23 @@ export default function AdminForm(props) {
             {
                 action === 'Remove' &&
                 <div className={style.container}>
+
                     <form
                         className={style.form}
                         onSubmit={handleSubmit(onSubmit)}
                     >
+
                         <div className={style.header}>
+
                             <div> Remove Admin </div>
+
                             <div>
                                 <HighlightOffIcon
                                     className={style.icon}
                                     onClick={() => { handleClosePopUp() }}
                                 />
                             </div>
+
                         </div>
 
                         <div className={style.body}>
@@ -141,6 +156,7 @@ export default function AdminForm(props) {
                             </div>
 
                             <div className={style.buttonRow}>
+
                                 <Button
                                     className={style.submitBtn}
                                     type="submit"
@@ -148,11 +164,13 @@ export default function AdminForm(props) {
                                 >
                                     Remove Privileges
                                 </Button>
+
                             </div>
 
                         </div>
 
                     </form>
+
                 </div>
             }
         </>
