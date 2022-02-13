@@ -167,43 +167,45 @@ export default function ManageProduct() {
             console.log(key, value);
         }
 
-        // if (action === "Create") {
-        //     axios
-        //         .post(`http://localhost:8080/products/add-new-variant/${productid}`, product, {
-        //             headers: {
-        //                 'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
-        //             }
-        //         })
-        //         .then(res => {
-        //             setAlert(res.data.alert);
-        //             setType(res.data.type);
-        //             handleAlert();
-        //             setReRender(productid);
-        //         })
-        //         .catch(err => {
-        //             console.log(err);
-        //         });
-        //     ;
-        //     setOpenPopup(false);
-        // } else {
-        //     axios
-        //         .post(`http://localhost:8080/products/update-by-id/${productid}/${variantid}`, product, {
-        //             headers: {
-        //                 'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
-        //             }
-        //         })
-        //         .then(res => {
-        //             setAlert(res.data.alert);
-        //             setType(res.data.type);
-        //             handleAlert();
-        //             setReRender(productid);
-        //         })
-        //         .catch(err => {
-        //             console.log(err);
-        //         });
-        //     ;
-        //     setOpenPopup(false);
-        // }
+        if (action === "Create") {
+            axios
+                .post(`http://localhost:8080/products/add-new-variant/${productid}`, product, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
+                .then(res => {
+                    setAlert(res.data.alert);
+                    setType(res.data.type);
+                    handleAlert();
+                    setReRender(productid);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+            ;
+        } else {
+            axios
+                .post(`http://localhost:8080/products/update-by-id/${productid}/${variantid}`, product, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
+                .then(res => {
+                    setAlert(res.data.alert);
+                    setType(res.data.type);
+                    handleAlert();
+                    setReRender(productid);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+            ;
+        }
+
+        setProductRecords(null)
+        setOpenPopup(false);
+        setAction('');
     }
 
     const openInPopup = (productid, variantid) => {
