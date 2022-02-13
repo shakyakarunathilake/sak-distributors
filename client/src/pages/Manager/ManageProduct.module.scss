@@ -3,30 +3,30 @@
 .container {
     height: calc(100vh - 86px);
     box-sizing: border-box;
-}
 
-.actionRow {
-    width: 100vw;
-    box-sizing: border-box;
-    display: inline-flex;
-    flex-direction: row-reverse;
-    padding: 0px 25px;
+    .actionRow {
+        width: 100vw;
+        box-sizing: border-box;
+        display: inline-flex;
+        flex-direction: row-reverse;
+        padding: 0px 25px;
 
-    Button {
-        padding: $manageButtonPadding;
-        height: 53.28px;
-        color: $inverseFontColor;
-        font-size: 0.95em;
-        margin: 20px 0px 0px 20px;
+        Button {
+            padding: $manageButtonPadding;
+            height: 53.28px;
+            color: $inverseFontColor;
+            font-size: 0.95em;
+            margin: 20px 0px 0px 20px;
+        }
+
+        .icon {
+            margin-right: 10px;
+        }
     }
 
-    .icon {
-        margin-right: 10px;
+    .pagecontent {
+        width: 100vw;
+        box-sizing: border-box;
+        padding: 20px;
     }
-}
-
-.pagecontent {
-    width: 100vw;
-    box-sizing: border-box;
-    padding: 20px 20px;
 }

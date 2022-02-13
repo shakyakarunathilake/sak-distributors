@@ -146,6 +146,7 @@ export default function ManageCustomer() {
             })
             .then(res => {
                 setNextCusId(res.data.nextcustomerid);
+                setOpenPopup(true);
             })
             .catch(err => {
                 console.log(err);
@@ -154,33 +155,47 @@ export default function ManageCustomer() {
 
     return (
         <Page title="Manage Customers">
+
             <div className={style.container}>
 
-                <div className={designation === "Manager" ? style.hidden : style.actionRow}>
-                    <Button
-                        className={style.button}
-                        color="primary"
-                        size="medium"
-                        variant="contained"
-                        onClick={
-                            () => {
-                                setAction('Create');
-                                getNextCustomerId();
-                                setOpenPopup(true);
-                                setCustomerRecords(null);
+                {
+                    designation === 'Sales Representative' &&
+                    <div className={style.actionRow}>
+
+                        <Button
+                            className={style.button}
+                            color="primary"
+                            size="medium"
+                            variant="contained"
+                            onClick={
+                                () => {
+                                    setAction('Create');
+                                    getNextCustomerId();
+                                    setCustomerRecords(null);
+                                }
                             }
-                        }
-                    >
-                        <AddCircleIcon className={style.icon} />
-                        Add New Customer
-                    </Button>
-                </div>
+                        >
+                            <AddCircleIcon className={style.icon} />
+                            Add New Customer
+                        </Button>
+
+                    </div>
+                }
 
                 <div className={designation === "Manager" ? style.pagecontent1 : style.pagecontent2}>
 
                     <AutoSizer>
                         {({ height, width }) => {
-                            const pageSize = Math.floor((height - 199.28) / 69.59);
+                            let value = 0;
+
+                            if (designation === "Sales Representative") {
+                                value = (height - 199.28) / 69.59;
+                            } else {
+                                value = (height - 199.27) / 48;
+                            }
+
+                            const pageSize = Math.floor(value);
+
                             return (
                                 <div style={{ height: `${height}px`, width: `${width}px`, overflowY: 'auto' }}>
 
@@ -279,19 +294,22 @@ export default function ManageCustomer() {
                     </AutoSizer>
 
                 </div>
+
                 <PopUp
                     openPopup={openPopup}
                     setOpenPopup={setOpenPopup}
-                    fullScreen={designation === "Manager" ? false : true}
                 >
+
                     {
                         action === 'View' &&
                         <ViewCustomer
                             customerRecords={customerRecords}
                             setOpenPopup={setOpenPopup}
                             setAction={setAction}
+                            action={action}
                         />
                     }
+
                     {
                         (action === 'Edit' || action === 'Create') &&
                         <CustomerForm
@@ -299,9 +317,12 @@ export default function ManageCustomer() {
                             customerRecords={customerRecords}
                             setOpenPopup={setOpenPopup}
                             nextCusId={nextCusId}
+                            action={action}
                         />
                     }
+
                 </PopUp>
+
                 <Snackbar
                     open={open}
                     autoHideDuration={2500}
@@ -319,7 +340,9 @@ export default function ManageCustomer() {
                         {alert}
                     </Alert>
                 </Snackbar>
+
             </div>
+
         </Page>
     )
 }

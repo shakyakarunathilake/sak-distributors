@@ -137,7 +137,7 @@ router.get("/get-all-customer-table-data", (req, res, next) => {
                 "storename": x.storename,
                 "customername": x.title + " " + x.firstname + " " + x.lastname,
                 "shippingaddress": x.shippingaddress,
-                "contactnumber": x.customercontactnumber,
+                "contactnumber": x.storecontactnumber,
             }))
 
             res.status(201).json({
