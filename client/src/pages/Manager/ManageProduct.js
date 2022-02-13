@@ -111,7 +111,7 @@ export default function ManageProduct() {
             console.log('Action: ', action);
             console.log('Form Type: ', formType);
         }
-    }, [productRecords, action])
+    }, [productRecords, action, formType])
 
     const addOrEdit = (product, productid) => {
 

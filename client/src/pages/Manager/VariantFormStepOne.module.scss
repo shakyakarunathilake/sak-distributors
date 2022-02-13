@@ -4,7 +4,8 @@
     display: grid;
     grid-template-rows: min-content auto min-content;
     box-sizing: border-box;
-    width: 860px;
+    width: 870px;
+    min-height: 719px;
 
     .header {
         .title {
@@ -30,18 +31,17 @@
     .body {
         display: grid;
         grid-template-columns: min-content auto;
-        grid-column-gap: 40px;
+        grid-column-gap: 20px;
+        margin: auto;
 
         .columnA {
             display: grid;
             grid-template-rows: min-content min-content min-content auto;
-            padding: 10px 0;
 
             .image {
                 border-radius: 50%;
                 color: #6d6d6d;
-                padding: 0 10px;
-                // position: relative;
+                padding: 20px 10px;
 
                 .imgWrapper {
                     height: 260px;
@@ -54,11 +54,31 @@
                         width: 260px;
                         object-fit: contained;
                     }
+
+                    .uploadWrapper {
+                        background-color: #c4c4c4;
+                        height: 60px;
+                        width: 260px;
+                        margin-top: -45px;
+                        position: relative;
+                        padding-top: 5px;
+                        text-align: center;
+                    }
+
+                    .label {
+                        font-size: 1.2em;
+                        font-weight: 600;
+                        color: $secondaryMain;
+                    }
+
+                    .pointer {
+                        cursor: pointer;
+                    }
                 }
             }
 
             .productId {
-                margin-top: 20px;
+                margin-top: 10px;
                 font-size: 1em;
                 text-align: center;
 
@@ -77,24 +97,31 @@
         }
 
         .columnB {
-            display: grid;
-            grid-template-rows: auto min-content;
-            margin: auto 0;
-
-            .input {
-                text-align: left;
-                font-size: 1em;
+            .redFont {
+                color: red;
+                font-size: 0.7em;
             }
 
             .row {
-                display: grid;
-                grid-template-columns: 160px calc(100% - 160px);
-                padding: 8px 0;
+                padding: 10px 0;
+            }
 
-                .boldText {
-                    font-size: 1em;
-                    font-weight: 700;
-                }
+            .dividerDiv {
+                margin: 15px 0;
+            }
+
+            .rowminicolumns {
+                display: grid;
+                grid-template-columns: calc(33% - 11px) calc(33% - 11px) calc(33% - 11px);
+                grid-column-gap: 20px;
+                padding: 10px 0;
+            }
+
+            .gridrow {
+                display: grid;
+                grid-template-columns: calc(50% - 10px) calc(50% - 10px);
+                grid-column-gap: 20px;
+                padding: 10px 0;
             }
         }
     }
