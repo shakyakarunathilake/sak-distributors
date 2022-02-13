@@ -39,7 +39,7 @@ export default function VariantForm(props) {
             productstatus: productRecords ? productRecords.status : '',
             variantid: productRecords ? productRecords.variant.variantid : '',
             type: productRecords ? productRecords.variant.type : '',
-            piecespercase: productRecords ? productRecords.variant.piecespercase : '',
+            piecespercase: productRecords ? productRecords.variant.piecespercase : 24,
             bulkprice: productRecords ? productRecords.variant.bulkprice : '',
             mrp: productRecords ? productRecords.variant.mrp : '',
             sellingprice: productRecords ? productRecords.variant.sellingprice : '',
@@ -99,7 +99,6 @@ export default function VariantForm(props) {
         const productFormData = new formData();
 
         productFormData.append('productid', getValues('productid'));
-        productFormData.append('productstatus', getValues('productstatus'));
         productFormData.append("variantid", getValues('variantid'));
         productFormData.append('type', getValues('type'));
         productFormData.append("offercaption", getValues('offercaption'));
