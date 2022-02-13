@@ -106,13 +106,6 @@ export default function ManageProduct() {
             })
     }, [reRender]);
 
-    useEffect(() => {
-        if (productRecords != null) {
-            console.log('Action: ', action);
-            console.log('Form Type: ', formType);
-        }
-    }, [productRecords, action, formType])
-
     const addOrEdit = (product, productid) => {
 
         for (let [key, value] of product.entries()) {

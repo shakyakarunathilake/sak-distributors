@@ -55,8 +55,7 @@ export default function VariantForm(props) {
         if (productRecords != null) {
             setFile(`http://${productRecords.productimage}`);
         }
-        console.log(getValues('name'))
-    }, [productRecords, getValues])
+    }, [productRecords])
 
     const completeFormStep = () => {
         if (isValid) {
