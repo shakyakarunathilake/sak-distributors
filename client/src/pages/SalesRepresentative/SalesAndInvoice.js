@@ -128,6 +128,7 @@ export default function SalesAndInvoice() {
                 });
             ;
         }
+
         if (action === "Edit") {
             axios
                 .post(`http://localhost:8080/orders/update-by-id/${orderno}`, order, {
@@ -146,6 +147,7 @@ export default function SalesAndInvoice() {
                 });
             ;
         }
+
         if (action === "Delivered") {
             axios
                 .post(`http://localhost:8080/orders/approve-delivery/${orderno}`, order)
@@ -175,12 +177,12 @@ export default function SalesAndInvoice() {
             })
             .then(res => {
                 setOrderRecords(res.data.order);
+                getOptions();
             })
             .catch(err => {
                 console.log(err);
             })
 
-        setOpenPopup(true);
     }
 
     const getNextOrderNo = () => {
@@ -197,10 +199,10 @@ export default function SalesAndInvoice() {
             .catch(err => {
                 console.log(err);
             });
+
     }
 
     const getOptions = () => {
-
         axios
             .get("http://localhost:8080/options/customer-options", {
                 headers: {
@@ -221,13 +223,13 @@ export default function SalesAndInvoice() {
                 }
             })
             .then(res => {
-                setProductOptions(res.data.productoptions)
+                setProductOptions(res.data.productoptions);
+                setOpenPopup(true);
             })
             .catch(err => {
                 console.log(err);
             })
 
-        setOpenPopup(true);
     }
 
     return (
@@ -235,30 +237,37 @@ export default function SalesAndInvoice() {
 
             <div className={style.container}>
 
-                <div className={designation === "Delivery Representative" ? style.hidden : style.actionRow}>
-                    <Button
-                        className={style.button}
-                        color="primary"
-                        size="medium"
-                        variant="contained"
-                        onClick={
-                            () => {
-                                setAction('Create');
-                                setOrderRecords(null);
-                                getNextOrderNo();
+                {
+                    designation === 'Sales Representative' &&
+                    <div className={style.actionRow}>
+
+                        <Button
+                            className={style.button}
+                            color="primary"
+                            size="medium"
+                            variant="contained"
+                            onClick={
+                                () => {
+                                    setAction('Create');
+                                    setOrderRecords(null);
+                                    getNextOrderNo();
+                                }
                             }
-                        }
-                    >
-                        <AddCircleIcon className={style.icon} />
-                        Add New Order
-                    </Button>
-                </div>
+                        >
+                            <AddCircleIcon className={style.icon} />
+                            Add New Order
+                        </Button>
+
+                    </div>
+                }
 
                 <div className={designation === "Sales Representative" ? style.pagecontent1 : style.pagecontent2}>
 
                     <AutoSizer>
                         {({ height, width }) => {
+
                             const pageSize = Math.floor((height - 199.28) / 48);
+
                             return (
                                 <div style={{ height: `${height}px`, width: `${width}px`, overflowY: 'auto' }}>
 
@@ -332,7 +341,6 @@ export default function SalesAndInvoice() {
                                                 tooltip: 'View',
                                                 onClick: (event, rowData) => {
                                                     setAction('View');
-                                                    getOptions();
                                                     openInPopup(rowData.orderno);
                                                 }
                                             },
@@ -341,7 +349,6 @@ export default function SalesAndInvoice() {
                                                 tooltip: 'Edit',
                                                 onClick: (event, rowData) => {
                                                     setAction('Edit');
-                                                    getOptions();
                                                     openInPopup(rowData.orderno);
                                                 },
                                                 disabled: rowData.status !== 'Pending'
@@ -396,6 +403,7 @@ export default function SalesAndInvoice() {
                             action={action}
                         />
                     }
+
                     {
                         action === "View" &&
                         <ViewOrder
@@ -404,6 +412,7 @@ export default function SalesAndInvoice() {
                             action={action}
                         />
                     }
+
                     {
                         action === 'Delivered' &&
                         <DeliveredForm
@@ -412,6 +421,7 @@ export default function SalesAndInvoice() {
                             addOrEdit={addOrEdit}
                         />
                     }
+
                 </PopUp>
 
                 <Snackbar
@@ -423,6 +433,7 @@ export default function SalesAndInvoice() {
                         horizontal: 'center',
                     }}
                 >
+
                     <Alert
                         onClose={handleClose}
                         severity={type}
@@ -430,9 +441,11 @@ export default function SalesAndInvoice() {
                     >
                         {alert}
                     </Alert>
+
                 </Snackbar>
 
             </div>
+
         </Page>
     )
 };

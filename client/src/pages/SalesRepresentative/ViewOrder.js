@@ -13,47 +13,38 @@ export default function ViewOrder(props) {
 
     const { action, handleClosePopUp, orderRecords } = props;
 
-    const {
-        control,
-        getValues,
-        setValue,
-        handleSubmit,
-        formState: { isValid, errors }
-    } = useForm({ mode: "all" });
-
     const [data, setData] = useState([]);
-    const [total, setTotal] = useState();
-    const [advancePayment, setAdvancePayment] = useState();
     const [formStep, setFormStep] = useState(0);
-    const [customerType, setCustomerType] = useState('');
-    const [minimumPayment, setMinimumPayment] = useState();
-    const [invoiceSettlementValue, setInvoiceSettlementValue] = useState();
+
+    const { watch, control, getValues, handleSubmit, formState: { isValid, errors } } = useForm({
+        mode: "all",
+        defaultValues: {
+            orderno: orderRecords.orderno,
+            contactnumber: orderRecords.contactnumber,
+            customertype: orderRecords.customertype,
+            customerid: orderRecords.customerid,
+            storename: orderRecords.storename,
+            deliverydate: orderRecords.deliverydate,
+            orderplacedat: orderRecords.orderplacedat,
+            route: orderRecords.route,
+            ordercreatedby: orderRecords.ordercreatedby,
+            shippingaddress: orderRecords.shippingaddress,
+            total: parseInt(orderRecords.total),
+            loyaltypoints: parseInt(orderRecords.loyaltypoints),
+            minimumpayment: parseInt(orderRecords.minimumpayment),
+            advancepayment: parseInt(orderRecords.advancepayment),
+            creditamounttosettle: parseInt(orderRecords.creditamounttosettle),
+            eligibilityforcredit: orderRecords.eligibilityforcredit,
+            maximumcreditamount: parseInt(orderRecords.maximumcreditamount),
+            currentinvoicecreditamount: parseInt(orderRecords.currentinvoicecreditamount),
+        }
+    });
 
     useEffect(() => {
-        if (orderRecords !== null) {
-            setValue("contactnumber", orderRecords.contactnumber);
-            setValue("customertype", orderRecords.customertype);
-            setValue("customerid", orderRecords.customerid);
-            setValue("storename", orderRecords.storename);
-            setValue("deliverydate", orderRecords.deliverydate);
-            setValue("orderno", orderRecords.orderno);
-            setValue("orderplacedat", orderRecords.orderplacedat);
-            setValue("route", orderRecords.route);
-            setValue("ordercreatedby", orderRecords.ordercreatedby);
-            setValue("shippingaddress", orderRecords.shippingaddress);
-            setValue("total", orderRecords.total);
-            setValue("loyaltypoints", orderRecords.loyaltypoints);
-            setValue("creditamounttosettle", orderRecords.creditamounttosettle);
-            setValue("eligibilityforcredit", orderRecords.eligibilityforcredit);
-            setValue("maximumcreditamount", orderRecords.maximumcreditamount);
-            setValue("currentinvoicecreditamount", orderRecords.currentinvoicecreditamount);
-
-            setTotal(orderRecords.total);
-            setAdvancePayment(((orderRecords.total / 100) * 50).toFixed(2));
+        if (orderRecords != null) {
             setData(orderRecords.items);
-            setCustomerType(orderRecords.customertype);
         }
-    }, [setData, setValue, orderRecords])
+    }, [orderRecords])
 
     const completeFormStep = () => {
         setFormStep(x => x + 1);
@@ -77,14 +68,14 @@ export default function ViewOrder(props) {
                 formStep >= 0 &&
                 <section className={formStep === 0 ? style.visible : style.hidden}>
                     <StepTwo
-                        handleClosePopUp={handleClosePopUp}
                         control={control}
+                        handleClosePopUp={handleClosePopUp}
                         backFormStep={backFormStep}
                         completeFormStep={completeFormStep}
                         action={action}
                         formStep={formStep}
+                        watch={watch}
                         getValues={getValues}
-                        customerType={customerType}
                     />
                 </section>
             }
@@ -97,7 +88,7 @@ export default function ViewOrder(props) {
                         handleClosePopUp={handleClosePopUp}
                         backFormStep={backFormStep}
                         completeFormStep={completeFormStep}
-                        total={total}
+                        watch={watch}
                         action={action}
                         formStep={formStep}
                     />
@@ -108,22 +99,16 @@ export default function ViewOrder(props) {
                 formStep >= 2 &&
                 <section className={formStep === 2 ? style.visible : style.hidden}>
                     <StepFive
-                        customerType={customerType}
                         action={action}
                         formStep={formStep}
                         handleClosePopUp={handleClosePopUp}
                         onSubmit={onSubmit}
-                        total={total}
                         errors={errors}
                         control={control}
                         getValues={getValues}
                         backFormStep={backFormStep}
-                        advancePayment={advancePayment}
-                        minimumPayment={minimumPayment}
-                        setMinimumPayment={setMinimumPayment}
-                        invoiceSettlementValue={invoiceSettlementValue}
-                        setInvoiceSettlementValue={setInvoiceSettlementValue}
                         isValid={isValid}
+                        watch={watch}
                     />
                 </section>
             }

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const orderSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    contactnumber: { type: Number, required: true },
+    contactnumber: { type: String, required: true },
     customertype: { type: String, required: true },
     customerid: { type: String, required: false },
     storename: { type: String, required: true },
@@ -21,6 +21,8 @@ const orderSchema = mongoose.Schema({
     maximumcreditamount: { type: String, required: false },
     creditamounttosettle: { type: String, required: false },
     currentinvoicecreditamount: { type: String, required: false },
+    minimumpayment: { type: String, required: false },
+    advancepayment: { type: String, required: false },
     total: { type: String, required: true },
 })
 

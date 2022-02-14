@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Controller } from 'react-hook-form';
 
 //Material UI Components
@@ -60,77 +60,26 @@ const theme = createTheme({
 export default function StepOne(props) {
 
     const {
-        data,
-        watch,
-        reset,
+        resetForm,
         errors,
         isValid,
         control,
         trigger,
-        setValue,
-        clearErrors,
-        nextOrderNo,
-        customerType,
-        setCustomerType,
+        watch,
         customerOptions,
         handleClosePopUp,
-        completeFormStep
+        completeFormStep,
+        handleCustomerChange,
+        action
     } = props;
 
-    const today = new Date();
-    const dateTime = today.getFullYear() + '-' + (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`) + 'T' + (today.getHours() > 9 ? today.getHours() : `0${today.getHours()}`) + ':' + (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`);
-
-    today.setDate(today.getDate() + 3);
-    const deliveryDate = today.getFullYear() + '-' + (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
-
-    const customerTypeWatch = watch('customertype');
-
-    useEffect(() => {
-        setCustomerType(customerTypeWatch);
-    }, [customerTypeWatch, setCustomerType])
-
-    const handleCustomerChange = (event, option) => {
-        if (option) {
-            setValue("customer", option.title);
-            setValue("customerid", option.id);
-            setValue("storename", option.storename);
-            setValue("shippingaddress", option.shippingaddress);
-            setValue("route", option.route);
-            setValue("contactnumber", option.contactnumber);
-            setValue("creditamounttosettle", option.creditamounttosettle);
-            setValue("loyaltypoints", option.loyaltypoints);
-            setValue("eligibilityforcredit", option.eligibilityforcredit);
-            setValue("maximumcreditamount", option.maximumcreditamount);
-            clearErrors();
-        }
-    }
-
-    const handleReset = () => {
-        reset({
-            orderno: `${JSON.parse(sessionStorage.getItem("Auth")).employeeid}${nextOrderNo}`,
-            orderplacedat: dateTime,
-            deliverydate: deliveryDate,
-            ordercreatedby: `${JSON.parse(sessionStorage.getItem("Auth")).firstname} ${JSON.parse(sessionStorage.getItem("Auth")).lastname} (${JSON.parse(sessionStorage.getItem("Auth")).employeeid})`,
-            customertype: '',
-            customer: '',
-            storename: '',
-            customerid: '',
-            shippingaddress: '',
-            contactnumber: '',
-            route: '',
-        });
-        setCustomerType('');
-    }
-
     const handleFormValidation = () => {
-
         trigger();
 
         if (isValid) {
             completeFormStep();
         }
     }
-
 
     return (
         <div className={style.one}>
@@ -158,9 +107,11 @@ export default function StepOne(props) {
             <div className={style.body}>
 
                 <div className={style.row}>
+
                     <div className={style.label}>
                         Order No. <span className={style.redFont}>*</span>
                     </div>
+
                     <div className={style.textfield}>
                         <Controller
                             render={({ field }) => (
@@ -175,16 +126,20 @@ export default function StepOne(props) {
                             )}
                             control={control}
                             name={"orderno"}
-                            defaultValue={`${JSON.parse(sessionStorage.getItem("Auth")).employeeid}${nextOrderNo}`}
-                            rules={{ required: { value: true, message: "Required *" } }}
+                            rules={{
+                                required: { value: true, message: "Required *" }
+                            }}
                         />
                     </div>
+
                 </div>
 
                 <div className={style.row}>
+
                     <div className={style.label}>
                         Order placed at <span className={style.redFont}>*</span>
                     </div>
+
                     <div className={style.textfield}>
                         <Controller
                             render={({ field }) => (
@@ -197,17 +152,21 @@ export default function StepOne(props) {
                                 />
                             )}
                             control={control}
-                            defaultValue={dateTime}
                             name={"orderplacedat"}
-                            rules={{ required: { value: true, message: "Required *" } }}
+                            rules={{
+                                required: { value: true, message: "Required *" }
+                            }}
                         />
                     </div>
+
                 </div>
 
                 <div className={style.row}>
+
                     <div className={style.label}>
                         Delivery Date <span className={style.redFont}>*</span>
                     </div>
+
                     <div className={style.textfield}>
                         <Controller
                             render={({ field }) => (
@@ -220,66 +179,79 @@ export default function StepOne(props) {
                             )}
                             control={control}
                             name={"deliverydate"}
-                            defaultValue={deliveryDate}
-                            rules={{ required: { value: true, message: "Required *" } }}
-
+                            rules={{
+                                required: { value: true, message: "Required *" }
+                            }}
                         />
                     </div>
+
                 </div>
 
                 <div className={style.row}>
+
                     <div className={style.label}>
                         Sales Representative <span className={style.redFont}>*</span>
                     </div>
+
                     <div className={style.textfield}>
                         <Controller
                             render={({ field }) => (
                                 <TextField
                                     {...field}
                                     fullWidth={true}
-                                    error={errors.ordercreatedby ? true : false}
                                     helperText={errors.ordercreatedby && errors.ordercreatedby.message}
+                                    error={errors.ordercreatedby ? true : false}
                                     placeholder="Ex: Buddhika Bandara (E00006)"
                                     margin="dense"
                                 />
                             )}
                             control={control}
                             name={"ordercreatedby"}
-                            defaultValue={`${JSON.parse(sessionStorage.getItem("Auth")).firstname} ${JSON.parse(sessionStorage.getItem("Auth")).lastname} (${JSON.parse(sessionStorage.getItem("Auth")).employeeid})`}
-                            rules={{ required: true, message: "Required *" }}
+                            rules={{
+                                required: true, message: "Required *"
+                            }}
                         />
                     </div>
                 </div>
 
+
                 <div className={style.row}>
+
                     <div className={style.label}>
                         Customer Type <span className={style.redFont}>*</span>
                     </div>
+
                     <div className={style.textfield}>
                         <Controller
                             render={({ field }) => (
                                 <Select
                                     {...field}
                                     options={employeeservice.getCustomerTypeOptions()}
-                                    error={errors.customertype ? true : false}
                                     helperText={errors.customertype && errors.customertype.message}
+                                    error={errors.customertype ? true : false}
                                     size="small"
                                 />
                             )}
                             control={control}
                             name={"customertype"}
-                            defaultValue={''}
-                            rules={{ required: { value: true, message: "Required *" } }}
+                            rules={{
+                                required: { value: true, message: "Required *" }
+                            }}
                         />
                     </div>
+
                 </div>
 
                 <div className={style.row}>
+
                     <div className={style.label}>
                         Store Name <span className={style.redFont}>*</span>
                     </div>
+
                     <div className={style.textfield}>
-                        {customerType === "Registered Customer" ?
+
+                        {
+                            watch('customertype') === "Registered Customer" &&
                             <ThemeProvider theme={theme}>
                                 <Controller
                                     render={({ field }) => (
@@ -291,24 +263,26 @@ export default function StepOne(props) {
                                             renderInput={(params) => (
                                                 <MuiTextField
                                                     {...params}
-                                                    helperText={errors.customer && errors.customer.message}
                                                     error={errors.customer ? true : false}
+                                                    helperText={errors.customer && errors.customer.message}
+                                                    placeholder="Ex: Mini Co-op City (C00001)"
                                                     variant="outlined"
                                                     margin="dense"
-                                                    placeholder="Ex: Mini Co-op City (C00001)"
                                                 />
                                             )}
                                         />
                                     )}
-                                    control={control}
                                     name={"customer"}
-                                    defaultValue={''}
+                                    control={control}
                                     rules={{
                                         required: { value: true, message: "Required *" }
                                     }}
                                 />
                             </ThemeProvider>
-                            :
+                        }
+
+                        {
+                            watch('customertype') === "Unregistered Customer" &&
                             <Controller
                                 render={({ field }) => (
                                     <TextField
@@ -327,13 +301,17 @@ export default function StepOne(props) {
                             />
 
                         }
+
                     </div>
+
                 </div>
 
                 <div className={style.row}>
+
                     <div className={style.label}>
                         Shipping  Address <span className={style.redFont}>*</span>
                     </div>
+
                     <div className={style.textfield}>
                         <Controller
                             render={({ field }) => (
@@ -348,81 +326,89 @@ export default function StepOne(props) {
                             )}
                             control={control}
                             name={"shippingaddress"}
-                            defaultValue={''}
                             rules={{ required: { value: true, message: "Required *" } }}
                         />
                     </div>
+
                 </div>
 
                 <div className={style.row}>
+
                     <div className={style.label}>
                         Contact No. <span className={style.redFont}>*</span>
                     </div>
+
                     <div className={style.textfield}>
                         <Controller
                             render={({ field }) => (
                                 <TextField
                                     {...field}
                                     fullWidth={true}
-                                    error={errors.contactnumber ? true : false}
                                     helperText={errors.contactnumber && errors.contactnumber.message}
+                                    error={errors.contactnumber ? true : false}
                                     placeholder="Ex: 0763156983"
                                     margin="dense"
                                 />
                             )}
                             control={control}
                             name={"contactnumber"}
-                            defaultValue={''}
                             rules={{
                                 required: { value: true, message: "Required *" },
                                 pattern: { value: /^[0-9]{10}$/, message: "Invalid" }
                             }}
                         />
                     </div>
+
                 </div>
 
                 <div className={style.row}>
+
                     <div className={style.label}>
                         Route <span className={style.redFont}>*</span>
                     </div>
+
                     <div className={style.textfield}>
                         <Controller
                             render={({ field }) => (
                                 <Select
                                     {...field}
                                     options={employeeservice.getRouteOptions()}
-                                    error={errors.route ? true : false}
                                     helperText={errors.route && errors.route.message}
+                                    error={errors.route ? true : false}
                                     size="small"
                                 />
                             )}
                             control={control}
                             name={"route"}
-                            defaultValue={''}
-                            rules={{ required: { value: true, message: "Required *" } }}
+                            rules={{
+                                required: { value: true, message: "Required *" }
+                            }}
                         />
                     </div>
+
                 </div>
 
             </div>
 
+
             <div className={style.footer}>
 
                 <div className={style.resetBtn}>
-                    <Button
-                        disabled={data.length !== 0}
-                        variant="contained"
-                        onClick={handleReset}
-                    >
-                        Reset
-                    </Button>
+                    {
+                        action === "Create" &&
+                        <Button
+                            onClick={resetForm}
+                            variant="contained"
+                        >
+                            Reset
+                        </Button>
+                    }
                 </div>
 
                 <div className={style.nextBtn}>
                     <Button
-                        color="primary"
-                        variant="contained"
                         onClick={handleFormValidation}
+                        variant="contained"
                     >
                         Next
                     </Button>

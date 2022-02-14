@@ -97,7 +97,9 @@ export default function ManageCustomer() {
                     console.log(err);
                 });
             ;
-        } if (action === "Edit") {
+        } 
+        
+        if (action === "Edit") {
             axios
                 .post(`http://localhost:8080/customers/update-by-id/${customerid}`, customer, {
                     headers: {
@@ -332,6 +334,7 @@ export default function ManageCustomer() {
                         horizontal: 'center',
                     }}
                 >
+
                     <Alert
                         onClose={handleClose}
                         severity={type}
@@ -339,6 +342,7 @@ export default function ManageCustomer() {
                     >
                         {alert}
                     </Alert>
+
                 </Snackbar>
 
             </div>

@@ -14,7 +14,7 @@ import style from './StepTwo.module.scss';
 
 export default function StepTwo(props) {
 
-    const { action, formStep, handleClosePopUp, control, backFormStep, customerType, completeFormStep } = props;
+    const { action, formStep, handleClosePopUp, control, backFormStep, watch, completeFormStep } = props;
 
     return (
         <div className={style.two}>
@@ -76,7 +76,7 @@ export default function StepTwo(props) {
                 </div>
 
                 {
-                    customerType === "Registered Customer" &&
+                    watch('customertype') === "Registered Customer" &&
                     <div className={style.row}>
                         <div className={style.boldText}>
                             Customer ID
@@ -217,14 +217,14 @@ export default function StepTwo(props) {
                 </div>
 
                 {
-                    customerType === "Registered Customer" &&
+                    watch('customertype') === "Registered Customer" &&
                     <div className={style.dividerDiv}>
                         <Divider variant="middle" />
                     </div>
                 }
 
                 {
-                    customerType === "Registered Customer" &&
+                    watch('customertype') === "Registered Customer" &&
                     <div className={style.row}>
                         <div className={style.boldText}>
                             Loyalty Points
@@ -244,7 +244,7 @@ export default function StepTwo(props) {
                 }
 
                 {
-                    customerType === "Registered Customer" &&
+                    watch('customertype') === "Registered Customer" &&
                     <div className={style.row}>
                         <div className={style.boldText}>
                             Credit amount to settle
@@ -265,10 +265,10 @@ export default function StepTwo(props) {
                 }
 
                 {
-                    customerType === "Registered Customer" &&
+                    watch('customertype') === "Registered Customer" &&
                     <div className={style.row}>
                         <div className={style.boldText}>
-                            Eligibility to Credit 
+                            Eligibility to Credit
                         </div>
                         <div className={style.customerData}>
                             <Controller
@@ -287,7 +287,7 @@ export default function StepTwo(props) {
 
 
                 {
-                    customerType === "Registered Customer" &&
+                    watch('customertype') === "Registered Customer" &&
                     <div className={style.row}>
                         <div className={style.boldText}>
                             Maximum Credit Amount allowed
@@ -309,28 +309,29 @@ export default function StepTwo(props) {
 
             </div>
 
+
             <div className={style.footer}>
 
-                <div className={action === "Create" ? style.backBtn : style.hideBackBtn}>
-                    <Button
-                        variant="contained"
-                        onClick={backFormStep}
-                        style={{
-                            backgroundColor: '#ACA9BB',
-                            color: 'white'
-                        }}
-                    >
-                        Back
-                    </Button>
+                <div className={style.backBtn}>
+                    {
+                        action === "Create" &&
+                        <Button
+                            onClick={backFormStep}
+                            variant="contained"
+                        >
+                            Back
+                        </Button>
+                    }
                 </div>
 
-                <div className={style.confirmBtn}>
+                <div className={style.doneBtn}>
                     <Button
-                        color="primary"
-                        variant="contained"
                         onClick={completeFormStep}
+                        variant="contained"
                     >
-                        {action === "Create" ? 'Confirm' : 'Next'}
+                        {action === "Create" && "Confirm & Next"}
+                        {action === "Edit" && "Next"}
+                        {action === "View" && "Next"}
                     </Button>
                 </div>
 

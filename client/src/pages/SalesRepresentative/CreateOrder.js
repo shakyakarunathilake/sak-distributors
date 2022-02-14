@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import formData from 'form-data';
 
@@ -20,28 +20,64 @@ export default function CreateOrder(props) {
         nextOrderNo,
         productOptions,
         customerOptions,
-        handleClosePopUp
+        handleClosePopUp,
+        orderRecords
     } = props;
 
-    const {
-        watch,
-        reset,
-        trigger,
-        control,
-        setValue,
-        getValues,
-        clearErrors,
-        handleSubmit,
-        formState: { isValid, errors }
-    } = useForm({ mode: "all" });
-
     const [data, setData] = useState([]);
-    const [total, setTotal] = useState();
-    const [advancePayment, setAdvancePayment] = useState();
     const [formStep, setFormStep] = useState(0);
-    const [customerType, setCustomerType] = useState('');
-    const [minimumPayment, setMinimumPayment] = useState();
-    const [invoiceSettlementValue, setInvoiceSettlementValue] = useState();
+
+    const today = new Date();
+    const dateTime = today.getFullYear() + '-' + (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`) + 'T' + (today.getHours() > 9 ? today.getHours() : `0${today.getHours()}`) + ':' + (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`);
+
+    today.setDate(today.getDate() + 3);
+    const deliveryDate = today.getFullYear() + '-' + (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+
+    const { watch, reset, trigger, control, setValue, getValues, clearErrors, handleSubmit, formState: { isValid, errors } } = useForm({
+        mode: "all",
+        defaultValues: {
+            orderno: `${JSON.parse(sessionStorage.getItem("Auth")).employeeid}${nextOrderNo}`,
+            contactnumber: '',
+            customertype: 'Registered Customer',
+            customerid: '',
+            storename: '',
+            deliverydate: deliveryDate,
+            orderplacedat: dateTime,
+            route: '',
+            ordercreatedby: `${JSON.parse(sessionStorage.getItem("Auth")).firstname} ${JSON.parse(sessionStorage.getItem("Auth")).lastname} (${JSON.parse(sessionStorage.getItem("Auth")).employeeid})`,
+            shippingaddress: '',
+            total: 0.00,
+            loyaltypoints: 0.00,
+            minimumpayment: 0.00,
+            advancepayment: 0.00,
+            creditamounttosettle: 0.00,
+            eligibilityforcredit: 'No',
+            maximumcreditamount: 0.00,
+            currentinvoicecreditamount: 0.00,
+        }
+    });
+
+    useEffect(() => {
+        if (orderRecords != null) {
+            setData(orderRecords.items);
+        }
+    }, [orderRecords])
+
+    useEffect(() => {
+        if (data != null) {
+            let total = 0.00;
+            let advancepayment = 0.00;
+
+            for (let i = 0; i < data.length; i++) {
+                total = total + parseInt(data[i].grossamount);
+            }
+
+            advancepayment = (total / 100) * 50;
+
+            setValue('advancepayment', parseInt(advancepayment.toFixed(2)));
+            setValue('total', parseInt(total.toFixed(2)));
+        }
+    }, [data, setValue])
 
     const completeFormStep = () => {
         setFormStep(x => x + 1);
@@ -51,20 +87,24 @@ export default function CreateOrder(props) {
         setFormStep(x => x - 1);
     }
 
-    const getTotal = () => {
-        let total = 0;
-        let advancepayment = 0;
+    const resetForm = () => {
+        reset();
+    }
 
-        for (let i = 0; i < data.length; i++) {
-            total = total + parseInt(data[i].grossamount);
+    const handleCustomerChange = (event, option) => {
+        if (option) {
+            setValue("customer", option.title);
+            setValue("customerid", option.id);
+            setValue("storename", option.storename);
+            setValue("shippingaddress", option.shippingaddress);
+            setValue("route", option.route);
+            setValue("contactnumber", `0${option.contactnumber}`);
+            setValue("creditamounttosettle", parseInt(option.creditamounttosettle));
+            setValue("loyaltypoints", option.loyaltypoints);
+            setValue("eligibilityforcredit", option.eligibilityforcredit);
+            setValue("maximumcreditamount", parseInt(option.maximumcreditamount));
+            clearErrors();
         }
-
-        advancepayment = (total / 100) * 50;
-
-        setAdvancePayment(advancepayment.toFixed(2));
-        setTotal(total.toFixed(2));
-
-        return total.toFixed(2);
     }
 
     const onSubmit = () => {
@@ -82,9 +122,11 @@ export default function CreateOrder(props) {
         customerOrderFormData.append('ordercreatedby', getValues('ordercreatedby'));
         customerOrderFormData.append('shippingaddress', getValues('shippingaddress'));
         customerOrderFormData.append('items', JSON.stringify(data));
-        customerOrderFormData.append('total', total);
+        customerOrderFormData.append('total', getValues('total'));
+        customerOrderFormData.append('advancepayment', getValues('advancepayment'));
+        customerOrderFormData.append('minimumpayment', getValues('minimumpayment'));
 
-        if (customerType === "Registered Customer") {
+        if (watch('customertype') === "Registered Customer") {
             customerOrderFormData.append('creditamounttosettle', getValues('creditamounttosettle'));
             customerOrderFormData.append('loyaltypoints', getValues('loyaltypoints'));
             customerOrderFormData.append('eligibilityforcredit', getValues('eligibilityforcredit'));
@@ -107,21 +149,18 @@ export default function CreateOrder(props) {
                 <section className={formStep === 0 ? style.visible : style.hidden}>
 
                     <StepOne
-                        reset={reset}
-                        nextOrderNo={nextOrderNo}
-                        setCustomerType={setCustomerType}
-                        customerType={customerType}
-                        errors={errors}
-                        handleClosePopUp={handleClosePopUp}
-                        customerOptions={customerOptions}
                         data={data}
+                        resetForm={resetForm}
+                        errors={errors}
+                        isValid={isValid}
                         control={control}
                         trigger={trigger}
-                        isValid={isValid}
-                        completeFormStep={completeFormStep}
-                        setValue={setValue}
-                        clearErrors={clearErrors}
                         watch={watch}
+                        customerOptions={customerOptions}
+                        handleClosePopUp={handleClosePopUp}
+                        completeFormStep={completeFormStep}
+                        handleCustomerChange={handleCustomerChange}
+                        action={action}
                     />
 
                 </section>
@@ -131,13 +170,14 @@ export default function CreateOrder(props) {
                 formStep >= 1 &&
                 <section className={formStep === 1 ? style.visible : style.hidden}>
                     <StepTwo
-                        customerType={customerType}
                         control={control}
                         handleClosePopUp={handleClosePopUp}
                         backFormStep={backFormStep}
                         completeFormStep={completeFormStep}
                         action={action}
                         formStep={formStep}
+                        watch={watch}
+                        getValues={getValues}
                     />
                 </section>
             }
@@ -146,16 +186,15 @@ export default function CreateOrder(props) {
                 formStep >= 2 &&
                 <section className={formStep === 2 ? style.visible : style.hidden}>
                     <StepThree
+                        action={action}
+                        formStep={formStep}
                         data={data}
                         setData={setData}
                         handleClosePopUp={handleClosePopUp}
                         productOptions={productOptions}
-                        completeFormStep={completeFormStep}
-                        setTotal={setTotal}
-                        action={action}
-                        formStep={formStep}
                         backFormStep={backFormStep}
-                        getTotal={getTotal}
+                        completeFormStep={completeFormStep}
+                        watch={watch}
                     />
                 </section>
             }
@@ -168,7 +207,7 @@ export default function CreateOrder(props) {
                         handleClosePopUp={handleClosePopUp}
                         backFormStep={backFormStep}
                         completeFormStep={completeFormStep}
-                        total={total}
+                        watch={watch}
                         action={action}
                         formStep={formStep}
                     />
@@ -179,22 +218,17 @@ export default function CreateOrder(props) {
                 formStep >= 4 &&
                 <section className={formStep === 4 ? style.visible : style.hidden}>
                     <StepFive
-                        customerType={customerType}
                         action={action}
                         formStep={formStep}
                         handleClosePopUp={handleClosePopUp}
                         onSubmit={onSubmit}
-                        total={total}
                         errors={errors}
                         control={control}
                         getValues={getValues}
                         backFormStep={backFormStep}
-                        advancePayment={advancePayment}
-                        minimumPayment={minimumPayment}
-                        setMinimumPayment={setMinimumPayment}
-                        invoiceSettlementValue={invoiceSettlementValue}
-                        setInvoiceSettlementValue={setInvoiceSettlementValue}
                         isValid={isValid}
+                        watch={watch}
+                        setValue={setValue}
                     />
                 </section>
             }

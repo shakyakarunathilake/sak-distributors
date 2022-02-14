@@ -85,7 +85,9 @@ router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
         eligibilityforcredit: req.body.eligibilityforcredit,
         maximumcreditamount: req.body.maximumcreditamount,
         status: 'Pending',
-        creditamounttosettle: req.body.creditamounttosettle
+        creditamounttosettle: req.body.creditamounttosettle,
+        minimumpayment: req.body.minimumpayment,
+        advancepayment: req.body.advancepayment,
     });
 
     order
@@ -180,6 +182,8 @@ router.post("/update-by-id/:orderno", formDataBody.fields([]), (req, res, next) 
             {
                 'items': items,
                 'currentinvoicecreditamount': req.body.currentinvoicecreditamount,
+                'minimumpayment': req.body.minimumpayment,
+                'advancepayment': req.body.advancepayment,
                 'total': req.body.total,
             },
             { new: true }
@@ -394,7 +398,9 @@ router.get("/:orderno", (req, res, next) => {
                 'loyaltypoints': doc.loyaltypoints,
                 'eligibilityforcredit': doc.eligibilityforcredit,
                 'maximumcreditamount': doc.maximumcreditamount,
-                'creditamounttosettle': doc.creditamounttosettle
+                'creditamounttosettle': doc.creditamounttosettle,
+                'minimumpayment': doc.minimumpayment,
+                'advancepayment': doc.advancepayment,
             }
 
             res.status(200).json({
