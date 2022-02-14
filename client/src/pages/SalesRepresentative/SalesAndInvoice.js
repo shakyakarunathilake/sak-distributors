@@ -150,7 +150,11 @@ export default function SalesAndInvoice() {
 
         if (action === "Delivered") {
             axios
-                .post(`http://localhost:8080/orders/approve-delivery/${orderno}`, order)
+                .post(`http://localhost:8080/orders/approve-delivery/${orderno}`, order, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
                 .then(res => {
                     setAlert(res.data.alert);
                     setType(res.data.type);
@@ -177,7 +181,12 @@ export default function SalesAndInvoice() {
             })
             .then(res => {
                 setOrderRecords(res.data.order);
-                getOptions();
+
+                if (action === 'Create' || action === 'Edit') {
+                    getOptions();
+                } else {
+                    setOpenPopup(true);
+                }
             })
             .catch(err => {
                 console.log(err);

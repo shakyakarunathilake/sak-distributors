@@ -34,11 +34,15 @@
         .row {
             display: grid;
             grid-template-columns: 300px calc(100% - 300px);
-            padding: 10px;
+            padding: 8px;
 
             .boldText {
                 font-size: 1em;
                 font-weight: 700;
+            }
+
+            .input {
+                display: inline;
             }
         }
 

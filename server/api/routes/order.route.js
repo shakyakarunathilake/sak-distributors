@@ -241,7 +241,8 @@ router.post("/approve-delivery/:orderno", formDataBody.fields([]), (req, res, ne
             {
                 '$set': {
                     'status': req.body.status,
-                    'deliveredat': req.body.deliveredat
+                    'deliveredat': req.body.deliveredat,
+                    'deliveredby': req.body.deliveredby
                 }
             },
             { upsert: true }
@@ -385,6 +386,8 @@ router.get("/:orderno", (req, res, next) => {
                 'contactnumber': doc.contactnumber,
                 'customerid': doc.customerid,
                 'deliverydate': doc.deliverydate,
+                'deliveredby': doc.deliveredby,
+                'deliveredat': doc.deliveredat,
                 'orderno': doc.orderno,
                 'orderplacedat': doc.orderplacedat,
                 'route': doc.route,

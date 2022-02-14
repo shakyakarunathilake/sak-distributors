@@ -15,22 +15,34 @@ export default function DispatchForm(props) {
 
     const { handleClosePopUp, addOrEdit, orderRecords } = props;
 
-    const { handleSubmit } = useForm()
-
     const today = new Date();
     const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
     const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    const dateTime = date + ' ' + time;
+    const dateTime = date + 'T' + time;
+
+    const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
+    const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
+    const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
+
+    const { handleSubmit, getValues } = useForm({
+        mode: 'all',
+        defaultValues: {
+            orderno: orderRecords.orderno,
+            deliveredat: dateTime,
+            deliveredby: `${firstname} ${lastname} (${employeeid})`,
+            status: 'Delivered'
+        }
+    })
 
     const onSubmit = () => {
 
         const ginFormData = new formData();
 
-        ginFormData.append('orderno', orderRecords.orderno);
-        ginFormData.append('deliveredat', dateTime);
-        ginFormData.append('status', 'Delivered');
+        ginFormData.append('deliveredat', getValues('deliveredat'));
+        ginFormData.append('deliveredby', getValues('deliveredby'));
+        ginFormData.append('status', getValues('status'));
 
-        addOrEdit(ginFormData, orderRecords.orderno);
+        addOrEdit(ginFormData, getValues('orderno'));
 
     }
 
@@ -41,6 +53,7 @@ export default function DispatchForm(props) {
         >
 
             <div className={style.header}>
+
                 <div>
                     Confirm Order Status
                 </div>
@@ -50,16 +63,20 @@ export default function DispatchForm(props) {
                         onClick={() => { handleClosePopUp() }}
                     />
                 </div>
+
             </div>
 
             <div className={style.body}>
-                <span className={style.blue}>Order Number: {orderRecords.orderno} </span> <br />
+
+                <span className={style.blue}>Order Number: {getValues('orderno')} </span> <br />
                 The above order has been delivered. <br />
                 Once you approve delivered changes cannot be undone.
+
             </div>
 
 
             <div className={style.footer}>
+
                 <Button
                     color="primary"
                     variant="contained"
@@ -67,6 +84,7 @@ export default function DispatchForm(props) {
                 >
                     Approve Delivery
                 </Button>
+
             </div>
 
         </form >

@@ -166,24 +166,6 @@ export default function StepTwo(props) {
 
                 <div className={style.row}>
                     <div className={style.boldText}>
-                        Order Placed at
-                    </div>
-                    <div className={style.customerData}>
-                        <Controller
-                            name={"orderplacedat"}
-                            control={control}
-                            render={({ field: { value } }) => (
-                                <Typography className={style.input}>
-                                    {/* {value.split("T")[0]} {value.substring(value.indexOf('T') + 1)} */}
-                                    {value}
-                                </Typography>
-                            )}
-                        />
-                    </div>
-                </div>
-
-                <div className={style.row}>
-                    <div className={style.boldText}>
                         Delivery Date
                     </div>
                     <div className={style.customerData}>
@@ -199,9 +181,41 @@ export default function StepTwo(props) {
                     </div>
                 </div>
 
+                {
+                    action !== 'Create' &&
+                    <div className={style.row}>
+                        <div className={style.boldText}>
+                            Status
+                        </div>
+                        <div className={style.customerData}>
+                            <Controller
+                                name={"status"}
+                                control={control}
+                                render={({ field: { value } }) => (
+                                    value === 'Pending' ?
+                                        <Typography style={{ color: "#eed202", fontWeight: "600" }}>
+                                            {value}
+                                        </Typography>
+                                        : value === 'Processing' ?
+                                            <Typography style={{ color: "#2196F3", fontWeight: "600" }}>
+                                                {value}
+                                            </Typography>
+                                            : value === 'Shipping' ?
+                                                <Typography style={{ color: "#FF8400", fontWeight: "600" }}>
+                                                    {value}
+                                                </Typography>
+                                                : <Typography style={{ color: "#4caf50", fontWeight: "600" }}>
+                                                    {value}
+                                                </Typography>
+                                )}
+                            />
+                        </div>
+                    </div>
+                }
+
                 <div className={style.row}>
                     <div className={style.boldText}>
-                        Sales Representative
+                        Order Placed by/at
                     </div>
                     <div className={style.customerData}>
                         <Controller
@@ -213,8 +227,48 @@ export default function StepTwo(props) {
                                 </Typography>
                             )}
                         />
+                        &nbsp;
+                        <Controller
+                            name={"orderplacedat"}
+                            control={control}
+                            render={({ field: { value } }) => (
+                                <Typography className={style.input}>
+                                    : {value}
+                                </Typography>
+                            )}
+                        />
                     </div>
                 </div>
+
+                {
+                    (watch('status') !== "Pending" || watch('status') !== "Processing") &&
+                    <div className={style.row}>
+                        <div className={style.boldText}>
+                            Delivered by / at
+                        </div>
+                        <div className={style.customerData}>
+                            <Controller
+                                name={"deliveredby"}
+                                control={control}
+                                render={({ field: { value } }) => (
+                                    <Typography className={style.input}>
+                                        {value}
+                                    </Typography>
+                                )}
+                            />
+                            &nbsp;
+                            <Controller
+                                name={"deliveredat"}
+                                control={control}
+                                render={({ field: { value } }) => (
+                                    <Typography className={style.input}>
+                                        : {value}
+                                    </Typography>
+                                )}
+                            />
+                        </div>
+                    </div>
+                }
 
                 {
                     watch('customertype') === "Registered Customer" &&
