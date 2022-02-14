@@ -260,7 +260,7 @@ router.get("/customer-options", (req, res, next) => {
                 "storename": x.storename,
                 "route": x.route,
                 "shippingaddress": x.shippingaddress,
-                "contactnumber": x.customercontactnumber,
+                "contactnumber": x.storecontactnumber,
                 "title": `${x.storename} (${x.customerid})`,
                 "loyaltypoints": x.loyaltypoints,
                 "creditamounttosettle": x.creditamounttosettle.toFixed(2),
