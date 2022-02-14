@@ -15,6 +15,8 @@ const orderSchema = mongoose.Schema({
     items: { type: Array, required: true },
     deliveredby: { type: String, required: false },
     deliveredat: { type: String, required: false },
+    completedat: { type: String, required: false },
+    completedby: { type: String, required: false },
     status: { type: String, required: true },
     loyaltypoints: { type: Number, required: false },
     eligibilityforcredit: { type: Boolean, required: false },
@@ -24,6 +26,7 @@ const orderSchema = mongoose.Schema({
     minimumpayment: { type: String, required: false },
     advancepayment: { type: String, required: false },
     total: { type: String, required: true },
+    invoicesettlementvalue: { type: String, required: true },
 })
 
 module.exports = mongoose.model('Order', orderSchema);

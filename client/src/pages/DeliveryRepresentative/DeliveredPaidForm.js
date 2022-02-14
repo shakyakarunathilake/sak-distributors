@@ -9,11 +9,11 @@ import { Button } from '@material-ui/core';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
 //SCSS Style
-import style from './DeliveredForm.module.scss';
+import style from './DeliveredPaidForm.module.scss';
 
-export default function DispatchForm(props) {
+export default function DeliveredPaidForm(props) {
 
-    const { handleClosePopUp, addOrEdit, orderRecords } = props;
+    const { handleClosePopUp, addOrEdit, action, orderRecords } = props;
 
     const today = new Date();
     const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
@@ -30,7 +30,8 @@ export default function DispatchForm(props) {
             orderno: orderRecords.orderno,
             deliveredat: dateTime,
             deliveredby: `${firstname} ${lastname} (${employeeid})`,
-            status: 'Delivered'
+            completedat: dateTime,
+            completedby: `${firstname} ${lastname} (${employeeid})`,
         }
     })
 
@@ -38,9 +39,16 @@ export default function DispatchForm(props) {
 
         const ginFormData = new formData();
 
-        ginFormData.append('deliveredat', getValues('deliveredat'));
-        ginFormData.append('deliveredby', getValues('deliveredby'));
-        ginFormData.append('status', getValues('status'));
+        if (action === 'Delivered') {
+            ginFormData.append('deliveredat', getValues('deliveredat'));
+            ginFormData.append('deliveredby', getValues('deliveredby'));
+            ginFormData.append('status', 'Delivered');
+        } else {
+            ginFormData.append('completedat', getValues('completedat'));
+            ginFormData.append('completedby', getValues('completedby'));
+            ginFormData.append('status', 'Paid');
+        }
+
 
         addOrEdit(ginFormData, getValues('orderno'));
 
@@ -69,8 +77,12 @@ export default function DispatchForm(props) {
             <div className={style.body}>
 
                 <span className={style.blue}>Order Number: {getValues('orderno')} </span> <br />
-                The above order has been delivered. <br />
-                Once you approve delivered changes cannot be undone.
+                {
+                    action === "Delivered" ?
+                        <p>The above order has been delivered. </p>
+                        : <p>The above order has been fully paid. </p>
+                }
+                Once you approve status changes cannot be undone.
 
             </div>
 
@@ -82,7 +94,7 @@ export default function DispatchForm(props) {
                     variant="contained"
                     onClick={onSubmit}
                 >
-                    Approve Delivery
+                    {action === "Delivered" ? "Approve Delivery" : "Approve Payment"}
                 </Button>
 
             </div>

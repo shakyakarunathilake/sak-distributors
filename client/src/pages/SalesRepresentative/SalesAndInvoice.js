@@ -17,7 +17,8 @@ import Button from '@material-ui/core/Button';
 //Material UI Icons
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import DoneIcon from '@mui/icons-material/Done';
+import PaymentIcon from '@mui/icons-material/Payment';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 
 //Connecting to Backend
 import axios from 'axios';
@@ -26,7 +27,7 @@ import axios from 'axios';
 import ViewOrder from './ViewOrder';
 import EditOrder from './EditOrder';
 import CreateOrder from './CreateOrder';
-import DeliveredForm from '../DeliveryRepresentative/DeliveredForm';
+import DeliveredPaidForm from '../DeliveryRepresentative/DeliveredPaidForm';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -66,9 +67,9 @@ export default function SalesAndInvoice() {
     };
 
     useEffect(() => {
-        if (designation === "Delivery Representative") {
+        if (designation === "Manager") {
             axios
-                .get(`http://localhost:8080/orders/get-all-sales-and-invoice-table-data-for-delivery-representative/${firstname} ${lastname} (${employeeid})`, {
+                .get(`http://localhost:8080/orders/get-all-sales-and-invoice-table-data`, {
                     headers: {
                         'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
                     }
@@ -81,7 +82,9 @@ export default function SalesAndInvoice() {
                 .catch(error => {
                     console.log(error)
                 })
-        } else {
+        }
+
+        if (designation === "Sales Representative") {
             axios
                 .get(`http://localhost:8080/orders/get-all-sales-and-invoice-table-data-for-sales-representative/${firstname} ${lastname} (${employeeid})`, {
                     headers: {
@@ -97,6 +100,24 @@ export default function SalesAndInvoice() {
                     console.log(error)
                 })
         }
+
+        if (designation === "Delivery Representative") {
+            axios
+                .get(`http://localhost:8080/orders/get-all-sales-and-invoice-table-data-for-delivery-representative/${firstname} ${lastname} (${employeeid})`, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
+                .then(res => {
+                    sessionStorage.setItem("SalesAndInvoiceTableData", JSON.stringify(res.data));
+                    setRecords(res.data.tbody);
+                    setReRender(null);
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        }
+
     }, [reRender, firstname, lastname, designation, employeeid]);
 
     const handleClosePopUp = () => {
@@ -313,12 +334,15 @@ export default function SalesAndInvoice() {
                                                 render: rowData => {
                                                     return (
                                                         rowData.status === 'Pending' ?
-                                                            <p style={{ padding: "0", margin: "0", color: "#eed202", fontWeight: "700" }}>{rowData.status}</p>
+                                                            <p style={{ padding: "0", margin: "0", color: "#745590", fontWeight: "700" }}>{rowData.status}</p>
                                                             : rowData.status === 'Processing' ?
                                                                 <p style={{ padding: "0", margin: "0", color: "#2196F3", fontWeight: "700" }}>{rowData.status}</p>
                                                                 : rowData.status === 'Shipping' ?
-                                                                    <p style={{ padding: "0", margin: "0", color: "#FF8400", fontWeight: "700" }}>{rowData.status}</p>
-                                                                    : <p style={{ padding: "0", margin: "0", color: "#4caf50", fontWeight: "700" }}>{rowData.status}</p>
+                                                                    <p style={{ padding: "0", margin: "0", color: "#eed202", fontWeight: "700" }}>{rowData.status}</p>
+                                                                    : rowData.status === 'Delivered' ?
+                                                                        <p style={{ padding: "0", margin: "0", color: "#FF8400", fontWeight: "700" }}>{rowData.status}</p>
+                                                                        : <p style={{ padding: "0", margin: "0", color: "#4caf50", fontWeight: "700" }}>{rowData.status}</p>
+
                                                     )
                                                 }
                                             },
@@ -363,13 +387,22 @@ export default function SalesAndInvoice() {
                                                 disabled: rowData.status !== 'Pending'
                                             }),
                                             rowData => ({
-                                                icon: DoneIcon,
+                                                icon: LocalShippingIcon,
                                                 tooltip: 'Delivered',
                                                 onClick: (event, rowData) => {
                                                     setAction('Delivered');
                                                     openInPopup(rowData.orderno);
                                                 },
                                                 disabled: designation !== "Delivery Representative" || rowData.status === 'Delivered'
+                                            }),
+                                            rowData => ({
+                                                icon: PaymentIcon,
+                                                tooltip: 'Paid',
+                                                onClick: (event, rowData) => {
+                                                    setAction('Paid');
+                                                    openInPopup(rowData.orderno);
+                                                },
+                                                disabled: designation !== "Manager" || rowData.status !== 'Delivered'
                                             })
                                         ]}
                                     />
@@ -384,7 +417,7 @@ export default function SalesAndInvoice() {
                 <PopUp
                     openPopup={openPopup}
                     setOpenPopup={setOpenPopup}
-                    fullScreen={action === "Delivered" ? false : true}
+                    fullScreen={(action === "Delivered" || designation === 'Manager') ? false : true}
                 >
 
                     {
@@ -423,8 +456,9 @@ export default function SalesAndInvoice() {
                     }
 
                     {
-                        action === 'Delivered' &&
-                        <DeliveredForm
+                        (action === 'Delivered' || action === 'Paid') &&
+                        <DeliveredPaidForm
+                            action={action}
                             orderRecords={orderRecords}
                             handleClosePopUp={handleClosePopUp}
                             addOrEdit={addOrEdit}

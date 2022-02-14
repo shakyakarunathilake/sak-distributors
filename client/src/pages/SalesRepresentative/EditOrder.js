@@ -42,6 +42,8 @@ export default function CreateOrder(props) {
             eligibilityforcredit: orderRecords.eligibilityforcredit,
             maximumcreditamount: parseInt(orderRecords.maximumcreditamount),
             currentinvoicecreditamount: parseInt(orderRecords.currentinvoicecreditamount),
+            invoicesettlementvalue: parseInt(orderRecords.invoicesettlementvalue)
+
         }
     });
 
@@ -84,6 +86,7 @@ export default function CreateOrder(props) {
         customerOrderFormData.append('advancepayment', getValues('advancepayment'));
         customerOrderFormData.append('minimumpayment', getValues('minimumpayment'));
         customerOrderFormData.append('currentinvoicecreditamount', getValues('currentinvoicecreditamount'));
+        customerOrderFormData.append('invoicesettlementvalue', getValues('invoicesettlementvalue'));
 
         addOrEdit(customerOrderFormData, getValues('orderno'));
     }

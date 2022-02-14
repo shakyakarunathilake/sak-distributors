@@ -89,10 +89,10 @@ const getManagerListItems = [
         icon: <PersonIcon />,
     },
     {
-        id: "Manage Sales",
-        title: "Manage Sales",
-        path: "http://localhost:3000/manager/manage-sales",
-        icon: <ReceiptIcon />,
+        id: "Sales and Invoice",
+        title: "Sales and Invoice",
+        path: "http://localhost:3000/manager/sales-and-invoice",
+        icon: <DescriptionIcon />,
     },
     {
         id: "Sales Rep. Analytics",

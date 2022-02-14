@@ -193,7 +193,7 @@ export default function StepTwo(props) {
                                 control={control}
                                 render={({ field: { value } }) => (
                                     value === 'Pending' ?
-                                        <Typography style={{ color: "#eed202", fontWeight: "600" }}>
+                                        <Typography style={{ color: "#745590", fontWeight: "600" }}>
                                             {value}
                                         </Typography>
                                         : value === 'Processing' ?
@@ -201,12 +201,16 @@ export default function StepTwo(props) {
                                                 {value}
                                             </Typography>
                                             : value === 'Shipping' ?
-                                                <Typography style={{ color: "#FF8400", fontWeight: "600" }}>
+                                                <Typography style={{ color: "#EED202", fontWeight: "600" }}>
                                                     {value}
                                                 </Typography>
-                                                : <Typography style={{ color: "#4caf50", fontWeight: "600" }}>
-                                                    {value}
-                                                </Typography>
+                                                : value === 'Delivered' ?
+                                                    <Typography style={{ color: "#FF8400", fontWeight: "600" }}>
+                                                        {value}
+                                                    </Typography>
+                                                    : <Typography style={{ color: "#4CAF50", fontWeight: "600" }}>
+                                                        {value}
+                                                    </Typography>
                                 )}
                             />
                         </div>

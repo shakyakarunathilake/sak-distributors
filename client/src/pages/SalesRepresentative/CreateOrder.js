@@ -57,6 +57,7 @@ export default function CreateOrder(props) {
             eligibilityforcredit: 'No',
             maximumcreditamount: 0.00,
             currentinvoicecreditamount: 0.00,
+            invoicesettlementvalue: 0.00
         }
     });
 
@@ -77,8 +78,8 @@ export default function CreateOrder(props) {
 
             advancepayment = (total / 100) * 50;
 
-            setValue('advancepayment', parseInt(advancepayment.toFixed(2)));
-            setValue('total', parseInt(total.toFixed(2)));
+            setValue('advancepayment', advancepayment.toFixed(2));
+            setValue('total', total.toFixed(2));
         }
     }, [data, setValue])
 
@@ -135,6 +136,8 @@ export default function CreateOrder(props) {
             customerOrderFormData.append('eligibilityforcredit', getValues('eligibilityforcredit'));
             customerOrderFormData.append('maximumcreditamount', getValues('maximumcreditamount'));
             customerOrderFormData.append('currentinvoicecreditamount', getValues('currentinvoicecreditamount'));
+            customerOrderFormData.append('invoicesettlementvalue', getValues('invoicesettlementvalue'));
+
         }
 
         addOrEdit(customerOrderFormData, getValues('orderno'));

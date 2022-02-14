@@ -40,6 +40,7 @@ export default function ViewOrder(props) {
             eligibilityforcredit: orderRecords.eligibilityforcredit,
             maximumcreditamount: parseInt(orderRecords.maximumcreditamount),
             currentinvoicecreditamount: parseInt(orderRecords.currentinvoicecreditamount),
+            invoicesettlementvalue: parseInt(orderRecords.invoicesettlementvalue)
         }
     });
 
