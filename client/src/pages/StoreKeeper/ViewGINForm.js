@@ -8,24 +8,28 @@ export default function ViewGIN(props) {
 
     const { action, GINRecords, handleClosePopUp } = props;
 
-    const { control, getValues, setValue, handleSubmit } = useForm();
-
     const [data, setData] = useState([]);
     const [orderNumbers, setOrderNumbers] = useState([]);
 
+    const { control, getValues, handleSubmit } = useForm({
+        mode: "onChange",
+        defaultValues: {
+            ginnumber: GINRecords.ginnumber,
+            createdat: GINRecords.createdat,
+            createdby: GINRecords.createdby,
+            route: GINRecords.route,
+            total: GINRecords.total,
+            vehicle: GINRecords.vehicle ? GINRecords.vehicle : 'Processing',
+            incharge: GINRecords.incharge ? GINRecords.incharge : 'Processing',
+        }
+    });
+
     useEffect(() => {
         if (GINRecords != null) {
-            setValue('ginnumber', GINRecords.ginnumber);
-            setValue('createdat', GINRecords.createdat);
-            setValue('createdby', GINRecords.createdby);
-            setValue('route', GINRecords.route);
-            setValue('incharge', GINRecords.incharge);
-            setValue('vehicle', GINRecords.vehicle);
-            setValue('total', GINRecords.total);
             setData([...GINRecords.items]);
             setOrderNumbers([...GINRecords.ordernumbers]);
         }
-    }, [setValue, setData, setOrderNumbers, GINRecords])
+    }, [setData, setOrderNumbers, GINRecords])
 
     const onSubmit = () => {
         handleClosePopUp()
@@ -39,11 +43,11 @@ export default function ViewGIN(props) {
             <GINStepTwo
                 onSubmit={onSubmit}
                 data={data}
-                action={action}
                 handleClosePopUp={handleClosePopUp}
                 orderNumbers={orderNumbers}
                 control={control}
                 getValues={getValues}
+                action={action}
             />
 
         </form>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import formData from 'form-data';
 
@@ -12,6 +12,10 @@ import GINStepTwo from './GINStepTwo';
 export default function GINForm(props) {
 
     const { GINRecords, handleClosePopUp, addOrEdit, action, orderRecords } = props;
+
+    const [data, setData] = useState([]);
+    const [formStep, setFormStep] = useState(0);
+    const [orderNumbers, setOrderNumbers] = useState([]);
 
     const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
     const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
@@ -30,15 +34,30 @@ export default function GINForm(props) {
             createdat: GINRecords ? GINRecords.createdat : dateTime,
             createdby: GINRecords ? GINRecords.createdby : `${firstname} ${lastname} (${employeeid})`,
             route: GINRecords ? GINRecords.route : '',
-            total: GINRecords ? GINRecords.total : ''
+            total: GINRecords ? GINRecords.total : 0
         }
     });
 
-    const [data, setData] = useState([]);
-    const [formStep, setFormStep] = useState(0);
-    const [confirmation, setConfirmation] = useState(false);
-    const [orderFormData, setOrderFormData] = useState({});
-    const [orderNumbers, setOrderNumbers] = useState([]);
+    console.log(getValues())
+    
+    useEffect(() => {
+        if (GINRecords !== null) {
+            setData([...GINRecords.items]);
+            setOrderNumbers([...GINRecords.ordernumbers]);
+        }
+    }, [setData, GINRecords, setValue, setOrderNumbers])
+
+    useEffect(() => {
+        if (data != null) {
+            let total = 0;
+
+            for (let i = 0; i < data.length; i++) {
+                total = total + parseInt(data[i].grossamount);
+            }
+
+            setValue('total', total.toFixed(2));
+        }
+    }, [data, setValue])
 
     const completeFormStep = () => {
         setFormStep(x => x + 1);
@@ -49,21 +68,18 @@ export default function GINForm(props) {
     }
 
     const onSubmit = () => {
-        if (confirmation === true) {
+        const ginFormData = new formData();
 
-            const ginFormData = new formData();
+        ginFormData.append('ginnumber', getValues('ginnumber'));
+        ginFormData.append('createdat', getValues('createdat'));
+        ginFormData.append('createdby', getValues('createdby'));
+        ginFormData.append('route', getValues('route'));
+        ginFormData.append('ordernumbers', JSON.stringify(orderNumbers));
+        ginFormData.append('items', JSON.stringify(data));
+        ginFormData.append('total', getValues('total'));
+        ginFormData.append('status', 'Processing');
 
-            ginFormData.append('ginnumber', orderFormData.ginnumber);
-            ginFormData.append('createdat', orderFormData.createdat);
-            ginFormData.append('createdby', orderFormData.createdby);
-            ginFormData.append('route', orderFormData.route);
-            ginFormData.append('ordernumbers', JSON.stringify(orderNumbers));
-            ginFormData.append('items', JSON.stringify(data));
-            ginFormData.append('total', orderFormData.total);
-            ginFormData.append('status', 'Processing');
-
-            addOrEdit(ginFormData, orderFormData.ginnumber);
-        }
+        addOrEdit(ginFormData, getValues('ginnumber'));
     };
 
     return (
@@ -79,22 +95,19 @@ export default function GINForm(props) {
                     <GINStepOne
                         data={data}
                         setData={setData}
-                        setConfirmation={setConfirmation}
-                        setOrderFormData={setOrderFormData}
                         handleClosePopUp={handleClosePopUp}
                         completeFormStep={completeFormStep}
-                        GINRecords={GINRecords}
                         orderRecords={orderRecords}
+                        GINRecords={GINRecords}
                         orderNumbers={orderNumbers}
                         setOrderNumbers={setOrderNumbers}
+                        action={action}
                         control={control}
                         watch={watch}
                         getValues={getValues}
                         trigger={trigger}
                         isValid={isValid}
                         errors={errors}
-                        setValue={setValue}
-                        action={action}
                     />
 
                 </section>
@@ -109,7 +122,6 @@ export default function GINForm(props) {
                         onSubmit={onSubmit}
                         data={data}
                         handleClosePopUp={handleClosePopUp}
-                        orderFormData={orderFormData}
                         orderNumbers={orderNumbers}
                         control={control}
                         getValues={getValues}

@@ -341,7 +341,6 @@ router.post("/approve-dispatch/:ginnumber", formDataBody.fields([]), (req, res, 
         });
 });
 
-
 //Approve complete GIN by GIN Number
 router.post("/approve-complete/:ginnumber", formDataBody.fields([]), (req, res, next) => {
 

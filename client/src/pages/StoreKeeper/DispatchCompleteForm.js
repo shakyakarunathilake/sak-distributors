@@ -58,9 +58,22 @@ const theme = createTheme({
 
 export default function DispatchCompleteForm(props) {
 
-    const { handleClosePopUp, action, addOrEdit, GINRecords, inChargeOptions } = props;
+    const {
+        handleClosePopUp,
+        action,
+        addOrEdit,
+        GINRecords,
+        inChargeOptions
+    } = props;
 
-    const { formState: { isValid, errors }, getValues, control, handleSubmit, setValue } = useForm({ mode: "all" });
+    const { formState: { isValid, errors }, getValues, control, handleSubmit, setValue } = useForm({
+        mode: "all",
+        defaultValues: {
+            ginnumber: GINRecords.ginnumber,
+            incharge: '',
+            vehicle: ''
+        }
+    });
 
     const handleInChargeChange = (event, option) => {
         if (option) {
@@ -72,12 +85,17 @@ export default function DispatchCompleteForm(props) {
 
         const ginFormData = new formData();
 
-        ginFormData.append('ginnumber', GINRecords.ginnumber);
-        ginFormData.append('vehicle', getValues('vehicle'));
-        ginFormData.append('incharge', getValues('incharge'));
-        ginFormData.append('status', action === 'Dispatch' ? 'Dispatched' : 'Complete');
+        if (action === 'Dispatch') {
+            ginFormData.append('vehicle', getValues('vehicle'));
+            ginFormData.append('incharge', getValues('incharge'));
+            ginFormData.append('status', 'Dispatched');
+        }
 
-        addOrEdit(ginFormData, GINRecords.ginnumber);
+        if (action === 'Complete') {
+            ginFormData.append('status', 'Complete');
+        }
+
+        addOrEdit(ginFormData, getValues('ginnumber'));
 
     }
 
@@ -88,90 +106,108 @@ export default function DispatchCompleteForm(props) {
         >
 
             <div className={style.header}>
+
                 <div>
                     Confirm GIN Status
                 </div>
+
                 <div>
                     <HighlightOffIcon
                         className={style.icon}
                         onClick={() => { handleClosePopUp() }}
                     />
                 </div>
+
             </div>
 
             <div className={style.body}>
-                <span className={style.blue}>GIN Number: {GINRecords.ginnumber} </span> <br />
+
+                <span className={style.blue}>GIN Number: {getValues('ginnumber')} </span> <br />
+
                 The above GIN {action === 'Dispatch' ? 'is ready to be dispatched' : 'is completed'}. <br />
 
-                <div className={style.fields}>
-                    <ThemeProvider theme={theme}>
+                {
+                    action === 'Dispatch' &&
+                    <div className={style.fields}>
+
+                        <ThemeProvider theme={theme}>
+                            <Controller
+                                render={() => (
+                                    <Autocomplete
+                                        options={inChargeOptions || []}
+                                        getOptionLabel={(option) => option.title}
+                                        onChange={handleInChargeChange}
+                                        renderInput={(params) => (
+                                            <MuiTextField
+                                                {...params}
+                                                helperText={errors.incharge && errors.incharge.message}
+                                                error={errors.incharge ? true : false}
+                                                variant="outlined"
+                                                margin="dense"
+                                                placeholder="Ex: Buddhika Bandara (E00006)"
+                                                label="In Charge *"
+                                            />
+                                        )}
+                                    />
+                                )}
+                                control={control}
+                                name={"incharge"}
+                                rules={{
+                                    required: { value: true, message: "Required *" },
+                                }}
+                            />
+                        </ThemeProvider>
+
                         <Controller
-                            render={() => (
-                                <Autocomplete
-                                    options={inChargeOptions || []}
-                                    getOptionLabel={(option) => option.title}
-                                    onChange={handleInChargeChange}
-                                    renderInput={(params) => (
-                                        <MuiTextField
-                                            {...params}
-                                            helperText={errors.incharge && errors.incharge.message}
-                                            error={errors.incharge ? true : false}
-                                            variant="outlined"
-                                            margin="dense"
-                                            placeholder="Ex: Buddhika Bandara (E00006)"
-                                            label="In Charge *"
-                                        />
-                                    )}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth={true}
+                                    error={errors.vehicle ? true : false}
+                                    helperText={errors.vehicle && errors.vehicle.message}
+                                    placeholder="Ex: Van (PND 8430)"
+                                    margin="dense"
+                                    label="Vehicle *"
                                 />
                             )}
                             control={control}
-                            name={"incharge"}
+                            name={"vehicle"}
                             rules={{
                                 required: { value: true, message: "Required *" },
                             }}
                         />
-                    </ThemeProvider>
 
-                    <Controller
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                fullWidth={true}
-                                error={errors.vehicle ? true : false}
-                                helperText={errors.vehicle && errors.vehicle.message}
-                                placeholder="Ex: Van (PND 8430)"
-                                margin="dense"
-                                label="Vehicle *"
-                            />
-                        )}
-                        control={control}
-                        name={"vehicle"}
-                        rules={{
-                            required: { value: true, message: "Required *" },
-                        }}
-                    />
-                </div>
+                    </div>
+                }
 
                 Once you approve, changes cannot be undone.
+
             </div>
 
 
             <div className={style.footer}>
-                <Tooltip
-                    arrow
-                    placement="top"
-                    title="Please fill the required * fields to proceed"
-                >
-                    <InfoIcon style={{ fontSize: '1.3em', verticalAlign: 'middle', marginRight: '10px' }} />
-                </Tooltip>
+
+                {
+                    action === 'Dispatch' &&
+                    < Tooltip
+                        arrow
+                        placement="top"
+                        title="Please fill the required * fields to proceed"
+                    >
+                        <InfoIcon style={{ fontSize: '1.3em', verticalAlign: 'middle', marginRight: '10px' }} />
+                    </Tooltip>
+                }
+
                 <Button
                     color="primary"
                     variant="contained"
                     disabled={!isValid}
                     onClick={onSubmit}
                 >
-                    {action === 'Dispatch' ? 'Approve Dispatch' : 'Approve Complete'}
+                    {action === 'Dispatch' && 'Approve Dispatch'}
+                    {action === 'Complete' && 'Approve Complete'}
                 </Button>
+
             </div>
 
         </form >

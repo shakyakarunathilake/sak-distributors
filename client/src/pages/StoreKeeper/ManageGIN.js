@@ -23,7 +23,7 @@ import MaterialTable from 'material-table';
 import style from './ManageGIN.module.scss';
 
 //Pop Up Forms
-import ViewGIN from './ViewGIN';
+import ViewGIN from './ViewGINForm';
 import CreateGINForm from './CreateGINForm';
 import DispatchCompleteForm from './DispatchCompleteForm';
 
@@ -50,7 +50,6 @@ export default function ManageGIN() {
     const [openPopup, setOpenPopup] = useState(false);
     const [reRender, setReRender] = useState(null);
 
-
     const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
     const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
     const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
@@ -67,7 +66,6 @@ export default function ManageGIN() {
         setOpen(false);
     };
 
-
     const handleClosePopUp = () => {
         setGINRecords(null);
         setOpenPopup(false);
@@ -77,7 +75,11 @@ export default function ManageGIN() {
     useEffect(() => {
         if (designation === 'Delivery Representative') {
             axios
-                .get(`http://localhost:8080/gin/get-all-gin-table-data/${firstname} ${lastname} (${employeeid})`)
+                .get(`http://localhost:8080/gin/get-all-gin-table-data/${firstname} ${lastname} (${employeeid})`, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
                 .then(res => {
                     sessionStorage.setItem("GINTableData", JSON.stringify(res.data));
                     setTableRecords(res.data.tbody);
@@ -88,7 +90,11 @@ export default function ManageGIN() {
                 })
         } else {
             axios
-                .get("http://localhost:8080/gin/get-all-gin-table-data/")
+                .get("http://localhost:8080/gin/get-all-gin-table-data/", {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
                 .then(res => {
                     sessionStorage.setItem("GINTableData", JSON.stringify(res.data));
                     setTableRecords(res.data.tbody);
@@ -102,7 +108,7 @@ export default function ManageGIN() {
 
     const getInChargeOptions = () => {
         axios
-            .get("http://localhost:8080/gin/get-all-gin-table-data", {
+            .get('http://localhost:8080/options/employee-options-for-gin', {
                 headers: {
                     'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
                 }
@@ -115,9 +121,9 @@ export default function ManageGIN() {
             })
     }
 
-    const getOrderRecords = (ginnumber) => {
+    const getOrderRecords = () => {
         axios
-            .get(`http://localhost:8080/gin/${ginnumber}`, {
+            .get('http://localhost:8080/orders/get-order-records', {
                 headers: {
                     'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
                 }
@@ -132,12 +138,17 @@ export default function ManageGIN() {
     }
 
     const openInPopup = ginnumber => {
+
         if (action === 'Dispatch') {
             setGINRecords({ 'ginnumber': ginnumber });
             setOpenPopup(true);
         } else {
             axios
-                .get(`http://localhost:8080/gin/${ginnumber}`)
+                .get(`http://localhost:8080/gin/${ginnumber}`, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
                 .then(res => {
                     setGINRecords(res.data.gin);
                     setOpenPopup(true);
@@ -146,6 +157,7 @@ export default function ManageGIN() {
                     console.log(err);
                 })
         }
+
     }
 
     const addOrEdit = (gin, ginnumber,) => {
@@ -233,28 +245,34 @@ export default function ManageGIN() {
 
     return (
         <Page title="Manage GIN">
+
             <div className={style.container}>
 
-                <div className={designation === "Delivery Representative" ? style.hidden : style.actionRow}>
-                    <Button
-                        className={style.button}
-                        color="primary"
-                        size="medium"
-                        variant="contained"
-                        onClick={
-                            () => {
-                                getOrderRecords();
-                                setAction('Create');
-                                setOpenPopup(true);
-                            }
-                        }
-                    >
-                        <AddCircleIcon className={style.icon} />
-                        Create New GIN
-                    </Button>
-                </div>
+                {
+                    designation !== 'Delivery Representative' &&
 
-                <div className={designation === "Store Keeper" ? style.pagecontent2 : style.pagecontent1}>
+                    <div className={style.actionRow}>
+                        <Button
+                            className={style.button}
+                            color="primary"
+                            size="medium"
+                            variant="contained"
+                            onClick={
+                                () => {
+                                    getOrderRecords();
+                                    setAction('Create');
+                                    setOpenPopup(true);
+                                }
+                            }
+                        >
+                            <AddCircleIcon className={style.icon} />
+                            Create New GIN
+                        </Button>
+
+                    </div>
+                }
+
+                <div className={designation === "Store Keeper" ? style.pagecontent1 : style.pagecontent2}>
 
                     <AutoSizer>
                         {({ height, width }) => {
@@ -314,11 +332,11 @@ export default function ManageGIN() {
                                                 render: rowData => {
                                                     return (
                                                         rowData.status === 'Pending' ?
-                                                            <p style={{ padding: "0", margin: "0", color: '#eed202', fontWeight: "700" }}>{rowData.status}</p>
+                                                            <p style={{ padding: "0", margin: "0", color: 'red', fontWeight: "700" }}>{rowData.status}</p>
                                                             : rowData.status === 'Processing' ?
-                                                                <p style={{ padding: "0", margin: "0", color: "#FF8400", fontWeight: "700" }}>{rowData.status}</p>
+                                                                <p style={{ padding: "0", margin: "0", color: "#2196F3", fontWeight: "700" }}>{rowData.status}</p>
                                                                 : rowData.status === 'Shipping' ?
-                                                                    <p style={{ padding: "0", margin: "0", color: "#2196F3", fontWeight: "700" }}>{rowData.status}</p>
+                                                                    <p style={{ padding: "0", margin: "0", color: "#FF8400", fontWeight: "700" }}>{rowData.status}</p>
                                                                     : <p style={{ padding: "0", margin: "0", color: "#4caf50", fontWeight: "700" }}>{rowData.status}</p>
                                                     )
                                                 }
@@ -393,7 +411,7 @@ export default function ManageGIN() {
 
                 <PopUp
                     openPopup={openPopup}
-                    fullScreen={action === 'Dispatch' ? false : true}
+                    fullScreen={action === 'Complete' ? false : true}
                     setOpenPopup={setOpenPopup}
                 >
 
@@ -405,6 +423,7 @@ export default function ManageGIN() {
                             action={action}
                         />
                     }
+
                     {
                         (action === 'Create' || action === 'Edit') &&
                         <CreateGINForm
@@ -415,6 +434,7 @@ export default function ManageGIN() {
                             orderRecords={orderRecords}
                         />
                     }
+
                     {
                         (action === 'Dispatch' || action === 'Complete') &&
                         <DispatchCompleteForm
@@ -427,6 +447,7 @@ export default function ManageGIN() {
                     }
 
                 </PopUp>
+
                 <Snackbar
                     open={open}
                     autoHideDuration={2500}
@@ -436,6 +457,7 @@ export default function ManageGIN() {
                         horizontal: 'center',
                     }}
                 >
+
                     <Alert
                         onClose={handleClose}
                         severity={type}
@@ -443,8 +465,12 @@ export default function ManageGIN() {
                     >
                         {alert}
                     </Alert>
+
                 </Snackbar>
+
             </div>
+
         </Page >
+
     )
 }
