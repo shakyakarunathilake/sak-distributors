@@ -11,7 +11,6 @@ import ListAltIcon from '@material-ui/icons/ListAlt';
 import PaymentIcon from '@material-ui/icons/Payment';
 import DescriptionIcon from '@material-ui/icons/Description';
 import TrendingUpIcon from '@material-ui/icons/TrendingUp';
-import ReceiptIcon from '@material-ui/icons/Receipt';
 import StoreIcon from '@mui/icons-material/Store';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 
@@ -222,6 +221,12 @@ const getDeliveryRepresentativeListItems = [
         icon: <DashboardIcon />
     },
     {
+        id: "Manage Customers",
+        title: "Manage Customers",
+        path: "http://localhost:3000/sales-representative/manage-customers",
+        icon: <PersonIcon />,
+    },
+    {
         id: "Manage GIN",
         title: "Manage GIN",
         path: "http://localhost:3000/delivery-representative/manage-gin",
@@ -233,6 +238,7 @@ const getDeliveryRepresentativeListItems = [
         path: "http://localhost:3000/delivery-representative/sales-and-invoice",
         icon: <DescriptionIcon />,
     },
+
 ];
 
 export function drawerListItems(designation) {

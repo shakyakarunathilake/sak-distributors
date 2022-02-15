@@ -113,6 +113,7 @@ function App() {
             <Route exact path='/delivery-representative/dashboard' component={Dashboard} />
             <Route exact path='/delivery-representative/manage-gin' component={ManageGIN} />
             <Route exact path='/delivery-representative/sales-and-invoice' component={SalesAndInvoice} />
+            <Route exact path='/delivery-representative/manage-customers' component={ManageCustomer} />
 
           </Switch>
         </BrowserRouter>
