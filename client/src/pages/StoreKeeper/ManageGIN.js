@@ -411,7 +411,7 @@ export default function ManageGIN() {
 
                 <PopUp
                     openPopup={openPopup}
-                    fullScreen={action === 'Complete' ? false : true}
+                    fullScreen={(action === 'Complete' || action === 'Dispatch') ? false : true}
                     setOpenPopup={setOpenPopup}
                 >
 
