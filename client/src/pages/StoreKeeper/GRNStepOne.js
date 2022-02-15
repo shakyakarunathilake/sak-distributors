@@ -62,17 +62,6 @@ export default function GRNStepOne(props) {
         setValue
     } = props;
 
-    const getGRNTotal = () => {
-        let total = 0;
-
-        for (let i = 0; i < data.length; i++) {
-            total = total + (isNaN(data[i].grnvalue) ? 0 : data[i].grnvalue);
-        }
-
-        setValue("grntotal", total.toFixed(2));
-        return total.toFixed(2);
-    }
-
     const getDamagedMissingItems = () => {
         let pototal = 0;
         let grntotal = 0;
@@ -275,7 +264,7 @@ export default function GRNStepOne(props) {
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 102.56px 0px 0px", width: '200px' }}>
                                                         <Typography style={{ fontWeight: 600 }}>
-                                                            {parseInt(getValues("total")).toFixed(2)}
+                                                            {getValues("total")}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
@@ -299,7 +288,7 @@ export default function GRNStepOne(props) {
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 102.56px 0px 0px", width: '200px' }}>
                                                         <Typography style={{ fontSize: '1.05em', fontWeight: 600 }}>
-                                                            {getGRNTotal()}
+                                                            {getValues('grntotal')}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
