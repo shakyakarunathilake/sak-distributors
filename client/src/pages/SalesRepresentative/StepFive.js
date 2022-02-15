@@ -69,12 +69,17 @@ export default function StepFive(props) {
         }
 
         if (creditamounttosettle !== 0.00 && currentinvoicecreditamount === 0.00) {
-            setValue('minimumpayment', (parseInt(advancepayment) + parseInt(creditamounttosettle)));
-            setValue('invoicesettlementvalue', (parseInt(total) + parseInt(creditamounttosettle)));
+            let minimumpayment = (parseInt(advancepayment) + parseInt(creditamounttosettle)).toFixed(2);
+            let invoicesettlementvalue = (parseInt(total) + parseInt(creditamounttosettle)).toFixed(2);
+
+            setValue('minimumpayment', minimumpayment);
+            setValue('invoicesettlementvalue', invoicesettlementvalue);
         };
 
         if (creditamounttosettle === 0.00 && currentinvoicecreditamount !== 0.00) {
-            setValue('minimumpayment', (parseInt(advancepayment) + parseInt(currentinvoicecreditamount)));
+            let minimumpayment = (parseInt(advancepayment) - parseInt(currentinvoicecreditamount)).toFixed(2);
+
+            setValue('minimumpayment', minimumpayment);
             setValue('invoicesettlementvalue', total);
         };
     }
