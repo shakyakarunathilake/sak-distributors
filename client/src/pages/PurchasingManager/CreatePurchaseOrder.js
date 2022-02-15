@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import formData from 'form-data';
 
@@ -16,21 +16,16 @@ export default function CreatePurchaseOrder(props) {
     const today = new Date();
     const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
     const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
     const dateTime = date + ' ' + time;
+
     const podate = today.getFullYear().toString().substr(-2) + (today.getMonth() + 1) + today.getDate() + today.getHours() + today.getMinutes();
 
     const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
     const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
     const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
 
-    const {
-        handleSubmit,
-        getValues,
-        setValue,
-        trigger,
-        control,
-        formState: { errors }
-    } = useForm({
+    const { handleSubmit, getValues, setValue, trigger, watch, control, formState: { errors } } = useForm({
         mode: "all",
         defaultValues: {
             ponumber: poRecords ? poRecords.ponumber : '',
@@ -45,17 +40,33 @@ export default function CreatePurchaseOrder(props) {
             contactnumber: poRecords ? poRecords.contactnumber : "0352264009",
             status: poRecords ? poRecords.status : '',
             createdby: poRecords ? poRecords.createdby : `${firstname} ${lastname} (${employeeid})`,
-            createdat: poRecords ? poRecords.createdat : '',
-            approvedby: poRecords ? poRecords.approvedby : '',
-            approvedat: poRecords ? poRecords.approvedat : '',
+            createdat: poRecords ? poRecords.createdat : dateTime,
+            approvedby: `${firstname} ${lastname} (${employeeid})`,
+            approvedat: dateTime,
             deliveredat: poRecords ? poRecords.deliveredat : '',
         }
     });
 
     const [data, setData] = useState([]);
     const [formStep, setFormStep] = useState(0);
-    const [confirmation, setConfirmation] = useState(false);
-    const [orderFormData, setOrderFormData] = useState({});
+
+    useEffect(() => {
+        if (poRecords != null) {
+            setData([...poRecords.items])
+        }
+    }, [setData, poRecords])
+
+    useEffect(() => {
+        if (data != null) {
+            let grosstotal = 0;
+
+            for (let i = 0; i < data.length; i++) {
+                grosstotal = grosstotal + data[i].value;
+            }
+
+            setValue("grosstotal", grosstotal.toFixed(2));
+        }
+    }, [data, setValue])
 
     const completeFormStep = () => {
         setFormStep(x => x + 1);
@@ -69,30 +80,30 @@ export default function CreatePurchaseOrder(props) {
 
         const purchaseOrderFormData = new formData();
 
-        if (confirmation === true && poRecords === null) {
-            purchaseOrderFormData.append('ponumber', orderFormData.ponumber);
-            purchaseOrderFormData.append('supplier', orderFormData.supplier);
-            purchaseOrderFormData.append('customername', orderFormData.customername);
-            purchaseOrderFormData.append('customeraddress', orderFormData.customeraddress);
-            purchaseOrderFormData.append('contactnumber', orderFormData.contactnumber);
-            purchaseOrderFormData.append('createdat', orderFormData.createdat);
-            purchaseOrderFormData.append('createdby', orderFormData.createdby);
-            purchaseOrderFormData.append('status', orderFormData.status);
+        if (action === 'Create' || action === 'Edit') {
+            purchaseOrderFormData.append('ponumber', getValues('ponumber'));
+            purchaseOrderFormData.append('supplier', getValues('supplier'));
+            purchaseOrderFormData.append('customername', getValues('customername'));
+            purchaseOrderFormData.append('customeraddress', getValues('customeraddress'));
+            purchaseOrderFormData.append('contactnumber', getValues('contactnumber'));
+            purchaseOrderFormData.append('createdat', getValues('createdat'));
+            purchaseOrderFormData.append('createdby', getValues('createdby'));
+            purchaseOrderFormData.append('status', getValues('status'));
             purchaseOrderFormData.append('items', JSON.stringify(data));
-            purchaseOrderFormData.append('grosstotal', orderFormData.grosstotal);
-            purchaseOrderFormData.append('receiveddiscounts', orderFormData.receiveddiscounts);
-            purchaseOrderFormData.append('damagedmissingitems', orderFormData.damagedmissingitems);
-            purchaseOrderFormData.append('total', orderFormData.total);
+            purchaseOrderFormData.append('grosstotal', getValues('grosstotal'));
+            purchaseOrderFormData.append('receiveddiscounts', getValues('receiveddiscounts'));
+            purchaseOrderFormData.append('damagedmissingitems', getValues('damagedmissingitems'));
+            purchaseOrderFormData.append('total', getValues('total'));
         }
 
-        if (confirmation === true && poRecords != null) {
+        if (action === 'Approve') {
             purchaseOrderFormData.append('items', JSON.stringify(data));
-            purchaseOrderFormData.append('approvedat', orderFormData.approvedat);
-            purchaseOrderFormData.append('approvedby', orderFormData.approvedby);
-            purchaseOrderFormData.append('status', orderFormData.status);
+            purchaseOrderFormData.append('approvedat', getValues('approvedat'));
+            purchaseOrderFormData.append('approvedby', getValues('approvedby'));
+            purchaseOrderFormData.append('status', getValues('status'));
         }
 
-        addOrEdit(purchaseOrderFormData, orderFormData.ponumber);
+        addOrEdit(purchaseOrderFormData, getValues('ponumber'));
     }
 
     return (
@@ -109,23 +120,17 @@ export default function CreatePurchaseOrder(props) {
                     <StepOne
                         data={data}
                         setData={setData}
-                        setConfirmation={setConfirmation}
-                        setOrderFormData={setOrderFormData}
                         handleClosePopUp={handleClosePopUp}
                         completeFormStep={completeFormStep}
                         supplierOptions={supplierOptions}
                         productOptions={productOptions}
-                        poRecords={poRecords}
                         getValues={getValues}
                         setValue={setValue}
                         trigger={trigger}
                         control={control}
                         errors={errors}
                         podate={podate}
-                        dateTime={dateTime}
-                        firstname={firstname}
-                        lastname={lastname}
-                        employeeid={employeeid}
+                        watch={watch}
                         action={action}
                     />
 

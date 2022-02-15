@@ -371,7 +371,7 @@ export default function ManagePurchaseOrder() {
                 }
 
                 {
-                    (action === 'Create' || action === 'Edit') &&
+                    (action === 'Create' || action === 'Edit' || action === 'Approve') &&
                     <CreatePurchaseOrder
                         addOrEdit={addOrEdit}
                         handleClosePopUp={handleClosePopUp}

@@ -139,6 +139,7 @@ export default function PurchaseOrderStepTwo(props) {
 
                             {
                                 action !== "Create" &&
+                                action !== "Edit" &&
                                 <tr>
                                     <th align="left">Delivered at</th>
                                     <td align="left">
@@ -219,6 +220,7 @@ export default function PurchaseOrderStepTwo(props) {
 
                             {
                                 action !== "Create" &&
+                                action !== "Edit" &&
                                 <tr>
                                     <th align="left">Approved By/At</th>
                                     <td align="left">
