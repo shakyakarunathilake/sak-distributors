@@ -245,7 +245,7 @@ export default function StepTwo(props) {
                 </div>
 
                 {
-                    (watch('status') !== "Pending" || watch('status') !== "Processing") &&
+                    action === 'View' && (watch('status') !== "Pending" || watch('status') !== "Processing") &&
                     <div className={style.row}>
                         <div className={style.boldText}>
                             Delivered by / at
