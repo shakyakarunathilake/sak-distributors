@@ -23,7 +23,6 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import style from './StepFour.module.scss';
 import { makeStyles } from '@material-ui/core/styles';
 
-
 const useStyles = makeStyles({
     tablehead: {
         position: 'sticky',

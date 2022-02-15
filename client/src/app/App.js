@@ -31,6 +31,7 @@ import SupplierPayment from '../pages/PurchasingManager/SupplierPayment';
 import ManageGRN from '../pages/StoreKeeper/ManageGRN';
 import ManageGIN from '../pages/StoreKeeper/ManageGIN';
 import ManageStore from '../pages/StoreKeeper/ManageStore';
+import ViewOrderDetails from '../pages/StoreKeeper/ViewOrderDetails';
 
 //Sales Representative
 import SalesAndInvoice from '../pages/SalesRepresentative/SalesAndInvoice';
@@ -101,6 +102,7 @@ function App() {
             <Route exact path='/store-keeper/manage-gin' component={ManageGIN} />
             <Route exact path='/store-keeper/manage-store' component={ManageStore} />
             <Route exact path='/store-keeper/manage-products' component={ManageProduct} />
+            <Route exact path='/store-keeper/view-order-details/:ordernumber' component={ViewOrderDetails} />
 
             {/* Sales Representative */}
             <Route exact path='/sales-representative/dashboard' component={Dashboard} />

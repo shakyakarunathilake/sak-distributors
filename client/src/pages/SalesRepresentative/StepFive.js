@@ -298,7 +298,6 @@ export default function StepFive(props) {
 
                     {
                         action !== "View" &&
-                        getValues('maximumcreditamount') !== 0 &&
                         <ClickAwayListener onClickAway={handleTooltipClose}>
                             <Tooltip
                                 PopperProps={{

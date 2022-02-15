@@ -33,6 +33,9 @@ import MaterialTable from 'material-table';
 import style from './GINStepOne.module.scss';
 import { makeStyles } from '@material-ui/core/styles';
 
+//Connecting to backend
+import axios from 'axios';
+
 const useStyles = makeStyles({
     tablehead: {
         position: 'sticky',
@@ -87,7 +90,22 @@ export default function GINStepOne(props) {
         }
     }, [watch('route'), GINRecords]);
 
-    const handleChipClick = () => { }
+    const handleChipClick = (ordernumber) => {
+        axios
+            .get(`http://localhost:8080/orders/${ordernumber}`, {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
+            .then(res => {
+                localStorage.setItem(ordernumber, JSON.stringify(res.data.order));
+                window.open(`http://localhost:3000/store-keeper/view-order-details/${ordernumber}`, "_blank");
+            })
+            .catch(err => {
+                console.log(err);
+            })
+
+    }
 
     const getOrderNumbers = () => {
 
@@ -260,7 +278,7 @@ export default function GINStepOne(props) {
                                     <div>
                                         {
                                             orderNumbers.map(x =>
-                                                <Chip className={style.chip} label={x} key={x} onClick={handleChipClick} />
+                                                <Chip className={style.chip} label={x} key={x} onClick={() => handleChipClick(x)} />
                                             )
                                         }
                                     </div>
@@ -421,7 +439,7 @@ export default function GINStepOne(props) {
                 </AutoSizer>
 
             </div>
-            
+
             <div className={style.footer}>
 
                 <Tooltip
