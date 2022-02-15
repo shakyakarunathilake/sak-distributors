@@ -25,6 +25,9 @@ import MaterialTable from 'material-table';
 import style from './GINStepTwo.module.scss';
 import { makeStyles } from '@material-ui/core/styles';
 
+//Connecting to backend
+import axios from 'axios';
+
 const useStyles = makeStyles({
     tablehead: {
         position: 'sticky',
@@ -67,6 +70,23 @@ export default function GINStepTwo(props) {
     } = props;
 
     const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
+
+    const handleChipClick = (ordernumber) => {
+        axios
+            .get(`http://localhost:8080/orders/${ordernumber}`, {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
+            .then(res => {
+                localStorage.setItem(ordernumber, JSON.stringify(res.data.order));
+                window.open(`http://localhost:3000/store-keeper/view-order-details/${ordernumber}`, "_blank");
+            })
+            .catch(err => {
+                console.log(err);
+            })
+
+    }
 
     return (
         <div className={style.container}>
@@ -196,7 +216,7 @@ export default function GINStepTwo(props) {
 
                                         {
                                             orderNumbers.map(x =>
-                                                <Chip className={style.chip} label={x} key={x} />
+                                                <Chip className={style.chip} label={x} key={x} onClick={() => handleChipClick(x)} />
                                             )
                                         }
 
