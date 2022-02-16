@@ -24,7 +24,6 @@ import ViewQuotation from './ViewQuotation';
 
 //Connecting to Backend
 import axios from 'axios';
-import { set } from 'react-hook-form';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -39,6 +38,7 @@ export default function ManageQuotation() {
     const [records, setRecords] = useState([]);
 
     const [quotationRecords, setQuotationRecords] = useState(null);
+    const [nextQuotationId, setNextQuotationId] = useState('');
     const [action, setAction] = useState('');
     const [openPopup, setOpenPopup] = useState(false);
 
@@ -78,24 +78,22 @@ export default function ManageQuotation() {
             console.log(key, value);
         }
 
-        if (action === "Create") {
-            axios
-                .post("http://localhost:8080/quotations/create-quotation", quotation, {
-                    headers: {
-                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
-                    }
-                })
-                .then(res => {
-                    setAlert(res.data.alert);
-                    setType(res.data.type);
-                    handleAlert();
-                    setReRender(quotationid);
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-            ;
-        }
+        axios
+            .post("http://localhost:8080/quotations/create-quotation", quotation, {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
+            .then(res => {
+                setAlert(res.data.alert);
+                setType(res.data.type);
+                handleAlert();
+                setReRender(quotationid);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        ;
 
         setQuotationRecords(null);
         setAction('');
@@ -118,6 +116,24 @@ export default function ManageQuotation() {
             })
     }
 
+    const getNextQuotationId = () => {
+        axios
+            .get("http://localhost:8080/quotations/get-next-quotationid", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
+            .then(res => {
+                setNextQuotationId(res.data.nextquotationid);
+                setAction('Create');
+                setQuotationRecords(null)
+                setOpenPopup(true);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
     return (
         <Page title="Manage Quotations">
             <div className={style.container}>
@@ -128,13 +144,7 @@ export default function ManageQuotation() {
                         color="primary"
                         size="medium"
                         variant="contained"
-                        onClick={
-                            () => {
-                                setAction('Create');
-                                setQuotationRecords(null)
-                                setOpenPopup(true);
-                            }
-                        }
+                        onClick={() => getNextQuotationId()}
                     >
                         <AddCircleIcon className={style.icon} />
                         Add New Quotation
@@ -266,6 +276,7 @@ export default function ManageQuotation() {
                             addOrEdit={addOrEdit}
                             setOpenPopup={setOpenPopup}
                             action={action}
+                            nextQuotationId={nextQuotationId}
                         />
                     }
 

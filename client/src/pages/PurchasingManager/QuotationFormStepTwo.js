@@ -1,5 +1,6 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
+import { OutTable } from 'react-excel-renderer';
 
 //Material UI Components
 import Button from '@material-ui/core/Button';
@@ -14,11 +15,13 @@ import style from './QuotationFormStepTwo.module.scss';
 export default function QuotationFormStepTwo(props) {
 
     const {
-        control,
-        setOpenPopup,
-        onSubmit,
         backFormStep,
-        action
+        action,
+        setOpenPopup,
+        control,
+        onSubmit,
+        rows,
+        cols,
     } = props;
 
     return (
@@ -49,6 +52,123 @@ export default function QuotationFormStepTwo(props) {
             </div>
 
             <div className={style.body} >
+
+                <div className={style.orderDetails}>
+
+                    <table className={style.details}>
+                        <tbody>
+                            <tr>
+                                <th align="left">
+                                    Supplier <span className={style.red}>*</span>
+                                </th>
+                                <td align="left">
+                                    <Controller
+                                        render={({ field: { value } }) => (
+                                            <Typography className={style.input}>
+                                                {value}
+                                            </Typography>
+                                        )}
+                                        name={"supplier"}
+                                        control={control}
+                                    />
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th align="left">
+                                    Issuing Date <span className={style.red}>*</span>
+                                </th>
+                                <td align="left">
+                                    <Controller
+                                        render={({ field: { value } }) => (
+                                            <Typography className={style.input}>
+                                                {value}
+                                            </Typography>
+                                        )}
+                                        name={"issuingdate"}
+                                        control={control}
+                                    />
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th align="left">
+                                    <label>
+                                        File <span className={style.red}>*</span>
+                                    </label>
+                                </th>
+                                <td align="left">
+                                    <Controller
+                                        render={({ field: { value } }) => (
+                                            <Typography className={style.input}>
+                                                {value.name}
+                                            </Typography>
+                                        )}
+                                        name={"quotationfile"}
+                                        control={control}
+                                    />
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                    <table className={style.details}>
+                        <tbody>
+                            <tr>
+                                <th align="left">
+                                    Validity Period <span className={style.red}>*</span>
+                                </th>
+                                <td align="left">
+                                    <Controller
+                                        render={({ field: { value } }) => (
+                                            <Typography className={style.input}>
+                                                {value}
+                                            </Typography>
+                                        )}
+                                        name={"validityperiod"}
+                                        control={control}
+                                    />
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th align="left">
+                                    End Date <span className={style.red}>*</span>
+                                </th>
+                                <td align="left">
+                                    <Controller
+                                        render={({ field: { value } }) => (
+                                            <Typography className={style.input}>
+                                                {value}
+                                            </Typography>
+                                        )}
+                                        name={"enddate"}
+                                        control={control}
+                                    />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div className={style.previewContainer}>
+
+                    {
+                        rows !== null &&
+                        <div className={style.preview}>
+                            <OutTable
+                                data={rows}
+                                columns={cols}
+                                className={style.ExcelTable2007}
+                                tableClassName="ExcelTable2007"
+                                tableHeaderRowClass="heading"
+                            />
+                        </div>
+                    }
+
+                </div>
 
             </div>
 
