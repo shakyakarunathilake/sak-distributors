@@ -251,16 +251,15 @@ export default function GINStepOne(props) {
                                     <Controller
                                         name={"route"}
                                         control={control}
-                                        rules={{ required: { value: true, message: "Route is required" } }}
-                                        render={({ field: { onChange, value } }) => (
+                                        rules={{ required: { value: true, message: "Required *" } }}
+                                        render={({ field }) => (
                                             <Select
+                                                {...field}
                                                 size="small"
-                                                value={value || ''}
-                                                disabled={action === "Edit"}
-                                                onChange={onChange}
                                                 options={employeeservice.getRouteOptions()}
-                                                error={errors.route ? true : false}
                                                 helperText={errors.route && errors.route.message}
+                                                error={errors.route ? true : false}
+                                                disabled={action === "Edit"}
                                             />
                                         )}
                                     />
