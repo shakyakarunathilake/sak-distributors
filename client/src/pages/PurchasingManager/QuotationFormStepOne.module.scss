@@ -1,0 +1,93 @@
+@import "../../styles/variables";
+
+.container {
+    display: grid;
+    grid-template-rows: min-content auto min-content;
+    width: calc(100vw - 50px);
+    height: calc(100vh - 25px);
+    box-sizing: border-box;
+
+    .header {
+        .title {
+            display: grid;
+            grid-template-columns: auto min-content;
+            font-size: 1.55em;
+            font-weight: 600;
+            .icon {
+                color: red;
+                &:hover {
+                    transform: scale(1.1);
+                }
+            }
+        }
+
+        .step {
+            margin: 5px 0 0 0;
+            color: $primaryLight;
+            font-size: 0.75em;
+        }
+    }
+
+    .body {
+        display: grid;
+        grid-template-rows: min-content auto;
+
+        .orderDetails {
+            display: grid;
+            grid-template-columns: calc(50% - 60px) calc(50% - 60px);
+            grid-column-gap: 100px;
+            padding: 10px;
+
+            .red {
+                color: red;
+                font-weight: 600;
+            }
+
+            table {
+                border-spacing: 10px;
+
+                tbody {
+                    tr {
+                        th {
+                            width: 40px;
+                            height: 30px;
+                        }
+
+                        td {
+                            width: 100px;
+                            height: 30px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .footer {
+        display: grid;
+        grid-template-columns: auto auto;
+        padding: 15px 0px 5px 0px;
+
+        Button {
+            font-size: 1em;
+            height: 40px;
+            padding: $formButtonPadding2;
+        }
+
+        .resetBtn {
+            text-align: left;
+            Button {
+                background-color: #c2c2c2;
+                color: $inverseFontColor;
+            }
+        }
+
+        .nextBtn {
+            text-align: right;
+            Button {
+                background-color: $primaryMain;
+                color: $inverseFontColor;
+            }
+        }
+    }
+}

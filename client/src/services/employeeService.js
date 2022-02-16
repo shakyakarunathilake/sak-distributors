@@ -78,3 +78,18 @@ export const getCustomerTypeOptions = () => ([
     { id: "ct01", title: "Registered Customer" },
     { id: "ct02", title: "Unregistered Customer" },
 ])
+
+export const getValidityPeriodOptions = () => ([
+    { id: "vp01", title: "1 Day" },
+    { id: "vp02", title: "2 Days" },
+    { id: "vp03", title: "3 Days" },
+    { id: "vp04", title: "4 Days" },
+    { id: "vp05", title: "5 Days" },
+    { id: "vp06", title: "6 Days" },
+    { id: "vp07", title: "1 Week" },
+    { id: "vp08", title: "2 Weeks" },
+    { id: "vp09", title: "3 Weeks" },
+    { id: "vp10", title: "4 Weeks" },
+    { id: "vp11", title: "1 Month" },
+    { id: "vp12", title: "1 Year" },
+])

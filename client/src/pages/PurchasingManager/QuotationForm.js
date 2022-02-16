@@ -10,15 +10,22 @@ import StepTwo from './QuotationFormStepTwo';
 
 export default function QuotationForm(props) {
 
-    const { addOrEdit, handleClosePopUp, action } = props;
+    const { addOrEdit, setOpenPopup, action } = props;
 
-    const { handleSubmit, getValues } = useForm({
+    const today = new Date();
+    const date = today.getFullYear() + '-' + (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+
+    const { formState: { errors }, handleSubmit, getValues, control } = useForm({
         mode: "all",
         defaultValues: {
-
+            supplier: '',
+            validityperiod: '',
+            issuingdate: date,
+            enddate: ''
         }
     });
 
+    const [file, setFile] = useState();
     const [formStep, setFormStep] = useState(0);
 
     const completeFormStep = () => {
@@ -34,6 +41,7 @@ export default function QuotationForm(props) {
         const quotationFormData = new formData();
 
         addOrEdit(quotationFormData, getValues('ponumber'));
+
     }
 
     return (
@@ -44,9 +52,11 @@ export default function QuotationForm(props) {
                 <section className={formStep === 0 ? style.visible : style.hidden}>
 
                     <StepOne
-                        handleClosePopUp={handleClosePopUp}
+                        setOpenPopup={setOpenPopup}
                         completeFormStep={completeFormStep}
                         action={action}
+                        control={control}
+                        errors={errors}
                     />
 
                 </section>
@@ -60,7 +70,8 @@ export default function QuotationForm(props) {
                     <StepTwo
                         backFormStep={backFormStep}
                         action={action}
-                        handleClosePopUp={handleClosePopUp}
+                        setOpenPopup={setOpenPopup}
+                        control={control}
                     />
 
                 </section>

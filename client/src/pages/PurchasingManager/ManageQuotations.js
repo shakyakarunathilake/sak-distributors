@@ -24,6 +24,7 @@ import ViewQuotation from './ViewQuotation';
 
 //Connecting to Backend
 import axios from 'axios';
+import { set } from 'react-hook-form';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -41,7 +42,6 @@ export default function ManageQuotation() {
     const [action, setAction] = useState('');
     const [openPopup, setOpenPopup] = useState(false);
 
-    const [nextEmpId, setNextEmpId] = useState();
     const [reRender, setReRender] = useState(null);
 
     const handleAlert = () => {
@@ -97,9 +97,9 @@ export default function ManageQuotation() {
             ;
         }
 
-        setQuotationRecords(null)
-        setOpenPopup(false);
+        setQuotationRecords(null);
         setAction('');
+        setOpenPopup(false);
     }
 
     const openInPopup = quotationid => {
@@ -248,6 +248,7 @@ export default function ManageQuotation() {
                 <PopUp
                     openPopup={openPopup}
                     setOpenPopup={setOpenPopup}
+                    fullScreen={true}
                 >
 
                     {
@@ -255,7 +256,6 @@ export default function ManageQuotation() {
                         <ViewQuotation
                             quotationRecords={quotationRecords}
                             setOpenPopup={setOpenPopup}
-                            setAction={setAction}
                             action={action}
                         />
                     }
@@ -264,9 +264,7 @@ export default function ManageQuotation() {
                         action === 'Create' &&
                         <QuotationForm
                             addOrEdit={addOrEdit}
-                            quotationRecords={quotationRecords}
                             setOpenPopup={setOpenPopup}
-                            nextEmpId={nextEmpId}
                             action={action}
                         />
                     }
