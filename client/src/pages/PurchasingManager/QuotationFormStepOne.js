@@ -89,28 +89,6 @@ export default function QuotationFormStepOne(props) {
 
               <tr>
                 <th align="left">
-                  Supplier <span className={style.red}>*</span>
-                </th>
-                <td align="left">
-                  <Controller
-                    render={({ field }) => (
-                      <Select
-                        {...field}
-                        size="small"
-                        options={employeeservice.getSupplierOptions()}
-                        helperText={errors.supplier && errors.supplier.message}
-                        error={errors.supplier ? true : false}
-                      />
-                    )}
-                    name={"supplier"}
-                    control={control}
-                    rules={{ required: { value: true, message: "Required *" } }}
-                  />
-                </td>
-              </tr>
-
-              <tr>
-                <th align="left">
                   Issuing Date <span className={style.red}>*</span>
                 </th>
                 <td align="left">
@@ -132,12 +110,6 @@ export default function QuotationFormStepOne(props) {
                 </td>
               </tr>
 
-
-            </tbody>
-          </table>
-
-          <table className={style.details}>
-            <tbody>
               <tr>
                 <th align="left">
                   Validity Period <span className={style.red}>*</span>
@@ -156,6 +128,34 @@ export default function QuotationFormStepOne(props) {
                         error={errors.validityperiod ? true : false}
                       />
                     )}
+                  />
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+
+          <table className={style.details}>
+            <tbody>
+
+              <tr>
+                <th align="left">
+                  Supplier <span className={style.red}>*</span>
+                </th>
+                <td align="left">
+                  <Controller
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        size="small"
+                        options={employeeservice.getSupplierOptions()}
+                        helperText={errors.supplier && errors.supplier.message}
+                        error={errors.supplier ? true : false}
+                      />
+                    )}
+                    name={"supplier"}
+                    control={control}
+                    rules={{ required: { value: true, message: "Required *" } }}
                   />
                 </td>
               </tr>
@@ -199,7 +199,7 @@ export default function QuotationFormStepOne(props) {
                           field.onChange(e.target.files[0]);
                           handleFileChange(e);
                         }}
-                        accept=".xlsx, .xls"
+                        accept=".xlsx"
                       />
                     )}
                     control={control}

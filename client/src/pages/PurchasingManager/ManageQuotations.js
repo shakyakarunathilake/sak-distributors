@@ -31,9 +31,9 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 export default function ManageQuotation() {
 
-    const [type, setType] = React.useState();
-    const [open, setOpen] = React.useState(false);
-    const [alert, setAlert] = React.useState();
+    const [type, setType] = useState();
+    const [open, setOpen] = useState(false);
+    const [alert, setAlert] = useState();
 
     const [records, setRecords] = useState([]);
 
@@ -102,6 +102,19 @@ export default function ManageQuotation() {
 
     const openInPopup = quotationid => {
         axios
+            .get(`http://localhost:8080/quotations/xlsx-file/${quotationid}`, {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
+            .then(res => {
+                console.log("HEADERS :", res)
+            })
+            .catch(err => {
+                console.log(err);
+            })
+
+        axios
             .get(`http://localhost:8080/quotations/${quotationid}`, {
                 headers: {
                     'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
@@ -165,7 +178,7 @@ export default function ManageQuotation() {
                                                 title: "Quotation ID",
                                                 field: "quotationid",
                                                 cellStyle: {
-                                                    width: "13%",
+                                                    width: "15%",
                                                     textAlign: 'left'
                                                 },
                                                 render: rowData => {
@@ -175,45 +188,37 @@ export default function ManageQuotation() {
                                                 }
                                             },
                                             {
-                                                title: "Title",
-                                                field: "title",
+                                                title: "Supplier",
+                                                field: "supplier",
                                                 cellStyle: {
-                                                    width: "7%",
+                                                    width: "40%",
                                                     textAlign: 'left'
                                                 }
                                             },
                                             {
-                                                title: "Name",
-                                                field: "name",
+                                                title: "Validity Period",
+                                                field: "validityperiod",
                                                 cellStyle: {
-                                                    width: "20%",
+                                                    width: "15%",
                                                     textAlign: 'left'
                                                 }
                                             },
                                             {
-                                                title: "Designation",
-                                                field: "designation",
+                                                title: "Issuing Date",
+                                                field: "issuingdate",
                                                 cellStyle: {
-                                                    width: "14%",
+                                                    width: "15%",
                                                     textAlign: 'left'
                                                 }
                                             },
                                             {
-                                                title: "Contact No.",
-                                                field: "contactnumber",
+                                                title: "End Date",
+                                                field: "enddate",
                                                 cellStyle: {
-                                                    width: "14%",
+                                                    width: "15%",
                                                     textAlign: 'left'
                                                 }
-                                            },
-                                            {
-                                                title: "Hired Date",
-                                                field: "hireddate",
-                                                cellStyle: {
-                                                    width: "14%",
-                                                    textAlign: 'left'
-                                                },
-                                            },
+                                            }
                                         ]}
                                         data={records}
                                         options={{

@@ -98,7 +98,7 @@ export default function QuotationFormStepTwo(props) {
                                     </label>
                                 </th>
                                 <td align="left">
-                                    <Controller
+                                    {/* <Controller
                                         render={({ field: { value } }) => (
                                             <Typography className={style.input}>
                                                 {value.name}
@@ -106,7 +106,7 @@ export default function QuotationFormStepTwo(props) {
                                         )}
                                         name={"quotationfile"}
                                         control={control}
-                                    />
+                                    /> */}
                                 </td>
                             </tr>
 

@@ -49,6 +49,8 @@ export default function QuotationForm(props) {
     }
 
     const completeFormStep = () => {
+        console.log(getValues());
+
         if (isValid) {
             setFormStep(x => x + 1);
         } else {
@@ -90,12 +92,11 @@ export default function QuotationForm(props) {
                 <section className={formStep === 0 ? style.visible : style.hidden}>
 
                     <StepOne
-                        setOpenPopup={setOpenPopup}
-                        completeFormStep={completeFormStep}
-                        action={action}
-                        control={control}
                         errors={errors}
+                        control={control}
+                        setOpenPopup={setOpenPopup}
                         resetForm={resetForm}
+                        completeFormStep={completeFormStep}
                         rows={rows}
                         cols={cols}
                         handleFileChange={handleFileChange}
@@ -114,6 +115,7 @@ export default function QuotationForm(props) {
                         action={action}
                         setOpenPopup={setOpenPopup}
                         control={control}
+                        onSubmit={onSubmit}
                         rows={rows}
                         cols={cols}
                     />
