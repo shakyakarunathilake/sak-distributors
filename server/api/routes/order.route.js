@@ -6,6 +6,7 @@ const multer = require("multer");
 const Order = require("../models/order.model");
 const Customer = require("../models/customer.model");
 const MetaData = require("../models/metadata.model");
+const GIN = require("../models/gin.model");
 
 const formDataBody = multer();
 
@@ -90,7 +91,8 @@ router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
         advancepayment: req.body.advancepayment,
         completedat: '',
         completedby: '',
-        invoicesettlementvalue: req.body.invoicesettlementvalue
+        invoicesettlementvalue: req.body.invoicesettlementvalue,
+        ginnumber: ''
     });
 
     order
@@ -112,9 +114,9 @@ router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
                     { upsert: true }
                 )
                 .exec()
-                .then(result => {
-                    console.log("META DATA ADDED: ", result)
-                })
+                .then(
+                    console.log("META DATA ADDED")
+                )
                 .catch(error => {
 
                     console.log("META DATA ERROR: ", error)
@@ -139,7 +141,7 @@ router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
                     )
                     .exec()
                     .then(result => {
-                        console.log("CUSTOMER UPDATED: ", result)
+                        console.log("CUSTOMER CREDIT AMOUNT TO SETTLE UPDATED ")
                     })
                     .catch(error => {
 
@@ -249,10 +251,68 @@ router.post("/approve-delivery/:orderno", formDataBody.fields([]), (req, res, ne
                     'deliveredby': req.body.deliveredby
                 }
             },
-            { upsert: true }
+            { new: true, upsert: true }
         )
         .exec()
         .then(doc => {
+
+            console.log("**** ORDER STATUS UPDATED ****")
+
+            const ordernumber = doc.orderno;
+            const ginnumber = doc.ginnumber;
+
+            GIN
+                .findOneAndUpdate(
+                    { "ginnumber": ginnumber, "ordernumbers.ordernumber": ordernumber },
+                    {
+                        '$set': {
+                            'ordernumbers.$.complete': 'Yes'
+                        }
+                    },
+                    { new: true, upsert: true }
+                )
+                .exec()
+                .then(doc => {
+
+                    console.log("**** GIN ORDER NUMBERS ARRAY UPDATED ****")
+
+                    if (!doc.ordernumbers.some(e => e.complete === 'No')) {
+
+                        GIN
+                            .findOneAndUpdate(
+                                { "ginnumber": doc.ginnumber },
+                                {
+                                    '$set': {
+                                        'status': 'Complete'
+                                    }
+                                },
+                                { new: true, upsert: true }
+                            )
+                            .exec()
+                            .then(
+                                console.log("**** GIN STATUS SET TO COMPLETE ****")
+                            )
+                            .catch(err => {
+                                res.status(200).json({
+                                    type: 'error',
+                                    alert: `Something went wrong. Could not update GIN`,
+                                });
+                                console.log(err);
+                            });
+                    }
+                })
+                .catch(err => {
+                    res.status(200).json({
+                        type: 'error',
+                        alert: `Something went wrong. Could not update GIN`,
+                    });
+                    console.log(err);
+                });
+
+            return doc;
+        })
+        .then(doc => {
+
             res.status(200).json({
                 message: "Handling POST requests to /orders/approve-delivery/:orderno, ORDER STATUS CHANGED TO COMPLETE",
                 type: 'success',
