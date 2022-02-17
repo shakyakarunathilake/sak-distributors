@@ -19,8 +19,8 @@ export default function ViewGIN(props) {
             createdby: GINRecords.createdby,
             route: GINRecords.route,
             total: GINRecords.total,
-            vehicle: GINRecords.vehicle ? GINRecords.vehicle : 'Processing',
-            incharge: GINRecords.incharge ? GINRecords.incharge : 'Processing',
+            vehicle: GINRecords.vehicle ? GINRecords.vehicle : '',
+            incharge: GINRecords.incharge ? GINRecords.incharge : '',
         }
     });
 
