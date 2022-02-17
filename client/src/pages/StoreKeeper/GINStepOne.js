@@ -112,7 +112,12 @@ export default function GINStepOne(props) {
         const relevantOrderRecords = orderRecords.filter(x => x.route === getValues('route'));
 
         const relevantOrderNumbers = relevantOrderRecords.map(x => x.orderno);
-        setOrderNumbers(relevantOrderNumbers)
+
+        var orderNumberObjArray = relevantOrderNumbers.map(x => {
+            return { ordernumber: x, complete:'No' };
+        });
+
+        setOrderNumbers(orderNumberObjArray)
 
         const relevantOrderItems = [].concat.apply([], relevantOrderRecords.map(order => {
             const itemList = [];
@@ -277,7 +282,7 @@ export default function GINStepOne(props) {
                                     <div>
                                         {
                                             orderNumbers.map(x =>
-                                                <Chip className={style.chip} label={x} key={x} onClick={() => handleChipClick(x)} />
+                                                <Chip className={style.chip} label={x.ordernumber} key={x.ordernumber} onClick={() => handleChipClick(x)} />
                                             )
                                         }
                                     </div>
