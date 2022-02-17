@@ -121,7 +121,6 @@ router.post("/create-quotation", quotations.single('quotationfile'), (req, res, 
         })
 });
 
-
 //Get quotation by quotationid
 router.get("/:quotationid", (req, res, next) => {
     const quotationid = req.params.quotationid;
@@ -162,7 +161,6 @@ router.get("/xlsx-file/:quotationid", (req, res, next) => {
         .then(doc => {
             res.attachment(path.resolve(`../../quotations/${doc.quotationfile}`))
             res.send()
-
         })
         .catch(err => {
             console.log(err);
