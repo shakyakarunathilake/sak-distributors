@@ -216,7 +216,12 @@ export default function GINStepTwo(props) {
 
                                         {
                                             orderNumbers.map(x =>
-                                                <Chip className={style.chip} label={x} key={x} onClick={() => handleChipClick(x)} />
+                                                <Chip
+                                                    className={style.chip}
+                                                    label={x.ordernumber}
+                                                    key={x.ordernumber}
+                                                    onClick={() => handleChipClick(x.ordernumber)}
+                                                />
                                             )
                                         }
 

@@ -114,7 +114,7 @@ export default function GINStepOne(props) {
         const relevantOrderNumbers = relevantOrderRecords.map(x => x.orderno);
 
         var orderNumberObjArray = relevantOrderNumbers.map(x => {
-            return { ordernumber: x, complete:'No' };
+            return { ordernumber: x, complete: 'No' };
         });
 
         setOrderNumbers(orderNumberObjArray)
@@ -282,7 +282,12 @@ export default function GINStepOne(props) {
                                     <div>
                                         {
                                             orderNumbers.map(x =>
-                                                <Chip className={style.chip} label={x.ordernumber} key={x.ordernumber} onClick={() => handleChipClick(x)} />
+                                                <Chip
+                                                    className={style.chip}
+                                                    label={x.ordernumber}
+                                                    key={x.ordernumber}
+                                                    onClick={() => handleChipClick(x.ordernumber)}
+                                                />
                                             )
                                         }
                                     </div>
