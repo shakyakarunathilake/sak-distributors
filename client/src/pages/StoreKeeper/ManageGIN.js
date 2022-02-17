@@ -14,7 +14,7 @@ import Button from '@material-ui/core/Button';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import DoneIcon from '@mui/icons-material/Done';
+// import DoneIcon from '@mui/icons-material/Done';
 
 //Material Table
 import MaterialTable from 'material-table';
@@ -184,6 +184,24 @@ export default function ManageGIN() {
                 })
         }
 
+        // if (action === "Edit") {
+        //     axios
+        //         .post(`http://localhost:8080/gin/update-by-ginnumber/${ginnumber}`, gin, {
+        //             headers: {
+        //                 'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+        //             }
+        //         })
+        //         .then(res => {
+        //             setAlert(res.data.alert);
+        //             setType(res.data.type);
+        //             handleAlert();
+        //             setReRender(ginnumber);
+        //         })
+        //         .catch(err => {
+        //             console.log(err);
+        //         })
+        // }
+
         if (action === "Dispatch") {
             axios
                 .post(`http://localhost:8080/gin/approve-dispatch/${ginnumber}`, gin, {
@@ -202,23 +220,23 @@ export default function ManageGIN() {
                 })
         }
 
-        if (action === "Complete") {
-            axios
-                .post(`http://localhost:8080/gin/approve-complete/${ginnumber}`, gin, {
-                    headers: {
-                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
-                    }
-                })
-                .then(res => {
-                    setAlert(res.data.alert);
-                    setType(res.data.type);
-                    handleAlert();
-                    setReRender(ginnumber);
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-        }
+        // if (action === "Complete") {
+        //     axios
+        //         .post(`http://localhost:8080/gin/approve-complete/${ginnumber}`, gin, {
+        //             headers: {
+        //                 'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+        //             }
+        //         })
+        //         .then(res => {
+        //             setAlert(res.data.alert);
+        //             setType(res.data.type);
+        //             handleAlert();
+        //             setReRender(ginnumber);
+        //         })
+        //         .catch(err => {
+        //             console.log(err);
+        //         })
+        // }
 
         setAction('');
         setGINRecords(null);
@@ -362,6 +380,15 @@ export default function ManageGIN() {
                                                     openInPopup(rowData.ginnumber);
                                                 }
                                             },
+                                            // (rowData) => ({
+                                            //     disabled: rowData.status === 'Dispatched' || rowData.status === 'Complete' || designation === "Delivery Representative",
+                                            //     icon: 'edit',
+                                            //     tooltip: 'Edit',
+                                            //     onClick: (event, rowData) => {
+                                            //         setAction('Edit');
+                                            //         openInPopup(rowData.ginnumber);
+                                            //     }
+                                            // }),
                                             (rowData) => ({
                                                 disabled: rowData.status !== 'Processing' || designation === "Delivery Representative",
                                                 icon: LocalShippingIcon,
@@ -372,15 +399,15 @@ export default function ManageGIN() {
                                                     openInPopup(rowData.ginnumber);
                                                 }
                                             }),
-                                            (rowData) => ({
-                                                disabled: designation !== "Delivery Representative" || rowData.status === "Complete",
-                                                icon: DoneIcon,
-                                                tooltip: 'Complete',
-                                                onClick: (event, rowData) => {
-                                                    setAction('Complete');
-                                                    openInPopup(rowData.ginnumber);
-                                                }
-                                            }),
+                                            // (rowData) => ({
+                                            //     disabled: designation !== "Delivery Representative" || rowData.status === "Complete",
+                                            //     icon: DoneIcon,
+                                            //     tooltip: 'Complete',
+                                            //     onClick: (event, rowData) => {
+                                            //         setAction('Complete');
+                                            //         openInPopup(rowData.ginnumber);
+                                            //     }
+                                            // }),
                                         ]}
                                     />
 
@@ -418,7 +445,7 @@ export default function ManageGIN() {
                     }
 
                     {
-                        (action === 'Dispatch' || action === 'Complete') &&
+                        action === 'Dispatch' &&
                         <DispatchCompleteForm
                             GINRecords={GINRecords}
                             handleClosePopUp={handleClosePopUp}
