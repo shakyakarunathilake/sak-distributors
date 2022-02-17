@@ -27,6 +27,7 @@ const orderSchema = mongoose.Schema({
     advancepayment: { type: String, required: false },
     total: { type: String, required: true },
     invoicesettlementvalue: { type: String, required: true },
+    ginnumber: { type: String, required: false }
 })
 
 module.exports = mongoose.model('Order', orderSchema);
