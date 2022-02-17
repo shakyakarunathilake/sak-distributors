@@ -57,9 +57,10 @@ export default function QuotationFormStepTwo(props) {
 
                     <table className={style.details}>
                         <tbody>
+
                             <tr>
                                 <th align="left">
-                                    Supplier <span className={style.red}>*</span>
+                                    Quotation ID <span className={style.red}>*</span>
                                 </th>
                                 <td align="left">
                                     <Controller
@@ -68,7 +69,7 @@ export default function QuotationFormStepTwo(props) {
                                                 {value}
                                             </Typography>
                                         )}
-                                        name={"supplier"}
+                                        name={"quotationid"}
                                         control={control}
                                     />
                                 </td>
@@ -93,30 +94,6 @@ export default function QuotationFormStepTwo(props) {
 
                             <tr>
                                 <th align="left">
-                                    <label>
-                                        File <span className={style.red}>*</span>
-                                    </label>
-                                </th>
-                                <td align="left">
-                                    {/* <Controller
-                                        render={({ field: { value } }) => (
-                                            <Typography className={style.input}>
-                                                {value.name}
-                                            </Typography>
-                                        )}
-                                        name={"quotationfile"}
-                                        control={control}
-                                    /> */}
-                                </td>
-                            </tr>
-
-                        </tbody>
-                    </table>
-
-                    <table className={style.details}>
-                        <tbody>
-                            <tr>
-                                <th align="left">
                                     Validity Period <span className={style.red}>*</span>
                                 </th>
                                 <td align="left">
@@ -127,6 +104,29 @@ export default function QuotationFormStepTwo(props) {
                                             </Typography>
                                         )}
                                         name={"validityperiod"}
+                                        control={control}
+                                    />
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                    <table className={style.details}>
+                        <tbody>
+
+                            <tr>
+                                <th align="left">
+                                    Supplier <span className={style.red}>*</span>
+                                </th>
+                                <td align="left">
+                                    <Controller
+                                        render={({ field: { value } }) => (
+                                            <Typography className={style.input}>
+                                                {value}
+                                            </Typography>
+                                        )}
+                                        name={"supplier"}
                                         control={control}
                                     />
                                 </td>
@@ -148,6 +148,29 @@ export default function QuotationFormStepTwo(props) {
                                     />
                                 </td>
                             </tr>
+
+                            {
+                                action === "Create" &&
+                                <tr>
+                                    <th align="left">
+                                        <label>
+                                            File <span className={style.red}>*</span>
+                                        </label>
+                                    </th>
+                                    <td align="left">
+                                        <Controller
+                                            render={({ field: { value } }) => (
+                                                <Typography className={style.input}>
+                                                    {value.name}
+                                                </Typography>
+                                            )}
+                                            name={"quotationfile"}
+                                            control={control}
+                                        />
+                                    </td>
+                                </tr>
+                            }
+
                         </tbody>
                     </table>
 
@@ -156,7 +179,7 @@ export default function QuotationFormStepTwo(props) {
                 <div className={style.previewContainer}>
 
                     {
-                        rows !== null &&
+                        action === "Create" && rows !== null &&
                         <div className={style.preview}>
                             <OutTable
                                 data={rows}
@@ -165,6 +188,13 @@ export default function QuotationFormStepTwo(props) {
                                 tableClassName="ExcelTable2007"
                                 tableHeaderRowClass="heading"
                             />
+                        </div>
+                    }
+
+                    {
+                        action === "View" &&
+                        <div className={style.preview}>
+
                         </div>
                     }
 
