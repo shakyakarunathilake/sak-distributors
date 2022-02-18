@@ -57,6 +57,7 @@ export default function CustomerFormStepOne(props) {
                 </div>
 
             </div>
+            
             <div className={style.body}>
 
                 <div className={style.redFont}>

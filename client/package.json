@@ -5,6 +5,9 @@
   "dependencies": {
     "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
+    "@grapecity/spread-excelio": "^15.0.2",
+    "@grapecity/spread-sheets": "^15.0.2",
+    "@grapecity/spread-sheets-react": "^15.0.2",
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.60",
@@ -18,17 +21,20 @@
     "browserslist": "^4.16.5",
     "classnames": "^2.3.1",
     "date-fns": "^2.24.0",
+    "file-saver": "^2.0.5",
     "glob-parent": "^5.1.2",
     "material-table": "^1.69.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-draggable": "^4.4.4",
+    "react-excel-renderer": "^1.1.0",
     "react-hook-form": "^7.20.5",
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
     "react-virtualized-auto-sizer": "^1.0.6",
     "sass": "^1.40.1",
-    "web-vitals": "^1.1.2"
+    "web-vitals": "^1.1.2",
+    "xlsx": "^0.18.2"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const orderSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    contactnumber: { type: Number, required: true },
+    contactnumber: { type: String, required: true },
     customertype: { type: String, required: true },
     customerid: { type: String, required: false },
     storename: { type: String, required: true },
@@ -15,13 +15,19 @@ const orderSchema = mongoose.Schema({
     items: { type: Array, required: true },
     deliveredby: { type: String, required: false },
     deliveredat: { type: String, required: false },
+    completedat: { type: String, required: false },
+    completedby: { type: String, required: false },
     status: { type: String, required: true },
     loyaltypoints: { type: Number, required: false },
     eligibilityforcredit: { type: Boolean, required: false },
     maximumcreditamount: { type: String, required: false },
     creditamounttosettle: { type: String, required: false },
     currentinvoicecreditamount: { type: String, required: false },
+    minimumpayment: { type: String, required: false },
+    advancepayment: { type: String, required: false },
     total: { type: String, required: true },
+    invoicesettlementvalue: { type: String, required: true },
+    ginnumber: { type: String, required: false }
 })
 
 module.exports = mongoose.model('Order', orderSchema);

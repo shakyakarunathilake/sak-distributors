@@ -6,6 +6,7 @@ const multer = require("multer");
 const Order = require("../models/order.model");
 const Customer = require("../models/customer.model");
 const MetaData = require("../models/metadata.model");
+const GIN = require("../models/gin.model");
 
 const formDataBody = multer();
 
@@ -85,7 +86,13 @@ router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
         eligibilityforcredit: req.body.eligibilityforcredit,
         maximumcreditamount: req.body.maximumcreditamount,
         status: 'Pending',
-        creditamounttosettle: req.body.creditamounttosettle
+        creditamounttosettle: req.body.creditamounttosettle,
+        minimumpayment: req.body.minimumpayment,
+        advancepayment: req.body.advancepayment,
+        completedat: '',
+        completedby: '',
+        invoicesettlementvalue: req.body.invoicesettlementvalue,
+        ginnumber: ''
     });
 
     order
@@ -107,9 +114,9 @@ router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
                     { upsert: true }
                 )
                 .exec()
-                .then(result => {
-                    console.log("META DATA ADDED: ", result)
-                })
+                .then(
+                    console.log("META DATA ADDED")
+                )
                 .catch(error => {
 
                     console.log("META DATA ERROR: ", error)
@@ -134,7 +141,7 @@ router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
                     )
                     .exec()
                     .then(result => {
-                        console.log("CUSTOMER UPDATED: ", result)
+                        console.log("CUSTOMER CREDIT AMOUNT TO SETTLE UPDATED ")
                     })
                     .catch(error => {
 
@@ -180,6 +187,9 @@ router.post("/update-by-id/:orderno", formDataBody.fields([]), (req, res, next) 
             {
                 'items': items,
                 'currentinvoicecreditamount': req.body.currentinvoicecreditamount,
+                'invoicesettlementvalue': req.body.invoicesettlementvalue,
+                'minimumpayment': req.body.minimumpayment,
+                'advancepayment': req.body.advancepayment,
                 'total': req.body.total,
             },
             { new: true }
@@ -237,7 +247,99 @@ router.post("/approve-delivery/:orderno", formDataBody.fields([]), (req, res, ne
             {
                 '$set': {
                     'status': req.body.status,
-                    'deliveredat': req.body.deliveredat
+                    'deliveredat': req.body.deliveredat,
+                    'deliveredby': req.body.deliveredby
+                }
+            },
+            { new: true, upsert: true }
+        )
+        .exec()
+        .then(doc => {
+
+            console.log("**** ORDER STATUS UPDATED ****")
+
+            const ordernumber = doc.orderno;
+            const ginnumber = doc.ginnumber;
+
+            GIN
+                .findOneAndUpdate(
+                    { "ginnumber": ginnumber, "ordernumbers.ordernumber": ordernumber },
+                    {
+                        '$set': {
+                            'ordernumbers.$.complete': 'Yes'
+                        }
+                    },
+                    { new: true, upsert: true }
+                )
+                .exec()
+                .then(doc => {
+
+                    console.log("**** GIN ORDER NUMBERS ARRAY UPDATED ****")
+
+                    if (!doc.ordernumbers.some(e => e.complete === 'No')) {
+
+                        GIN
+                            .findOneAndUpdate(
+                                { "ginnumber": doc.ginnumber },
+                                {
+                                    '$set': {
+                                        'status': 'Complete'
+                                    }
+                                },
+                                { new: true, upsert: true }
+                            )
+                            .exec()
+                            .then(
+                                console.log("**** GIN STATUS SET TO COMPLETE ****")
+                            )
+                            .catch(err => {
+                                res.status(200).json({
+                                    type: 'error',
+                                    alert: `Something went wrong. Could not update GIN`,
+                                });
+                                console.log(err);
+                            });
+                    }
+                })
+                .catch(err => {
+                    res.status(200).json({
+                        type: 'error',
+                        alert: `Something went wrong. Could not update GIN`,
+                    });
+                    console.log(err);
+                });
+
+            return doc;
+        })
+        .then(doc => {
+
+            res.status(200).json({
+                message: "Handling POST requests to /orders/approve-delivery/:orderno, ORDER STATUS CHANGED TO COMPLETE",
+                type: 'success',
+                alert: `${doc.orderno} status updated`,
+            });
+        })
+        .catch(err => {
+            res.status(200).json({
+                type: 'error',
+                alert: `Something went wrong. Could not update order`,
+            });
+            console.log(err);
+        })
+
+})
+
+//Approve complete by order number
+router.post("/approve-complete/:orderno", formDataBody.fields([]), (req, res, next) => {
+
+    Order
+        .findOneAndUpdate(
+            { "orderno": req.params.orderno },
+            {
+                '$set': {
+                    'status': req.body.status,
+                    'completedat': req.body.completedat,
+                    'completedby': req.body.completedby
                 }
             },
             { upsert: true }
@@ -245,7 +347,7 @@ router.post("/approve-delivery/:orderno", formDataBody.fields([]), (req, res, ne
         .exec()
         .then(doc => {
             res.status(200).json({
-                message: "Handling POST requests to /orders/approve-delivery/:orderno, ORDER STATUS CHANGED TO COMPLETE",
+                message: "Handling POST requests to /orders/approve-complete/:orderno, ORDER STATUS CHANGED TO COMPLETE",
                 type: 'success',
                 alert: `${doc.orderno} status updated`,
             });
@@ -381,6 +483,8 @@ router.get("/:orderno", (req, res, next) => {
                 'contactnumber': doc.contactnumber,
                 'customerid': doc.customerid,
                 'deliverydate': doc.deliverydate,
+                'deliveredby': doc.deliveredby,
+                'deliveredat': doc.deliveredat,
                 'orderno': doc.orderno,
                 'orderplacedat': doc.orderplacedat,
                 'route': doc.route,
@@ -394,7 +498,10 @@ router.get("/:orderno", (req, res, next) => {
                 'loyaltypoints': doc.loyaltypoints,
                 'eligibilityforcredit': doc.eligibilityforcredit,
                 'maximumcreditamount': doc.maximumcreditamount,
-                'creditamounttosettle': doc.creditamounttosettle
+                'creditamounttosettle': doc.creditamounttosettle,
+                'minimumpayment': doc.minimumpayment,
+                'advancepayment': doc.advancepayment,
+                'invoicesettlementvalue': doc.invoicesettlementvalue
             }
 
             res.status(200).json({

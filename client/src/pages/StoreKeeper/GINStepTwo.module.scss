@@ -15,10 +15,6 @@
         padding: $formButtonPadding;
     }
 
-    .hidden {
-        display: none;
-    }
-
     .header {
         .title {
             display: grid;
@@ -49,7 +45,7 @@
     .fivebody {
         display: grid;
         grid-template-rows: min-content min-content;
-        height: calc(100vh - 351px);
+        height: calc(100vh - 380px);
     }
 
     .orderDetails {
@@ -111,7 +107,7 @@
                 }
 
                 .blue {
-                    color: $primaryMain;
+                    color: #2196f3;
                     font-weight: 600;
                 }
 
@@ -123,42 +119,30 @@
         }
     }
 
-    .doneBtn {
-        text-align: right;
-        padding: 30px 0px 10px 0px;
-        Button {
-            font-size: 1em;
-        }
-    }
-
     .footer {
         display: grid;
         grid-template-columns: auto auto;
-        padding: 30px 0px 10px 0px;
+        padding: 20px 0px 5px 0px;
+
+        Button {
+            font-size: 1em;
+            height: 40px;
+            padding: $formButtonPadding2;
+        }
 
         .backBtn {
             text-align: left;
             Button {
-                background-color: #aca9bb;
+                background-color: #c2c2c2;
                 color: $inverseFontColor;
-                font-size: 1em;
-
-                &:disabled {
-                    background-color: #c2c2c2;
-                    color: $inverseFontColor;
-                }
             }
         }
 
-        .nextBtn {
+        .doneBtn {
             text-align: right;
             Button {
-                font-size: 1em;
-
-                &:disabled {
-                    background-color: hsl(230, 66%, 57%);
-                    color: $inverseFontColor;
-                }
+                background-color: $primaryMain;
+                color: $inverseFontColor;
             }
         }
     }

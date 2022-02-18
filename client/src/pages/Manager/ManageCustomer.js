@@ -97,7 +97,9 @@ export default function ManageCustomer() {
                     console.log(err);
                 });
             ;
-        } if (action === "Edit") {
+        }
+
+        if (action === "Edit") {
             axios
                 .post(`http://localhost:8080/customers/update-by-id/${customerid}`, customer, {
                     headers: {
@@ -159,7 +161,7 @@ export default function ManageCustomer() {
             <div className={style.container}>
 
                 {
-                    designation === 'Sales Representative' &&
+                    (designation === 'Sales Representative' || designation === 'Delivery Representative') &&
                     <div className={style.actionRow}>
 
                         <Button
@@ -188,7 +190,7 @@ export default function ManageCustomer() {
                         {({ height, width }) => {
                             let value = 0;
 
-                            if (designation === "Sales Representative") {
+                            if (designation === 'Sales Representative' || designation === 'Delivery Representative') {
                                 value = (height - 199.28) / 69.59;
                             } else {
                                 value = (height - 199.27) / 48;
@@ -332,6 +334,7 @@ export default function ManageCustomer() {
                         horizontal: 'center',
                     }}
                 >
+
                     <Alert
                         onClose={handleClose}
                         severity={type}
@@ -339,6 +342,7 @@ export default function ManageCustomer() {
                     >
                         {alert}
                     </Alert>
+
                 </Snackbar>
 
             </div>

@@ -55,7 +55,11 @@ export default function ManageStore() {
 
     useEffect(() => {
         axios
-            .get("http://localhost:8080/store/get-all-store-table-data")
+            .get("http://localhost:8080/store/get-all-store-table-data", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
             .then(res => {
                 sessionStorage.setItem("StoreTableData", JSON.stringify(res.data));
                 setData(res.data.tbody);

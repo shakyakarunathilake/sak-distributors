@@ -1,0 +1,118 @@
+@import "../../styles/variables";
+
+.container {
+    display: grid;
+    grid-template-rows: min-content auto min-content;
+    width: calc(100vw - 50px);
+    height: calc(100vh - 25px);
+    box-sizing: border-box;
+    overflow: hidden;
+
+    Button {
+        font-size: 1em;
+        height: 40px;
+        padding: $formButtonPadding2;
+    }
+
+    .header {
+        .title {
+            display: grid;
+            grid-template-columns: auto min-content;
+            font-size: 1.55em;
+            font-weight: 600;
+            .icon {
+                color: red;
+                &:hover {
+                    transform: scale(1.1);
+                }
+            }
+        }
+
+        .step {
+            margin: 5px 0 0 0;
+            color: $primaryLight;
+            font-size: 0.75em;
+        }
+    }
+
+    .body {
+        display: grid;
+        grid-template-rows: min-content auto;
+
+        .orderDetails {
+            display: grid;
+            grid-template-columns: calc(50% - 60px) calc(50% - 60px);
+            grid-column-gap: 100px;
+            padding: 10px 10px 5px 10px;
+
+            .red {
+                color: red;
+                font-weight: 600;
+            }
+
+            .redFontCenter {
+                color: red;
+                font-size: 0.7em;
+                margin: 0 0 0 15px;
+            }
+
+            table {
+                border-spacing: 10px;
+                height: min-content;
+
+                tbody {
+                    tr {
+                        th {
+                            width: 60px;
+                            height: 30px;
+
+                            Button {
+                                background-color: $secondaryDark;
+                                color: $inverseFontColor;
+                            }
+                        }
+
+                        td {
+                            width: 100px;
+                            height: 30px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .previewContainer {
+            height: calc(100vh - 335px);
+            overflow: auto;
+            margin: 20px 20px;
+        }
+    }
+
+    .footer {
+        display: grid;
+        grid-template-columns: auto auto;
+        padding: 20px 0px 5px 0px;
+
+        Button {
+            font-size: 1em;
+            height: 40px;
+            padding: $formButtonPadding2;
+        }
+
+        .backBtn {
+            text-align: left;
+            Button {
+                background-color: #c2c2c2;
+                color: $inverseFontColor;
+            }
+        }
+
+        .doneBtn {
+            text-align: right;
+            Button {
+                background-color: $primaryMain;
+                color: $inverseFontColor;
+            }
+        }
+    }
+}

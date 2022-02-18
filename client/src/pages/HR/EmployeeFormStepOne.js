@@ -282,6 +282,7 @@ export default function EmployeeFormStepOne(props) {
                                 name={"nic"}
                                 rules={{
                                     required: { value: true, message: "Required *" },
+                                    pattern: { value:  /^([0-9]{9}[x|X|v|V]|[0-9]{12})$/, message: "Invalid" }
                                 }}
                             />
                         </div>

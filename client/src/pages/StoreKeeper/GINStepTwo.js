@@ -25,6 +25,9 @@ import MaterialTable from 'material-table';
 import style from './GINStepTwo.module.scss';
 import { makeStyles } from '@material-ui/core/styles';
 
+//Connecting to backend
+import axios from 'axios';
+
 const useStyles = makeStyles({
     tablehead: {
         position: 'sticky',
@@ -68,6 +71,23 @@ export default function GINStepTwo(props) {
 
     const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
 
+    const handleChipClick = (ordernumber) => {
+        axios
+            .get(`http://localhost:8080/orders/${ordernumber}`, {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
+            .then(res => {
+                localStorage.setItem(ordernumber, JSON.stringify(res.data.order));
+                window.open(`http://localhost:3000/store-keeper/view-order-details/${ordernumber}`, "_blank");
+            })
+            .catch(err => {
+                console.log(err);
+            })
+
+    }
+
     return (
         <div className={style.container}>
 
@@ -87,9 +107,12 @@ export default function GINStepTwo(props) {
                     </div>
                 </div>
 
-                <div className={action === 'View' ? style.hidden : style.step}>
-                    Step 2 of 2
-                </div>
+                {
+                    action !== 'View' &&
+                    <div className={style.step}>
+                        Step 2 of 2
+                    </div>
+                }
 
             </div>
 
@@ -106,7 +129,7 @@ export default function GINStepTwo(props) {
                                         name={"ginnumber"}
                                         control={control}
                                         render={({ field: { value } }) => (
-                                            <Typography className={style.input}>
+                                            <Typography>
                                                 {value}
                                             </Typography>
                                         )}
@@ -121,7 +144,7 @@ export default function GINStepTwo(props) {
                                         name={"createdat"}
                                         control={control}
                                         render={({ field: { value } }) => (
-                                            <Typography className={style.input}>
+                                            <Typography>
                                                 {value}
                                             </Typography>
                                         )}
@@ -136,13 +159,14 @@ export default function GINStepTwo(props) {
                                         name={"route"}
                                         control={control}
                                         render={({ field: { value } }) => (
-                                            <Typography className={style.input}>
+                                            <Typography>
                                                 {value}
                                             </Typography>
                                         )}
                                     />
                                 </td>
                             </tr>
+
                             {
                                 designation !== "Delivery Representative" && action === "View" &&
                                 <tr>
@@ -152,7 +176,7 @@ export default function GINStepTwo(props) {
                                             name={"incharge"}
                                             control={control}
                                             render={({ field: { value } }) => (
-                                                <Typography className={style.input}>
+                                                <Typography className={value === '' && style.blue}>
                                                     {value}
                                                 </Typography>
                                             )}
@@ -160,6 +184,7 @@ export default function GINStepTwo(props) {
                                     </td>
                                 </tr>
                             }
+
                             {
                                 designation !== "Delivery Representative" && action === "View" &&
                                 <tr>
@@ -169,7 +194,7 @@ export default function GINStepTwo(props) {
                                             name={"vehicle"}
                                             control={control}
                                             render={({ field: { value } }) => (
-                                                <Typography className={style.input}>
+                                                <Typography className={value === '' && style.blue}>
                                                     {value}
                                                 </Typography>
                                             )}
@@ -177,10 +202,12 @@ export default function GINStepTwo(props) {
                                     </td>
                                 </tr>
                             }
+
                         </tbody>
                     </table>
 
                     <table className={style.details}>
+
                         <tbody>
                             <tr>
                                 <th rowSpan={designation === "Delivery Representative" ? 3 : 5} className={style.thAlign}>Order Numbers</th>
@@ -189,7 +216,12 @@ export default function GINStepTwo(props) {
 
                                         {
                                             orderNumbers.map(x =>
-                                                <Chip className={style.chip} label={x} key={x} />
+                                                <Chip
+                                                    className={style.chip}
+                                                    label={x.ordernumber}
+                                                    key={x.ordernumber}
+                                                    onClick={() => handleChipClick(x.ordernumber)}
+                                                />
                                             )
                                         }
 
@@ -197,6 +229,7 @@ export default function GINStepTwo(props) {
                                 </td>
                             </tr>
                         </tbody>
+
                     </table>
 
                 </div>
@@ -352,45 +385,37 @@ export default function GINStepTwo(props) {
 
             </div>
 
-            {
-                action === "View" ?
-                    <div className={style.doneBtn}>
+            <div className={style.footer}>
+
+                <div className={style.backBtn}>
+
+                    {
+                        action !== "View" &&
                         <Button
-                            type="submit"
-                            color="primary"
+                            onClick={backFormStep}
                             variant="contained"
                         >
-                            Done
+                            Back
                         </Button>
-                    </div>
-                    :
-                    <div className={style.footer}>
+                    }
 
-                        <div className={style.backBtn}>
-                            <Button
-                                variant="contained"
-                                onClick={backFormStep}
-                                style={{
-                                    backgroundColor: '#ACA9BB',
-                                    color: 'white'
-                                }}
-                            >
-                                Back
-                            </Button>
-                        </div>
+                </div>
 
-                        <div className={style.nextBtn}>
-                            <Button
-                                onClick={onSubmit}
-                                color="primary"
-                                variant="contained"
-                            >
-                                Confirm and Submit
-                            </Button>
-                        </div>
+                <div className={style.doneBtn}>
 
-                    </div>
-            }
+                    <Button
+                        onClick={onSubmit}
+                        variant="contained"
+                    >
+                        {action === "Create" && "Confirm & Submit"}
+                        {action === "Edit" && "Confirm & Submit"}
+                        {action === "View" && "Done"}
+                    </Button>
+
+                </div>
+
+            </div>
+
         </div>
     )
 }

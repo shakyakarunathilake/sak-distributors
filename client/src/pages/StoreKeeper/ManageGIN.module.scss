@@ -1,43 +1,40 @@
 @import "../../styles/variables";
 
-.hidden {
-    display: none;
-}
-
 .container {
     display: grid;
     grid-template-rows: min-content auto;
     height: calc(100vh - 86px);
     box-sizing: border-box;
-}
 
-.actionRow {
-    width: 100vw;
-    box-sizing: border-box;
-    display: grid;
+    .actionRow {
+        width: 100vw;
+        box-sizing: border-box;
+        display: grid;
 
-    .button {
-        height: 53.28px;
-        color: $inverseFontColor;
-        font-size: 1em;
-        padding: $manageButtonPadding;
-        margin: 20px 20px 0px auto;
+        .button {
+            padding: $manageButtonPadding;
+            height: 53.28px;
+            color: $inverseFontColor;
+            font-size: 1em;
+            margin: 20px 20px 0px auto;
+        }
+
+        .icon {
+            margin-right: 10px;
+        }
     }
 
-    .icon {
-        margin-right: 10px;
+    .pagecontent1 {
+        width: 100vw;
+        height: calc(100vh - 140px);
+        box-sizing: border-box;
+        padding: 20px;
     }
-}
 
-.pagecontent1 {
-    width: 100vw;
-    height: calc(100vh - 100px);
-    box-sizing: border-box;
-    padding: 20px;
-}
-
-.pagecontent2 {
-    width: 100vw;
-    box-sizing: border-box;
-    padding: 20px;
+    .pagecontent2 {
+        width: 100vw;
+        height: calc(100vh - 50px);
+        box-sizing: border-box;
+        padding: 20px;
+    }
 }

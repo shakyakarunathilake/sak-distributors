@@ -33,6 +33,9 @@ import MaterialTable from 'material-table';
 import style from './GINStepOne.module.scss';
 import { makeStyles } from '@material-ui/core/styles';
 
+//Connecting to backend
+import axios from 'axios';
+
 const useStyles = makeStyles({
     tablehead: {
         position: 'sticky',
@@ -66,8 +69,6 @@ export default function GINStepOne(props) {
     const {
         data,
         setData,
-        setConfirmation,
-        setOrderFormData,
         handleClosePopUp,
         completeFormStep,
         orderRecords,
@@ -81,16 +82,7 @@ export default function GINStepOne(props) {
         trigger,
         isValid,
         errors,
-        setValue,
     } = props;
-
-    useEffect(() => {
-        if (GINRecords !== null) {
-            setData([...GINRecords.items]);
-            setOrderNumbers([...GINRecords.ordernumbers]);
-            // setValue('incharge', GINRecords.incharge);
-        }
-    }, [setData, GINRecords, setValue, setOrderNumbers])
 
     useEffect(() => {
         if (GINRecords === null) {
@@ -98,14 +90,34 @@ export default function GINStepOne(props) {
         }
     }, [watch('route'), GINRecords]);
 
-    const handleChipClick = () => { }
+    const handleChipClick = (ordernumber) => {
+        axios
+            .get(`http://localhost:8080/orders/${ordernumber}`, {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
+            .then(res => {
+                localStorage.setItem(ordernumber, JSON.stringify(res.data.order));
+                window.open(`http://localhost:3000/store-keeper/view-order-details/${ordernumber}`, "_blank");
+            })
+            .catch(err => {
+                console.log(err);
+            })
+
+    }
 
     const getOrderNumbers = () => {
 
         const relevantOrderRecords = orderRecords.filter(x => x.route === getValues('route'));
 
         const relevantOrderNumbers = relevantOrderRecords.map(x => x.orderno);
-        setOrderNumbers(relevantOrderNumbers)
+
+        var orderNumberObjArray = relevantOrderNumbers.map(x => {
+            return { ordernumber: x, complete: 'No' };
+        });
+
+        setOrderNumbers(orderNumberObjArray)
 
         const relevantOrderItems = [].concat.apply([], relevantOrderRecords.map(order => {
             const itemList = [];
@@ -169,26 +181,10 @@ export default function GINStepOne(props) {
 
     }
 
-    const getTotal = () => {
-        let total = 0;
-
-        for (let i = 0; i < data.length; i++) {
-            total = total + parseInt(data[i].grossamount);
-        }
-
-        setValue("total", total.toFixed(2));
-        return total.toFixed(2);
-    }
-
     const onSubmit = () => {
         trigger();
 
-        console.log("IS VALID: ", isValid);
-        console.log("VALUES: ", getValues());
-
         if (isValid) {
-            setOrderFormData(getValues());
-            setConfirmation(true);
             completeFormStep();
         }
     }
@@ -260,82 +256,21 @@ export default function GINStepOne(props) {
                                     <Controller
                                         name={"route"}
                                         control={control}
-                                        rules={{ required: { value: true, message: "Route is required" } }}
-                                        render={({ field: { onChange, value } }) => (
+                                        rules={{ required: { value: true, message: "Required *" } }}
+                                        render={({ field }) => (
                                             <Select
+                                                {...field}
                                                 size="small"
-                                                value={value || ''}
-                                                disabled={action === "Edit"}
-                                                onChange={onChange}
                                                 options={employeeservice.getRouteOptions()}
-                                                error={errors.route ? true : false}
                                                 helperText={errors.route && errors.route.message}
+                                                error={errors.route ? true : false}
+                                                disabled={action === "Edit"}
                                             />
                                         )}
                                     />
                                 </td>
                             </tr>
 
-                            {/* <tr>
-                                <th align="left">
-                                    In Charge <span className={style.red}>*</span>
-                                </th>
-                                <td align="left">
-                                    <ThemeProvider theme={theme}>
-                                        <Controller
-                                            name={"incharge"}
-                                            control={control}
-                                            rules={{
-                                                required: { value: true, message: "Required *" },
-                                            }}
-                                            render={({ field: { value } }) => (
-                                                <Autocomplete
-                                                    options={inChargeOptions || []}
-                                                    getOptionLabel={(option) => option.title}
-                                                    onChange={handleInChargeChange}
-                                                    inputValue={value}
-                                                    renderInput={(params) => (
-                                                        <MuiTextField
-                                                            {...params}
-                                                            error={errors.incharge ? true : false}
-                                                            helperText={errors.incharge && errors.incharge.message}
-                                                            placeholder="Ex: Buddhika Bandara (E00006)"
-                                                            variant="outlined"
-                                                            size="small"
-                                                            margin="dense"
-                                                        />
-                                                    )}
-                                                />
-                                            )}
-                                        />
-                                    </ThemeProvider>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th align="left">
-                                    Vehicle <span className={style.red}>*</span>
-                                </th>
-                                <td align="left">
-                                    <Controller
-                                        name={"vehicle"}
-                                        control={control}
-                                        rules={{
-                                            required: { value: true, message: "Required *" },
-                                        }}
-                                        render={({ field: { onChange, value } }) => (
-                                            <TextField
-                                                fullWidth={true}
-                                                error={errors.vehicle ? true : false}
-                                                helperText={errors.vehicle && errors.vehicle.message}
-                                                value={value}
-                                                onChange={onChange}
-                                                placeholder="Ex: Van (PND 8430)"
-                                                margin="dense"
-                                            />
-                                        )}
-                                    />
-                                </td>
-                            </tr> */}
                         </tbody>
                     </table>
 
@@ -347,7 +282,12 @@ export default function GINStepOne(props) {
                                     <div>
                                         {
                                             orderNumbers.map(x =>
-                                                <Chip className={style.chip} label={x} key={x} onClick={handleChipClick} />
+                                                <Chip
+                                                    className={style.chip}
+                                                    label={x.ordernumber}
+                                                    key={x.ordernumber}
+                                                    onClick={() => handleChipClick(x.ordernumber)}
+                                                />
                                             )
                                         }
                                     </div>
@@ -377,7 +317,7 @@ export default function GINStepOne(props) {
                                                         <Typography style={{ fontWeight: 600 }}> Total (Rs.) </Typography>
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 20px 0px 0px" }}>
-                                                        <Typography style={{ fontWeight: 600 }}> {getTotal()} </Typography>
+                                                        <Typography style={{ fontWeight: 600 }}> {watch('total')} </Typography>
                                                     </Grid>
                                                 </Grid>
                                                 <TablePagination {...props} />
@@ -510,6 +450,7 @@ export default function GINStepOne(props) {
             </div>
 
             <div className={style.footer}>
+
                 <Tooltip
                     arrow
                     placement="top"
@@ -517,6 +458,7 @@ export default function GINStepOne(props) {
                 >
                     <InfoIcon style={{ fontSize: '1.3em', verticalAlign: 'middle', marginRight: '10px' }} />
                 </Tooltip>
+
                 <Button
                     color="primary"
                     variant="contained"

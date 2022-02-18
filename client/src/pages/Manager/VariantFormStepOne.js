@@ -173,14 +173,12 @@ export default function VariantFormStepOne(props) {
 
                         <ThemeProvider theme={theme}>
                             <Controller
-                                render={({ field: { value } }) => (
+                                render={({ field }) => (
                                     <Autocomplete
                                         options={productOptions || []}
                                         fullWidth
                                         getOptionLabel={(option) => option.name}
                                         onChange={handleProductChange}
-                                        inputValue={value}
-                                        value={value}
                                         disabled={action === "Edit"}
                                         renderInput={(params) => (
                                             <MuiTextField

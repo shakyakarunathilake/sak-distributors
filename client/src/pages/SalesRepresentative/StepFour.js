@@ -23,7 +23,6 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import style from './StepFour.module.scss';
 import { makeStyles } from '@material-ui/core/styles';
 
-
 const useStyles = makeStyles({
     tablehead: {
         position: 'sticky',
@@ -52,12 +51,21 @@ const useStyles = makeStyles({
 
 export default function StepFour(props) {
 
-    const { action, formStep, handleClosePopUp, data, backFormStep, completeFormStep, total } = props;
+    const {
+        action,
+        formStep,
+        handleClosePopUp,
+        data,
+        backFormStep,
+        completeFormStep,
+        watch
+    } = props;
 
     const classes = useStyles();
 
     return (
         <div className={style.four}>
+
             <div className={style.header}>
 
                 <div className={style.title}>
@@ -116,7 +124,7 @@ export default function StepFour(props) {
                                                         <Typography style={{ fontWeight: 600 }}> Total (Rs.) </Typography>
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 10px  0px 0px", width: '100px' }}>
-                                                        <Typography style={{ fontWeight: 600 }}>{total}</Typography>
+                                                        <Typography style={{ fontWeight: 600 }}>{watch('total')}</Typography>
                                                     </Grid>
                                                 </Grid>
                                                 <TablePagination {...props} />
@@ -290,30 +298,24 @@ export default function StepFour(props) {
 
                 <div className={style.backBtn}>
                     <Button
-                        variant="contained"
                         onClick={backFormStep}
-                        style={{
-                            backgroundColor: '#ACA9BB',
-                            color: 'white'
-                        }}
+                        variant="contained"
                     >
                         Back
                     </Button>
                 </div>
 
-                <div className={style.submitBtn}>
-
+                <div className={style.doneBtn}>
                     <Button
                         onClick={completeFormStep}
-                        color="primary"
                         variant="contained"
                     >
-                        {action === 'View' ? 'Next' : 'Confirm'}
+                        {action === 'View' ? 'Next' : 'Confirm & Next'}
                     </Button>
-
                 </div>
 
             </div>
+
         </div>
     )
 }

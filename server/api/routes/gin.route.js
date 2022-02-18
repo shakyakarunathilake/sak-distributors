@@ -99,8 +99,6 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
     const items = JSON.parse(req.body.items);
     const ordernumbers = JSON.parse(req.body.ordernumbers);
 
-    console.log(req.body)
-
     const gin = new GIN({
         _id: new mongoose.Types.ObjectId(),
         ginnumber: req.body.ginnumber,
@@ -123,16 +121,17 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
 
                 Order
                     .findOneAndUpdate(
-                        { orderno: order },
+                        { orderno: order.ordernumber },
                         {
                             'status': result.status,
+                            'ginnumber': result.ginnumber
                         },
-                        { new: true }
+                        { new: true, upsert: true }
                     )
                     .exec()
-                    .then(doc => {
-                        console.log("ORDER STATUS UPDATED: ", doc);
-                    })
+                    .then(
+                        console.log("**** ORDER STATUS UPDATED ****")
+                    )
                     .catch(err => {
 
                         console.log("ORDER STATUS UPDATE ERROR: ", err);
@@ -157,17 +156,16 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
                         {
                             $pull: {
                                 'noofcustomerorders': {
-                                    'orderno': order
+                                    'orderno': order.ordernumber
                                 }
                             }
                         },
                         { upsert: true }
                     )
                     .exec()
-                    .then(doc => {
-                        console.log("****** META DATA ADDED ******");
-                        console.log(doc);
-                    })
+                    .then(
+                        console.log("**** META DATA ADDED ****")
+                    )
                     .catch(err => {
                         console.log(err);
                         res.status(200).json({
@@ -197,36 +195,36 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
         })
 })
 
-//Update GIN by GIN Number
-router.post("/update-by-ginnumber/:ginnumber", formDataBody.fields([]), (req, res, next) => {
+// //Update GIN by GIN Number
+// router.post("/update-by-ginnumber/:ginnumber", formDataBody.fields([]), (req, res, next) => {
 
-    GIN
-        .findOneAndUpdate(
-            { "ginnumber": req.params.ginnumber },
-            {
-                '$set': {
-                    'vehicle': req.body.vehicle,
-                    'incharge': req.body.incharge,
-                }
-            },
-            { upsert: true }
-        )
-        .exec()
-        .then(doc =>
-            res.status(200).json({
-                message: "Handling POST requests to /gin/update-by-id/:ginnumber, GIN UPDATED",
-                type: 'success',
-                alert: `${doc.ginnumber} updated`,
-            })
-        )
-        .catch(err => {
-            res.status(200).json({
-                type: 'error',
-                alert: `Something went wrong. Could not update GIN`,
-            });
-            console.log(err);
-        });
-});
+//     GIN
+//         .findOneAndUpdate(
+//             { "ginnumber": req.params.ginnumber },
+//             {
+//                 '$set': {
+//                     'vehicle': req.body.vehicle,
+//                     'incharge': req.body.incharge,
+//                 }
+//             },
+//             { upsert: true }
+//         )
+//         .exec()
+//         .then(doc =>
+//             res.status(200).json({
+//                 message: "Handling POST requests to /gin/update-by-id/:ginnumber, GIN UPDATED",
+//                 type: 'success',
+//                 alert: `${doc.ginnumber} updated`,
+//             })
+//         )
+//         .catch(err => {
+//             res.status(200).json({
+//                 type: 'error',
+//                 alert: `Something went wrong. Could not update GIN`,
+//             });
+//             console.log(err);
+//         });
+// });
 
 //Approve dispatch GIN by GIN Number
 router.post("/approve-dispatch/:ginnumber", formDataBody.fields([]), (req, res, next) => {
@@ -248,24 +246,23 @@ router.post("/approve-dispatch/:ginnumber", formDataBody.fields([]), (req, res, 
 
             const incharge = doc.incharge;
 
-            doc.ordernumbers.map(orderno => {
+            doc.ordernumbers.map(order => {
 
                 Order
                     .findOneAndUpdate(
-                        { "orderno": orderno },
+                        { "orderno": order.ordernumber },
                         {
                             '$set': {
                                 'status': 'Dispatched',
                                 'deliveredby': incharge,
                             }
                         },
-                        { upsert: true }
+                        { new: true, upsert: true }
                     )
                     .exec()
-                    .then(doc => {
-                        // console.log("******** UPDATED ORDER STATUS OF ORDER NUMBER ********")
-                        // console.log(doc.orderno);
-                    })
+                    .then(
+                        console.log("**** UPDATED ORDER STATUS OF ORDER NUMBER ****")
+                    )
                     .catch(err => {
                         res.status(200).json({
                             type: 'error',
@@ -310,10 +307,9 @@ router.post("/approve-dispatch/:ginnumber", formDataBody.fields([]), (req, res, 
                         { new: true }
                     )
                     .exec()
-                    .then(doc => {
-                        // console.log("******** ITEMS ADDED TO STORE ********");
-                        // console.log(doc);
-                    })
+                    .then(
+                        console.log("**** ITEMS ADDED TO STORE ****")
+                    )
                     .catch(err => {
                         res.status(200).json({
                             type: 'error',
@@ -341,35 +337,34 @@ router.post("/approve-dispatch/:ginnumber", formDataBody.fields([]), (req, res, 
         });
 });
 
-
 //Approve complete GIN by GIN Number
-router.post("/approve-complete/:ginnumber", formDataBody.fields([]), (req, res, next) => {
+// router.post("/approve-complete/:ginnumber", formDataBody.fields([]), (req, res, next) => {
 
-    GIN
-        .findOneAndUpdate(
-            { "ginnumber": req.params.ginnumber },
-            {
-                '$set': {
-                    'status': req.body.status,
-                }
-            },
-            { upsert: true }
-        )
-        .exec()
-        .then(doc =>
-            res.status(200).json({
-                message: "Handling POST requests to /gin/approve-complete/:ginnumber, GIN STATUS CHANGED TO COMPLETED",
-                type: 'success',
-                alert: `${doc.ginnumber} status updated`,
-            })
-        )
-        .catch(err => {
-            res.status(200).json({
-                type: 'error',
-                alert: `Something went wrong. Could not update GIN`,
-            });
-            console.log(err);
-        });
-});
+//     GIN
+//         .findOneAndUpdate(
+//             { "ginnumber": req.params.ginnumber },
+//             {
+//                 '$set': {
+//                     'status': req.body.status,
+//                 }
+//             },
+//             { upsert: true }
+//         )
+//         .exec()
+//         .then(doc =>
+//             res.status(200).json({
+//                 message: "Handling POST requests to /gin/approve-complete/:ginnumber, GIN STATUS CHANGED TO COMPLETED",
+//                 type: 'success',
+//                 alert: `${doc.ginnumber} status updated`,
+//             })
+//         )
+//         .catch(err => {
+//             res.status(200).json({
+//                 type: 'error',
+//                 alert: `Something went wrong. Could not update GIN`,
+//             });
+//             console.log(err);
+//         });
+// });
 
 module.exports = router;

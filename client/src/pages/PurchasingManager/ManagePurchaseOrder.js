@@ -180,7 +180,6 @@ export default function ManagePurchaseOrder() {
             .then(res => {
                 setPORecords(res.data.purchaseorder);
                 setOpenPopup(true);
-                // console.log(poRecords);
             })
             .catch(err => {
                 console.log(err);
@@ -361,23 +360,30 @@ export default function ManagePurchaseOrder() {
                 setOpenPopup={setOpenPopup}
                 fullScreen={true}
             >
+
                 {
-                    action === 'View' ?
-                        <ViewPurchaseOrder
-                            handleClosePopUp={handleClosePopUp}
-                            poRecords={poRecords}
-                            action={action}
-                        /> :
-                        <CreatePurchaseOrder
-                            addOrEdit={addOrEdit}
-                            handleClosePopUp={handleClosePopUp}
-                            productOptions={productOptions}
-                            supplierOptions={supplierOptions}
-                            poRecords={poRecords}
-                            action={action}
-                        />
+                    action === 'View' &&
+                    <ViewPurchaseOrder
+                        handleClosePopUp={handleClosePopUp}
+                        poRecords={poRecords}
+                        action={action}
+                    />
                 }
+
+                {
+                    (action === 'Create' || action === 'Edit' || action === 'Approve') &&
+                    <CreatePurchaseOrder
+                        addOrEdit={addOrEdit}
+                        handleClosePopUp={handleClosePopUp}
+                        productOptions={productOptions}
+                        supplierOptions={supplierOptions}
+                        poRecords={poRecords}
+                        action={action}
+                    />
+                }
+
             </PopUp>
+
             <Snackbar
                 open={open}
                 autoHideDuration={2500}
@@ -387,6 +393,7 @@ export default function ManagePurchaseOrder() {
                     horizontal: 'center',
                 }}
             >
+
                 <Alert
                     onClose={handleClose}
                     severity={type}
@@ -394,6 +401,7 @@ export default function ManagePurchaseOrder() {
                 >
                     {alert}
                 </Alert>
+
             </Snackbar>
 
         </Page>

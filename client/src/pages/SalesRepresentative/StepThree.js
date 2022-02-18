@@ -64,7 +64,7 @@ export default function StepThree(props) {
         productOptions,
         backFormStep,
         completeFormStep,
-        getTotal
+        watch
     } = props;
 
     const classes = useStyles();
@@ -114,6 +114,11 @@ export default function StepThree(props) {
             <div className={style.body}>
 
                 <div className={style.btndiv}>
+
+                    <div className={style.redFont}>
+                        **Please add item(s) to proceed to the next step**
+                    </div>
+
                     <Button
                         style={{
                             backgroundColor: '#20369f',
@@ -124,6 +129,7 @@ export default function StepThree(props) {
                     >
                         Add new item
                     </Button>
+
                 </div>
 
                 <AutoSizer>
@@ -162,7 +168,7 @@ export default function StepThree(props) {
                                                         <Typography style={{ fontWeight: 600 }}> Total (Rs.) </Typography>
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 102.59px  0px 0px", width: '100px' }}>
-                                                        <Typography style={{ fontWeight: 600 }}> {getTotal()} </Typography>
+                                                        <Typography style={{ fontWeight: 600 }}> {watch('total')} </Typography>
                                                     </Grid>
                                                 </Grid>
                                                 <TablePagination {...props} />
@@ -570,28 +576,25 @@ export default function StepThree(props) {
             <div className={style.footer}>
 
                 <div className={style.backBtn}>
-                    <Button
-                        variant="contained"
-                        onClick={backFormStep}
-                        style={{
-                            backgroundColor: '#ACA9BB',
-                            color: 'white'
-                        }}
-                    >
-                        Back
-                    </Button>
+                    {
+                        action !== "View" &&
+                        <Button
+                            onClick={backFormStep}
+                            variant="contained"
+                        >
+                            Back
+                        </Button>
+                    }
                 </div>
 
-                <div className={style.submitBtn}>
-
+                <div className={style.doneBtn}>
                     <Button
                         disabled={data.length === 0}
+                        onClick={completeFormStep}
                         variant="contained"
-                        onClick={() => completeFormStep()}
                     >
                         Next
                     </Button>
-
                 </div>
 
             </div>

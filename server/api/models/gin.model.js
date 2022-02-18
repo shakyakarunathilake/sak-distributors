@@ -8,10 +8,13 @@ const GINSchema = mongoose.Schema({
     route: { type: String, requried: false },
     vehicle: { type: String, requried: false },
     incharge: { type: String, required: false },
-    ordernumbers: { type: Array, required: false },
     items: { type: Array, required: false },
     total: { type: String, required: false },
     status: { type: String, required: false },
+    ordernumbers: [{
+        ordernumber: { type: String, requried: true },
+        complete: { type: String, required: true }
+    }],
 })
 
 module.exports = mongoose.model('GIN', GINSchema);

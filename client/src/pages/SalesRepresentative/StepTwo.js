@@ -14,7 +14,7 @@ import style from './StepTwo.module.scss';
 
 export default function StepTwo(props) {
 
-    const { action, formStep, handleClosePopUp, control, backFormStep, customerType, completeFormStep } = props;
+    const { action, formStep, handleClosePopUp, control, backFormStep, watch, completeFormStep } = props;
 
     return (
         <div className={style.two}>
@@ -76,7 +76,7 @@ export default function StepTwo(props) {
                 </div>
 
                 {
-                    customerType === "Registered Customer" &&
+                    watch('customertype') === "Registered Customer" &&
                     <div className={style.row}>
                         <div className={style.boldText}>
                             Customer ID
@@ -166,24 +166,6 @@ export default function StepTwo(props) {
 
                 <div className={style.row}>
                     <div className={style.boldText}>
-                        Order Placed at
-                    </div>
-                    <div className={style.customerData}>
-                        <Controller
-                            name={"orderplacedat"}
-                            control={control}
-                            render={({ field: { value } }) => (
-                                <Typography className={style.input}>
-                                    {/* {value.split("T")[0]} {value.substring(value.indexOf('T') + 1)} */}
-                                    {value}
-                                </Typography>
-                            )}
-                        />
-                    </div>
-                </div>
-
-                <div className={style.row}>
-                    <div className={style.boldText}>
                         Delivery Date
                     </div>
                     <div className={style.customerData}>
@@ -199,9 +181,45 @@ export default function StepTwo(props) {
                     </div>
                 </div>
 
+                {
+                    action !== 'Create' &&
+                    <div className={style.row}>
+                        <div className={style.boldText}>
+                            Status
+                        </div>
+                        <div className={style.customerData}>
+                            <Controller
+                                name={"status"}
+                                control={control}
+                                render={({ field: { value } }) => (
+                                    value === 'Pending' ?
+                                        <Typography style={{ color: "#745590", fontWeight: "600" }}>
+                                            {value}
+                                        </Typography>
+                                        : value === 'Processing' ?
+                                            <Typography style={{ color: "#2196F3", fontWeight: "600" }}>
+                                                {value}
+                                            </Typography>
+                                            : value === 'Shipping' ?
+                                                <Typography style={{ color: "#EED202", fontWeight: "600" }}>
+                                                    {value}
+                                                </Typography>
+                                                : value === 'Delivered' ?
+                                                    <Typography style={{ color: "#FF8400", fontWeight: "600" }}>
+                                                        {value}
+                                                    </Typography>
+                                                    : <Typography style={{ color: "#4CAF50", fontWeight: "600" }}>
+                                                        {value}
+                                                    </Typography>
+                                )}
+                            />
+                        </div>
+                    </div>
+                }
+
                 <div className={style.row}>
                     <div className={style.boldText}>
-                        Sales Representative
+                        Order Placed by/at
                     </div>
                     <div className={style.customerData}>
                         <Controller
@@ -213,18 +231,58 @@ export default function StepTwo(props) {
                                 </Typography>
                             )}
                         />
+                        &nbsp;
+                        <Controller
+                            name={"orderplacedat"}
+                            control={control}
+                            render={({ field: { value } }) => (
+                                <Typography className={style.input}>
+                                    : {value}
+                                </Typography>
+                            )}
+                        />
                     </div>
                 </div>
 
                 {
-                    customerType === "Registered Customer" &&
+                    action === 'View' && (watch('status') !== "Pending" || watch('status') !== "Processing") &&
+                    <div className={style.row}>
+                        <div className={style.boldText}>
+                            Delivered by / at
+                        </div>
+                        <div className={style.customerData}>
+                            <Controller
+                                name={"deliveredby"}
+                                control={control}
+                                render={({ field: { value } }) => (
+                                    <Typography className={style.input}>
+                                        {value}
+                                    </Typography>
+                                )}
+                            />
+                            &nbsp;
+                            <Controller
+                                name={"deliveredat"}
+                                control={control}
+                                render={({ field: { value } }) => (
+                                    <Typography className={style.input}>
+                                        : {value}
+                                    </Typography>
+                                )}
+                            />
+                        </div>
+                    </div>
+                }
+
+                {
+                    watch('customertype') === "Registered Customer" &&
                     <div className={style.dividerDiv}>
                         <Divider variant="middle" />
                     </div>
                 }
 
                 {
-                    customerType === "Registered Customer" &&
+                    watch('customertype') === "Registered Customer" &&
                     <div className={style.row}>
                         <div className={style.boldText}>
                             Loyalty Points
@@ -244,7 +302,7 @@ export default function StepTwo(props) {
                 }
 
                 {
-                    customerType === "Registered Customer" &&
+                    watch('customertype') === "Registered Customer" &&
                     <div className={style.row}>
                         <div className={style.boldText}>
                             Credit amount to settle
@@ -265,10 +323,10 @@ export default function StepTwo(props) {
                 }
 
                 {
-                    customerType === "Registered Customer" &&
+                    watch('customertype') === "Registered Customer" &&
                     <div className={style.row}>
                         <div className={style.boldText}>
-                            Eligibility to Credit 
+                            Eligibility to Credit
                         </div>
                         <div className={style.customerData}>
                             <Controller
@@ -287,7 +345,7 @@ export default function StepTwo(props) {
 
 
                 {
-                    customerType === "Registered Customer" &&
+                    watch('customertype') === "Registered Customer" &&
                     <div className={style.row}>
                         <div className={style.boldText}>
                             Maximum Credit Amount allowed
@@ -309,28 +367,29 @@ export default function StepTwo(props) {
 
             </div>
 
+
             <div className={style.footer}>
 
-                <div className={action === "Create" ? style.backBtn : style.hideBackBtn}>
-                    <Button
-                        variant="contained"
-                        onClick={backFormStep}
-                        style={{
-                            backgroundColor: '#ACA9BB',
-                            color: 'white'
-                        }}
-                    >
-                        Back
-                    </Button>
+                <div className={style.backBtn}>
+                    {
+                        action === "Create" &&
+                        <Button
+                            onClick={backFormStep}
+                            variant="contained"
+                        >
+                            Back
+                        </Button>
+                    }
                 </div>
 
-                <div className={style.confirmBtn}>
+                <div className={style.doneBtn}>
                     <Button
-                        color="primary"
-                        variant="contained"
                         onClick={completeFormStep}
+                        variant="contained"
                     >
-                        {action === "Create" ? 'Confirm' : 'Next'}
+                        {action === "Create" && "Confirm & Next"}
+                        {action === "Edit" && "Next"}
+                        {action === "View" && "Next"}
                     </Button>
                 </div>
 

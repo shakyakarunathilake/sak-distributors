@@ -58,7 +58,7 @@ export default function EmployeesForm(props) {
         if (employeeRecords != null) {
             setFile(`http://${employeeRecords.employeeimage}`);
         }
-    }, [employeeRecords, nextEmpId, setValue])
+    }, [employeeRecords])
 
     const completeFormStep = () => {
         if (isValid) {

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { Controller } from 'react-hook-form';
 
@@ -61,9 +61,6 @@ export default function PurchaseOrderStepOne(props) {
         action,
         data,
         setData,
-        poRecords,
-        setOrderFormData,
-        setConfirmation,
         handleClosePopUp,
         completeFormStep,
         supplierOptions,
@@ -71,22 +68,13 @@ export default function PurchaseOrderStepOne(props) {
         getValues,
         setValue,
         trigger,
+        watch,
         control,
         errors,
         podate,
-        dateTime,
-        firstname,
-        lastname,
-        employeeid
     } = props;
 
     const addActionRef = useRef();
-
-    useEffect(() => {
-        if (poRecords != null) {
-            setData([...poRecords.items])
-        }
-    }, [setData, poRecords])
 
     const getProductItemList = useMemo(() => {
         const selectedDescriptions = data.map(x => x.description);
@@ -99,16 +87,7 @@ export default function PurchaseOrderStepOne(props) {
         return productItemList;
     }, [data, getValues('supplier'), getValues, productOptions]);
 
-    const getGrossTotal = () => {
-        let grosstotal = 0;
-        for (let i = 0; i < data.length; i++) {
-            grosstotal = grosstotal + data[i].value;
-        }
-        setValue("grosstotal", grosstotal.toFixed(2));
-        return grosstotal.toFixed(2);
-    }
-
-    const getTotal = () => {
+    const calculateTotal = () => {
         let total = 0;
         let grosstotal = getValues('grosstotal');
         let receiveddiscounts = getValues('receiveddiscounts');
@@ -116,7 +95,7 @@ export default function PurchaseOrderStepOne(props) {
 
         total = parseInt(grosstotal) - (parseInt(receiveddiscounts) + parseInt(damagedmissingitems));
 
-        return total.toFixed(2);
+        setValue('total', total.toFixed(2));
     }
 
     const handleAddNewItem = () => {
@@ -133,21 +112,17 @@ export default function PurchaseOrderStepOne(props) {
 
         if (action === 'Create') {
             setValue("ponumber", supplier[0].abbreviation + podate);
-            setValue("createdat", dateTime);
+            setValue("createdat", getValues('createdat'));
             setValue("status", 'Waiting For Approval');
         }
 
         if (action === 'Approve') {
-            setValue("approvedby", `${firstname} ${lastname} (${employeeid})`);
-            setValue("approvedat", dateTime);
+            setValue("approvedby",);
+            setValue("approvedat", getValues('approvedat'));
             setValue("status", 'Pending');
         }
 
-
-        setValue('total', getTotal());
-
-        setOrderFormData(getValues());
-        setConfirmation(true);
+        calculateTotal();
         completeFormStep();
     }
 
@@ -255,7 +230,7 @@ export default function PurchaseOrderStepOne(props) {
                                                         </Grid>
                                                         <Grid item align="Right" style={{ margin: "0px 102.56px  0px 0px", width: '200px' }}>
                                                             <Typography style={{ fontSize: "1.05em", fontWeight: 600 }}>
-                                                                {getGrossTotal()}
+                                                                {watch('grosstotal')}
                                                             </Typography>
                                                         </Grid>
                                                     </Grid>

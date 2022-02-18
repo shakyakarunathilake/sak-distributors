@@ -246,7 +246,7 @@ export default function GRNStepTwo(props) {
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 10px 0px 0px", width: '200px' }}>
                                                         <Typography style={{ fontWeight: 600 }}>
-                                                            {parseInt(getValues("total")).toFixed(2)}
+                                                            {getValues("total")}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>

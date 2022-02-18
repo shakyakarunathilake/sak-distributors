@@ -9,6 +9,7 @@ import MuiAlert from '@mui/material/Alert';
 
 //Material UI Icons
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 
 //Material Table
 import MaterialTable from 'material-table';
@@ -118,6 +119,7 @@ export default function ManageGRN() {
 
     return (
         <Page title="Manage GRN">
+
             <div className={style.container}>
 
                 <AutoSizer>
@@ -226,7 +228,7 @@ export default function ManageGRN() {
                                         },
                                         (rowData) => ({
                                             disabled: rowData.status === 'Delivered',
-                                            icon: 'edit',
+                                            icon: LocalShippingIcon,
                                             tooltip: 'Edit',
                                             onClick: (event, rowData) => {
                                                 setAction('Edit');
@@ -237,8 +239,10 @@ export default function ManageGRN() {
                                 />
 
                             </div>
+
                         );
                     }}
+
                 </AutoSizer>
 
                 <PopUp
@@ -246,13 +250,16 @@ export default function ManageGRN() {
                     fullScreen={true}
                     setOpenPopup={setOpenPopup}
                 >
+
                     {
                         action === 'View' &&
                         <ViewGRNForm
                             GRNRecords={GRNRecords}
                             handleClosePopUp={handleClosePopUp}
                             action={action}
-                        />}
+                        />
+                    }
+
                     {
                         action === 'Edit' &&
                         <CreateGRNForm
@@ -264,6 +271,7 @@ export default function ManageGRN() {
                     }
 
                 </PopUp>
+
                 <Snackbar
                     open={open}
                     autoHideDuration={2500}
@@ -273,6 +281,7 @@ export default function ManageGRN() {
                         horizontal: 'center',
                     }}
                 >
+
                     <Alert
                         onClose={handleClose}
                         severity={type}
@@ -280,8 +289,11 @@ export default function ManageGRN() {
                     >
                         {alert}
                     </Alert>
+
                 </Snackbar>
+
             </div>
+
         </Page >
     )
 }

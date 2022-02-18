@@ -25,12 +25,7 @@ export default function GRNForm(props) {
     const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     const dateTime = date + ' ' + time;
 
-    const {
-        handleSubmit,
-        control,
-        getValues,
-        setValue
-    } = useForm({
+    const { handleSubmit, control, getValues, setValue } = useForm({
         mode: "all",
         defaultValues: {
             ponumber: GRNRecords.ponumber,
@@ -52,6 +47,18 @@ export default function GRNForm(props) {
     useEffect(() => {
         setData(GRNRecords.items);
     }, [GRNRecords, setData])
+
+    useEffect(() => {
+        if (data != null) {
+            let total = 0;
+
+            for (let i = 0; i < data.length; i++) {
+                total = total + (isNaN(data[i].grnvalue) ? 0 : data[i].grnvalue);
+            }
+
+            setValue("grntotal", total.toFixed(2));
+        }
+    }, [data, setValue])
 
     const completeFormStep = () => {
         setFormStep(x => x + 1);

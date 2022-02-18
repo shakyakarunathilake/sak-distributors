@@ -80,7 +80,7 @@ router.get("/:grnnumber", (req, res, next) => {
 })
 
 //Update GRN by GRN Number
-router.post("/create-grnnumber/:grnnumber", formDataBody.fields([]), (req, res, next) => {
+router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, res, next) => {
 
     const items = JSON.parse(req.body.items);
 
@@ -97,7 +97,7 @@ router.post("/create-grnnumber/:grnnumber", formDataBody.fields([]), (req, res, 
                     'damagedmissingitems': req.body.damagedmissingitems,
                 }
             },
-            { upsert: true }
+            { new: true, upsert: true }
         )
         .exec()
         .then(doc => {
@@ -108,9 +108,10 @@ router.post("/create-grnnumber/:grnnumber", formDataBody.fields([]), (req, res, 
                     {
                         '$set': {
                             'status': 'Delivered',
+                            'deliveredat': doc.createdat
                         }
                     },
-                    { upsert: true }
+                    { new: true, upsert: true }
                 )
                 .exec()
                 .then(doc => {

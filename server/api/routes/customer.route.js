@@ -47,9 +47,6 @@ router.get("/get-next-regno", (req, res, next) => {
 //Create a customer
 router.post("/create-customer", formDataBody.fields([]), (req, res, next) => {
 
-    console.log("Body: ", req.body);
-    console.log("Added Date: ", req.body.addeddate);
-
     const addeddate = new Date(req.body.addeddate).toISOString().split('T')[0];
 
     const customer = new Customer({
@@ -77,11 +74,6 @@ router.post("/create-customer", formDataBody.fields([]), (req, res, next) => {
     customer
         .save()
         .then(result => {
-
-            function emailIntegration() {
-                console.log("Email Sent");
-            }
-
             res.status(201).json({
                 message: "Handeling POST requests to /customers/create-customer, CUSTOMER SAVED",
                 type: 'success',

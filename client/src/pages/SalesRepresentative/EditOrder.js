@@ -15,76 +15,66 @@ export default function CreateOrder(props) {
 
     const { addOrEdit, handleClosePopUp, action, productOptions, orderRecords } = props;
 
-    const {
-        control,
-        getValues,
-        setValue,
-        handleSubmit,
-        formState: { isValid, errors }
-    } = useForm({ mode: "all" });
-
     const [data, setData] = useState([]);
-    const [total, setTotal] = useState();
-    const [advancePayment, setAdvancePayment] = useState();
     const [formStep, setFormStep] = useState(0);
-    const [customerType, setCustomerType] = useState('');
-    const [minimumPayment, setMinimumPayment] = useState();
-    const [invoiceSettlementValue, setInvoiceSettlementValue] = useState();
+
+    const { watch, control, setValue, getValues, handleSubmit, formState: { isValid, errors } } = useForm({
+        mode: "all",
+        defaultValues: {
+            orderno: orderRecords.orderno,
+            contactnumber: orderRecords.contactnumber,
+            customertype: orderRecords.customertype,
+            customerid: orderRecords.customerid,
+            storename: orderRecords.storename,
+            deliveredat: orderRecords.deliveredat,
+            deliveredby: orderRecords.deliveredby,
+            status: orderRecords.status,
+            deliverydate: orderRecords.deliverydate,
+            orderplacedat: orderRecords.orderplacedat,
+            route: orderRecords.route,
+            ordercreatedby: orderRecords.ordercreatedby,
+            shippingaddress: orderRecords.shippingaddress,
+            total: parseInt(orderRecords.total),
+            loyaltypoints: parseInt(orderRecords.loyaltypoints),
+            minimumpayment: parseInt(orderRecords.minimumpayment),
+            advancepayment: parseInt(orderRecords.advancepayment),
+            creditamounttosettle: parseInt(orderRecords.creditamounttosettle),
+            eligibilityforcredit: orderRecords.eligibilityforcredit,
+            maximumcreditamount: parseInt(orderRecords.maximumcreditamount),
+            currentinvoicecreditamount: parseInt(orderRecords.currentinvoicecreditamount),
+            invoicesettlementvalue: parseInt(orderRecords.invoicesettlementvalue)
+
+        }
+    });
 
     useEffect(() => {
-        if (orderRecords !== null) {
-
-            setValue("contactnumber", orderRecords.contactnumber);
-            setValue("customertype", orderRecords.customertype);
-            setValue("customerid", orderRecords.customerid);
-            setValue("storename", orderRecords.storename); 
-            setValue("deliverydate", orderRecords.deliverydate);
-            setValue("orderno", orderRecords.orderno);
-            setValue("orderplacedat", orderRecords.orderplacedat);
-            setValue("route", orderRecords.route);
-            setValue("ordercreatedby", orderRecords.ordercreatedby);
-            setValue("shippingaddress", orderRecords.shippingaddress);
-            setValue("total", orderRecords.total);
-            setValue("loyaltypoints", orderRecords.loyaltypoints);
-            setValue("creditamounttosettle", orderRecords.creditamounttosettle);
-            setValue("eligibilityforcredit", orderRecords.eligibilityforcredit);
-            setValue("maximumcreditamount", orderRecords.maximumcreditamount);
-            setValue("currentinvoicecreditamount", orderRecords.currentinvoicecreditamount);
-
+        if (orderRecords != null) {
             setData(orderRecords.items);
-            setCustomerType(orderRecords.customertype);
         }
+    }, [orderRecords])
 
-    }, [setData, setValue, orderRecords])
+    useEffect(() => {
+        if (data != null) {
+            let total = 0.00;
+            let advancepayment = 0.00;
+
+            for (let i = 0; i < data.length; i++) {
+                total = total + parseInt(data[i].grossamount);
+            }
+
+            advancepayment = (total / 100) * 50;
+
+            setValue('advancepayment', parseInt(advancepayment.toFixed(2)));
+            setValue('total', parseInt(total.toFixed(2)));
+        }
+    }, [data, setValue])
 
     const completeFormStep = () => {
         setFormStep(x => x + 1);
-
-        console.log('FORM STEP: ', formStep);
-        console.log('DATA: ', data);
     }
 
     const backFormStep = () => {
         setFormStep(x => x - 1);
-
-        console.log('FORM STEP: ', formStep);
-        console.log('DATA: ', data);
-    }
-
-    const getTotal = () => {
-        let total = 0;
-        let advancepayment = 0;
-
-        for (let i = 0; i < data.length; i++) {
-            total = total + parseInt(data[i].grossamount);
-        }
-
-        advancepayment = (total / 100) * 50;
-
-        setAdvancePayment(advancepayment.toFixed(2));
-        setTotal(total.toFixed(2));
-
-        return total.toFixed(2);
     }
 
     const onSubmit = () => {
@@ -92,10 +82,13 @@ export default function CreateOrder(props) {
         const customerOrderFormData = new formData();
 
         customerOrderFormData.append('items', JSON.stringify(data));
-        customerOrderFormData.append('total', total);
+        customerOrderFormData.append('total', getValues('total'));
+        customerOrderFormData.append('advancepayment', getValues('advancepayment'));
+        customerOrderFormData.append('minimumpayment', getValues('minimumpayment'));
         customerOrderFormData.append('currentinvoicecreditamount', getValues('currentinvoicecreditamount'));
+        customerOrderFormData.append('invoicesettlementvalue', getValues('invoicesettlementvalue'));
 
-        addOrEdit(customerOrderFormData, orderRecords.orderno);
+        addOrEdit(customerOrderFormData, getValues('orderno'));
     }
 
     return (
@@ -109,14 +102,14 @@ export default function CreateOrder(props) {
                 formStep >= 0 &&
                 <section className={formStep === 0 ? style.visible : style.hidden}>
                     <StepTwo
-                        handleClosePopUp={handleClosePopUp}
                         control={control}
+                        handleClosePopUp={handleClosePopUp}
                         backFormStep={backFormStep}
                         completeFormStep={completeFormStep}
                         action={action}
                         formStep={formStep}
+                        watch={watch}
                         getValues={getValues}
-                        customerType={customerType}
                     />
                 </section>
             }
@@ -125,17 +118,15 @@ export default function CreateOrder(props) {
                 formStep >= 1 &&
                 <section className={formStep === 1 ? style.visible : style.hidden}>
                     <StepThree
+                        action={action}
+                        formStep={formStep}
                         data={data}
-                        orderRecords={orderRecords}
-                        getTotal={getTotal}
                         setData={setData}
                         handleClosePopUp={handleClosePopUp}
                         productOptions={productOptions}
-                        completeFormStep={completeFormStep}
-                        action={action}
                         backFormStep={backFormStep}
-                        formStep={formStep}
-                        customerType={customerType}
+                        completeFormStep={completeFormStep}
+                        watch={watch}
                     />
                 </section>
             }
@@ -144,13 +135,13 @@ export default function CreateOrder(props) {
                 formStep >= 2 &&
                 <section className={formStep === 2 ? style.visible : style.hidden}>
                     <StepFour
-                       data={data}
-                       handleClosePopUp={handleClosePopUp}
-                       backFormStep={backFormStep}
-                       completeFormStep={completeFormStep}
-                       total={total}
-                       action={action}
-                       formStep={formStep}
+                        data={data}
+                        handleClosePopUp={handleClosePopUp}
+                        backFormStep={backFormStep}
+                        completeFormStep={completeFormStep}
+                        watch={watch}
+                        action={action}
+                        formStep={formStep}
                     />
                 </section>
             }
@@ -159,25 +150,21 @@ export default function CreateOrder(props) {
                 formStep >= 3 &&
                 <section className={formStep === 3 ? style.visible : style.hidden}>
                     <StepFive
-                        customerType={customerType}
                         action={action}
                         formStep={formStep}
                         handleClosePopUp={handleClosePopUp}
                         onSubmit={onSubmit}
-                        total={total}
                         errors={errors}
                         control={control}
                         getValues={getValues}
                         backFormStep={backFormStep}
-                        advancePayment={advancePayment}
-                        minimumPayment={minimumPayment}
-                        setMinimumPayment={setMinimumPayment}
-                        invoiceSettlementValue={invoiceSettlementValue}
-                        setInvoiceSettlementValue={setInvoiceSettlementValue}
                         isValid={isValid}
+                        watch={watch}
+                        setValue={setValue}
                     />
                 </section>
             }
+
         </form >
 
     )

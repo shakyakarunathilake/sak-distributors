@@ -23,25 +23,22 @@ import style from './StepFive.module.scss';
 export default function StepFive(props) {
 
     const {
-        customerType,
+        watch,
         action,
         formStep,
         handleClosePopUp,
         onSubmit,
-        total,
-        advancePayment,
+        setValue,
         errors,
         control,
         getValues,
         backFormStep,
-        minimumPayment,
-        setMinimumPayment,
-        invoiceSettlementValue,
-        setInvoiceSettlementValue,
     } = props;
 
     useEffect(() => {
-        calculatePayments();
+        if (action !== "View") {
+            calculatePayments();
+        }
     }, [])
 
     const [open, setOpen] = useState(false);
@@ -58,37 +55,32 @@ export default function StepFive(props) {
 
         let creditamounttosettle = 0;
         let currentinvoicecreditamount = 0;
+        let advancepayment = getValues('advancepayment');
+        let total = getValues('total');
 
-        if (customerType === "Registered Customer") {
+        if (watch('customertype') === "Registered Customer") {
             creditamounttosettle = getValues('creditamounttosettle');
-            currentinvoicecreditamount = parseInt(getValues('currentinvoicecreditamount'));
+            currentinvoicecreditamount = getValues('currentinvoicecreditamount');
         }
 
-        let minimumpayment = 0.00;
-        let invoicesettlementvalue = 0.00;
-
-        if (creditamounttosettle === '0.00' && currentinvoicecreditamount === 0) {
-            minimumpayment = parseInt(advancePayment);
-            invoicesettlementvalue = parseInt(total);
-
-            setMinimumPayment(minimumpayment.toFixed(2));
-            setInvoiceSettlementValue(invoicesettlementvalue.toFixed(2));
+        if (creditamounttosettle === 0.00 && currentinvoicecreditamount === 0.00) {
+            setValue('minimumpayment', advancepayment);
+            setValue('invoicesettlementvalue', total);
         }
 
-        if (creditamounttosettle !== '0.00' && currentinvoicecreditamount === 0) {
-            minimumpayment = parseInt(advancePayment) + parseInt(creditamounttosettle);
-            invoicesettlementvalue = parseInt(total) + parseInt(creditamounttosettle);
+        if (creditamounttosettle !== 0.00 && currentinvoicecreditamount === 0.00) {
+            let minimumpayment = (parseInt(advancepayment) + parseInt(creditamounttosettle)).toFixed(2);
+            let invoicesettlementvalue = (parseInt(total) + parseInt(creditamounttosettle)).toFixed(2);
 
-            setMinimumPayment(minimumpayment.toFixed(2));
-            setInvoiceSettlementValue(invoicesettlementvalue.toFixed(2));
+            setValue('minimumpayment', minimumpayment);
+            setValue('invoicesettlementvalue', invoicesettlementvalue);
         };
 
-        if (creditamounttosettle === '0.00' && currentinvoicecreditamount !== 0) {
-            minimumpayment = parseInt(advancePayment) - parseInt(currentinvoicecreditamount);
-            invoicesettlementvalue = parseInt(total);
+        if (creditamounttosettle === 0.00 && currentinvoicecreditamount !== 0.00) {
+            let minimumpayment = (parseInt(advancepayment) - parseInt(currentinvoicecreditamount)).toFixed(2);
 
-            setMinimumPayment(minimumpayment.toFixed(2));
-            setInvoiceSettlementValue(invoicesettlementvalue.toFixed(2));
+            setValue('minimumpayment', minimumpayment);
+            setValue('invoicesettlementvalue', total);
         };
     }
 
@@ -135,7 +127,7 @@ export default function StepFive(props) {
             <div className={style.body}>
 
                 {
-                    customerType === "Registered Customer" &&
+                    watch('customertype') === "Registered Customer" &&
 
                     <div className={style.cardRow}>
 
@@ -165,7 +157,7 @@ export default function StepFive(props) {
 
 
                     {
-                        customerType === "Registered Customer" &&
+                        watch('customertype') === "Registered Customer" &&
                         <div className={style.row}>
                             <div className={style.boldText}>
                                 Previous credit amount to settle
@@ -181,7 +173,7 @@ export default function StepFive(props) {
                             Current Invoice Total
                         </div>
                         <div className={style.customerData}>
-                            Rs. {total}
+                            Rs. {watch('total')}
                         </div>
                     </div>
 
@@ -190,13 +182,13 @@ export default function StepFive(props) {
                             Current Invoice Advance Payment
                         </div>
                         <div className={style.customerData}>
-                            Rs. {advancePayment}
+                            Rs. {watch('advancepayment')}
                         </div>
                     </div>
 
                     {
                         action === "View" &&
-                        customerType === "Registered Customer" &&
+                        watch('customertype') === "Registered Customer" &&
                         <div className={style.row}>
                             <div className={style.boldText}>
                                 Current Invoice Credit Amount
@@ -219,7 +211,7 @@ export default function StepFive(props) {
 
                     {
                         action !== "View" &&
-                        customerType === "Registered Customer" &&
+                        watch('customertype') === "Registered Customer" &&
                         <div className={style.row}>
                             <div className={style.boldText}>
                                 Current Invoice Credit Amount  <span className={style.redFont}>*</span>
@@ -229,8 +221,8 @@ export default function StepFive(props) {
                                     render={({ field }) => (
                                         <TextField
                                             {...field}
-                                            focused={getValues('maximumcreditamount') !== '0.00'}
-                                            disabled={getValues('maximumcreditamount') === '0.00'}
+                                            focused={getValues('maximumcreditamount') !== 0.00}
+                                            disabled={getValues('maximumcreditamount') === 0.00}
                                             type="number"
                                             error={errors.currentinvoicecreditamount ? true : false}
                                             helperText={errors.currentinvoicecreditamount && errors.currentinvoicecreditamount.message}
@@ -247,16 +239,15 @@ export default function StepFive(props) {
                                     )}
                                     control={control}
                                     name={"currentinvoicecreditamount"}
-                                    defaultValue={0.00}
-                                    rules={
-                                        { required: { value: true, message: "Required *" } },
-                                        { pattern: { value: /^[0-9]+\.[0-9]{2}$/, message: "Invalid" } }
-                                    }
+                                    rules={{
+                                        required: { value: true, message: "Required *" },
+                                        pattern: { value: /^[0-9]+\.[0-9]{2}$/, message: "Invalid" }
+                                    }}
                                 />
                                 <CalculateIcon
                                     className={style.icon}
                                     onClick={() => calculatePayments()}
-                                    disabled={getValues('maximumcreditamount') === '0.00'}
+                                    disabled={getValues('maximumcreditamount') === 0.00}
                                 />
                             </div>
                         </div>
@@ -271,7 +262,7 @@ export default function StepFive(props) {
                             Minimum Payment
                         </div>
                         <div className={style.customerData}>
-                            Rs. {minimumPayment}
+                            Rs. {watch('minimumpayment')}
                         </div>
                     </div>
 
@@ -280,8 +271,12 @@ export default function StepFive(props) {
                             Invoice Settlement Value
                         </div>
                         <div className={style.customerData}>
-                            Rs. {invoiceSettlementValue}
+                            Rs. {watch('invoicesettlementvalue')}
                         </div>
+                    </div>
+
+                    <div className={style.dividerDiv}>
+                        <Divider variant="middle" />
                     </div>
 
                 </div>
@@ -292,22 +287,17 @@ export default function StepFive(props) {
 
                 <div className={style.backBtn}>
                     <Button
-                        variant="contained"
                         onClick={backFormStep}
-                        style={{
-                            backgroundColor: '#ACA9BB',
-                            color: 'white'
-                        }}
+                        variant="contained"
                     >
                         Back
                     </Button>
                 </div>
 
-                <div className={style.submitBtn}>
+                <div className={style.doneBtn}>
 
                     {
                         action !== "View" &&
-                        getValues('maximumcreditamount') !== 0 &&
                         <ClickAwayListener onClickAway={handleTooltipClose}>
                             <Tooltip
                                 PopperProps={{
@@ -333,6 +323,7 @@ export default function StepFive(props) {
                     >
                         {action === "View" ? 'Done' : 'Submit'}
                     </Button>
+
                 </div>
 
             </div>

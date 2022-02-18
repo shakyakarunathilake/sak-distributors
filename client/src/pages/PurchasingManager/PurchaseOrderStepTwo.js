@@ -139,18 +139,16 @@ export default function PurchaseOrderStepTwo(props) {
 
                             {
                                 action !== "Create" &&
+                                action !== "Edit" &&
                                 <tr>
                                     <th align="left">Delivered at</th>
                                     <td align="left">
-                                        {/* {dateTime} */}
                                         <Controller
                                             name={"deliveredat"}
                                             control={control}
                                             render={({ field: { value } }) => (
                                                 <Typography className={style.input}>
-                                                    <p style={{ padding: "0", margin: "0", color: "#FC6A03", fontWeight: "700" }}>
-                                                        {value}
-                                                    </p>
+                                                    {value}
                                                 </Typography>
                                             )}
                                         />
@@ -219,6 +217,7 @@ export default function PurchaseOrderStepTwo(props) {
 
                             {
                                 action !== "Create" &&
+                                action !== "Edit" &&
                                 <tr>
                                     <th align="left">Approved By/At</th>
                                     <td align="left">
