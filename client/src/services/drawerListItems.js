@@ -39,6 +39,24 @@ const getDistributorListItems = [
         path: "http://localhost:3000/sales-representative-analytics",
         icon: <TimelineIcon />
     },
+    {
+        id: "Doughnut Chart",
+        title: "Doughnut Chart",
+        path: "http://localhost:3000/doughnut-chart",
+        icon: <TimelineIcon />
+    },
+    {
+        id: "Vertical Bar Chart",
+        title: "Vertical Bar Chart",
+        path: "http://localhost:3000/vertical-bar-chart",
+        icon: <TimelineIcon />
+    },
+    {
+        id: "Horizontal Bar Chart",
+        title: "Horizontal Bar Chart",
+        path: "http://localhost:3000/horizontal-bar-chart",
+        icon: <TimelineIcon />
+    },
 ];
 
 const getHRListItems = [

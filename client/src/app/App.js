@@ -36,6 +36,12 @@ import ViewOrderDetails from '../pages/StoreKeeper/ViewOrderDetails';
 //Sales Representative
 import SalesAndInvoice from '../pages/SalesRepresentative/SalesAndInvoice';
 
+
+//Development Stage
+import DoughnutChart from '../pages/Analytics/DoughnutChart';
+import VerticalBarChart from '../pages/Analytics/VerticalBarChart';
+import HorizontalBarChart from '../pages/Analytics/HorizontalBarChart';
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -66,6 +72,14 @@ function App() {
       {
         <BrowserRouter>
           <Switch>
+
+            {/* Development Stage */}
+            <Route exact path='/doughnut-chart' component={DoughnutChart} />
+            <Route exact path='/vertical-bar-chart' component={VerticalBarChart} />
+            <Route exact path='/horizontal-bar-chart' component={HorizontalBarChart} />
+
+
+            {/* Shared */}
             <Route exact path='/' component={Login} />
             <Route exact path='/forgot-password' component={ForgotPassword} />
             <Route exact path='/change-password' component={ChangePassword} />
