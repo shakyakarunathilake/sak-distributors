@@ -112,6 +112,7 @@ export default function PurchaseOrderStepOne(props) {
 
         if (action === 'Create') {
             setValue("ponumber", supplier[0].abbreviation + podate);
+            setValue("givenid", supplier[0].givenid);
             setValue("createdat", getValues('createdat'));
             setValue("status", 'Waiting For Approval');
         }

@@ -21,7 +21,7 @@ export default function ViewSupplier(props) {
             addeddate: supplierRecords.addeddate,
             contactnumber: supplierRecords.contactnumber,
             email: supplierRecords.email,
-
+            givenid: supplierRecords.givenid,
         }
     });
 

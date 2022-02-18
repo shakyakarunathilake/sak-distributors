@@ -34,7 +34,7 @@ export default function GRNForm(props) {
             total: GRNRecords.total,
             createdat: dateTime,
             createdby: `${firstname} ${lastname} (${employeeid})`,
-            // customerid:poRecords.customerid ,
+            givenid: GRNRecords.givenid,
             customername: "S.A.K Distributors",
             customeraddress: "No.233, Kiriwallapitiya, Rambukkana, Srilanka",
             contactnumber: "0352264009",

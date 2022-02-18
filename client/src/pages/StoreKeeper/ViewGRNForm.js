@@ -23,7 +23,7 @@ export default function ViewGRNForm(props) {
             total: GRNRecords.total,
             createdat: GRNRecords.createdat,
             createdby: GRNRecords.createdby,
-            // customerid:poRecords.customerid ,
+            givenid: GRNRecords.givenid,
             customername: "S.A.K Distributors",
             customeraddress: "No.233, Kiriwallapitiya, Rambukkana, Srilanka",
             contactnumber: "0352264009",

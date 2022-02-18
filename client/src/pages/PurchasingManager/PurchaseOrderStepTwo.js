@@ -106,6 +106,16 @@ export default function PurchaseOrderStepTwo(props) {
                                             </Typography>
                                         )}
                                     />
+                                    &nbsp;
+                                    <Controller
+                                        name={"givenid"}
+                                        control={control}
+                                        render={({ field: { value } }) => (
+                                            <Typography className={style.input}>
+                                                ({value})
+                                            </Typography>
+                                        )}
+                                    />
                                 </td>
                             </tr>
                             <tr>

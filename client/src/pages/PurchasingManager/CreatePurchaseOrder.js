@@ -34,7 +34,7 @@ export default function CreatePurchaseOrder(props) {
             receiveddiscounts: poRecords ? parseInt(poRecords.receiveddiscounts).toFixed(2) : 0.00,
             damagedmissingitems: poRecords ? parseInt(poRecords.damagedmissingitems).toFixed(2) : 0.00,
             total: poRecords ? poRecords.total : 0.00,
-            // customerid: poRecords ? poRecords.customerid : '',
+            givenid: poRecords ? poRecords.givenid : '',
             customername: poRecords ? poRecords.customername : "S.A.K Distributors",
             customeraddress: poRecords ? poRecords.customeraddress : "No.233, Kiriwallapitiya, Rambukkana, Sri Lanka",
             contactnumber: poRecords ? poRecords.contactnumber : "0352264009",
@@ -83,6 +83,7 @@ export default function CreatePurchaseOrder(props) {
         if (action === 'Create' || action === 'Edit') {
             purchaseOrderFormData.append('ponumber', getValues('ponumber'));
             purchaseOrderFormData.append('supplier', getValues('supplier'));
+            purchaseOrderFormData.append('givenid', getValues('givenid'));
             purchaseOrderFormData.append('customername', getValues('customername'));
             purchaseOrderFormData.append('customeraddress', getValues('customeraddress'));
             purchaseOrderFormData.append('contactnumber', getValues('contactnumber'));

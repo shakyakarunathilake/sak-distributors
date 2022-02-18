@@ -54,7 +54,8 @@ router.get("/supplier-options-for-purchase-order", (req, res, next) => {
             const supplierOptions = doc.map(x => ({
                 id: x.supplierid,
                 title: x.name,
-                abbreviation: x.abbreviation
+                abbreviation: x.abbreviation,
+                givenid: x.givenid
             }))
 
             res.status(200).json({

@@ -7,6 +7,7 @@ const purchaseOrderSchema = mongoose.Schema({
     customeraddress: { type: String, required: true },
     contactnumber: { type: String, required: true },
     supplier: { type: String, required: true },
+    givenid: { type: String, required: true },
     createdat: { type: String, required: true },
     createdby: { type: String, requried: true },
     approvedat: { type: String, required: false },

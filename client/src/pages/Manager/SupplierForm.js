@@ -20,6 +20,7 @@ export default function SupplierForm(props) {
         mode: "all",
         defaultValues: {
             supplierid: supplierRecords ? supplierRecords.supplierid : nextSupId,
+            givenid: supplierRecords ? supplierRecords.givenid : '',
             name: supplierRecords ? supplierRecords.name : '',
             abbreviation: supplierRecords ? supplierRecords.abbreviation : '',
             address: supplierRecords ? supplierRecords.address : '',

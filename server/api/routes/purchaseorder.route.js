@@ -60,6 +60,7 @@ router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) =
         customeraddress: req.body.customeraddress,
         contactnumber: req.body.contactnumber,
         supplier: req.body.supplier,
+        givenid: req.body.givenid,
         createdat: req.body.createdat,
         createdby: req.body.createdby,
         approvedat: '',
@@ -133,6 +134,7 @@ router.get("/:ponumber", (req, res, next) => {
             const purchaseorder = {
                 'ponumber': doc.ponumber,
                 'supplier': doc.supplier,
+                'givenid': doc.givenid,
                 'createdat': doc.createdat,
                 'createdby': doc.createdby,
                 'customername': doc.customername,
@@ -238,6 +240,7 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
             const grn = new GRN({
                 _id: new mongoose.Types.ObjectId(),
                 ponumber: result.ponumber,
+                givenid: result.givenid,
                 grnnumber: `GRN-${result.ponumber}`,
                 supplier: result.supplier,
                 status: "Pending",

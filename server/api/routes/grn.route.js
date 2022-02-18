@@ -59,6 +59,7 @@ router.get("/:grnnumber", (req, res, next) => {
                 'ponumber': doc.ponumber,
                 'status': doc.status,
                 'grnnumber': doc.grnnumber,
+                'givenid': doc.givenid,
                 'supplier': doc.supplier,
                 'createdat': doc.createdat,
                 'createdby': doc.createdby,

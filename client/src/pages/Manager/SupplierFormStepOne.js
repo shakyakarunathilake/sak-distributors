@@ -126,42 +126,65 @@ export default function SupplierFormStepOne(props) {
 
                 </div>
 
-                <div className={classnames(style.row, style.twocolumns)}>
+                <div className={classnames(style.row, style.gridrow)}>
 
                     <Controller
                         render={({ field }) => (
-                            <Select
+                            <TextField
                                 {...field}
-                                options={employeeOptions || []}
-                                error={errors.addedby ? true : false}
-                                helperText={errors.addedby && errors.addedby.message}
-                                label="Added By"
+                                fullWidth={true}
+                                error={errors.givenid ? true : false}
+                                helperText={errors.givenid && errors.givenid.message}
+                                placeholder="Ex: SIWPLC"
                                 size="small"
+                                label="Given ID *"
                             />
                         )}
                         control={control}
-                        name={"addedby"}
+                        name={"givenid"}
                         rules={{
                             required: { value: true, message: "Required *" },
                         }}
                     />
 
-                    <Controller
-                        render={({ field }) => (
-                            <DatePicker
-                                {...field}
-                                error={errors.addeddate ? true : false}
-                                helperText={errors.addeddate && errors.addeddate.message}
-                                size="small"
-                                label="Adding Date *"
-                            />
-                        )}
-                        control={control}
-                        name={"addeddate"}
-                        rules={{
-                            required: { value: true, message: "Required *" },
-                        }}
-                    />
+                    <div className={style.twocolumns}>
+
+                        <Controller
+                            render={({ field }) => (
+                                <Select
+                                    {...field}
+                                    options={employeeOptions || []}
+                                    error={errors.addedby ? true : false}
+                                    helperText={errors.addedby && errors.addedby.message}
+                                    label="Added By"
+                                    size="small"
+                                />
+                            )}
+                            control={control}
+                            name={"addedby"}
+                            rules={{
+                                required: { value: true, message: "Required *" },
+                            }}
+                        />
+
+                        <Controller
+                            render={({ field }) => (
+                                <DatePicker
+                                    {...field}
+                                    error={errors.addeddate ? true : false}
+                                    helperText={errors.addeddate && errors.addeddate.message}
+                                    size="small"
+                                    label="Adding Date *"
+                                />
+                            )}
+                            control={control}
+                            name={"addeddate"}
+                            rules={{
+                                required: { value: true, message: "Required *" },
+                            }}
+                        />
+
+                    </div>
 
                 </div>
 
