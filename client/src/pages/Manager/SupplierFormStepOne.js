@@ -66,7 +66,7 @@ export default function SupplierFormStepOne(props) {
                     The fields with "*" are required
                 </div>
 
-                <div className={classnames(style.row, style.threecolumns)}>
+                <div className={classnames(style.row, style.gridrow)}>
 
                     <Controller
                         render={({ field }) => (
@@ -86,24 +86,48 @@ export default function SupplierFormStepOne(props) {
                         }}
                     />
 
-                    <Controller
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                fullWidth={true}
-                                error={errors.abbreviation ? true : false}
-                                helperText={errors.abbreviation && errors.abbreviation.message}
-                                placeholder="Ex: SIWPLC"
-                                size="small"
-                                label="Abbreviation *"
-                            />
-                        )}
-                        control={control}
-                        name={"abbreviation"}
-                        rules={{
-                            required: { value: true, message: "Required *" },
-                        }}
-                    />
+                    <div className={style.twocolumns}>
+
+                        <Controller
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth={true}
+                                    error={errors.abbreviation ? true : false}
+                                    helperText={errors.abbreviation && errors.abbreviation.message}
+                                    placeholder="Ex: SIWPLC"
+                                    size="small"
+                                    label="Abbreviation *"
+                                />
+                            )}
+                            control={control}
+                            name={"abbreviation"}
+                            rules={{
+                                required: { value: true, message: "Required *" },
+                            }}
+                        />
+
+
+                        <Controller
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth={true}
+                                    error={errors.givenid ? true : false}
+                                    helperText={errors.givenid && errors.givenid.message}
+                                    size="small"
+                                    label="Given ID *"
+                                />
+                            )}
+                            control={control}
+                            name={"givenid"}
+                        />
+
+                    </div>
+
+                </div>
+
+                <div className={style.row}>
 
                     <Controller
                         render={({ field }) => (
@@ -126,65 +150,42 @@ export default function SupplierFormStepOne(props) {
 
                 </div>
 
-                <div className={classnames(style.row, style.gridrow)}>
+                <div className={classnames(style.row, style.twocolumns)}>
 
                     <Controller
                         render={({ field }) => (
-                            <TextField
+                            <Select
                                 {...field}
-                                fullWidth={true}
-                                error={errors.givenid ? true : false}
-                                helperText={errors.givenid && errors.givenid.message}
-                                placeholder="Ex: SIWPLC"
+                                options={employeeOptions || []}
+                                error={errors.addedby ? true : false}
+                                helperText={errors.addedby && errors.addedby.message}
+                                label="Added By"
                                 size="small"
-                                label="Given ID *"
                             />
                         )}
                         control={control}
-                        name={"givenid"}
+                        name={"addedby"}
                         rules={{
                             required: { value: true, message: "Required *" },
                         }}
                     />
 
-                    <div className={style.twocolumns}>
-
-                        <Controller
-                            render={({ field }) => (
-                                <Select
-                                    {...field}
-                                    options={employeeOptions || []}
-                                    error={errors.addedby ? true : false}
-                                    helperText={errors.addedby && errors.addedby.message}
-                                    label="Added By"
-                                    size="small"
-                                />
-                            )}
-                            control={control}
-                            name={"addedby"}
-                            rules={{
-                                required: { value: true, message: "Required *" },
-                            }}
-                        />
-
-                        <Controller
-                            render={({ field }) => (
-                                <DatePicker
-                                    {...field}
-                                    error={errors.addeddate ? true : false}
-                                    helperText={errors.addeddate && errors.addeddate.message}
-                                    size="small"
-                                    label="Adding Date *"
-                                />
-                            )}
-                            control={control}
-                            name={"addeddate"}
-                            rules={{
-                                required: { value: true, message: "Required *" },
-                            }}
-                        />
-
-                    </div>
+                    <Controller
+                        render={({ field }) => (
+                            <DatePicker
+                                {...field}
+                                error={errors.addeddate ? true : false}
+                                helperText={errors.addeddate && errors.addeddate.message}
+                                size="small"
+                                label="Adding Date *"
+                            />
+                        )}
+                        control={control}
+                        name={"addeddate"}
+                        rules={{
+                            required: { value: true, message: "Required *" },
+                        }}
+                    />
 
                 </div>
 
