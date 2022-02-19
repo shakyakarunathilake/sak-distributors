@@ -9,7 +9,7 @@ import MuiAlert from '@mui/material/Alert';
 
 //Material UI Icons
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import BeenhereIcon from '@mui/icons-material/Beenhere';
 
 //Material Table
 import MaterialTable from 'material-table';
@@ -228,7 +228,7 @@ export default function ManageGRN() {
                                         },
                                         (rowData) => ({
                                             disabled: rowData.status === 'Delivered',
-                                            icon: LocalShippingIcon,
+                                            icon: BeenhereIcon,
                                             tooltip: 'Edit',
                                             onClick: (event, rowData) => {
                                                 setAction('Edit');
