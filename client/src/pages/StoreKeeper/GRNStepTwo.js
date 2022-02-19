@@ -21,6 +21,9 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 //Material Table
 import MaterialTable, { MTableToolbar } from 'material-table';
 
+//Shared functions 
+import NumberWithCommas from '../NumberWithCommas';
+
 //SCSS styles
 import style from './GRNStepTwo.module.scss';
 import { makeStyles } from '@material-ui/core/styles';
@@ -256,7 +259,7 @@ export default function GRNStepTwo(props) {
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 10px 0px 0px", width: '200px' }}>
                                                         <Typography style={{ fontWeight: 600 }}>
-                                                            {getValues("total")}
+                                                            {NumberWithCommas(getValues("total"))}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
@@ -268,7 +271,7 @@ export default function GRNStepTwo(props) {
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 10px 0px 0px", width: '200px' }}>
                                                         <Typography style={{ fontWeight: 600 }}>
-                                                            {getValues("damagedmissingitems")}
+                                                            {NumberWithCommas(getValues("damagedmissingitems"))}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
@@ -280,7 +283,7 @@ export default function GRNStepTwo(props) {
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 10px 0px 0px", width: '200px' }}>
                                                         <Typography style={{ fontSize: '1.05em', fontWeight: 600 }}>
-                                                            {getValues("grntotal")}
+                                                            {NumberWithCommas(getValues("grntotal"))}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
@@ -382,7 +385,7 @@ export default function GRNStepTwo(props) {
                                         },
                                         {
                                             field: "listprice",
-                                            render: rowData => rowData.listprice.toFixed(2),
+                                            render: rowData => NumberWithCommas(rowData.listprice.toFixed(2)),
                                             type: 'numeric',
                                             cellStyle: {
                                                 padding: "10px 7px 10px 7px",
@@ -476,7 +479,7 @@ export default function GRNStepTwo(props) {
                                         {
                                             field: "grnvalue",
                                             type: 'numeric',
-                                            render: rowData => rowData.grnvalue.toFixed(2),
+                                            render: rowData => NumberWithCommas(rowData.grnvalue.toFixed(2)),
                                             cellStyle: {
                                                 width: '8%',
                                                 padding: "10px 7px 10px 7px",
@@ -486,7 +489,7 @@ export default function GRNStepTwo(props) {
                                         {
                                             field: "value",
                                             type: 'numeric',
-                                            render: rowData => rowData.value.toFixed(2),
+                                            render: rowData => NumberWithCommas(rowData.value.toFixed(2)),
                                             cellStyle: {
                                                 width: '8%',
                                                 padding: "10px 7px 10px 7px",

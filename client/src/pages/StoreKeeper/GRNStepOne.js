@@ -23,6 +23,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 //Material Table
 import MaterialTable, { MTableToolbar } from 'material-table';
 
+//Shared functions 
+import NumberWithCommas from '../NumberWithCommas';
+
 //SCSS styles
 import style from './GRNStepOne.module.scss';
 import { makeStyles } from '@material-ui/core/styles';
@@ -74,7 +77,7 @@ export default function GRNStepOne(props) {
         let damagedmissingitems = (pototal - grntotal).toFixed(2);
 
         setValue("damagedmissingitems", damagedmissingitems);
-        return damagedmissingitems;
+        return NumberWithCommas(damagedmissingitems);
     }
 
     const onSubmit = () => {
@@ -274,7 +277,7 @@ export default function GRNStepOne(props) {
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 102.56px 0px 0px", width: '200px' }}>
                                                         <Typography style={{ fontWeight: 600 }}>
-                                                            {getValues("total")}
+                                                            {NumberWithCommas(getValues("total"))}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
@@ -298,7 +301,7 @@ export default function GRNStepOne(props) {
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 102.56px 0px 0px", width: '200px' }}>
                                                         <Typography style={{ fontSize: '1.05em', fontWeight: 600 }}>
-                                                            {getValues('grntotal')}
+                                                            {NumberWithCommas(getValues('grntotal'))}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
@@ -405,7 +408,7 @@ export default function GRNStepOne(props) {
                                         {
                                             field: "listprice",
                                             type: 'numeric',
-                                            render: rowData => rowData.listprice.toFixed(2),
+                                            render: rowData => NumberWithCommas(rowData.listprice.toFixed(2)),
                                             editable: 'never',
                                             cellStyle: {
                                                 padding: "10px 7px 10px 7px",
@@ -651,7 +654,7 @@ export default function GRNStepOne(props) {
                                         {
                                             field: "grnvalue",
                                             type: 'numeric',
-                                            render: rowData => rowData.grnvalue.toFixed(2),
+                                            render: rowData => NumberWithCommas(rowData.grnvalue.toFixed(2)),
                                             editable: 'never',
                                             cellStyle: {
                                                 width: '7%',
@@ -662,7 +665,7 @@ export default function GRNStepOne(props) {
                                         {
                                             field: "value",
                                             type: 'numeric',
-                                            render: rowData => rowData.value.toFixed(2),
+                                            render: rowData => NumberWithCommas(rowData.value.toFixed(2)),
                                             editable: 'never',
                                             cellStyle: {
                                                 width: '7%',
