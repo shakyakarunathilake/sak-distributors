@@ -15,6 +15,9 @@ import {
 //Material Table
 import MaterialTable from 'material-table';
 
+//Shared functions 
+import NumberWithCommas from '../NumberWithCommas';
+
 //Style
 import style from './RowTwo.module.scss';
 import { makeStyles } from '@material-ui/core/styles';
@@ -74,7 +77,9 @@ export default function RowTwo(props) {
                                                     <Typography style={{ fontWeight: 600 }}>  Previous credit amount to settle (Rs.) </Typography>
                                                 </Grid>
                                                 <Grid item align="Right" style={{ margin: "0px 10px  0px 0px", width: '100px' }}>
-                                                    <Typography style={{ fontWeight: 600 }}>{watch('creditamounttosettle')}</Typography>
+                                                    <Typography style={{ fontWeight: 600 }}>
+                                                        {NumberWithCommas(watch('creditamounttosettle'))}
+                                                    </Typography>
                                                 </Grid>
                                             </Grid>
                                             <Grid container style={{ background: "#f5f5f5", padding: 5 }}>
@@ -82,7 +87,9 @@ export default function RowTwo(props) {
                                                     <Typography style={{ fontWeight: 600 }}>  Current Invoice Total (Rs.) </Typography>
                                                 </Grid>
                                                 <Grid item align="Right" style={{ margin: "0px 10px  0px 0px", width: '100px' }}>
-                                                    <Typography style={{ fontWeight: 600 }}>{watch('total')}</Typography>
+                                                    <Typography style={{ fontWeight: 600 }}>
+                                                        {NumberWithCommas(watch('total'))}
+                                                    </Typography>
                                                 </Grid>
                                             </Grid>
                                             <Grid container style={{ background: "#f5f5f5", padding: 5 }}>
@@ -90,7 +97,9 @@ export default function RowTwo(props) {
                                                     <Typography style={{ fontWeight: 600 }}>  Current Invoice Credit Amount (Rs.) </Typography>
                                                 </Grid>
                                                 <Grid item align="Right" style={{ margin: "0px 10px  0px 0px", width: '100px' }}>
-                                                    <Typography style={{ fontWeight: 600 }}>{watch('currentinvoicecreditamount')}</Typography>
+                                                    <Typography style={{ fontWeight: 600 }}>
+                                                        {NumberWithCommas(watch('currentinvoicecreditamount'))}
+                                                    </Typography>
                                                 </Grid>
                                             </Grid>
                                             <Grid container style={{ background: "#f5f5f5", padding: 5 }}>
@@ -98,7 +107,9 @@ export default function RowTwo(props) {
                                                     <Typography style={{ fontWeight: 600 }}>  Minimum Payment (Rs.) </Typography>
                                                 </Grid>
                                                 <Grid item align="Right" style={{ margin: "0px 10px  0px 0px", width: '100px' }}>
-                                                    <Typography style={{ fontWeight: 600 }}>{watch('minimumpayment')}</Typography>
+                                                    <Typography style={{ fontWeight: 600 }}>
+                                                        {NumberWithCommas(watch('minimumpayment'))}
+                                                    </Typography>
                                                 </Grid>
                                             </Grid>
                                             <Grid container style={{ background: "#f5f5f5", padding: 5 }}>
@@ -106,7 +117,9 @@ export default function RowTwo(props) {
                                                     <Typography style={{ fontWeight: 600 }}>   Invoice Settlement Value (Rs.) </Typography>
                                                 </Grid>
                                                 <Grid item align="Right" style={{ margin: "0px 10px  0px 0px", width: '100px' }}>
-                                                    <Typography style={{ fontWeight: 600 }}>{watch('invoicesettlementvalue')}</Typography>
+                                                    <Typography style={{ fontWeight: 600 }}>
+                                                        {NumberWithCommas(watch('invoicesettlementvalue'))}
+                                                    </Typography>
                                                 </Grid>
                                             </Grid>
                                             <TablePagination {...props} />
@@ -180,6 +193,7 @@ export default function RowTwo(props) {
                                     },
                                     {
                                         field: "sellingprice",
+                                        render: rowData => NumberWithCommas(rowData.sellingprice.toFixed(2)),
                                         cellStyle: {
                                             width: '6%',
                                             padding: "12px 5px 12px 7px",
@@ -188,6 +202,7 @@ export default function RowTwo(props) {
                                     },
                                     {
                                         field: "mrp",
+                                        render: rowData => NumberWithCommas(rowData.mrp.toFixed(2)),
                                         cellStyle: {
                                             width: '6%',
                                             padding: "12px 5px 12px 7px",
@@ -244,6 +259,7 @@ export default function RowTwo(props) {
                                     },
                                     {
                                         field: "grossamount",
+                                        render: rowData => NumberWithCommas(rowData.grossamount.toFixed(2)),
                                         cellStyle: {
                                             width: '9%',
                                             padding: "12px 12px 12px 7px",

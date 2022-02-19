@@ -4,6 +4,9 @@ import { Controller } from 'react-hook-form';
 //Material UI Components
 import { Typography } from '@material-ui/core';
 
+//Shared functions 
+import NumberWithCommas from '../NumberWithCommas';
+
 //Style
 import style from './RowOne.module.scss';
 
@@ -257,7 +260,7 @@ export default function RowOne(props) {
                                     control={control}
                                     render={({ field: { value } }) => (
                                         <Typography className={style.input}>
-                                            Rs {value}
+                                            Rs {NumberWithCommas(value)}
                                         </Typography>
                                     )}
                                 />
