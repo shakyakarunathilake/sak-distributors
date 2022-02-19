@@ -135,6 +135,25 @@ export default function SupplierFormStepTwo(props) {
 
                 </div>
 
+                <div className={style.row}>
+
+                    <div className={style.boldText}>
+                        Debt
+                    </div>
+
+                    <div>
+                        <Controller
+                            render={({ field: { value } }) => (
+                                <Typography className={style.input}>
+                                    Rs. {value}
+                                </Typography>
+                            )}
+                            control={control}
+                            name={"damagedmissingitems"}
+                        />
+                    </div>
+
+                </div>
 
                 <div className={style.row}>
 

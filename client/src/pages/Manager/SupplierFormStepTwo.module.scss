@@ -4,7 +4,7 @@
     display: grid;
     grid-template-rows: min-content auto min-content;
     width: 700px;
-    min-height: 530px;
+    min-height: 570px;
     box-sizing: border-box;
 
     .header {
@@ -31,7 +31,7 @@
     .body {
         display: grid;
         grid-template-rows: auto min-content;
-        margin: auto;
+        margin: auto auto 0 auto;
 
         .input {
             text-align: left;
