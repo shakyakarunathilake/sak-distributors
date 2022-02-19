@@ -19,6 +19,9 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 //Material Table
 import MaterialTable from 'material-table';
 
+//Shared functions 
+import NumberWithCommas from '../NumberWithCommas';
+
 //SCSS styles
 import style from './PurchaseOrderStepTwo.module.scss';
 import { makeStyles } from '@material-ui/core/styles';
@@ -283,7 +286,7 @@ export default function PurchaseOrderStepTwo(props) {
                                                     <Grid item align="Right" style={{ margin: "0px 10px  0px 0px", width: '200px' }}>
                                                         <Typography style={{ fontWeight: 600 }}>
                                                             {/* {parseInt(orderFormData.grosstotal).toFixed(2)} */}
-                                                            {getValues('grosstotal')}
+                                                            {NumberWithCommas(getValues('grosstotal'))}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
@@ -296,7 +299,7 @@ export default function PurchaseOrderStepTwo(props) {
                                                     <Grid item align="Right" style={{ margin: "0px 10px  0px 0px", width: '200px' }}>
                                                         <Typography style={{ fontWeight: 600 }}>
                                                             {/* {parseInt(orderFormData.receiveddiscounts).toFixed(2)} */}
-                                                            {getValues('receiveddiscounts') === 0 ? '0.00' : getValues('receiveddiscounts')}
+                                                            {getValues('receiveddiscounts') === 0 ? '0.00' : NumberWithCommas(getValues('receiveddiscounts'))}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
@@ -309,7 +312,7 @@ export default function PurchaseOrderStepTwo(props) {
                                                     <Grid item align="Right" style={{ margin: "0px 10px  0px 0px", width: '200px' }}>
                                                         <Typography style={{ fontWeight: 600 }}>
                                                             {/* {parseInt(orderFormData.damagedmissingitems).toFixed(2)} */}
-                                                            {getValues('damagedmissingitems') === 0 ? '0.00' : getValues('damagedmissingitems')}
+                                                            {getValues('damagedmissingitems') === 0 ? '0.00' : NumberWithCommas(getValues('damagedmissingitems'))}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
@@ -322,7 +325,7 @@ export default function PurchaseOrderStepTwo(props) {
                                                     <Grid item align="Right" style={{ margin: "0px 10px  0px 0px", width: '200px' }}>
                                                         <Typography style={{ fontSize: '1.05em', fontWeight: 600 }}>
                                                             {/* {parseInt(orderFormData.total).toFixed(2)} */}
-                                                            {getValues('total')}
+                                                            {NumberWithCommas(getValues('total'))}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
@@ -349,7 +352,7 @@ export default function PurchaseOrderStepTwo(props) {
                                                     </TableCell>
                                                     <TableCell width="7%" padding="none" rowSpan={2} align="center">
                                                         <div style={{ padding: '0 10px' }}>
-                                                            List Price
+                                                            List Price (Rs.)
                                                         </div>
                                                     </TableCell>
                                                     <TableCell padding="none" colSpan={2} align="center">
@@ -363,7 +366,7 @@ export default function PurchaseOrderStepTwo(props) {
                                                     </TableCell>
                                                     <TableCell padding="none" width="12%" rowSpan={2} align="center">
                                                         <div style={{ padding: '0 10px' }}>
-                                                            Value
+                                                            Value (Rs.)
                                                         </div>
                                                     </TableCell>
                                                 </TableRow>
@@ -407,7 +410,7 @@ export default function PurchaseOrderStepTwo(props) {
                                         {
                                             field: "listprice",
                                             type: 'numeric',
-                                            render: rowData => rowData.listprice.toFixed(2),
+                                            render: rowData => NumberWithCommas(rowData.listprice.toFixed(2)),
                                             cellStyle: {
                                                 padding: "10px 5px 10px 7px",
                                                 width: '7%',
@@ -471,7 +474,7 @@ export default function PurchaseOrderStepTwo(props) {
                                         {
                                             field: "value",
                                             type: 'numeric',
-                                            render: rowData => rowData.value ? rowData.value.toFixed(2) : '',
+                                            render: rowData => rowData.value ? NumberWithCommas(rowData.value.toFixed(2)) : '',
                                             cellStyle: {
                                                 width: '12%',
                                                 padding: "10px 15px 10px 12px",
