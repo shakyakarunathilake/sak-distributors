@@ -19,6 +19,9 @@ import MaterialTable from 'material-table';
 //Material UI Icons
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
+//Shared functions 
+import NumberWithCommas from '../NumberWithCommas';
+
 //Styles
 import style from './StepFour.module.scss';
 import { makeStyles } from '@material-ui/core/styles';
@@ -124,7 +127,7 @@ export default function StepFour(props) {
                                                         <Typography style={{ fontWeight: 600 }}> Total (Rs.) </Typography>
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 10px  0px 0px", width: '100px' }}>
-                                                        <Typography style={{ fontWeight: 600 }}>{watch('total')}</Typography>
+                                                        <Typography style={{ fontWeight: 600 }}>{NumberWithCommas(watch('total'))}</Typography>
                                                     </Grid>
                                                 </Grid>
                                                 <TablePagination {...props} />
@@ -198,6 +201,7 @@ export default function StepFour(props) {
                                         },
                                         {
                                             field: "sellingprice",
+                                            render: rowData => NumberWithCommas(rowData.sellingprice),
                                             cellStyle: {
                                                 width: '6%',
                                                 padding: "12px 5px 12px 7px",
@@ -206,6 +210,7 @@ export default function StepFour(props) {
                                         },
                                         {
                                             field: "mrp",
+                                            render: rowData => NumberWithCommas(rowData.mrp),
                                             cellStyle: {
                                                 width: '6%',
                                                 padding: "12px 5px 12px 7px",
@@ -262,6 +267,7 @@ export default function StepFour(props) {
                                         },
                                         {
                                             field: "grossamount",
+                                            render: rowData => NumberWithCommas(rowData.grossamount),
                                             cellStyle: {
                                                 width: '9%',
                                                 padding: "12px 12px 12px 7px",

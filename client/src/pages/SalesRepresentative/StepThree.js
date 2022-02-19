@@ -23,6 +23,9 @@ import MaterialTable, { MTableAction, MTableToolbar } from 'material-table';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import DeleteIcon from '@mui/icons-material/Delete';
 
+//Shared functions 
+import NumberWithCommas from '../NumberWithCommas';
+
 //Styling
 import style from './StepThree.module.scss';
 import { makeStyles } from '@material-ui/core/styles';
@@ -168,7 +171,7 @@ export default function StepThree(props) {
                                                         <Typography style={{ fontWeight: 600 }}> Total (Rs.) </Typography>
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 102.59px  0px 0px", width: '100px' }}>
-                                                        <Typography style={{ fontWeight: 600 }}> {watch('total')} </Typography>
+                                                        <Typography style={{ fontWeight: 600 }}> {NumberWithCommas(watch('total'))} </Typography>
                                                     </Grid>
                                                 </Grid>
                                                 <TablePagination {...props} />
@@ -493,6 +496,7 @@ export default function StepThree(props) {
                                         {
                                             field: "grossamount",
                                             editable: 'never',
+                                            render: rowData => rowData.grossamount ? NumberWithCommas(rowData.grossamount) : '',
                                             type: 'numeric',
                                             cellStyle: {
                                                 width: '14%',
