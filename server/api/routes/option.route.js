@@ -55,7 +55,8 @@ router.get("/supplier-options-for-purchase-order", (req, res, next) => {
                 id: x.supplierid,
                 title: x.name,
                 abbreviation: x.abbreviation,
-                givenid: x.givenid
+                givenid: x.givenid,
+                damagedmissingitems: x.damagedmissingitems
             }))
 
             res.status(200).json({
