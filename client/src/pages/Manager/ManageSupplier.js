@@ -320,6 +320,7 @@ export default function ManageSupplier() {
                                                 icon: 'edit',
                                                 tooltip: 'Edit',
                                                 onClick: (event, rowData) => {
+                                                    getEmployeeOptions();
                                                     setAction('Edit');
                                                     openInPopup(rowData.supplierid);
                                                 }
