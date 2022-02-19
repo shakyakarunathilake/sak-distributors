@@ -66,6 +66,7 @@ router.post("/create-supplier", formDataBody.fields([]), (req, res, next) => {
         addeddate: addeddate,
         contactnumber: req.body.contactnumber,
         email: req.body.email,
+        damagedmissingitems: 0
     });
 
     supplier
@@ -137,6 +138,7 @@ router.get("/:supplierid", (req, res, next) => {
                 'addeddate': doc.addeddate,
                 'contactnumber': doc.contactnumber,
                 'email': doc.email,
+                'damagedmissingitems': doc.damagedmissingitems
             }
 
             res.status(200).json({

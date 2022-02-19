@@ -12,7 +12,8 @@ const supplierSchema = mongoose.Schema({
     addedby: { type: String, required: true },
     addeddate: { type: String, required: true },
     contactnumber: { type: Number, required: true },
-    email: { type: String, required: true }
+    email: { type: String, required: true },
+    damagedmissingitems: { type: Number, required: false },
 })
 
 module.exports = mongoose.model('Supplier', supplierSchema);
