@@ -6,6 +6,7 @@ const multer = require("multer");
 const MetaData = require("../models/metadata.model")
 const PurchaseOrder = require("../models/purchaseorder.model");
 const GRN = require("../models/grn.model");
+const Supplier = require("../models/supplier.model");
 
 const formDataBody = multer();
 
@@ -100,6 +101,34 @@ router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) =
                     console.log(err);
                     res.status(500).json({ "Error": err });
                 })
+
+            return result;
+        })
+        .then(result => {
+
+            Supplier
+                .findOneAndUpdate(
+                    { name: result.supplier },
+                    {
+                        $inc: {
+                            'damagedmissingitems': -parseInt(result.damagedmissingitems)
+                        }
+                    },
+                    { new: true, upsert: true }
+                )
+                .exec()
+                .then(
+                    console.log("******** SUPPLIER DAMAGED MISSING ITEMS REFUND UPDATED ********")
+                )
+                .catch(err => {
+                    console.log("******** COULDN'T UPDATE SUPPLIER DAMAGED MISSING ITEMS REFUND ********");
+                    console.log(err);
+
+                    res.status(200).json({
+                        type: 'error',
+                        alert: `Something went wrong. Could not update Meta Data `,
+                    })
+                });
 
             return result;
         })

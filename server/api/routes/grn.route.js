@@ -3,7 +3,8 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const multer = require("multer");
 
-const MetaData = require("../models/metadata.model")
+const MetaData = require("../models/metadata.model");
+const Supplier = require("../models/supplier.model")
 const PurchaseOrder = require("../models/purchaseorder.model");
 const GRN = require("../models/grn.model");
 const Store = require("../models/store.model");
@@ -202,6 +203,34 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
                         console.log(err);
                     })
             })
+
+            return doc;
+        })
+        .then(doc => {
+
+            Supplier
+                .findOneAndUpdate(
+                    { name: doc.supplier },
+                    {
+                        $inc: {
+                            'damagedmissingitems': parseInt(doc.damagedmissingitems)
+                        }
+                    },
+                    { new: true, upsert: true }
+                )
+                .exec()
+                .then(
+                    console.log("******** SUPPLIER DAMAGED MISSING ITEMS REFUND UPDATED ********")
+                )
+                .catch(err => {
+                    console.log("******** COULDN'T UPDATE SUPPLIER DAMAGED MISSING ITEMS REFUND ********");
+                    console.log(err);
+
+                    res.status(200).json({
+                        type: 'error',
+                        alert: `Something went wrong. Could not update Meta Data `,
+                    })
+                });
 
             return doc;
         })
