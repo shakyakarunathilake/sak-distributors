@@ -57,6 +57,12 @@ const getDistributorListItems = [
         path: "http://localhost:3000/horizontal-bar-chart",
         icon: <TimelineIcon />
     },
+    {
+        id: "Line Chart",
+        title: "Line Chart",
+        path: "http://localhost:3000/line-chart",
+        icon: <TimelineIcon />
+    },
 ];
 
 const getHRListItems = [

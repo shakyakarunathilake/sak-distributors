@@ -36,11 +36,11 @@ import ViewOrderDetails from '../pages/StoreKeeper/ViewOrderDetails';
 //Sales Representative
 import SalesAndInvoice from '../pages/SalesRepresentative/SalesAndInvoice';
 
-
 //Development Stage
 import DoughnutChart from '../pages/Analytics/DoughnutChart';
 import VerticalBarChart from '../pages/Analytics/VerticalBarChart';
 import HorizontalBarChart from '../pages/Analytics/HorizontalBarChart';
+import LineChart from '../pages/Analytics/LineChart';
 
 const theme = createTheme({
   palette: {
@@ -77,7 +77,7 @@ function App() {
             <Route exact path='/doughnut-chart' component={DoughnutChart} />
             <Route exact path='/vertical-bar-chart' component={VerticalBarChart} />
             <Route exact path='/horizontal-bar-chart' component={HorizontalBarChart} />
-
+            <Route exact path='/line-chart' component={LineChart} />
 
             {/* Shared */}
             <Route exact path='/' component={Login} />
