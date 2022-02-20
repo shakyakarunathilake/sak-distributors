@@ -19,6 +19,7 @@ import MuiAlert from '@mui/material/Alert';
 //Material UI Icons
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import InfoIcon from '@mui/icons-material/Info';
 
 //Connecting to Backend
 import axios from 'axios';
@@ -32,13 +33,15 @@ export default function ChangePassword() {
     const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
     const firsttimelogin = JSON.parse(sessionStorage.getItem("Auth")).firsttimelogin;
 
-    const { handleSubmit, formState: { errors }, control, reset } = useForm({
+    const { handleSubmit, formState: { errors }, control, reset, watch } = useForm({
         defaultValues: {
             currentpassword: '',
             newpassword: '',
             confirmpassword: '',
         }
     });
+
+    let pwd = watch("newpassword");
 
     const [currentPasswordShown, setCurrentPasswordShown] = useState(false);
     const [newPasswordShown, setNewPasswordShown] = useState(false);
@@ -134,14 +137,15 @@ export default function ChangePassword() {
                                 <Controller
                                     name={"currentpassword"}
                                     control={control}
-                                    rules={{ required: true }}
-                                    render={({ field: { onChange, value } }) => (
+                                    rules={{
+                                        required: { value: true, message: "Required *" },
+                                    }}
+                                    render={({ field }) => (
                                         <TextField
+                                            {...field}
                                             className={style.field}
-                                            helperText="Current Password is required"
+                                            helperText={errors.currentpassword && errors.currentpassword.message}
                                             error={errors.currentpassword ? true : false}
-                                            onChange={onChange}
-                                            value={value}
                                             fullWidth={true}
                                             label="Current Password"
                                             type={currentPasswordShown ? "text" : "password"}
@@ -167,14 +171,16 @@ export default function ChangePassword() {
                                 <Controller
                                     name={"newpassword"}
                                     control={control}
-                                    rules={{ required: true }}
-                                    render={({ field: { onChange, value } }) => (
+                                    rules={{
+                                        required: { value: true, message: "Required *" },
+                                        pattern: { value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, message: "Invalid" }
+                                    }}
+                                    render={({ field }) => (
                                         <TextField
+                                            {...field}
                                             className={style.field}
-                                            helperText="New Password is required"
+                                            helperText={errors.newpassword && errors.newpassword.message}
                                             error={errors.newpassword ? true : false}
-                                            onChange={onChange}
-                                            value={value}
                                             label="New Password"
                                             fullWidth={true}
                                             type={newPasswordShown ? "text" : "password"}
@@ -200,14 +206,16 @@ export default function ChangePassword() {
                                 <Controller
                                     name={"confirmpassword"}
                                     control={control}
-                                    rules={{ required: true }}
-                                    render={({ field: { onChange, value } }) => (
+                                    rules={{
+                                        required: { value: true, message: "Confirm Password *" },
+                                        validate: value => value === pwd || "Password mismatch"
+                                    }}
+                                    render={({ field }) => (
                                         <TextField
+                                            {...field}
                                             className={style.field}
-                                            helperText="Confirm Password is required"
+                                            helperText={errors.confirmpassword && errors.confirmpassword.message}
                                             error={errors.confirmpassword ? true : false}
-                                            onChange={onChange}
-                                            value={value}
                                             label="Confirm Password"
                                             fullWidth={true}
                                             type={confirmPasswordShown ? "text" : "password"}
@@ -227,7 +235,13 @@ export default function ChangePassword() {
                                         />
                                     )}
                                 />
+
+                                <div className={style.redFont}>
+                                    <InfoIcon className={style.icon} /> The password should contain minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character.
+                                </div>
+
                             </div>
+
 
                             <div className={style.div}>
                                 <Button
