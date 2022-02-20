@@ -8,7 +8,7 @@ import React from 'react';
 //   Tooltip,
 //   Legend,
 // } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+import { HorizontalBar } from 'react-chartjs-2';
 // import faker from 'faker';
 
 // ChartJS.register(
@@ -46,13 +46,13 @@ const data = {
     datasets: [
         {
             label: 'Dataset 1',
-            data: [156, 126, 684, 564, 654, 315, 456],
+            data: [156, -126, 684, 564, 654, -315, 456],
             borderColor: 'rgb(255, 99, 132)',
             backgroundColor: 'rgba(255, 99, 132, 0.5)',
         },
         {
             label: 'Dataset 2',
-            data: [124, 196, 376, 455, 254, 786, 553],
+            data: [124, 196, 376, -455, 254, 786, -553],
             borderColor: 'rgb(53, 162, 235)',
             backgroundColor: 'rgba(53, 162, 235, 0.5)',
         },
@@ -68,7 +68,7 @@ export default function HorizontalBarChart() {
             </h1>
 
             <div style={{ width: 600, margin: "0 auto" }}>
-                <Bar
+                <HorizontalBar
                     options={options}
                     data={data}
                 />
