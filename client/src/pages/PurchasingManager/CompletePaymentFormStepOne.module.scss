@@ -1,0 +1,120 @@
+@import "../../styles/variables";
+
+.container {
+    display: grid;
+    grid-template-rows: min-content auto min-content;
+    box-sizing: border-box;
+    width: 1000px;
+    height: 770px;
+}
+
+.header {
+    .title {
+        display: grid;
+        grid-template-columns: auto min-content;
+        font-size: 1.55em;
+        font-weight: 600;
+        .icon {
+            color: red;
+            &:hover {
+                transform: scale(1.1);
+            }
+        }
+    }
+
+    .step {
+        margin: 5px 0 0 0;
+        color: $primaryLight;
+        font-size: 0.75em;
+    }
+}
+
+.body {
+    padding: 20px 10px 0 10px;
+
+    .columns {
+        display: grid;
+        grid-template-columns: 50% 50%;
+
+        .row {
+            display: grid;
+            grid-template-columns: 120px calc(100% - 150px);
+            grid-column-gap: 20px;
+        }
+    }
+
+    .row {
+        display: grid;
+        grid-template-columns: 300px calc(100% - 310px);
+        grid-column-gap: 10px;
+        margin: 15px 10px;
+
+        .boldText {
+            font-size: 1em;
+            font-weight: 700;
+            margin: auto 0 auto 0;
+        }
+
+        .customerData {
+            .rightInput {
+                text-align: right;
+            }
+
+            .yellow {
+                color: #eed202;
+                font-weight: 700;
+            }
+
+            .orange {
+                color: #fc6a03;
+                font-weight: 700;
+            }
+
+            .green {
+                color: #4cbb17;
+                font-weight: 700;
+            }
+
+            .blue {
+                color: $primaryMain;
+                font-weight: 700;
+            }
+        }
+    }
+
+    .box {
+        background-color: $layoutColor;
+        height: max-content;
+        padding: 10px;
+        border-radius: 10px;
+        margin: 10px 0 20px 0;
+    }
+}
+
+.footer {
+    display: grid;
+    grid-template-columns: auto auto;
+    padding: 20px 0px 5px 0px;
+
+    Button {
+        font-size: 1em;
+        height: 40px;
+        padding: $formButtonPadding2;
+    }
+
+    .backBtn {
+        text-align: left;
+        Button {
+            background-color: #c2c2c2;
+            color: $inverseFontColor;
+        }
+    }
+
+    .doneBtn {
+        text-align: right;
+        Button {
+            background-color: $primaryMain;
+            color: $inverseFontColor;
+        }
+    }
+}
