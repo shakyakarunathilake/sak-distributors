@@ -265,7 +265,11 @@ export default function PurchaseOrderStepTwo(props) {
                 <AutoSizer>
                     {({ height, width }) => {
 
-                        const pageSize = Math.floor((height - (action === 'View' ? 490 : 470)) / 48);
+                        const value = (action === 'View' ? 430 : action === 'Edit' ? 400 : action === 'Approve' ? 420 : 460);
+
+                        console.log(value);
+
+                        const pageSize = Math.floor((height - value) / 48);
 
                         return (
                             <div style={{ height: `${height}px`, width: `${width}px`, overflowY: 'auto' }}>
@@ -285,7 +289,6 @@ export default function PurchaseOrderStepTwo(props) {
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 10px  0px 0px", width: '200px' }}>
                                                         <Typography style={{ fontWeight: 600 }}>
-                                                            {/* {parseInt(orderFormData.grosstotal).toFixed(2)} */}
                                                             {NumberWithCommas(getValues('grosstotal'))}
                                                         </Typography>
                                                     </Grid>
@@ -298,7 +301,6 @@ export default function PurchaseOrderStepTwo(props) {
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 10px  0px 0px", width: '200px' }}>
                                                         <Typography style={{ fontWeight: 600 }}>
-                                                            {/* {parseInt(orderFormData.receiveddiscounts).toFixed(2)} */}
                                                             {getValues('receiveddiscounts') === 0 ? '0.00' : NumberWithCommas(getValues('receiveddiscounts'))}
                                                         </Typography>
                                                     </Grid>
@@ -311,7 +313,6 @@ export default function PurchaseOrderStepTwo(props) {
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 10px  0px 0px", width: '200px' }}>
                                                         <Typography style={{ fontWeight: 600 }}>
-                                                            {/* {parseInt(orderFormData.damagedmissingitems).toFixed(2)} */}
                                                             {getValues('damagedmissingitems') === 0 ? '0.00' : NumberWithCommas(getValues('damagedmissingitems'))}
                                                         </Typography>
                                                     </Grid>
@@ -324,7 +325,6 @@ export default function PurchaseOrderStepTwo(props) {
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 10px  0px 0px", width: '200px' }}>
                                                         <Typography style={{ fontSize: '1.05em', fontWeight: 600 }}>
-                                                            {/* {parseInt(orderFormData.total).toFixed(2)} */}
                                                             {NumberWithCommas(getValues('total'))}
                                                         </Typography>
                                                     </Grid>
