@@ -240,13 +240,13 @@ export default function StepThree(props) {
                                                         >
                                                             <Grid container>
                                                                 <Grid item xs={12}>
-                                                                    <b>Prod. ID: </b> {option.productid}
+                                                                    <b> Prod. ID: </b> {option.productid}
                                                                 </Grid>
                                                                 <Grid item xs={12}>
-                                                                    <b>Variant ID: </b> {option.variantid}
+                                                                    <b> Variant ID: </b> {option.variantid}
                                                                 </Grid>
                                                                 <Grid item xs={12}>
-                                                                    <b>Name: </b> {option.name}
+                                                                    <b> Name: </b> {option.name}
                                                                 </Grid>
                                                                 <Grid item xs={12}>
                                                                     <b> Type: </b>
@@ -254,7 +254,7 @@ export default function StepThree(props) {
                                                                 </Grid>
                                                                 {option.type === "Promotion" ? <Grid item xs={12}>  <b> Offer Caption: </b> {option.offercaption}  </Grid> : ""}
                                                                 <Grid item xs={12}>
-                                                                    <b>MRP: </b> {option.mrp}
+                                                                    <b> MRP: </b> {option.mrp}
                                                                 </Grid>
                                                                 <Grid item xs={12}>
                                                                     <b> Selling Price: </b> {option.sellingprice}
