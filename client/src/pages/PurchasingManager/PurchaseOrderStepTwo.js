@@ -340,17 +340,17 @@ export default function PurchaseOrderStepTwo(props) {
                                                             #
                                                         </div>
                                                     </TableCell>
-                                                    <TableCell width="32%" padding="none" rowSpan={2}>
+                                                    <TableCell width="38%" padding="none" rowSpan={2}>
                                                         <div style={{ padding: '0 10px' }}>
                                                             Description
                                                         </div>
                                                     </TableCell>
-                                                    <TableCell width="7%" padding="none" rowSpan={2} align="center">
+                                                    <TableCell width="9%" padding="none" rowSpan={2} align="center">
                                                         <div style={{ padding: '0 10px' }}>
                                                             Pieces per Case
                                                         </div>
                                                     </TableCell>
-                                                    <TableCell width="7%" padding="none" rowSpan={2} align="center">
+                                                    <TableCell width="9%" padding="none" rowSpan={2} align="center">
                                                         <div style={{ padding: '0 10px' }}>
                                                             List Price (Rs.)
                                                         </div>
@@ -361,10 +361,7 @@ export default function PurchaseOrderStepTwo(props) {
                                                     <TableCell padding="none" colSpan={2} align="center">
                                                         Free Qty.
                                                     </TableCell>
-                                                    <TableCell padding="none" colSpan={2} align="center">
-                                                        Return Qty.
-                                                    </TableCell>
-                                                    <TableCell padding="none" width="12%" rowSpan={2} align="center">
+                                                    <TableCell padding="none" width="14%" rowSpan={2} align="center">
                                                         <div style={{ padding: '0 10px' }}>
                                                             Value (Rs.)
                                                         </div>
@@ -375,8 +372,6 @@ export default function PurchaseOrderStepTwo(props) {
                                                     <TableCell width="7%" padding="none" align="center">Pcs</TableCell>
                                                     <TableCell width="7%" padding="none" align="center">Cs</TableCell>
                                                     <TableCell width="7%" padding="none" align="center">Pcs</TableCell>
-                                                    <TableCell width="6%" padding="none" align="center">D</TableCell>
-                                                    <TableCell width="6%" padding="none" align="center">R</TableCell>
                                                 </TableRow>
                                             </TableHead>
                                         ),
@@ -394,7 +389,7 @@ export default function PurchaseOrderStepTwo(props) {
                                             field: "description",
                                             cellStyle: {
                                                 padding: "10px 5px 10px 7px",
-                                                width: '32%',
+                                                width: '38%',
                                                 textAlign: 'left'
                                             },
                                         },
@@ -403,7 +398,7 @@ export default function PurchaseOrderStepTwo(props) {
                                             field: "piecespercase",
                                             cellStyle: {
                                                 padding: "10px 5px 10px 7px",
-                                                width: '7%',
+                                                width: '9%',
                                                 textAlign: 'right'
                                             },
                                         },
@@ -413,7 +408,7 @@ export default function PurchaseOrderStepTwo(props) {
                                             render: rowData => NumberWithCommas(rowData.listprice.toFixed(2)),
                                             cellStyle: {
                                                 padding: "10px 5px 10px 7px",
-                                                width: '7%',
+                                                width: '9%',
                                                 textAlign: 'right'
                                             },
                                         },
@@ -454,29 +449,11 @@ export default function PurchaseOrderStepTwo(props) {
                                             },
                                         },
                                         {
-                                            field: "damaged",
-                                            type: 'numeric',
-                                            cellStyle: {
-                                                width: '6%',
-                                                padding: "10px 5px 10px 7px",
-                                                textAlign: 'right'
-                                            },
-                                        },
-                                        {
-                                            field: "return",
-                                            type: 'numeric',
-                                            cellStyle: {
-                                                width: '6%',
-                                                padding: "10px 5px 10px 7px",
-                                                textAlign: 'right'
-                                            },
-                                        },
-                                        {
                                             field: "value",
                                             type: 'numeric',
                                             render: rowData => rowData.value ? NumberWithCommas(rowData.value.toFixed(2)) : '',
                                             cellStyle: {
-                                                width: '12%',
+                                                width: '14%',
                                                 padding: "10px 15px 10px 12px",
                                                 textAlign: 'right'
                                             },

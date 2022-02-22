@@ -243,17 +243,17 @@ export default function PurchaseOrderStepOne(props) {
                                             Header: props => (
                                                 <TableHead {...props} style={{ position: 'sticky', top: '0', zIndex: 99999 }}>
                                                     <TableRow className={classes.row1}>
-                                                        <TableCell width="27%" padding="none" rowSpan={2}>
+                                                        <TableCell width="38%" padding="none" rowSpan={2}>
                                                             <div style={{ padding: '0 10px' }}>
                                                                 Description
                                                             </div>
                                                         </TableCell>
-                                                        <TableCell width="7%" padding="none" rowSpan={2} align="center">
+                                                        <TableCell width="10%" padding="none" rowSpan={2} align="center">
                                                             <div style={{ padding: '0 10px' }}>
                                                                 Pieces per case
                                                             </div>
                                                         </TableCell>
-                                                        <TableCell width="7%" padding="none" rowSpan={2} align="center">
+                                                        <TableCell width="10%" padding="none" rowSpan={2} align="center">
                                                             <div style={{ padding: '0 10px' }}>
                                                                 List Price (Rs.)
                                                             </div>
@@ -264,10 +264,7 @@ export default function PurchaseOrderStepOne(props) {
                                                         <TableCell padding="none" colSpan={2} align="center">
                                                             Free Qty.
                                                         </TableCell>
-                                                        <TableCell padding="none" colSpan={2} align="center">
-                                                            Return Qty.
-                                                        </TableCell>
-                                                        <TableCell padding="none" width="11%" rowSpan={2} align="center">
+                                                        <TableCell width="14%" padding="none" rowSpan={2} align="center">
                                                             <div style={{ padding: '0 10px' }}>
                                                                 Value (Rs.)
                                                             </div>
@@ -281,8 +278,6 @@ export default function PurchaseOrderStepOne(props) {
                                                         <TableCell width="7%" padding="none" align="center">Pcs</TableCell>
                                                         <TableCell width="7%" padding="none" align="center">Cs</TableCell>
                                                         <TableCell width="7%" padding="none" align="center">Pcs</TableCell>
-                                                        <TableCell width="7%" padding="none" align="center">D</TableCell>
-                                                        <TableCell width="7%" padding="none" align="center">R</TableCell>
                                                     </TableRow>
                                                 </TableHead>
                                             ),
@@ -293,7 +288,7 @@ export default function PurchaseOrderStepOne(props) {
                                                 field: "description",
                                                 cellStyle: {
                                                     padding: "10px 5px 10px 7px",
-                                                    width: '27%',
+                                                    width: '38%',
                                                     textAlign: 'left'
                                                 },
                                                 editComponent: props => (
@@ -329,7 +324,7 @@ export default function PurchaseOrderStepOne(props) {
                                                 type: 'numeric',
                                                 cellStyle: {
                                                     padding: "10px 5px 10px 7px",
-                                                    width: '7%',
+                                                    width: '10%',
                                                     textAlign: 'right'
                                                 },
                                                 editComponent: props =>
@@ -365,7 +360,7 @@ export default function PurchaseOrderStepOne(props) {
                                                 type: 'numeric',
                                                 cellStyle: {
                                                     padding: "10px 5px 10px 7px",
-                                                    width: '7%',
+                                                    width: '10%',
                                                     textAlign: 'right'
                                                 },
                                                 render: rowData => NumberWithCommas(rowData.listprice.toFixed(2)),
@@ -493,48 +488,13 @@ export default function PurchaseOrderStepOne(props) {
 
                                             },
                                             {
-                                                title: "9",
-                                                field: "damaged",
-                                                type: 'numeric',
-                                                initialEditValue: 0,
-                                                cellStyle: {
-                                                    width: '7%',
-                                                    padding: "10px 5px 10px 7px",
-                                                    textAlign: 'right'
-                                                },
-                                                validate: (rowData) =>
-                                                    rowData.damaged === undefined
-                                                        ? { isValid: false, helperText: 'Required *' }
-                                                        : rowData.damaged === ''
-                                                            ? { isValid: false, helperText: 'Required *' }
-                                                            : true
-
-                                            },
-                                            {
-                                                title: "9",
-                                                field: "return",
-                                                type: 'numeric',
-                                                initialEditValue: 0,
-                                                cellStyle: {
-                                                    width: '7%',
-                                                    padding: "10px 5px 10px 7px",
-                                                    textAlign: 'right'
-                                                },
-                                                validate: (rowData) =>
-                                                    rowData.return === undefined
-                                                        ? { isValid: false, helperText: 'Required *' }
-                                                        : rowData.return === ''
-                                                            ? { isValid: false, helperText: 'Required *' }
-                                                            : true
-
-                                            },
-                                            {
                                                 title: "9999.99",
                                                 field: "value",
                                                 type: 'numeric',
                                                 render: rowData => rowData.value ? NumberWithCommas(rowData.value.toFixed(2)) : '',
                                                 cellStyle: {
-                                                    width: 'min-content'
+                                                    width: '14%',
+                                                    textAlign: 'right'
                                                 },
                                                 editable: 'never',
                                             }
