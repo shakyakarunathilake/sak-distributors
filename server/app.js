@@ -22,6 +22,7 @@ const ginRoutes = require("./api/routes/gin.route");
 const metaDataRoutes = require("./api/routes/metadata.route");
 const storeRoutes = require("./api/routes/store.route");
 const quotationRoutes = require("./api/routes/quotation.route");
+const supplierPaymentRoutes = require("./api/routes/supplierpayment.route");
 
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -62,5 +63,6 @@ app.use("/gin", checkAuth, ginRoutes);
 app.use("/store", checkAuth, storeRoutes);
 app.use("/metadata", checkAuth, metaDataRoutes);
 app.use("/quotations", checkAuth, quotationRoutes);
+app.use("/supplier-payments", checkAuth, supplierPaymentRoutes);
 
 module.exports = app;
