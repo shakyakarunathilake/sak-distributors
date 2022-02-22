@@ -21,8 +21,8 @@ export default function ViewCustomer(props) {
             addeddate: customerRecords.addeddate,
             shippingaddress: customerRecords.shippingaddress,
             billingaddress: customerRecords.billingaddress,
-            customercontactnumber: `0${customerRecords.customercontactnumber}`,
-            storecontactnumber: `0${customerRecords.storecontactnumber}`,
+            customercontactnumber: customerRecords.customercontactnumber,
+            storecontactnumber: customerRecords.storecontactnumber,
             email: customerRecords.email,
             registeredby: customerRecords.registeredby,
         }
