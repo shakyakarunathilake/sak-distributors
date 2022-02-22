@@ -136,12 +136,12 @@ router.post("/create-product", uploads.single("productimage"), (req, res, next) 
                 _id: mongoose.Types.ObjectId(),
                 productid: result.productid,
                 name: result.name,
-                storequantity: [{
+                storequantity: {
                     salesqtycases: 0,
                     salesqtypieces: 0,
                     freeqtycases: 0,
                     freeqtypieces: 0,
-                }]
+                }
             })
 
             store
