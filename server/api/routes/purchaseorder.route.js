@@ -7,6 +7,7 @@ const MetaData = require("../models/metadata.model")
 const PurchaseOrder = require("../models/purchaseorder.model");
 const GRN = require("../models/grn.model");
 const Supplier = require("../models/supplier.model");
+const SupplierPayment = require("../models/supplierpayment.model");
 
 const formDataBody = multer();
 
@@ -151,7 +152,6 @@ router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) =
 
 });
 
-
 //Get purchase order details by PO Number
 router.get("/:ponumber", (req, res, next) => {
 
@@ -251,7 +251,8 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
                     "deliveredfreeqtycases": item.deliveredfreeqtycases ? item.deliveredfreeqtycases : item.freeqtycases,
                     "freeqtypieces": item.freeqtypieces,
                     "deliveredfreeqtypieces": item.deliveredfreeqtypieces ? item.deliveredfreeqtypieces : item.freeqtypieces,
-                    "damaged": item.damaged ? item.damaged : 0,
+                    "damagedfreeqty": 0,
+                    "damagedsalesqty": 0,
                     "description": item.description,
                     "piecespercase": parseInt(item.piecespercase),
                     "listprice": item.listprice,
@@ -276,9 +277,10 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
                 items: items,
                 createdat: '',
                 createdby: '',
-                grosstotal: result.grosstotal,
-                damagedmissingitems: 0,
-                total: result.total,
+                pototal: result.total,
+                previousdamagedmissingitems: result.previousdamagedmissingitems,
+                damagedmissingitems: '0.00',
+                grntotal: '0.00'
             });
 
             grn
@@ -324,6 +326,46 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
                     console.log("********  APPROVE PURCHASE ORDER METADATA ERROR ********")
                     console.log(err)
                 })
+
+            return result;
+        })
+        .then(result => {
+
+            const supplierpayment = new SupplierPayment({
+                _id: new mongoose.Types.ObjectId(),
+                supplier: result.supplier,
+                ponumber: result.ponumber,
+                grnnumber: '',
+                status: 'Advance Payment To Be Paid',
+                pogrosstotal: result.grosstotal,
+                receiveddiscounts: result.receiveddiscounts,
+                pototal: result.total,
+                grngrosstotal: '0.00',
+                podamagedmissingitems: result.damagedmissingitems,
+                grntotal: '0.00',
+                paidamount: '0.00',
+                advancepayment: '',
+                advancepaymentpaidat: '',
+                advancepaymentpaidby: '',
+                paymentcompletedat: '',
+                paymentcompletedby: '',
+                grndamagedmissingitems: '',
+                debt: parseInt(result.total),
+            });
+
+            supplierpayment
+                .save()
+                .then(
+                    console.log("******** SUPPLIER PAYMENT ADDED ********")
+                )
+                .catch(err => {
+                    res.status(200).json({
+                        type: 'error',
+                        alert: `Something went wrong. Could not add supplier payment`,
+                    });
+                    console.log("Error: ", err)
+                })
+
 
             return result;
         })

@@ -8,6 +8,7 @@ const Supplier = require("../models/supplier.model")
 const PurchaseOrder = require("../models/purchaseorder.model");
 const GRN = require("../models/grn.model");
 const Store = require("../models/store.model");
+const SupplierPayment = require("../models/supplierpayment.model");
 
 const formDataBody = multer();
 
@@ -58,16 +59,17 @@ router.get("/:grnnumber", (req, res, next) => {
 
             const grn = {
                 'ponumber': doc.ponumber,
-                'status': doc.status,
                 'grnnumber': doc.grnnumber,
-                'givenid': doc.givenid,
                 'supplier': doc.supplier,
+                'pototal': doc.pototal,
+                'status': doc.status,
+                'givenid': doc.givenid,
                 'createdat': doc.createdat,
                 'createdby': doc.createdby,
-                'total': doc.total,
+                'items': doc.items,
+                'previousdamagedmissingitems': doc.previousdamagedmissingitems,
                 'damagedmissingitems': doc.damagedmissingitems,
-                'grntotal': doc.total,
-                'items': doc.items
+                'grntotal': doc.grntotal,
             }
 
             res.status(200).json({
@@ -117,10 +119,10 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
                 )
                 .exec()
                 .then(doc => {
-                    console.log("******** GRN STATUS DELIVERED AND PURCHASE ORDER UPDATED ********");
+                    console.log("******** PURCHASE ORDER UPDATED ********");
                 })
                 .catch(err => {
-                    console.log("******** GRN STATUS DELIVERED AND PURCHASE ORDER UPDATED ERROR!!!!! ********");
+                    console.log("******** PURCHASE ORDER UPDATED ERROR!!!!! ********");
                     console.log(err);
 
                     res.status(200).json({
@@ -134,30 +136,33 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
         })
         .then(doc => {
 
-            MetaData
+            SupplierPayment
                 .findOneAndUpdate(
-                    {},
+                    { "ponumber": doc.ponumber },
                     {
-                        $pull: {
-                            'noofawaitinggrn': {
-                                'ponumber': doc.ponumber
-                            }
+                        '$set': {
+                            'grnnumber': doc.grnnumber,
+                            'grngrosstotal': doc.pototal,
+                            'grndamagedmissingitems': doc.damagedmissingitems,
+                            'grntotal': doc.grntotal,
+                            'status': 'Payment To Be Complete'
+                        },
+                        '$inc': {
+                            'debt': -parseInt(req.body.damagedmissingitems)
                         }
                     },
-                    { upsert: true }
+                    { new: true, upsert: true }
                 )
                 .exec()
-                .then(doc => {
-                    console.log("******** GRN STATUS DELIVERED AND META DATA ADDED ********");
-                })
+                .then(
+                    console.log("******** SUPPLIER PAYMENT ADDED ********")
+                )
                 .catch(err => {
-                    console.log("******** GRN STATUS DELIVERED AND META DATA ERROR!!!!! ********");
                     console.log(err);
-
                     res.status(200).json({
                         type: 'error',
-                        alert: `Something went wrong. Could not update Meta Data `,
-                    })
+                        alert: `Something went wrong. Could not update relevant supplier payment`,
+                    });
                 });
 
             return doc;
@@ -165,15 +170,41 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
         .then(doc => {
 
             doc.items.map(item => {
+
+                let pieces = 0;
+                let cases = 0;
+                let totalnumberofpieces = 0;
+
+                const getPieces = (noofpieces, piecespercase) => {
+                    pieces = noofpieces % piecespercase;
+                    return pieces;
+                }
+
+                const getCases = (noofpieces, piecespercase) => {
+                    cases = Math.floor(noofpieces / piecespercase);
+                    return cases;
+                }
+
+                const getTotalNumberOfPieces = (itemcases, itempieces, damaged, piecespercase) => {
+                    totalnumberofpieces = (itemcases * piecespercase) + itempieces - damaged;
+                    return totalnumberofpieces;
+                }
+
+
+                let salesqtypieces = getPieces(getTotalNumberOfPieces(item.deliveredsalesqtycases, item.deliveredsalesqtypieces, item.damagedsalesqty, item.piecespercase), item.piecespercase);
+                let salesqtycases = getCases(getTotalNumberOfPieces(item.deliveredsalesqtycases, item.deliveredsalesqtypieces, item.damagedsalesqty, item.piecespercase), item.piecespercase);
+                let freeqtypieces = getPieces(getTotalNumberOfPieces(item.deliveredfreeqtycases, item.deliveredfreeqtypieces, item.damagedfreeqty, item.piecespercase), item.piecespercase);
+                let freeqtycases = getCases(getTotalNumberOfPieces(item.deliveredfreeqtycases, item.deliveredfreeqtypieces, item.damagedfreeqty, item.piecespercase), item.piecespercase);
+
                 Store
                     .findOneAndUpdate(
                         { name: item.description },
                         {
                             $inc: {
-                                'storequantity.salesqtycases': parseInt(item.deliveredsalesqtycases),
-                                'storequantity.salesqtypieces': parseInt(item.deliveredsalesqtypieces),
-                                'storequantity.freeqtypieces': parseInt(item.deliveredfreeqtypieces),
-                                'storequantity.freeqtycases': parseInt(item.deliveredfreeqtycases)
+                                'storequantity.salesqtypieces': salesqtypieces,
+                                'storequantity.salesqtycases': salesqtycases,
+                                'storequantity.freeqtypieces': freeqtypieces,
+                                'storequantity.freeqtycases': freeqtycases,
                             },
                             $push: {
                                 'grngin': {
@@ -185,6 +216,8 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
                                     'salesqtypieces': item.deliveredsalesqtypieces,
                                     'freeqtycases': item.deliveredfreeqtycases,
                                     'freeqtypieces': item.deliveredfreeqtypieces,
+                                    'damagedfreeqty': item.damagedfreeqty,
+                                    'damagedsalesqty': item.damagedsalesqty
                                 }
                             }
                         },
@@ -224,6 +257,36 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
                 )
                 .catch(err => {
                     console.log("******** COULDN'T UPDATE SUPPLIER DAMAGED MISSING ITEMS REFUND ********");
+                    console.log(err);
+
+                    res.status(200).json({
+                        type: 'error',
+                        alert: `Something went wrong. Could not update Meta Data `,
+                    })
+                });
+
+            return doc;
+        })
+        .then(doc => {
+
+            MetaData
+                .findOneAndUpdate(
+                    {},
+                    {
+                        $pull: {
+                            'noofawaitinggrn': {
+                                'ponumber': doc.ponumber
+                            }
+                        }
+                    },
+                    { upsert: true }
+                )
+                .exec()
+                .then(doc => {
+                    console.log("******** META DATA ADDED ********");
+                })
+                .catch(err => {
+                    console.log("******** META DATA ERROR!!!!! ********");
                     console.log(err);
 
                     res.status(200).json({
