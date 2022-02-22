@@ -34,8 +34,8 @@ export default function CustomerForm(props) {
             addeddate: customerRecords ? customerRecords.addeddate : date,
             shippingaddress: customerRecords ? customerRecords.shippingaddress : '',
             billingaddress: customerRecords ? customerRecords.billingaddress : '',
-            customercontactnumber: customerRecords ? `0${customerRecords.customercontactnumber}` : '',
-            storecontactnumber: customerRecords ? `0${customerRecords.storecontactnumber}` : '',
+            customercontactnumber: customerRecords ? customerRecords.customercontactnumber : '',
+            storecontactnumber: customerRecords ? customerRecords.storecontactnumber : '',
             email: customerRecords ? customerRecords.email : '',
             registeredby: customerRecords ? customerRecords.registeredby : `${firstname} ${lastname} (${employeeid})`,
         }

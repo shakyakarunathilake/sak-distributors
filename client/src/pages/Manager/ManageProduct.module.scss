@@ -5,10 +5,10 @@
     box-sizing: border-box;
 
     .actionRow {
-        width: 100vw;
-        box-sizing: border-box;
         display: inline-flex;
         flex-direction: row-reverse;
+        width: 100vw;
+        box-sizing: border-box;
         padding: 0px 25px;
 
         Button {

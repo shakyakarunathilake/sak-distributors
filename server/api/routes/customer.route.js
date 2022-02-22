@@ -100,7 +100,6 @@ router.get("/get-all-basic-customer-data", (req, res, next) => {
                 "customerid": x.customerid,
                 "storename": x.storename,
                 "route": x.route,
-                "shippingaddress": x.shippingaddress
             }))
 
             console.log("Customer Info: ", customerinfo);

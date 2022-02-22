@@ -304,22 +304,6 @@ export default function ManageProduct() {
                             color="primary"
                             size="medium"
                             variant="contained"
-                            onClick={() => {
-                                setProductRecords(null);
-                                getNextProductId();
-                                setAction('Create');
-                                setFormType('Product');
-                                getEmployeeOptions();
-                            }}
-                        >
-                            <AddCircleIcon className={style.icon} />
-                            Add New Product
-                        </Button>
-
-                        <Button
-                            color="primary"
-                            size="medium"
-                            variant="contained"
                             onClick={
                                 () => {
                                     setAction('Create');
@@ -331,6 +315,22 @@ export default function ManageProduct() {
                         >
                             <NewReleasesIcon className={style.icon} />
                             Add New Variant
+                        </Button>
+
+                        <Button
+                            color="primary"
+                            size="medium"
+                            variant="contained"
+                            onClick={() => {
+                                setProductRecords(null);
+                                getNextProductId();
+                                setAction('Create');
+                                setFormType('Product');
+                                getEmployeeOptions();
+                            }}
+                        >
+                            <AddCircleIcon className={style.icon} />
+                            Add New Product
                         </Button>
 
                     </div>
