@@ -10,9 +10,10 @@ const GRNSchema = mongoose.Schema({
     items: { type: Array, required: true },
     createdat: { type: String, required: false },
     createdby: { type: String, requried: false },
-    grosstotal: { type: String, required: true },
+    pototal: { type: String, required: true },
+    previousdamagedmissingitems: { type: String, required: true },
     damagedmissingitems: { type: String, required: true },
-    total: { type: String, required: true },
+    grntotal: { type: String, required: true },
 })
 
 module.exports = mongoose.model('GRN', GRNSchema);
