@@ -191,7 +191,7 @@ export default function ManageCustomer() {
                             let value = 0;
 
                             if (designation === 'Sales Representative' || designation === 'Delivery Representative') {
-                                value = (height - 199.28) / 69.59;
+                                value = (height - 199.28) / 60;
                             } else {
                                 value = (height - 199.27) / 48;
                             }
@@ -220,7 +220,7 @@ export default function ManageCustomer() {
                                                 title: "Store Name",
                                                 field: "storename",
                                                 cellStyle: {
-                                                    width: "32%",
+                                                    width: "42%",
                                                     textAlign: 'left'
                                                 }
                                             },
@@ -228,15 +228,7 @@ export default function ManageCustomer() {
                                                 title: "Customer Name",
                                                 field: "customername",
                                                 cellStyle: {
-                                                    width: "15%",
-                                                    textAlign: 'left'
-                                                }
-                                            },
-                                            {
-                                                title: "Shipping Address",
-                                                field: "shippingaddress",
-                                                cellStyle: {
-                                                    width: "30%",
+                                                    width: "35%",
                                                     textAlign: 'left'
                                                 }
                                             },
