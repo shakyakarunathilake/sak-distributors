@@ -31,16 +31,18 @@ export default function GRNForm(props) {
             ponumber: GRNRecords.ponumber,
             grnnumber: GRNRecords.grnnumber,
             supplier: GRNRecords.supplier,
-            total: GRNRecords.total,
+            pototal: GRNRecords.pototal,
+            status: "Delivered",
+            givenid: GRNRecords.givenid,
             createdat: dateTime,
             createdby: `${firstname} ${lastname} (${employeeid})`,
-            givenid: GRNRecords.givenid,
+            damagedmissingitems: 0,
+            previousdamagedmissingitems: GRNRecords.previousdamagedmissingitems,
+            grntotal: 0,
             customername: "S.A.K Distributors",
             customeraddress: "No.233, Kiriwallapitiya, Rambukkana, Srilanka",
             contactnumber: "0352264009",
-            status: "Delivered",
-            grntotal: 0,
-            damagedmissingitems: 0
+
         }
     });
 
@@ -51,12 +53,14 @@ export default function GRNForm(props) {
     useEffect(() => {
         if (data != null) {
             let total = 0;
+            let previousdamagedmissingitems = getValues('previousdamagedmissingitems');
 
             for (let i = 0; i < data.length; i++) {
                 total = total + (isNaN(data[i].grnvalue) ? 0 : data[i].grnvalue);
             }
 
-            setValue("grntotal", total.toFixed(2));
+            let grntotal = total - parseInt(previousdamagedmissingitems);
+            setValue("grntotal", grntotal.toFixed(2));
         }
     }, [data, setValue])
 

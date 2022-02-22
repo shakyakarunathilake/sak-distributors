@@ -229,7 +229,7 @@ export default function GRNStepTwo(props) {
 
                 <AutoSizer>
                     {({ height, width }) => {
-                        const pageSize = Math.floor((height - (action === 'View' ? 450 : 440)) / 48);
+                        const pageSize = Math.floor((height - (action === 'View' ? 490 : 470)) / 48);
 
                         return (
                             <div style={{ height: `${height}px`, width: `${width}px`, overflowY: 'auto' }}>
@@ -252,21 +252,33 @@ export default function GRNStepTwo(props) {
                                                 flexDirection: "column"
                                             }} >
                                                 <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
-                                                    <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '200px' }}>
+                                                    <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '300px' }}>
+                                                        <Typography style={{ fontWeight: 600 }}>
+                                                            Previous GRN Damaged / Expired Items (Rs.)
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid item align="Right" style={{ margin: "0px 10px 0px 0px", width: '200px' }}>
+                                                        <Typography style={{ fontWeight: 600 }}>
+                                                            {NumberWithCommas(getValues("previousdamagedmissingitems"))}
+                                                        </Typography>
+                                                    </Grid>
+                                                </Grid>
+                                                <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
+                                                    <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '300px' }}>
                                                         <Typography style={{ fontWeight: 600 }}>
                                                             Purchase Order Total (Rs.)
                                                         </Typography>
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 10px 0px 0px", width: '200px' }}>
                                                         <Typography style={{ fontWeight: 600 }}>
-                                                            {NumberWithCommas(getValues("total"))}
+                                                            {NumberWithCommas(getValues("pototal"))}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
                                                 <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
-                                                    <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '200px' }}>
+                                                    <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '300px' }}>
                                                         <Typography style={{ fontWeight: 600 }}>
-                                                            Damaged / Expired Items (Rs.)
+                                                            Damaged / Missing Items (Rs.)
                                                         </Typography>
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 10px 0px 0px", width: '200px' }}>
@@ -276,7 +288,7 @@ export default function GRNStepTwo(props) {
                                                     </Grid>
                                                 </Grid>
                                                 <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
-                                                    <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '200px' }}>
+                                                    <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '300px' }}>
                                                         <Typography style={{ fontSize: '1.05em', fontWeight: 600 }}>
                                                             GRN Total (Rs.)
                                                         </Typography>
@@ -298,7 +310,7 @@ export default function GRNStepTwo(props) {
                                                             #
                                                         </div>
                                                     </TableCell>
-                                                    <TableCell width="25%" padding="none" rowSpan={2}>
+                                                    <TableCell width="15%" padding="none" rowSpan={2}>
                                                         <div style={{ padding: '0 10px' }}>
                                                             Description
                                                         </div>
@@ -325,10 +337,8 @@ export default function GRNStepTwo(props) {
                                                     <TableCell padding="none" colSpan={2} align="center">
                                                         Delivered Free Qty.
                                                     </TableCell>
-                                                    <TableCell width="5%" padding="none" rowSpan={2} align="center">
-                                                        <div style={{ padding: '0 10px' }}>
-                                                            Damaged Qty.
-                                                        </div>
+                                                    <TableCell padding="none" colSpan={2} align="center">
+                                                        Damaged Qty.
                                                     </TableCell>
                                                     <TableCell padding="none" width="8%" rowSpan={2} align="center">
                                                         <div style={{ padding: '0 10px' }}>
@@ -350,6 +360,8 @@ export default function GRNStepTwo(props) {
                                                     <TableCell width="5%" padding="none" align="center">Pcs</TableCell>
                                                     <TableCell width="5%" padding="none" align="center">Cs</TableCell>
                                                     <TableCell width="5%" padding="none" align="center">Pcs</TableCell>
+                                                    <TableCell width="5%" padding="none" align="center">Sales</TableCell>
+                                                    <TableCell width="5%" padding="none" align="center">Free</TableCell>
                                                 </TableRow>
                                             </TableHead>
                                         ),
@@ -468,7 +480,16 @@ export default function GRNStepTwo(props) {
                                             }
                                         },
                                         {
-                                            field: "damaged",
+                                            field: "damagedsalesqty",
+                                            type: 'numeric',
+                                            cellStyle: {
+                                                width: '5%',
+                                                padding: "10px 7px 10px 7px",
+                                                textAlign: 'right'
+                                            }
+                                        },
+                                        {
+                                            field: "damagedfreeqty",
                                             type: 'numeric',
                                             cellStyle: {
                                                 width: '5%',

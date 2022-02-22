@@ -247,7 +247,7 @@ export default function GRNStepOne(props) {
 
                 <AutoSizer>
                     {({ height, width }) => {
-                        const pageSize = Math.floor((height - 440) / 48);
+                        const pageSize = Math.floor((height - 470) / 48);
 
                         return (
                             <div style={{ height: `${height}px`, width: `${width}px`, overflowY: 'auto' }}>
@@ -270,19 +270,31 @@ export default function GRNStepOne(props) {
                                                 flexDirection: "column"
                                             }} >
                                                 <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
-                                                    <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '200px' }}>
+                                                    <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '300px' }}>
+                                                        <Typography style={{ fontWeight: 600 }}>
+                                                            Previous GRN Damaged / Expired Items (Rs.)
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid item align="Right" style={{ margin: "0px 102.56px 0px 0px", width: '200px' }}>
+                                                        <Typography style={{ fontWeight: 600 }}>
+                                                            {NumberWithCommas(getValues("previousdamagedmissingitems"))}
+                                                        </Typography>
+                                                    </Grid>
+                                                </Grid>
+                                                <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
+                                                    <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '300px' }}>
                                                         <Typography style={{ fontWeight: 600 }}>
                                                             Purchase Order Total (Rs.)
                                                         </Typography>
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 102.56px 0px 0px", width: '200px' }}>
                                                         <Typography style={{ fontWeight: 600 }}>
-                                                            {NumberWithCommas(getValues("total"))}
+                                                            {NumberWithCommas(getValues("pototal"))}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
                                                 <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
-                                                    <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '200px' }}>
+                                                    <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '300px' }}>
                                                         <Typography style={{ fontWeight: 600 }}>
                                                             Damaged / Expired Items (Rs.)
                                                         </Typography>
@@ -294,7 +306,7 @@ export default function GRNStepOne(props) {
                                                     </Grid>
                                                 </Grid>
                                                 <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
-                                                    <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '200px' }}>
+                                                    <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '300px' }}>
                                                         <Typography style={{ fontSize: '1.05em', fontWeight: 600 }}>
                                                             GRN Total (Rs.)
                                                         </Typography>
@@ -316,7 +328,7 @@ export default function GRNStepOne(props) {
                                                             #
                                                         </div>
                                                     </TableCell>
-                                                    <TableCell width="25%" padding="none" rowSpan={2}>
+                                                    <TableCell width="15%" padding="none" rowSpan={2}>
                                                         <div style={{ padding: '0 10px' }}>
                                                             Description
                                                         </div>
@@ -343,10 +355,8 @@ export default function GRNStepOne(props) {
                                                     <TableCell padding="none" colSpan={2} align="center">
                                                         Delivered Free Qty.
                                                     </TableCell>
-                                                    <TableCell width="5%" padding="none" rowSpan={2} align="center">
-                                                        <div style={{ padding: '0 10px' }}>
-                                                            Damaged Qty.
-                                                        </div>
+                                                    <TableCell padding="none" colSpan={2} align="center">
+                                                        Damaged Qty.
                                                     </TableCell>
                                                     <TableCell padding="none" width="7%" rowSpan={2} align="center">
                                                         <div style={{ padding: '0 10px' }}>
@@ -371,6 +381,8 @@ export default function GRNStepOne(props) {
                                                     <TableCell width="5%" padding="none" align="center">Pcs</TableCell>
                                                     <TableCell width="5%" padding="none" align="center">Cs</TableCell>
                                                     <TableCell width="5%" padding="none" align="center">Pcs</TableCell>
+                                                    <TableCell width="5%" padding="none" align="center">Sales</TableCell>
+                                                    <TableCell width="5%" padding="none" align="center">Free</TableCell>
                                                 </TableRow>
                                             </TableHead>
                                         ),
@@ -408,7 +420,8 @@ export default function GRNStepOne(props) {
                                         {
                                             field: "listprice",
                                             type: 'numeric',
-                                            render: rowData => NumberWithCommas(rowData.listprice.toFixed(2)),
+                                            render: rowData =>
+                                                NumberWithCommas(rowData.listprice.toFixed(2)),
                                             editable: 'never',
                                             cellStyle: {
                                                 padding: "10px 7px 10px 7px",
@@ -451,11 +464,11 @@ export default function GRNStepOne(props) {
                                                         data.deliveredsalesqtycases = e.target.value;
                                                         let deliveredsalesqtycases = isNaN(data.deliveredsalesqtycases) ? 0 : data.deliveredsalesqtycases;
                                                         let deliveredsalesqtypieces = isNaN(data.deliveredsalesqtypieces) ? 0 : data.deliveredsalesqtypieces;
-                                                        let damaged = isNaN(data.damaged) ? 0 : data.damaged;
+                                                        let damagedsalesqty = isNaN(data.damagedsalesqty) ? 0 : data.damagedsalesqty;
                                                         let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
                                                         let listprice = isNaN(data.listprice) ? 0 : data.listprice;
                                                         let numberofpieces = ((deliveredsalesqtycases * piecespercase) + +deliveredsalesqtypieces)
-                                                        data.grnvalue = (numberofpieces - damaged) * listprice;
+                                                        data.grnvalue = (numberofpieces - damagedsalesqty) * listprice;
 
                                                         props.onRowDataChange(data);
                                                     }}
@@ -468,13 +481,14 @@ export default function GRNStepOne(props) {
                                                 />
                                             ,
                                             validate: (rowData) =>
-                                                rowData.salesqtycases === undefined
+                                                rowData.deliveredsalesqtycases === undefined
                                                     ? { isValid: false, helperText: 'Required *' }
-                                                    : rowData.salesqtycases === ''
+                                                    : rowData.deliveredsalesqtycases === ''
                                                         ? { isValid: false, helperText: 'Required *' }
                                                         : true
 
-                                        }, {
+                                        },
+                                        {
                                             field: "deliveredsalesqtypieces",
                                             type: 'numeric',
                                             cellStyle: {
@@ -489,11 +503,11 @@ export default function GRNStepOne(props) {
                                                         data.deliveredsalesqtypieces = e.target.value;
                                                         let deliveredsalesqtycases = isNaN(data.deliveredsalesqtycases) ? 0 : data.deliveredsalesqtycases;
                                                         let deliveredsalesqtypieces = isNaN(data.deliveredsalesqtypieces) ? 0 : data.deliveredsalesqtypieces;
-                                                        let damaged = isNaN(data.damaged) ? 0 : data.damaged;
+                                                        let damagedsalesqty = isNaN(data.damagedsalesqty) ? 0 : data.damagedsalesqty;
                                                         let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
                                                         let listprice = isNaN(data.listprice) ? 0 : data.listprice;
                                                         let numberofpieces = ((deliveredsalesqtycases * piecespercase) + +deliveredsalesqtypieces)
-                                                        data.grnvalue = (numberofpieces - damaged) * listprice;
+                                                        data.grnvalue = (numberofpieces - damagedsalesqty) * listprice;
 
                                                         props.onRowDataChange(data);
                                                     }}
@@ -507,9 +521,9 @@ export default function GRNStepOne(props) {
                                                 />
                                             ,
                                             validate: (rowData) =>
-                                                rowData.salesqtycases === undefined
+                                                rowData.deliveredsalesqtypieces === undefined
                                                     ? { isValid: false, helperText: 'Required *' }
-                                                    : rowData.salesqtycases === ''
+                                                    : rowData.deliveredsalesqtypieces === ''
                                                         ? { isValid: false, helperText: 'Required *' }
                                                         : true
 
@@ -550,11 +564,11 @@ export default function GRNStepOne(props) {
                                                         data.deliveredfreeqtycases = e.target.value;
                                                         let deliveredsalesqtycases = isNaN(data.deliveredsalesqtycases) ? 0 : data.deliveredsalesqtycases;
                                                         let deliveredsalesqtypieces = isNaN(data.deliveredsalesqtypieces) ? 0 : data.deliveredsalesqtypieces;
-                                                        let damaged = isNaN(data.damaged) ? 0 : data.damaged;
+                                                        let damagedsalesqty = isNaN(data.damagedsalesqty) ? 0 : data.damagedsalesqty;
                                                         let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
                                                         let listprice = isNaN(data.listprice) ? 0 : data.listprice;
                                                         let numberofpieces = ((deliveredsalesqtycases * piecespercase) + +deliveredsalesqtypieces)
-                                                        data.grnvalue = (numberofpieces - damaged) * listprice;
+                                                        data.grnvalue = (numberofpieces - damagedsalesqty) * listprice;
 
                                                         props.onRowDataChange(data);
                                                     }}
@@ -567,13 +581,14 @@ export default function GRNStepOne(props) {
                                                 />
                                             ,
                                             validate: (rowData) =>
-                                                rowData.salesqtycases === undefined
+                                                rowData.deliveredfreeqtycases === undefined
                                                     ? { isValid: false, helperText: 'Required *' }
-                                                    : rowData.salesqtycases === ''
+                                                    : rowData.deliveredfreeqtycases === ''
                                                         ? { isValid: false, helperText: 'Required *' }
                                                         : true
 
-                                        }, {
+                                        },
+                                        {
                                             field: "deliveredfreeqtypieces",
                                             type: 'numeric',
                                             cellStyle: {
@@ -588,11 +603,11 @@ export default function GRNStepOne(props) {
                                                         data.deliveredfreeqtypieces = e.target.value;
                                                         let deliveredsalesqtycases = isNaN(data.deliveredsalesqtycases) ? 0 : data.deliveredsalesqtycases;
                                                         let deliveredsalesqtypieces = isNaN(data.deliveredsalesqtypieces) ? 0 : data.deliveredsalesqtypieces;
-                                                        let damaged = isNaN(data.damaged) ? 0 : data.damaged;
+                                                        let damagedsalesqty = isNaN(data.damagedsalesqty) ? 0 : data.damagedsalesqty;
                                                         let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
                                                         let listprice = isNaN(data.listprice) ? 0 : data.listprice;
                                                         let numberofpieces = ((deliveredsalesqtycases * piecespercase) + +deliveredsalesqtypieces)
-                                                        data.grnvalue = (numberofpieces - damaged) * listprice;
+                                                        data.grnvalue = (numberofpieces - damagedsalesqty) * listprice;
 
                                                         props.onRowDataChange(data);
                                                     }}
@@ -605,34 +620,33 @@ export default function GRNStepOne(props) {
                                                 />
                                             ,
                                             validate: (rowData) =>
-                                                rowData.salesqtycases === undefined
+                                                rowData.deliveredfreeqtypieces === undefined
                                                     ? { isValid: false, helperText: 'Required *' }
-                                                    : rowData.salesqtycases === ''
+                                                    : rowData.deliveredfreeqtypieces === ''
                                                         ? { isValid: false, helperText: 'Required *' }
                                                         : true
 
                                         },
                                         {
-                                            field: "damaged",
+                                            field: "damagedsalesqty",
                                             type: 'numeric',
-                                            initialEditValue: 0,
                                             cellStyle: {
-                                                width: '5%',
                                                 padding: "10px 7px 10px 7px",
+                                                width: '5%',
                                                 textAlign: 'right'
                                             },
                                             editComponent: props =>
                                                 <MuiTextField
                                                     onChange={e => {
                                                         let data = { ...props.rowData };
-                                                        data.damaged = e.target.value;
+                                                        data.damagedsalesqty = e.target.value;
                                                         let deliveredsalesqtycases = isNaN(data.deliveredsalesqtycases) ? 0 : data.deliveredsalesqtycases;
                                                         let deliveredsalesqtypieces = isNaN(data.deliveredsalesqtypieces) ? 0 : data.deliveredsalesqtypieces;
-                                                        let damaged = isNaN(data.damaged) ? 0 : data.damaged;
+                                                        let damagedsalesqty = isNaN(data.damagedsalesqty) ? 0 : data.damagedsalesqty;
                                                         let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
                                                         let listprice = isNaN(data.listprice) ? 0 : data.listprice;
                                                         let numberofpieces = ((deliveredsalesqtycases * piecespercase) + +deliveredsalesqtypieces)
-                                                        data.grnvalue = (numberofpieces - damaged) * listprice;
+                                                        data.grnvalue = (numberofpieces - damagedsalesqty) * listprice;
 
                                                         props.onRowDataChange(data);
                                                     }}
@@ -641,12 +655,52 @@ export default function GRNStepOne(props) {
                                                     error={props.error}
                                                     variant="standard"
                                                     value={props.value}
+                                                    defaultValue={props.rowData.salesqtycases}
                                                 />
                                             ,
                                             validate: (rowData) =>
-                                                rowData.damaged === undefined
+                                                rowData.damagedsalesqty === undefined
                                                     ? { isValid: false, helperText: 'Required *' }
-                                                    : rowData.damaged === ''
+                                                    : rowData.damagedsalesqty === ''
+                                                        ? { isValid: false, helperText: 'Required *' }
+                                                        : true
+
+                                        },
+                                        {
+                                            field: "damagedfreeqty",
+                                            type: 'numeric',
+                                            cellStyle: {
+                                                padding: "10px 7px 10px 7px",
+                                                width: '5%',
+                                                textAlign: 'right'
+                                            },
+                                            editComponent: props =>
+                                                <MuiTextField
+                                                    onChange={e => {
+                                                        let data = { ...props.rowData };
+                                                        data.damagedfreeqty = e.target.value;
+                                                        let deliveredsalesqtycases = isNaN(data.deliveredsalesqtycases) ? 0 : data.deliveredsalesqtycases;
+                                                        let deliveredsalesqtypieces = isNaN(data.deliveredsalesqtypieces) ? 0 : data.deliveredsalesqtypieces;
+                                                        let damagedsalesqty = isNaN(data.damagedsalesqty) ? 0 : data.damagedsalesqty;
+                                                        let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
+                                                        let listprice = isNaN(data.listprice) ? 0 : data.listprice;
+                                                        let numberofpieces = ((deliveredsalesqtycases * piecespercase) + +deliveredsalesqtypieces)
+                                                        data.grnvalue = (numberofpieces - damagedsalesqty) * listprice;
+
+                                                        props.onRowDataChange(data);
+                                                    }}
+                                                    type="number"
+                                                    helperText={props.helperText}
+                                                    error={props.error}
+                                                    variant="standard"
+                                                    value={props.value}
+                                                    defaultValue={props.rowData.salesqtycases}
+                                                />
+                                            ,
+                                            validate: (rowData) =>
+                                                rowData.damagedfreeqty === undefined
+                                                    ? { isValid: false, helperText: 'Required *' }
+                                                    : rowData.damagedfreeqty === ''
                                                         ? { isValid: false, helperText: 'Required *' }
                                                         : true
 
