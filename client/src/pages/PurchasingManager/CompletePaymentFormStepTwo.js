@@ -1,17 +1,10 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
-import classnames from 'classnames';
 
 //Material UI Components
 import Button from '@material-ui/core/Button';
-import { Typography } from '@material-ui/core';
-import Divider from '@mui/material/Divider';
 
 //Material UI Icons
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-
-//Shared functions 
-import NumberWithCommas from '../NumberWithCommas';
 
 //SCSS Styles
 import style from './CompletePaymentFormStepTwo.module.scss';
@@ -20,7 +13,6 @@ export default function CompletePaymentFormStepTwo(props) {
 
     const {
         handleClosePopUp,
-        control,
         backFormStep,
         onSubmit,
         setValue,
