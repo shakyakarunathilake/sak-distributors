@@ -29,7 +29,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 export default function Login() {
 
-    const { handleSubmit, formState: { errors }, control } = useForm({
+    const { handleSubmit, formState: { errors }, control, reset } = useForm({
         defaultValues: {
             username: "",
             password: "",
@@ -95,6 +95,8 @@ export default function Login() {
             .catch(error => {
                 console.log(error)
             });
+
+        reset();
     };
 
     return (
