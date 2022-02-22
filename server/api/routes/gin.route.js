@@ -280,16 +280,39 @@ router.post("/approve-dispatch/:ginnumber", formDataBody.fields([]), (req, res, 
             doc.items.map(item => {
 
                 const name = item.description.substring(item.description.indexOf("-") + 1);
+                let pieces = 0;
+                let cases = 0;
+                let totalnumberofpieces = 0;
+
+                const getPieces = (noofpieces, piecespercase) => {
+                    pieces = noofpieces % piecespercase;
+                    return pieces;
+                }
+
+                const getCases = (noofpieces, piecespercase) => {
+                    cases = Math.floor(noofpieces / piecespercase);
+                    return cases;
+                }
+
+                const getTotalNumberOfPieces = (itemcases, itempieces, piecespercase) => {
+                    totalnumberofpieces = (itemcases * piecespercase) + itempieces;
+                    return totalnumberofpieces;
+                }
+
+                let salesqtypieces = getPieces(getTotalNumberOfPieces(item.salesqtycases, item.salesqtypieces, item.piecespercase), item.piecespercase);
+                let salesqtycases = getCases(getTotalNumberOfPieces(item.salesqtycases, item.salesqtypieces, item.piecespercase), item.piecespercase);
+                let freeqtypieces = getPieces(getTotalNumberOfPieces(item.freeqtycases, item.freeqtypieces, item.piecespercase), item.piecespercase);
+                let freeqtycases = getCases(getTotalNumberOfPieces(item.freeqtycases, item.freeqtypieces, item.piecespercase), item.piecespercase);
 
                 Store
                     .findOneAndUpdate(
                         { name: name },
                         {
                             $inc: {
-                                'storequantity.salesqtycases': -parseInt(item.salesqtycases),
-                                'storequantity.salesqtypieces': -parseInt(item.salesqtypieces),
-                                'storequantity.freeqtypieces': -parseInt(item.freeqtypieces),
-                                'storequantity.freeqtycases': -parseInt(item.freeqtycases)
+                                'storequantity.salesqtypieces': -salesqtypieces,
+                                'storequantity.salesqtycases': -salesqtycases,
+                                'storequantity.freeqtypieces': -freeqtypieces,
+                                'storequantity.freeqtycases': -freeqtycases,
                             },
                             $push: {
                                 'grngin': {
