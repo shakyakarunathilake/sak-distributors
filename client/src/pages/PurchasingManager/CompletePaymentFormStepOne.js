@@ -183,7 +183,7 @@ export default function CompletePaymentFormStepOne(props) {
                                                     value === 'Advance Payment To Be Paid' && style.yellow,
                                                     value === 'Advance Payment Paid' && style.orange,
                                                     value === 'Payment To Be Complete' && style.blue,
-                                                    value === 'Complete Payment' && style.green,
+                                                    value === 'Payment Complete' && style.green,
                                                 )
                                             }
                                         >
