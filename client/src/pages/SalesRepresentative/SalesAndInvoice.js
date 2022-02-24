@@ -417,7 +417,7 @@ export default function SalesAndInvoice() {
                 <PopUp
                     openPopup={openPopup}
                     setOpenPopup={setOpenPopup}
-                    fullScreen={(action === "Delivered" || designation === 'Manager') ? false : true}
+                    fullScreen={(action === "Delivered") || (designation === 'Manager') ? false : true}
                 >
 
                     {
