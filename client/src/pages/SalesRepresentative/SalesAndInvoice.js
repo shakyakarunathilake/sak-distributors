@@ -334,7 +334,7 @@ export default function SalesAndInvoice() {
                                                 render: rowData => {
                                                     return (
                                                         rowData.status === 'Pending' ?
-                                                            <p style={{ padding: "0", margin: "0", color: "#745590", fontWeight: "700" }}>{rowData.status}</p>
+                                                            <p style={{ padding: "0", margin: "0", color: "#5E01AE", fontWeight: "700" }}>{rowData.status}</p>
                                                             : rowData.status === 'Processing' ?
                                                                 <p style={{ padding: "0", margin: "0", color: "#2196F3", fontWeight: "700" }}>{rowData.status}</p>
                                                                 : rowData.status === 'Shipping' ?
