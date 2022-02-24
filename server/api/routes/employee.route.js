@@ -70,7 +70,7 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
         var firstpassword = "";
 
         if (nic.slice(-1) == "v") {
-            firstpassword = nic.substring(7, 11) + "-" + dob;
+            firstpassword = nic.substring(5, 9) + "-" + dob;
         } else {
             firstpassword = nic.substring(8, 12) + "-" + dob;
         }
