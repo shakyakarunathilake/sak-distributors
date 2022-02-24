@@ -193,7 +193,7 @@ export default function ManageCustomer() {
                             if (designation === 'Sales Representative' || designation === 'Delivery Representative') {
                                 value = (height - 199.28) / 60;
                             } else {
-                                value = (height - 199.27) / 48;
+                                value = (height - 199.28) / 48;
                             }
 
                             const pageSize = Math.floor(value);
