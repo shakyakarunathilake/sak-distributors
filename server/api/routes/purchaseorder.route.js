@@ -237,7 +237,7 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
                 'approvedby': req.body.approvedby,
                 'status': req.body.status,
             },
-            { new: true }
+            { new: true, upsert: true }
         )
         .exec()
         .then(result => {
@@ -278,17 +278,16 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
                 createdat: '',
                 createdby: '',
                 pototal: result.total,
-                previousdamagedmissingitems: result.previousdamagedmissingitems,
+                previousdamagedmissingitems: result.damagedmissingitems,
                 damagedmissingitems: '0.00',
                 grntotal: '0.00'
             });
 
             grn
                 .save()
-                .then(result => {
-                    console.log("********  APPROVE PURCHASE ORDER ********");
-                    console.log(result)
-                })
+                .then(
+                    console.log("********  APPROVE PURCHASE ORDER ********")
+                )
                 .catch(err => {
                     console.log("********  APPROVE PURCHASE ORDER GRN ERROR ********");
                     console.log(err);
@@ -316,12 +315,12 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
                             }
                         }
                     },
-                    { upsert: true }
+                    { new: true, upsert: true }
                 )
                 .exec()
-                .then(() => {
+                .then(
                     console.log("********  APPROVE PURCHASE ORDER METADATA ADDED ********")
-                })
+                )
                 .catch(err => {
                     console.log("********  APPROVE PURCHASE ORDER METADATA ERROR ********")
                     console.log(err)
@@ -365,7 +364,6 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
                     });
                     console.log("Error: ", err)
                 })
-
 
             return result;
         })
