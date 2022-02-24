@@ -128,7 +128,7 @@ export default function RowTwo(props) {
                                     Header: props => (
                                         <TableHead {...props} className={classes.tablehead} >
                                             <TableRow className={classes.row1}>
-                                                <TableCell width="37%" padding="none" rowSpan={2}>
+                                                <TableCell width="40%" padding="none" rowSpan={2}>
                                                     <div style={{ padding: '0 10px' }}>
                                                         Description
                                                     </div>
@@ -138,7 +138,7 @@ export default function RowTwo(props) {
                                                         Pcs/Case
                                                     </div>
                                                 </TableCell>
-                                                <TableCell padding="none" width="6%" rowSpan={2} align="center">
+                                                <TableCell padding="none" width="10%" rowSpan={2} align="center">
                                                     <div style={{ padding: '0 10px' }}>
                                                         Selling Price (Rs.)
                                                     </div>
@@ -154,10 +154,7 @@ export default function RowTwo(props) {
                                                 <TableCell padding="none" colSpan={2} align="center">
                                                     Free Qty.
                                                 </TableCell>
-                                                <TableCell padding="none" colSpan={2} align="center">
-                                                    Return Qty.
-                                                </TableCell>
-                                                <TableCell padding="none" width="9%" rowSpan={2} align="center">
+                                                <TableCell padding="none" width="14%" rowSpan={2} align="center">
                                                     <div style={{ padding: '0 10px' }}>
                                                         Gross Amount (Rs.)
                                                     </div>
@@ -168,8 +165,6 @@ export default function RowTwo(props) {
                                                 <TableCell width="6%" padding="none" align="center">Pcs</TableCell>
                                                 <TableCell width="6%" padding="none" align="center">Cs</TableCell>
                                                 <TableCell width="6%" padding="none" align="center">Pcs</TableCell>
-                                                <TableCell width="6%" padding="none" align="center">D</TableCell>
-                                                <TableCell width="6%" padding="none" align="center">R</TableCell>
                                             </TableRow>
                                         </TableHead>
                                     ),
@@ -179,7 +174,7 @@ export default function RowTwo(props) {
                                         field: "description",
                                         cellStyle: {
                                             padding: "12px 5px 12px 7px",
-                                            width: '37%',
+                                            width: '40%',
                                             textAlign: 'left'
                                         },
                                     },
@@ -193,16 +188,16 @@ export default function RowTwo(props) {
                                     },
                                     {
                                         field: "sellingprice",
-                                        render: rowData => NumberWithCommas(rowData.sellingprice.toFixed(2)),
+                                        render: rowData => NumberWithCommas(rowData.sellingprice),
                                         cellStyle: {
-                                            width: '6%',
+                                            width: '10%',
                                             padding: "12px 5px 12px 7px",
                                             textAlign: 'right'
                                         },
                                     },
                                     {
                                         field: "mrp",
-                                        render: rowData => NumberWithCommas(rowData.mrp.toFixed(2)),
+                                        render: rowData => NumberWithCommas(rowData.mrp),
                                         cellStyle: {
                                             width: '6%',
                                             padding: "12px 5px 12px 7px",
@@ -242,26 +237,10 @@ export default function RowTwo(props) {
                                         },
                                     },
                                     {
-                                        field: "damaged",
-                                        cellStyle: {
-                                            width: '6%',
-                                            padding: "12px 5px 12px 7px",
-                                            textAlign: 'right'
-                                        },
-                                    },
-                                    {
-                                        field: "returns",
-                                        cellStyle: {
-                                            width: '6%',
-                                            padding: "12px 5px 12px 7px",
-                                            textAlign: 'right'
-                                        },
-                                    },
-                                    {
                                         field: "grossamount",
-                                        render: rowData => NumberWithCommas(rowData.grossamount.toFixed(2)),
+                                        render: rowData => NumberWithCommas(rowData.grossamount),
                                         cellStyle: {
-                                            width: '9%',
+                                            width: '14%',
                                             padding: "12px 12px 12px 7px",
                                             textAlign: 'right'
                                         },
