@@ -50,7 +50,6 @@ router.get("/:ponumber", (req, res, next) => {
         .exec()
         .then(doc => {
 
-            console.log(doc)
             const supplierpayment = {
                 "supplier": doc.supplier,
                 "ponumber": doc.ponumber,
