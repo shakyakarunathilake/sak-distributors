@@ -79,7 +79,7 @@ router.post("/signin", (req, res, next) => {
                     contactnumber: employee[0].contactnumber
                 },
                 authConfig.secret,
-                { expiresIn: 7200 }
+                { expiresIn: 99999 }
             );
 
             res.status(200).json({
