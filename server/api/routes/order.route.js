@@ -36,7 +36,6 @@ router.get("/get-next-orderno", (req, res, next) => {
             let invoicearray;
 
             if (doc.length !== 0) {
-                console.log("DOCUMENT: ", doc);
                 invoicearray = doc.map(x => {
                     return parseInt(x.orderno.slice(14))
                 });
