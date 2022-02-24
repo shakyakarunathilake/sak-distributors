@@ -135,7 +135,7 @@ router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
                 Customer
                     .findOneAndUpdate(
                         { customerid: result.customerid },
-                        { 'creditamounttosettle': result.currentinvoicecreditamount },
+                        { 'creditamounttosettle': parseInt(result.currentinvoicecreditamount) },
                         { new: true }
                     )
                     .exec()
