@@ -118,9 +118,9 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
                     { new: true, upsert: true }
                 )
                 .exec()
-                .then(doc => {
-                    console.log("******** PURCHASE ORDER UPDATED ********");
-                })
+                .then(
+                    console.log("******** PURCHASE ORDER UPDATED ********")
+                )
                 .catch(err => {
                     console.log("******** PURCHASE ORDER UPDATED ERROR!!!!! ********");
                     console.log(err);
@@ -224,10 +224,9 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
                         { new: true }
                     )
                     .exec()
-                    .then(doc => {
-                        console.log("******** ITEMS ADDED TO STORE ********");
-                        console.log(doc);
-                    })
+                    .then(
+                        console.log("******** ITEMS ADDED TO STORE ********")
+                    )
                     .catch(err => {
                         res.status(200).json({
                             type: 'error',
@@ -282,9 +281,9 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
                     { upsert: true }
                 )
                 .exec()
-                .then(doc => {
-                    console.log("******** META DATA ADDED ********");
-                })
+                .then(
+                    console.log("******** META DATA ADDED ********")
+                )
                 .catch(err => {
                     console.log("******** META DATA ERROR!!!!! ********");
                     console.log(err);
