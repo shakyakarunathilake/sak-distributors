@@ -311,7 +311,7 @@ export default function GINStepTwo(props) {
                                         },
                                         {
                                             field: 'sellingprice',
-                                            render: rowData => NumberWithCommas(rowData.sellingprice.toFixed(2)),
+                                            render: rowData => NumberWithCommas(rowData.sellingprice),
                                             cellStyle: {
                                                 width: "8%",
                                                 textAlign: 'right'
@@ -354,7 +354,7 @@ export default function GINStepTwo(props) {
                                         },
                                         {
                                             field: 'grossamount',
-                                            render: rowData => NumberWithCommas(rowData.grossamount.toFixed(2)),
+                                            render: rowData => NumberWithCommas(rowData.grossamount),
                                             cellStyle: {
                                                 width: "10%",
                                                 textAlign: 'right'
