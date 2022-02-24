@@ -14,7 +14,10 @@ export default function ProductsForm(props) {
     const { handleClosePopUp, addOrEdit, productRecords, nextId, employeeOptions, action } = props;
 
     const today = new Date();
-    const date = today.getFullYear() + '-' + (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+
+    const date = today.getFullYear() + '-' +
+        (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
+        (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
 
     const { handleSubmit, formState: { errors, isValid }, control, reset, trigger, getValues } = useForm({
         mode: "all",

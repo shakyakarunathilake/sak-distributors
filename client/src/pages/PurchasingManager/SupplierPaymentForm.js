@@ -16,7 +16,10 @@ export default function SupplierPaymentForm(props) {
   const { handleClosePopUp, addOrEdit, paymentRecords, action, } = props;
 
   const today = new Date();
-  const date = today.getFullYear() + '-' + (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+  
+  const date = today.getFullYear() + '-' +
+    (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
+    (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
 
   const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
   const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;

@@ -22,10 +22,18 @@ export default function GINForm(props) {
     const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
 
     const today = new Date();
-    const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-    const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    const dateTime = date + ' ' + time;
-    const ginTime = today.getFullYear() + '' + (today.getMonth() + 1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds();
+
+    const date = today.getFullYear() + '-' +
+        (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
+        (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+
+    const time = (today.getHours() > 9 ? today.getHours() + 1 : `0${today.getHours() + 1}`) + ":" +
+        (today.getMinutes() > 9 ? today.getMinutes() + 1 : `0${today.getMinutes() + 1}`) + ":" +
+        (today.getSeconds() > 9 ? today.getSeconds() + 1 : `0${today.getSeconds() + 1}`);
+
+    const dateTime = date + 'T' + time;
+
+    const ginTime = today.getFullYear() + '' + (today.getMonth() + 1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes();
 
     const { formState: { isValid, errors }, control, watch, getValues, trigger, setValue, handleSubmit } = useForm({
         mode: "onChange",
@@ -38,8 +46,7 @@ export default function GINForm(props) {
         }
     });
 
-    console.log(getValues())
-    
+
     useEffect(() => {
         if (GINRecords !== null) {
             setData([...GINRecords.items]);

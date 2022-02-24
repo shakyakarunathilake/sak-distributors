@@ -17,7 +17,10 @@ export default function SupplierForm(props) {
     const { setOpenPopup, addOrEdit, supplierRecords, nextSupId, action, employeeOptions } = props;
 
     const today = new Date();
-    const date = today.getFullYear() + '-' + (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+    
+    const date = today.getFullYear() + '-' +
+    (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
+    (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
 
     const { handleSubmit, formState: { errors, isValid }, control, reset, trigger, getValues } = useForm({
         mode: "all",
