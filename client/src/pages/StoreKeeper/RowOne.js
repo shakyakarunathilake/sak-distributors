@@ -114,7 +114,7 @@ export default function RowOne(props) {
                                     control={control}
                                     render={({ field: { value } }) => (
                                         value === 'Pending' ?
-                                            <Typography style={{ color: "#745590", fontWeight: "600" }}>
+                                            <Typography style={{ color: "#5E01AE", fontWeight: "600" }}>
                                                 {value}
                                             </Typography>
                                             : value === 'Processing' ?
