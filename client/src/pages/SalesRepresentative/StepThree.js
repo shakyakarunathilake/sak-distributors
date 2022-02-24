@@ -180,12 +180,12 @@ export default function StepThree(props) {
                                         Header: props => (
                                             <TableHead {...props} className={classes.tablehead}>
                                                 <TableRow className={classes.row1}>
-                                                    <TableCell width="28%" padding="none" rowSpan={2}>
+                                                    <TableCell width="37%" padding="none" rowSpan={2}>
                                                         <div style={{ padding: '0 10px' }}>
                                                             Description
                                                         </div>
                                                     </TableCell>
-                                                    <TableCell width="8%" padding="none" rowSpan={2} align="center">
+                                                    <TableCell width="10%" padding="none" rowSpan={2} align="center">
                                                         <div style={{ padding: '0 10px' }}>
                                                             Selling Price (Rs.)
                                                         </div>
@@ -195,9 +195,6 @@ export default function StepThree(props) {
                                                     </TableCell>
                                                     <TableCell padding="none" colSpan={2} align="center">
                                                         Free Qty.
-                                                    </TableCell>
-                                                    <TableCell padding="none" colSpan={2} align="center">
-                                                        Return Qty.
                                                     </TableCell>
                                                     <TableCell padding="none" width="14%" rowSpan={2} align="center">
                                                         <div style={{ padding: '0 10px' }}>
@@ -213,8 +210,6 @@ export default function StepThree(props) {
                                                     <TableCell width="7%" padding="none" align="center">Pcs</TableCell>
                                                     <TableCell width="7%" padding="none" align="center">Cs</TableCell>
                                                     <TableCell width="7%" padding="none" align="center">Pcs</TableCell>
-                                                    <TableCell width="7%" padding="none" align="center">D</TableCell>
-                                                    <TableCell width="7%" padding="none" align="center">R</TableCell>
                                                 </TableRow>
                                             </TableHead>
                                         ),
@@ -224,7 +219,7 @@ export default function StepThree(props) {
                                             field: "description",
                                             cellStyle: {
                                                 padding: "10px 5px 10px 7px",
-                                                width: '28%',
+                                                width: '37%',
                                                 textAlign: 'left'
                                             },
                                             editComponent: props => (
@@ -303,7 +298,7 @@ export default function StepThree(props) {
                                             editable: 'never',
                                             type: 'numeric',
                                             cellStyle: {
-                                                width: '8%',
+                                                width: '10%',
                                                 padding: "10px 5px 10px 7px",
                                                 textAlign: 'right'
                                             },
@@ -419,78 +414,6 @@ export default function StepThree(props) {
                                                         : rowData.freeqtypieces > 23
                                                             ? { isValid: false, helperText: 'Invalid *' }
                                                             : true
-
-                                        },
-                                        {
-                                            field: "damaged",
-                                            type: 'numeric',
-                                            initialEditValue: 0,
-                                            cellStyle: {
-                                                width: '7%',
-                                                padding: "10px 5px 10px 7px",
-                                                textAlign: 'right'
-                                            },
-                                            editComponent: props =>
-                                                <MuiTextField
-                                                    onChange={e => {
-                                                        let data = { ...props.rowData };
-                                                        data.damaged = e.target.value;
-                                                        let salesqtycases = isNaN(data.salesqtycases) ? 0 : data.salesqtycases;
-                                                        let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
-                                                        let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
-                                                        let numberofpieces = (salesqtycases * piecespercase) + +salesqtypieces;
-                                                        data.grossamount = (numberofpieces * data.sellingprice).toFixed(2);
-                                                        props.onRowDataChange(data);
-                                                    }}
-                                                    type="number"
-                                                    helperText={props.helperText}
-                                                    error={props.error}
-                                                    variant="standard"
-                                                    value={props.value}
-                                                />
-                                            ,
-                                            validate: (rowData) =>
-                                                rowData.damaged === undefined
-                                                    ? { isValid: false, helperText: 'Required *' }
-                                                    : rowData.damaged === ''
-                                                        ? { isValid: false, helperText: 'Required *' }
-                                                        : true
-
-                                        },
-                                        {
-                                            field: "returns",
-                                            type: 'numeric',
-                                            initialEditValue: 0,
-                                            cellStyle: {
-                                                width: '7%',
-                                                padding: "10px 5px 10px 7px",
-                                                textAlign: 'right'
-                                            },
-                                            editComponent: props =>
-                                                <MuiTextField
-                                                    onChange={e => {
-                                                        let data = { ...props.rowData };
-                                                        data.returns = e.target.value;
-                                                        let salesqtycases = isNaN(data.salesqtycases) ? 0 : data.salesqtycases;
-                                                        let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
-                                                        let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
-                                                        let numberofpieces = (salesqtycases * piecespercase) + +salesqtypieces;
-                                                        data.grossamount = (numberofpieces * data.sellingprice).toFixed(2);
-                                                        props.onRowDataChange(data);
-                                                    }}
-                                                    type="number"
-                                                    helperText={props.helperText}
-                                                    error={props.error}
-                                                    variant="standard"
-                                                    value={props.value}
-                                                />
-                                            ,
-                                            validate: (rowData) =>
-                                                rowData.returns === undefined
-                                                    ? { isValid: false, helperText: 'Required *' }
-                                                    : rowData.returns === ''
-                                                        ? { isValid: false, helperText: 'Required *' }
-                                                        : true
 
                                         },
                                         {
