@@ -28,10 +28,22 @@ export default function CreateOrder(props) {
     const [formStep, setFormStep] = useState(0);
 
     const today = new Date();
-    const dateTime = today.getFullYear() + '-' + (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`) + 'T' + (today.getHours() > 9 ? today.getHours() : `0${today.getHours()}`) + ':' + (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`);
+
+    const date = today.getFullYear() + '-' +
+        (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
+        (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+
+    const time = (today.getHours() > 9 ? today.getHours() + 1 : `0${today.getHours() + 1}`) + ":" +
+        (today.getMinutes() > 9 ? today.getMinutes() + 1 : `0${today.getMinutes() + 1}`) + ":" +
+        (today.getSeconds() > 9 ? today.getSeconds() + 1 : `0${today.getSeconds() + 1}`);
+
+    const dateTime = date + 'T' + time;
 
     today.setDate(today.getDate() + 3);
-    const deliveryDate = today.getFullYear() + '-' + (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+
+    const deliveryDate = today.getFullYear() + '-' +
+        (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
+        (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
 
     const { watch, reset, trigger, control, setValue, getValues, clearErrors, handleSubmit, formState: { isValid, errors } } = useForm({
         mode: "all",
@@ -102,11 +114,11 @@ export default function CreateOrder(props) {
             setValue("storename", option.storename);
             setValue("shippingaddress", option.shippingaddress);
             setValue("route", option.route);
-            setValue("contactnumber", `0${option.contactnumber}`);
-            setValue("creditamounttosettle", parseInt(option.creditamounttosettle));
+            setValue("contactnumber", option.contactnumber);
+            setValue("creditamounttosettle", option.creditamounttosettle);
             setValue("loyaltypoints", option.loyaltypoints);
             setValue("eligibilityforcredit", option.eligibilityforcredit);
-            setValue("maximumcreditamount", parseInt(option.maximumcreditamount));
+            setValue("maximumcreditamount", option.maximumcreditamount);
             clearErrors();
         }
     }
@@ -129,6 +141,7 @@ export default function CreateOrder(props) {
         customerOrderFormData.append('total', getValues('total'));
         customerOrderFormData.append('advancepayment', getValues('advancepayment'));
         customerOrderFormData.append('minimumpayment', getValues('minimumpayment'));
+        customerOrderFormData.append('invoicesettlementvalue', getValues('invoicesettlementvalue'));
 
         if (watch('customertype') === "Registered Customer") {
             customerOrderFormData.append('creditamounttosettle', getValues('creditamounttosettle'));
@@ -136,8 +149,6 @@ export default function CreateOrder(props) {
             customerOrderFormData.append('eligibilityforcredit', getValues('eligibilityforcredit'));
             customerOrderFormData.append('maximumcreditamount', getValues('maximumcreditamount'));
             customerOrderFormData.append('currentinvoicecreditamount', getValues('currentinvoicecreditamount'));
-            customerOrderFormData.append('invoicesettlementvalue', getValues('invoicesettlementvalue'));
-
         }
 
         addOrEdit(customerOrderFormData, getValues('orderno'));
