@@ -66,12 +66,12 @@ export default function StepFive(props) {
             currentinvoicecreditamount = getValues('currentinvoicecreditamount');
         }
 
-        if (creditamounttosettle === 0.00 && currentinvoicecreditamount === 0.00) {
+        if (parseInt(creditamounttosettle) === 0 && parseInt(currentinvoicecreditamount) === 0) {
             setValue('minimumpayment', advancepayment);
             setValue('invoicesettlementvalue', total);
         }
 
-        if (creditamounttosettle !== 0.00 && currentinvoicecreditamount === 0.00) {
+        if (parseInt(creditamounttosettle) !== 0 && parseInt(currentinvoicecreditamount) === 0) {
             let minimumpayment = (parseInt(advancepayment) + parseInt(creditamounttosettle)).toFixed(2);
             let invoicesettlementvalue = (parseInt(total) + parseInt(creditamounttosettle)).toFixed(2);
 
@@ -79,7 +79,7 @@ export default function StepFive(props) {
             setValue('invoicesettlementvalue', invoicesettlementvalue);
         };
 
-        if (creditamounttosettle === 0.00 && currentinvoicecreditamount !== 0.00) {
+        if (parseInt(creditamounttosettle) === 0 && parseInt(currentinvoicecreditamount) !== 0) {
             let minimumpayment = (parseInt(advancepayment) - parseInt(currentinvoicecreditamount)).toFixed(2);
 
             setValue('minimumpayment', minimumpayment);
@@ -224,8 +224,8 @@ export default function StepFive(props) {
                                     render={({ field }) => (
                                         <TextField
                                             {...field}
-                                            focused={getValues('maximumcreditamount') !== 0.00}
-                                            disabled={getValues('maximumcreditamount') === 0.00}
+                                            focused={getValues('maximumcreditamount') !== '0.00'}
+                                            disabled={getValues('maximumcreditamount') === '0.00'}
                                             type="number"
                                             error={errors.currentinvoicecreditamount ? true : false}
                                             helperText={errors.currentinvoicecreditamount && errors.currentinvoicecreditamount.message}
@@ -250,7 +250,7 @@ export default function StepFive(props) {
                                 <CalculateIcon
                                     className={style.icon}
                                     onClick={() => calculatePayments()}
-                                    disabled={getValues('maximumcreditamount') === 0.00}
+                                    disabled={getValues('maximumcreditamount') === 0}
                                 />
                             </div>
                         </div>
