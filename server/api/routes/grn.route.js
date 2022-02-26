@@ -141,7 +141,6 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
                     { "ponumber": doc.ponumber },
                     {
                         '$set': {
-                            'grnnumber': doc.grnnumber,
                             'grngrosstotal': doc.pototal,
                             'grndamagedmissingitems': doc.damagedmissingitems,
                             'grntotal': doc.grntotal,
