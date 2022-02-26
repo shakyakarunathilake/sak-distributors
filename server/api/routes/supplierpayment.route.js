@@ -91,7 +91,6 @@ router.post("/advance-payment-complete/:ponumber", formDataBody.fields([]), (req
             { "ponumber": req.params.ponumber },
             {
                 '$set': {
-                    'grnnumber': `GRN-${req.params.ponumber}`,
                     'advancepaymentpaidat': req.body.advancepaymentpaidat,
                     'advancepaymentpaidby': req.body.advancepaymentpaidby,
                     'advancepayment': req.body.advancepayment,
