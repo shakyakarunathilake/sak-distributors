@@ -16,10 +16,16 @@ export default function SupplierPaymentForm(props) {
   const { handleClosePopUp, addOrEdit, paymentRecords, action, } = props;
 
   const today = new Date();
-  
+
   const date = today.getFullYear() + '-' +
     (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
     (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+
+  const time = (today.getHours() > 9 ? today.getHours() + 1 : `0${today.getHours() + 1}`) + ":" +
+    (today.getMinutes() > 9 ? today.getMinutes() + 1 : `0${today.getMinutes() + 1}`) + ":" +
+    (today.getSeconds() > 9 ? today.getSeconds() + 1 : `0${today.getSeconds() + 1}`);
+
+  const dateTime = date + ' ' + time;
 
   const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
   const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
@@ -41,9 +47,9 @@ export default function SupplierPaymentForm(props) {
       grntotal: paymentRecords ? paymentRecords.grntotal : '',
       paidamount: paymentRecords ? paymentRecords.paidamount : '',
       advancepayment: paymentRecords ? paymentRecords.advancepayment : '',
-      advancepaymentpaidat: paymentRecords.status !== "Advance Payment To Be Paid" ? paymentRecords.advancepaymentpaidat : date,
+      advancepaymentpaidat: paymentRecords.status !== "Advance Payment To Be Paid" ? paymentRecords.advancepaymentpaidat : dateTime,
       advancepaymentpaidby: paymentRecords.status !== "Advance Payment To Be Paid" ? paymentRecords.advancepaymentpaidby : `${firstname} ${lastname} (${employeeid})`,
-      paymentcompletedat: paymentRecords.status !== "Payment To Be Complete" ? paymentRecords.paymentcompletedat : date,
+      paymentcompletedat: paymentRecords.status !== "Payment To Be Complete" ? paymentRecords.paymentcompletedat : dateTime,
       paymentcompletedby: paymentRecords.status !== "Payment To Be Complete" ? paymentRecords.paymentcompletedby : `${firstname} ${lastname} (${employeeid})`,
       debt: paymentRecords ? paymentRecords.debt.toFixed(2) : '',
     }

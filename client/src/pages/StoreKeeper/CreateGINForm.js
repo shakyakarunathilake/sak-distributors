@@ -31,7 +31,7 @@ export default function GINForm(props) {
         (today.getMinutes() > 9 ? today.getMinutes() + 1 : `0${today.getMinutes() + 1}`) + ":" +
         (today.getSeconds() > 9 ? today.getSeconds() + 1 : `0${today.getSeconds() + 1}`);
 
-    const dateTime = date + 'T' + time;
+    const dateTime = date + ' ' + time;
 
     const ginTime = today.getFullYear() + '' + (today.getMonth() + 1) + '' + today.getDate() + '' + today.getHours() + '' + today.getMinutes();
 

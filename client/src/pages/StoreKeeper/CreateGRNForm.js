@@ -30,7 +30,7 @@ export default function GRNForm(props) {
         (today.getMinutes() > 9 ? today.getMinutes() + 1 : `0${today.getMinutes() + 1}`) + ":" +
         (today.getSeconds() > 9 ? today.getSeconds() + 1 : `0${today.getSeconds() + 1}`);
 
-    const dateTime = date + 'T' + time;
+    const dateTime = date + ' ' + time;
 
     const { handleSubmit, control, getValues, setValue } = useForm({
         mode: "all",
