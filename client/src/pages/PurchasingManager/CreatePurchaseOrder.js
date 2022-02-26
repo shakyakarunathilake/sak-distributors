@@ -86,7 +86,7 @@ export default function CreatePurchaseOrder(props) {
 
         const purchaseOrderFormData = new formData();
 
-        if (action === 'Create' || action === 'Edit') {
+        if (action === 'Create') {
             purchaseOrderFormData.append('ponumber', getValues('ponumber'));
             purchaseOrderFormData.append('supplier', getValues('supplier'));
             purchaseOrderFormData.append('givenid', getValues('givenid'));
@@ -101,10 +101,21 @@ export default function CreatePurchaseOrder(props) {
             purchaseOrderFormData.append('receiveddiscounts', getValues('receiveddiscounts'));
             purchaseOrderFormData.append('damagedmissingitems', getValues('damagedmissingitems'));
             purchaseOrderFormData.append('total', getValues('total'));
+            purchaseOrderFormData.append('deliveredat', getValues('deliveredat'));
+        }
+
+        if (action === 'Edit') {
+            purchaseOrderFormData.append('items', JSON.stringify(data));
+            purchaseOrderFormData.append('grosstotal', getValues('grosstotal'));
+            purchaseOrderFormData.append('total', getValues('total'));
+            purchaseOrderFormData.append('receiveddiscounts', getValues('receiveddiscounts'));
         }
 
         if (action === 'Approve') {
             purchaseOrderFormData.append('items', JSON.stringify(data));
+            purchaseOrderFormData.append('grosstotal', getValues('grosstotal'));
+            purchaseOrderFormData.append('total', getValues('total'));
+            purchaseOrderFormData.append('receiveddiscounts', getValues('receiveddiscounts'));
             purchaseOrderFormData.append('approvedat', getValues('approvedat'));
             purchaseOrderFormData.append('approvedby', getValues('approvedby'));
             purchaseOrderFormData.append('status', getValues('status'));

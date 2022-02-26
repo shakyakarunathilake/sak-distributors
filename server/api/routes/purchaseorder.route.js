@@ -50,6 +50,46 @@ router.get("/get-all-purchaseorder-table-data", (req, res, next) => {
 
 })
 
+//Get purchase order details by PO Number
+router.get("/:ponumber", (req, res, next) => {
+
+    PurchaseOrder
+        .findOne({ ponumber: req.params.ponumber })
+        .exec()
+        .then(doc => {
+
+            const purchaseorder = {
+                'ponumber': doc.ponumber,
+                'supplier': doc.supplier,
+                'givenid': doc.givenid,
+                'createdat': doc.createdat,
+                'createdby': doc.createdby,
+                'customername': doc.customername,
+                'customeraddress': doc.customeraddress,
+                'contactnumber': doc.contactnumber,
+                'approvedat': doc.approvedat,
+                'approvedby': doc.approvedby,
+                'deliveredat': doc.deliveredat,
+                'status': doc.status,
+                'items': doc.items,
+                'grosstotal': doc.grosstotal,
+                'receiveddiscounts': doc.receiveddiscounts,
+                'damagedmissingitems': doc.damagedmissingitems,
+                'total': doc.total,
+            }
+
+            res.status(200).json({
+                message: "Handeling GET requests to  purchaseorder/:ponumber",
+                purchaseorder: purchaseorder
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        })
+
+})
+
 //Create a purchaseorder
 router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) => {
 
@@ -152,46 +192,6 @@ router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) =
 
 });
 
-//Get purchase order details by PO Number
-router.get("/:ponumber", (req, res, next) => {
-
-    PurchaseOrder
-        .findOne({ ponumber: req.params.ponumber })
-        .exec()
-        .then(doc => {
-
-            const purchaseorder = {
-                'ponumber': doc.ponumber,
-                'supplier': doc.supplier,
-                'givenid': doc.givenid,
-                'createdat': doc.createdat,
-                'createdby': doc.createdby,
-                'customername': doc.customername,
-                'customeraddress': doc.customeraddress,
-                'contactnumber': doc.contactnumber,
-                'approvedat': doc.approvedat,
-                'approvedby': doc.approvedby,
-                'deliveredat': doc.deliveredat,
-                'status': doc.status,
-                'items': doc.items,
-                'grosstotal': doc.grosstotal,
-                'receiveddiscounts': doc.receiveddiscounts,
-                'damagedmissingitems': doc.damagedmissingitems,
-                'total': doc.total,
-            }
-
-            res.status(200).json({
-                message: "Handeling GET requests to  purchaseorder/:ponumber",
-                purchaseorder: purchaseorder
-            })
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({ "Error": err });
-        })
-
-})
-
 //Update purchase order details by po number
 router.post("/update-by-ponumber/:ponumber", formDataBody.fields([]), (req, res, next) => {
 
@@ -202,9 +202,11 @@ router.post("/update-by-ponumber/:ponumber", formDataBody.fields([]), (req, res,
             { ponumber: req.params.ponumber },
             {
                 'items': items,
-                'deliveredat': req.body.deliveredat,
+                'grosstotal': req.body.grosstotal,
+                'total': req.body.total,
+                'receiveddiscounts': req.body.receiveddiscounts
             },
-            { new: true }
+            { new: true, upsert: true }
         )
         .exec()
         .then(doc =>
@@ -233,6 +235,9 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
             { ponumber: req.params.ponumber },
             {
                 'items': items,
+                'grosstotal': req.body.grosstotal,
+                'total': req.body.total,
+                'receiveddiscounts': req.body.receiveddiscounts,
                 'approvedat': req.body.approvedat,
                 'approvedby': req.body.approvedby,
                 'status': req.body.status,
