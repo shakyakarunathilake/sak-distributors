@@ -217,7 +217,7 @@ export default function SalesAndInvoice() {
 
     const getNextOrderNo = () => {
         axios
-            .get("http://localhost:8080/orders/get-next-orderno", {
+            .get(`http://localhost:8080/orders/get-next-orderno/${employeeid}`, {
                 headers: {
                     'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
                 }
