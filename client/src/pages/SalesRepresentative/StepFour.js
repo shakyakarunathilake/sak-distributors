@@ -110,7 +110,9 @@ export default function StepFour(props) {
 
                 <AutoSizer>
                     {({ height, width }) => {
-                        const pageSize = Math.floor((height - 125) / 48);
+
+                        const bodyHeight = height - 125;
+                        const pageSize = Math.floor((bodyHeight) / 48);
 
                         return (
                             <div style={{ height: `${height}px`, width: `${width}px`, overflowY: 'auto' }}>
@@ -258,6 +260,8 @@ export default function StepFour(props) {
                                     options={{
                                         pageSize: pageSize,
                                         pageSizeOptions: [],
+                                        minBodyHeight: bodyHeight,
+                                        maxBodyHeight: bodyHeight,
                                         paging: true,
                                         toolbar: false,
                                         filter: true,
