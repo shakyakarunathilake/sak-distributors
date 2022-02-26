@@ -187,6 +187,25 @@ export default function SalesAndInvoice() {
                 })
         }
 
+        if (action === "Paid") {
+
+            axios
+                .post(`http://localhost:8080/orders/approve-complete/${orderno}`, order, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
+                .then(res => {
+                    setAlert(res.data.alert);
+                    setType(res.data.type);
+                    handleAlert();
+                    setReRender(orderno);
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        }
+
         setOrderRecords(null);
         setOpenPopup(false);
         setReRender(orderno);
