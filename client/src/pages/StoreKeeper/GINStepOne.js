@@ -29,6 +29,9 @@ import InfoIcon from '@mui/icons-material/Info';
 //Material Table
 import MaterialTable from 'material-table';
 
+//Shared functions 
+import NumberWithCommas from '../NumberWithCommas';
+
 //Styles
 import style from './GINStepOne.module.scss';
 import { makeStyles } from '@material-ui/core/styles';
@@ -317,7 +320,9 @@ export default function GINStepOne(props) {
                                                         <Typography style={{ fontWeight: 600 }}> Total (Rs.) </Typography>
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 20px 0px 0px" }}>
-                                                        <Typography style={{ fontWeight: 600 }}> {watch('total')} </Typography>
+                                                        <Typography style={{ fontWeight: 600 }}>
+                                                            {NumberWithCommas(watch('total'))}
+                                                        </Typography>
                                                     </Grid>
                                                 </Grid>
                                                 <TablePagination {...props} />
@@ -372,6 +377,7 @@ export default function GINStepOne(props) {
                                         },
                                         {
                                             field: 'sellingprice',
+                                            render: rowData => NumberWithCommas(rowData.sellingprice),
                                             cellStyle: {
                                                 width: "8%",
                                                 textAlign: 'right'
@@ -414,6 +420,7 @@ export default function GINStepOne(props) {
                                         },
                                         {
                                             field: 'grossamount',
+                                            render: rowData => NumberWithCommas(rowData.grossamount),
                                             cellStyle: {
                                                 width: "10%",
                                                 textAlign: 'right'

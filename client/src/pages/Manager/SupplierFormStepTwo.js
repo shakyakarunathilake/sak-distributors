@@ -118,6 +118,46 @@ export default function SupplierFormStepTwo(props) {
                 <div className={style.row}>
 
                     <div className={style.boldText}>
+                        Given ID
+                    </div>
+
+                    <div>
+                        <Controller
+                            render={({ field: { value } }) => (
+                                <Typography className={style.input}>
+                                    {value}
+                                </Typography>
+                            )}
+                            control={control}
+                            name={"givenid"}
+                        />
+                    </div>
+
+                </div>
+
+                <div className={style.row}>
+
+                    <div className={style.boldText}>
+                        Debt
+                    </div>
+
+                    <div>
+                        <Controller
+                            render={({ field: { value } }) => (
+                                <Typography className={style.input}>
+                                    Rs. {value}
+                                </Typography>
+                            )}
+                            control={control}
+                            name={"damagedmissingitems"}
+                        />
+                    </div>
+
+                </div>
+
+                <div className={style.row}>
+
+                    <div className={style.boldText}>
                         Contact Person
                     </div>
 

@@ -3,10 +3,12 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const multer = require("multer");
 
-const MetaData = require("../models/metadata.model")
+const MetaData = require("../models/metadata.model");
+const Supplier = require("../models/supplier.model")
 const PurchaseOrder = require("../models/purchaseorder.model");
 const GRN = require("../models/grn.model");
 const Store = require("../models/store.model");
+const SupplierPayment = require("../models/supplierpayment.model");
 
 const formDataBody = multer();
 
@@ -57,15 +59,17 @@ router.get("/:grnnumber", (req, res, next) => {
 
             const grn = {
                 'ponumber': doc.ponumber,
-                'status': doc.status,
                 'grnnumber': doc.grnnumber,
                 'supplier': doc.supplier,
+                'pototal': doc.pototal,
+                'status': doc.status,
+                'givenid': doc.givenid,
                 'createdat': doc.createdat,
                 'createdby': doc.createdby,
-                'total': doc.total,
+                'items': doc.items,
+                'previousdamagedmissingitems': doc.previousdamagedmissingitems,
                 'damagedmissingitems': doc.damagedmissingitems,
-                'grntotal': doc.total,
-                'items': doc.items
+                'grntotal': doc.grntotal,
             }
 
             res.status(200).json({
@@ -114,11 +118,11 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
                     { new: true, upsert: true }
                 )
                 .exec()
-                .then(doc => {
-                    console.log("******** GRN STATUS DELIVERED AND PURCHASE ORDER UPDATED ********");
-                })
+                .then(
+                    console.log("******** PURCHASE ORDER UPDATED ********")
+                )
                 .catch(err => {
-                    console.log("******** GRN STATUS DELIVERED AND PURCHASE ORDER UPDATED ERROR!!!!! ********");
+                    console.log("******** PURCHASE ORDER UPDATED ERROR!!!!! ********");
                     console.log(err);
 
                     res.status(200).json({
@@ -129,6 +133,137 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
 
             return doc;
 
+        })
+        .then(doc => {
+
+            SupplierPayment
+                .findOneAndUpdate(
+                    { "ponumber": doc.ponumber },
+                    {
+                        '$set': {
+                            'grngrosstotal': doc.pototal,
+                            'grndamagedmissingitems': doc.damagedmissingitems,
+                            'grntotal': doc.grntotal,
+                            'status': 'Payment To Be Complete'
+                        },
+                        '$inc': {
+                            'debt': -parseInt(req.body.damagedmissingitems)
+                        }
+                    },
+                    { new: true, upsert: true }
+                )
+                .exec()
+                .then(
+                    console.log("******** SUPPLIER PAYMENT ADDED ********")
+                )
+                .catch(err => {
+                    console.log(err);
+                    res.status(200).json({
+                        type: 'error',
+                        alert: `Something went wrong. Could not update relevant supplier payment`,
+                    });
+                });
+
+            return doc;
+        })
+        .then(doc => {
+
+            doc.items.map(item => {
+
+                let pieces = 0;
+                let cases = 0;
+                let totalnumberofpieces = 0;
+
+                const getPieces = (noofpieces, piecespercase) => {
+                    pieces = noofpieces % piecespercase;
+                    return pieces;
+                }
+
+                const getCases = (noofpieces, piecespercase) => {
+                    cases = Math.floor(noofpieces / piecespercase);
+                    return cases;
+                }
+
+                const getTotalNumberOfPieces = (itemcases, itempieces, damaged, piecespercase) => {
+                    totalnumberofpieces = (itemcases * piecespercase) + itempieces - damaged;
+                    return totalnumberofpieces;
+                }
+
+
+                let salesqtypieces = getPieces(getTotalNumberOfPieces(item.deliveredsalesqtycases, item.deliveredsalesqtypieces, item.damagedsalesqty, item.piecespercase), item.piecespercase);
+                let salesqtycases = getCases(getTotalNumberOfPieces(item.deliveredsalesqtycases, item.deliveredsalesqtypieces, item.damagedsalesqty, item.piecespercase), item.piecespercase);
+                let freeqtypieces = getPieces(getTotalNumberOfPieces(item.deliveredfreeqtycases, item.deliveredfreeqtypieces, item.damagedfreeqty, item.piecespercase), item.piecespercase);
+                let freeqtycases = getCases(getTotalNumberOfPieces(item.deliveredfreeqtycases, item.deliveredfreeqtypieces, item.damagedfreeqty, item.piecespercase), item.piecespercase);
+
+                Store
+                    .findOneAndUpdate(
+                        { name: item.description },
+                        {
+                            $inc: {
+                                'storequantity.salesqtypieces': salesqtypieces,
+                                'storequantity.salesqtycases': salesqtycases,
+                                'storequantity.freeqtypieces': freeqtypieces,
+                                'storequantity.freeqtycases': freeqtycases,
+                            },
+                            $push: {
+                                'grngin': {
+                                    'grnnumberginnumber': doc.grnnumber,
+                                    'date': req.body.createdat,
+                                    'piecespercase': item.piecespercase,
+                                    'listorsellingprice': parseInt(item.listprice).toFixed(2),
+                                    'salesqtycases': item.deliveredsalesqtycases,
+                                    'salesqtypieces': item.deliveredsalesqtypieces,
+                                    'freeqtycases': item.deliveredfreeqtycases,
+                                    'freeqtypieces': item.deliveredfreeqtypieces,
+                                    'damagedfreeqty': item.damagedfreeqty,
+                                    'damagedsalesqty': item.damagedsalesqty
+                                }
+                            }
+                        },
+                        { new: true }
+                    )
+                    .exec()
+                    .then(
+                        console.log("******** ITEMS ADDED TO STORE ********")
+                    )
+                    .catch(err => {
+                        res.status(200).json({
+                            type: 'error',
+                            alert: `Something went wrong. Could not update store`,
+                        });
+                        console.log(err);
+                    })
+            })
+
+            return doc;
+        })
+        .then(doc => {
+
+            Supplier
+                .findOneAndUpdate(
+                    { name: doc.supplier },
+                    {
+                        $inc: {
+                            'damagedmissingitems': parseInt(doc.damagedmissingitems)
+                        }
+                    },
+                    { new: true, upsert: true }
+                )
+                .exec()
+                .then(
+                    console.log("******** SUPPLIER DAMAGED MISSING ITEMS REFUND UPDATED ********")
+                )
+                .catch(err => {
+                    console.log("******** COULDN'T UPDATE SUPPLIER DAMAGED MISSING ITEMS REFUND ********");
+                    console.log(err);
+
+                    res.status(200).json({
+                        type: 'error',
+                        alert: `Something went wrong. Could not update Meta Data `,
+                    })
+                });
+
+            return doc;
         })
         .then(doc => {
 
@@ -145,11 +280,11 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
                     { upsert: true }
                 )
                 .exec()
-                .then(doc => {
-                    console.log("******** GRN STATUS DELIVERED AND META DATA ADDED ********");
-                })
+                .then(
+                    console.log("******** META DATA ADDED ********")
+                )
                 .catch(err => {
-                    console.log("******** GRN STATUS DELIVERED AND META DATA ERROR!!!!! ********");
+                    console.log("******** META DATA ERROR!!!!! ********");
                     console.log(err);
 
                     res.status(200).json({
@@ -157,50 +292,6 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
                         alert: `Something went wrong. Could not update Meta Data `,
                     })
                 });
-
-            return doc;
-        })
-        .then(doc => {
-
-            doc.items.map(item => {
-                Store
-                    .findOneAndUpdate(
-                        { name: item.description },
-                        {
-                            $inc: {
-                                'storequantity.salesqtycases': parseInt(item.deliveredsalesqtycases),
-                                'storequantity.salesqtypieces': parseInt(item.deliveredsalesqtypieces),
-                                'storequantity.freeqtypieces': parseInt(item.deliveredfreeqtypieces),
-                                'storequantity.freeqtycases': parseInt(item.deliveredfreeqtycases)
-                            },
-                            $push: {
-                                'grngin': {
-                                    'grnnumberginnumber': doc.grnnumber,
-                                    'date': req.body.createdat,
-                                    'piecespercase': item.piecespercase,
-                                    'listorsellingprice': parseInt(item.listprice).toFixed(2),
-                                    'salesqtycases': item.deliveredsalesqtycases,
-                                    'salesqtypieces': item.deliveredsalesqtypieces,
-                                    'freeqtycases': item.deliveredfreeqtycases,
-                                    'freeqtypieces': item.deliveredfreeqtypieces,
-                                }
-                            }
-                        },
-                        { new: true }
-                    )
-                    .exec()
-                    .then(doc => {
-                        console.log("******** ITEMS ADDED TO STORE ********");
-                        console.log(doc);
-                    })
-                    .catch(err => {
-                        res.status(200).json({
-                            type: 'error',
-                            alert: `Something went wrong. Could not update store`,
-                        });
-                        console.log(err);
-                    })
-            })
 
             return doc;
         })

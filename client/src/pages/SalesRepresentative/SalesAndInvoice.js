@@ -217,7 +217,7 @@ export default function SalesAndInvoice() {
 
     const getNextOrderNo = () => {
         axios
-            .get("http://localhost:8080/orders/get-next-orderno", {
+            .get(`http://localhost:8080/orders/get-next-orderno/${employeeid}`, {
                 headers: {
                     'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
                 }
@@ -334,7 +334,7 @@ export default function SalesAndInvoice() {
                                                 render: rowData => {
                                                     return (
                                                         rowData.status === 'Pending' ?
-                                                            <p style={{ padding: "0", margin: "0", color: "#745590", fontWeight: "700" }}>{rowData.status}</p>
+                                                            <p style={{ padding: "0", margin: "0", color: "#5E01AE", fontWeight: "700" }}>{rowData.status}</p>
                                                             : rowData.status === 'Processing' ?
                                                                 <p style={{ padding: "0", margin: "0", color: "#2196F3", fontWeight: "700" }}>{rowData.status}</p>
                                                                 : rowData.status === 'Shipping' ?
@@ -417,7 +417,7 @@ export default function SalesAndInvoice() {
                 <PopUp
                     openPopup={openPopup}
                     setOpenPopup={setOpenPopup}
-                    fullScreen={(action === "Delivered" || designation === 'Manager') ? false : true}
+                    fullScreen={(action === "Delivered") || (designation === 'Manager') ? false : true}
                 >
 
                     {

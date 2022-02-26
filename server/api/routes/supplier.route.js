@@ -56,6 +56,7 @@ router.post("/create-supplier", formDataBody.fields([]), (req, res, next) => {
     const supplier = new Supplier({
         _id: new mongoose.Types.ObjectId(),
         supplierid: req.body.supplierid,
+        givenid: req.body.givenid,
         name: req.body.name,
         abbreviation: req.body.abbreviation,
         address: req.body.address,
@@ -65,6 +66,7 @@ router.post("/create-supplier", formDataBody.fields([]), (req, res, next) => {
         addeddate: addeddate,
         contactnumber: req.body.contactnumber,
         email: req.body.email,
+        damagedmissingitems: 0
     });
 
     supplier
@@ -98,6 +100,7 @@ router.get("/get-all-supplier-table-data", (req, res, next) => {
                 "supplierid": x.supplierid,
                 "name": x.name,
                 "abbreviation": x.abbreviation,
+                "givenid": x.givenid,
                 "contactperson": x.title + ' ' + x.contactperson,
                 "contactnumber": x.contactnumber,
                 "email": x.email
@@ -127,6 +130,7 @@ router.get("/:supplierid", (req, res, next) => {
                 'supplierid': doc.supplierid,
                 'name': doc.name,
                 'abbreviation': doc.abbreviation,
+                "givenid": doc.givenid,
                 'address': doc.address,
                 'title': doc.title,
                 'contactperson': doc.contactperson,
@@ -134,6 +138,7 @@ router.get("/:supplierid", (req, res, next) => {
                 'addeddate': doc.addeddate,
                 'contactnumber': doc.contactnumber,
                 'email': doc.email,
+                'damagedmissingitems': doc.damagedmissingitems
             }
 
             res.status(200).json({

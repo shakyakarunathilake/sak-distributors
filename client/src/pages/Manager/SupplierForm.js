@@ -5,6 +5,9 @@ import formData from 'form-data';
 //SCSS Styles
 import style from './SupplierForm.module.scss';
 
+//Shared functions 
+import NumberWithCommas from '../NumberWithCommas';
+
 //Steps
 import StepOne from './SupplierFormStepOne';
 import StepTwo from './SupplierFormStepTwo';
@@ -14,12 +17,16 @@ export default function SupplierForm(props) {
     const { setOpenPopup, addOrEdit, supplierRecords, nextSupId, action, employeeOptions } = props;
 
     const today = new Date();
-    const date = today.getFullYear() + '-' + (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' + (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+    
+    const date = today.getFullYear() + '-' +
+    (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
+    (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
 
-    const { handleSubmit, formState: { errors, isValid }, control, reset, trigger } = useForm({
+    const { handleSubmit, formState: { errors, isValid }, control, reset, trigger, getValues } = useForm({
         mode: "all",
         defaultValues: {
             supplierid: supplierRecords ? supplierRecords.supplierid : nextSupId,
+            givenid: supplierRecords ? supplierRecords.givenid : '',
             name: supplierRecords ? supplierRecords.name : '',
             abbreviation: supplierRecords ? supplierRecords.abbreviation : '',
             address: supplierRecords ? supplierRecords.address : '',
@@ -29,7 +36,7 @@ export default function SupplierForm(props) {
             addeddate: supplierRecords ? supplierRecords.addeddate : date,
             contactnumber: supplierRecords ? supplierRecords.contactnumber : '',
             email: supplierRecords ? supplierRecords.email : '',
-
+            damagedmissingitems: supplierRecords ? NumberWithCommas(supplierRecords.damagedmissingitems.toFixed(2)) : '',
         }
     });
 
@@ -48,21 +55,22 @@ export default function SupplierForm(props) {
     }
 
 
-    const onSubmit = (values) => {
+    const onSubmit = () => {
         const customerFormData = new formData();
 
-        customerFormData.append('supplierid', values.supplierid);
-        customerFormData.append("name", values.name);
-        customerFormData.append('abbreviation', values.abbreviation);
-        customerFormData.append("addedby", values.addedby);
-        customerFormData.append('addeddate', values.addeddate);
-        customerFormData.append("contactnumber", values.contactnumber ? values.contactnumber : "");
-        customerFormData.append('contactperson', values.contactperson);
-        customerFormData.append('title', values.title);
-        customerFormData.append('address', values.address);
-        customerFormData.append('email', values.email);
+        customerFormData.append('supplierid', getValues('supplierid'));
+        customerFormData.append("name", getValues('name'));
+        customerFormData.append("givenid", getValues('givenid'));
+        customerFormData.append('abbreviation', getValues('abbreviation'));
+        customerFormData.append("addedby", getValues('addedby'));
+        customerFormData.append('addeddate', getValues('addeddate'));
+        customerFormData.append("contactnumber", getValues('contactnumber'));
+        customerFormData.append('contactperson', getValues('contactperson'));
+        customerFormData.append('title', getValues('title'));
+        customerFormData.append('address', getValues('address'));
+        customerFormData.append('email', getValues('email'));
 
-        addOrEdit(customerFormData, values.supplierid);
+        addOrEdit(customerFormData, getValues('supplierid'));
     };
 
     const resetForm = () => {

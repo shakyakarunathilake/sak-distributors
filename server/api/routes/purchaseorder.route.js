@@ -6,6 +6,8 @@ const multer = require("multer");
 const MetaData = require("../models/metadata.model")
 const PurchaseOrder = require("../models/purchaseorder.model");
 const GRN = require("../models/grn.model");
+const Supplier = require("../models/supplier.model");
+const SupplierPayment = require("../models/supplierpayment.model");
 
 const formDataBody = multer();
 
@@ -48,6 +50,46 @@ router.get("/get-all-purchaseorder-table-data", (req, res, next) => {
 
 })
 
+//Get purchase order details by PO Number
+router.get("/:ponumber", (req, res, next) => {
+
+    PurchaseOrder
+        .findOne({ ponumber: req.params.ponumber })
+        .exec()
+        .then(doc => {
+
+            const purchaseorder = {
+                'ponumber': doc.ponumber,
+                'supplier': doc.supplier,
+                'givenid': doc.givenid,
+                'createdat': doc.createdat,
+                'createdby': doc.createdby,
+                'customername': doc.customername,
+                'customeraddress': doc.customeraddress,
+                'contactnumber': doc.contactnumber,
+                'approvedat': doc.approvedat,
+                'approvedby': doc.approvedby,
+                'deliveredat': doc.deliveredat,
+                'status': doc.status,
+                'items': doc.items,
+                'grosstotal': doc.grosstotal,
+                'receiveddiscounts': doc.receiveddiscounts,
+                'damagedmissingitems': doc.damagedmissingitems,
+                'total': doc.total,
+            }
+
+            res.status(200).json({
+                message: "Handeling GET requests to  purchaseorder/:ponumber",
+                purchaseorder: purchaseorder
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        })
+
+})
+
 //Create a purchaseorder
 router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) => {
 
@@ -60,6 +102,7 @@ router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) =
         customeraddress: req.body.customeraddress,
         contactnumber: req.body.contactnumber,
         supplier: req.body.supplier,
+        givenid: req.body.givenid,
         createdat: req.body.createdat,
         createdby: req.body.createdby,
         approvedat: '',
@@ -102,6 +145,34 @@ router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) =
 
             return result;
         })
+        .then(result => {
+
+            Supplier
+                .findOneAndUpdate(
+                    { name: result.supplier },
+                    {
+                        $inc: {
+                            'damagedmissingitems': -parseInt(result.damagedmissingitems)
+                        }
+                    },
+                    { new: true, upsert: true }
+                )
+                .exec()
+                .then(
+                    console.log("******** SUPPLIER DAMAGED MISSING ITEMS REFUND UPDATED ********")
+                )
+                .catch(err => {
+                    console.log("******** COULDN'T UPDATE SUPPLIER DAMAGED MISSING ITEMS REFUND ********");
+                    console.log(err);
+
+                    res.status(200).json({
+                        type: 'error',
+                        alert: `Something went wrong. Could not update Meta Data `,
+                    })
+                });
+
+            return result;
+        })
         .then(result =>
             res.status(201).json({
                 message: "Handeling POST requests to /purchaseorders/create-purchaseorder, PURCHASE ORDER CREATED",
@@ -121,46 +192,6 @@ router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) =
 
 });
 
-
-//Get purchase order details by PO Number
-router.get("/:ponumber", (req, res, next) => {
-
-    PurchaseOrder
-        .findOne({ ponumber: req.params.ponumber })
-        .exec()
-        .then(doc => {
-
-            const purchaseorder = {
-                'ponumber': doc.ponumber,
-                'supplier': doc.supplier,
-                'createdat': doc.createdat,
-                'createdby': doc.createdby,
-                'customername': doc.customername,
-                'customeraddress': doc.customeraddress,
-                'contactnumber': doc.contactnumber,
-                'approvedat': doc.approvedat,
-                'approvedby': doc.approvedby,
-                'deliveredat': doc.deliveredat,
-                'status': doc.status,
-                'items': doc.items,
-                'grosstotal': doc.grosstotal,
-                'receiveddiscounts': doc.receiveddiscounts,
-                'damagedmissingitems': doc.damagedmissingitems,
-                'total': doc.total,
-            }
-
-            res.status(200).json({
-                message: "Handeling GET requests to  purchaseorder/:ponumber",
-                purchaseorder: purchaseorder
-            })
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({ "Error": err });
-        })
-
-})
-
 //Update purchase order details by po number
 router.post("/update-by-ponumber/:ponumber", formDataBody.fields([]), (req, res, next) => {
 
@@ -171,9 +202,11 @@ router.post("/update-by-ponumber/:ponumber", formDataBody.fields([]), (req, res,
             { ponumber: req.params.ponumber },
             {
                 'items': items,
-                'deliveredat': req.body.deliveredat,
+                'grosstotal': req.body.grosstotal,
+                'total': req.body.total,
+                'receiveddiscounts': req.body.receiveddiscounts
             },
-            { new: true }
+            { new: true, upsert: true }
         )
         .exec()
         .then(doc =>
@@ -202,11 +235,14 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
             { ponumber: req.params.ponumber },
             {
                 'items': items,
+                'grosstotal': req.body.grosstotal,
+                'total': req.body.total,
+                'receiveddiscounts': req.body.receiveddiscounts,
                 'approvedat': req.body.approvedat,
                 'approvedby': req.body.approvedby,
                 'status': req.body.status,
             },
-            { new: true }
+            { new: true, upsert: true }
         )
         .exec()
         .then(result => {
@@ -220,7 +256,8 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
                     "deliveredfreeqtycases": item.deliveredfreeqtycases ? item.deliveredfreeqtycases : item.freeqtycases,
                     "freeqtypieces": item.freeqtypieces,
                     "deliveredfreeqtypieces": item.deliveredfreeqtypieces ? item.deliveredfreeqtypieces : item.freeqtypieces,
-                    "damaged": item.damaged ? item.damaged : 0,
+                    "damagedfreeqty": 0,
+                    "damagedsalesqty": 0,
                     "description": item.description,
                     "piecespercase": parseInt(item.piecespercase),
                     "listprice": item.listprice,
@@ -238,23 +275,24 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
             const grn = new GRN({
                 _id: new mongoose.Types.ObjectId(),
                 ponumber: result.ponumber,
+                givenid: result.givenid,
                 grnnumber: `GRN-${result.ponumber}`,
                 supplier: result.supplier,
                 status: "Pending",
                 items: items,
                 createdat: '',
                 createdby: '',
-                grosstotal: result.grosstotal,
-                damagedmissingitems: 0,
-                total: result.total,
+                pototal: result.total,
+                previousdamagedmissingitems: result.damagedmissingitems,
+                damagedmissingitems: '0.00',
+                grntotal: '0.00'
             });
 
             grn
                 .save()
-                .then(result => {
-                    console.log("********  APPROVE PURCHASE ORDER ********");
-                    console.log(result)
-                })
+                .then(
+                    console.log("********  APPROVE PURCHASE ORDER ********")
+                )
                 .catch(err => {
                     console.log("********  APPROVE PURCHASE ORDER GRN ERROR ********");
                     console.log(err);
@@ -282,15 +320,54 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
                             }
                         }
                     },
-                    { upsert: true }
+                    { new: true, upsert: true }
                 )
                 .exec()
-                .then(() => {
+                .then(
                     console.log("********  APPROVE PURCHASE ORDER METADATA ADDED ********")
-                })
+                )
                 .catch(err => {
                     console.log("********  APPROVE PURCHASE ORDER METADATA ERROR ********")
                     console.log(err)
+                })
+
+            return result;
+        })
+        .then(result => {
+
+            const supplierpayment = new SupplierPayment({
+                _id: new mongoose.Types.ObjectId(),
+                supplier: result.supplier,
+                ponumber: result.ponumber,
+                grnnumber: '',
+                status: 'Advance Payment To Be Paid',
+                pogrosstotal: result.grosstotal,
+                receiveddiscounts: result.receiveddiscounts,
+                pototal: result.total,
+                grngrosstotal: '0.00',
+                podamagedmissingitems: result.damagedmissingitems,
+                grntotal: '0.00',
+                paidamount: '0.00',
+                advancepayment: '',
+                advancepaymentpaidat: '',
+                advancepaymentpaidby: '',
+                paymentcompletedat: '',
+                paymentcompletedby: '',
+                grndamagedmissingitems: '',
+                debt: parseInt(result.total),
+            });
+
+            supplierpayment
+                .save()
+                .then(
+                    console.log("******** SUPPLIER PAYMENT ADDED ********")
+                )
+                .catch(err => {
+                    res.status(200).json({
+                        type: 'error',
+                        alert: `Something went wrong. Could not add supplier payment`,
+                    });
+                    console.log("Error: ", err)
                 })
 
             return result;

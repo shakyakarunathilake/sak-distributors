@@ -18,7 +18,9 @@ router.get("/", (req, res, next) => {
 });
 
 //Get next invoice number
-router.get("/get-next-orderno", (req, res, next) => {
+router.get("/get-next-orderno/:employeeid", (req, res, next) => {
+
+    const employeeid = req.params.employeeid;
 
     var today = new Date();
     var date = `${today.getFullYear()}${(today.getMonth() + 1)}${today.getDate()}`;
@@ -36,15 +38,18 @@ router.get("/get-next-orderno", (req, res, next) => {
             let invoicearray;
 
             if (doc.length !== 0) {
-                console.log("DOCUMENT: ", doc);
                 invoicearray = doc.map(x => {
-                    return parseInt(x.orderno.slice(14))
+                    if (x.orderno.substring(0, 6) === employeeid) {
+                        return parseInt(x.orderno.slice(14))
+                    } else {
+                        return 000
+                    }
                 });
             } else {
                 invoicearray = [000];
             }
 
-            const nextorderno = pad(String(Math.max(...invoicearray) + 1), 3);
+            const nextorderno = employeeid + pad(String(Math.max(...invoicearray) + 1), 3);
 
             res.status(200).json({
                 message: "Handeling GET requests to /get-next-orderno",
@@ -136,7 +141,7 @@ router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
                 Customer
                     .findOneAndUpdate(
                         { customerid: result.customerid },
-                        { 'creditamounttosettle': result.currentinvoicecreditamount },
+                        { 'creditamounttosettle': parseInt(result.currentinvoicecreditamount) },
                         { new: true }
                     )
                     .exec()

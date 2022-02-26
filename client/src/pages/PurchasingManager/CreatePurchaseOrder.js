@@ -14,8 +14,14 @@ export default function CreatePurchaseOrder(props) {
     const { productOptions, supplierOptions, addOrEdit, handleClosePopUp, poRecords, action } = props;
 
     const today = new Date();
-    const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-    const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+    const date = today.getFullYear() + '-' +
+        (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
+        (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+
+    const time = (today.getHours() > 9 ? today.getHours() + 1 : `0${today.getHours() + 1}`) + ":" +
+        (today.getMinutes() > 9 ? today.getMinutes() + 1 : `0${today.getMinutes() + 1}`) + ":" +
+        (today.getSeconds() > 9 ? today.getSeconds() + 1 : `0${today.getSeconds() + 1}`);
 
     const dateTime = date + ' ' + time;
 
@@ -34,7 +40,7 @@ export default function CreatePurchaseOrder(props) {
             receiveddiscounts: poRecords ? parseInt(poRecords.receiveddiscounts).toFixed(2) : 0.00,
             damagedmissingitems: poRecords ? parseInt(poRecords.damagedmissingitems).toFixed(2) : 0.00,
             total: poRecords ? poRecords.total : 0.00,
-            // customerid: poRecords ? poRecords.customerid : '',
+            givenid: poRecords ? poRecords.givenid : '',
             customername: poRecords ? poRecords.customername : "S.A.K Distributors",
             customeraddress: poRecords ? poRecords.customeraddress : "No.233, Kiriwallapitiya, Rambukkana, Sri Lanka",
             contactnumber: poRecords ? poRecords.contactnumber : "0352264009",
@@ -80,9 +86,10 @@ export default function CreatePurchaseOrder(props) {
 
         const purchaseOrderFormData = new formData();
 
-        if (action === 'Create' || action === 'Edit') {
+        if (action === 'Create') {
             purchaseOrderFormData.append('ponumber', getValues('ponumber'));
             purchaseOrderFormData.append('supplier', getValues('supplier'));
+            purchaseOrderFormData.append('givenid', getValues('givenid'));
             purchaseOrderFormData.append('customername', getValues('customername'));
             purchaseOrderFormData.append('customeraddress', getValues('customeraddress'));
             purchaseOrderFormData.append('contactnumber', getValues('contactnumber'));
@@ -94,10 +101,21 @@ export default function CreatePurchaseOrder(props) {
             purchaseOrderFormData.append('receiveddiscounts', getValues('receiveddiscounts'));
             purchaseOrderFormData.append('damagedmissingitems', getValues('damagedmissingitems'));
             purchaseOrderFormData.append('total', getValues('total'));
+            purchaseOrderFormData.append('deliveredat', getValues('deliveredat'));
+        }
+
+        if (action === 'Edit') {
+            purchaseOrderFormData.append('items', JSON.stringify(data));
+            purchaseOrderFormData.append('grosstotal', getValues('grosstotal'));
+            purchaseOrderFormData.append('total', getValues('total'));
+            purchaseOrderFormData.append('receiveddiscounts', getValues('receiveddiscounts'));
         }
 
         if (action === 'Approve') {
             purchaseOrderFormData.append('items', JSON.stringify(data));
+            purchaseOrderFormData.append('grosstotal', getValues('grosstotal'));
+            purchaseOrderFormData.append('total', getValues('total'));
+            purchaseOrderFormData.append('receiveddiscounts', getValues('receiveddiscounts'));
             purchaseOrderFormData.append('approvedat', getValues('approvedat'));
             purchaseOrderFormData.append('approvedby', getValues('approvedby'));
             purchaseOrderFormData.append('status', getValues('status'));

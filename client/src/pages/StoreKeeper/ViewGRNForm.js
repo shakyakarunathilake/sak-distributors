@@ -20,16 +20,17 @@ export default function ViewGRNForm(props) {
             ponumber: GRNRecords.ponumber,
             grnnumber: GRNRecords.grnnumber,
             supplier: GRNRecords.supplier,
-            total: GRNRecords.total,
+            pototal: GRNRecords.pototal,
+            status: GRNRecords.status,
+            givenid: GRNRecords.givenid,
             createdat: GRNRecords.createdat,
             createdby: GRNRecords.createdby,
-            // customerid:poRecords.customerid ,
+            damagedmissingitems: GRNRecords.damagedmissingitems,
+            previousdamagedmissingitems: GRNRecords.previousdamagedmissingitems,
+            grntotal: GRNRecords.grntotal,
             customername: "S.A.K Distributors",
             customeraddress: "No.233, Kiriwallapitiya, Rambukkana, Srilanka",
             contactnumber: "0352264009",
-            status: GRNRecords.status,
-            grntotal: GRNRecords.grntotal,
-            damagedmissingitems: GRNRecords.damagedmissingitems
         }
     });
 

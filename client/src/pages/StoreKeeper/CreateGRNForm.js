@@ -21,8 +21,15 @@ export default function GRNForm(props) {
     const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
 
     const today = new Date();
-    const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-    const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+    const date = today.getFullYear() + '-' +
+        (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
+        (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+
+    const time = (today.getHours() > 9 ? today.getHours() + 1 : `0${today.getHours() + 1}`) + ":" +
+        (today.getMinutes() > 9 ? today.getMinutes() + 1 : `0${today.getMinutes() + 1}`) + ":" +
+        (today.getSeconds() > 9 ? today.getSeconds() + 1 : `0${today.getSeconds() + 1}`);
+
     const dateTime = date + ' ' + time;
 
     const { handleSubmit, control, getValues, setValue } = useForm({
@@ -31,16 +38,18 @@ export default function GRNForm(props) {
             ponumber: GRNRecords.ponumber,
             grnnumber: GRNRecords.grnnumber,
             supplier: GRNRecords.supplier,
-            total: GRNRecords.total,
+            pototal: GRNRecords.pototal,
+            status: "Delivered",
+            givenid: GRNRecords.givenid,
             createdat: dateTime,
             createdby: `${firstname} ${lastname} (${employeeid})`,
-            // customerid:poRecords.customerid ,
+            damagedmissingitems: 0,
+            previousdamagedmissingitems: GRNRecords.previousdamagedmissingitems,
+            grntotal: 0,
             customername: "S.A.K Distributors",
             customeraddress: "No.233, Kiriwallapitiya, Rambukkana, Srilanka",
             contactnumber: "0352264009",
-            status: "Delivered",
-            grntotal: 0,
-            damagedmissingitems: 0
+
         }
     });
 
@@ -51,12 +60,14 @@ export default function GRNForm(props) {
     useEffect(() => {
         if (data != null) {
             let total = 0;
+            let previousdamagedmissingitems = getValues('previousdamagedmissingitems');
 
             for (let i = 0; i < data.length; i++) {
                 total = total + (isNaN(data[i].grnvalue) ? 0 : data[i].grnvalue);
             }
 
-            setValue("grntotal", total.toFixed(2));
+            let grntotal = total - parseInt(previousdamagedmissingitems);
+            setValue("grntotal", grntotal.toFixed(2));
         }
     }, [data, setValue])
 

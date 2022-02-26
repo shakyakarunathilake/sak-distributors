@@ -66,8 +66,8 @@ router.post("/create-customer", formDataBody.fields([]), (req, res, next) => {
         billingaddress: req.body.billingaddress,
         shippingaddress: req.body.shippingaddress,
         registeredby: req.body.registeredby,
-        creditamounttosettle: req.body.creditamounttosettle,
-        loyaltypoints: req.body.loyaltypoints,
+        creditamounttosettle: 0,
+        loyaltypoints: 0,
 
     });
 

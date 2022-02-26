@@ -25,7 +25,7 @@ import ManageSupplier from '../pages/Manager/ManageSupplier';
 import ManagePurchaseOrder from '../pages/PurchasingManager/ManagePurchaseOrder';
 import ManageQuotations from '../pages/PurchasingManager/ManageQuotations';
 import SalesTrendAnalytics from '../pages/PurchasingManager/SalesTrendAnalytics';
-import SupplierPayment from '../pages/PurchasingManager/SupplierPayment';
+import ManageSupplierPayment from '../pages/PurchasingManager/ManageSupplierPayment';
 
 //Store Keeper
 import ManageGRN from '../pages/StoreKeeper/ManageGRN';
@@ -94,7 +94,7 @@ function App() {
             <Route exact path='/purchasing-manager/manage-products' component={ManageProduct} />
             <Route exact path='/purchasing-manager/manage-purchase-orders' component={ManagePurchaseOrder} />
             <Route exact path='/purchasing-manager/manage-quotations' component={ManageQuotations} />
-            <Route exact path='/purchasing-manager/supplier-payment' component={SupplierPayment} />
+            <Route exact path='/purchasing-manager/manage-supplier-payment' component={ManageSupplierPayment} />
 
             {/* Store Keeper */}
             <Route exact path='/store-keeper/dashboard' component={Dashboard} />

@@ -19,6 +19,9 @@ import MaterialTable from 'material-table';
 //Material UI Icons
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
+//Shared functions 
+import NumberWithCommas from '../NumberWithCommas';
+
 //Styles
 import style from './StepFour.module.scss';
 import { makeStyles } from '@material-ui/core/styles';
@@ -107,7 +110,7 @@ export default function StepFour(props) {
 
                 <AutoSizer>
                     {({ height, width }) => {
-                        const pageSize = Math.floor((height - 170) / 48);
+                        const pageSize = Math.floor((height - 125) / 48);
 
                         return (
                             <div style={{ height: `${height}px`, width: `${width}px`, overflowY: 'auto' }}>
@@ -124,7 +127,7 @@ export default function StepFour(props) {
                                                         <Typography style={{ fontWeight: 600 }}> Total (Rs.) </Typography>
                                                     </Grid>
                                                     <Grid item align="Right" style={{ margin: "0px 10px  0px 0px", width: '100px' }}>
-                                                        <Typography style={{ fontWeight: 600 }}>{watch('total')}</Typography>
+                                                        <Typography style={{ fontWeight: 600 }}>{NumberWithCommas(watch('total'))}</Typography>
                                                     </Grid>
                                                 </Grid>
                                                 <TablePagination {...props} />
@@ -133,7 +136,7 @@ export default function StepFour(props) {
                                         Header: props => (
                                             <TableHead {...props} className={classes.tablehead} >
                                                 <TableRow className={classes.row1}>
-                                                    <TableCell width="37%" padding="none" rowSpan={2}>
+                                                    <TableCell width="40%" padding="none" rowSpan={2}>
                                                         <div style={{ padding: '0 10px' }}>
                                                             Description
                                                         </div>
@@ -143,7 +146,7 @@ export default function StepFour(props) {
                                                             Pcs/Case
                                                         </div>
                                                     </TableCell>
-                                                    <TableCell padding="none" width="6%" rowSpan={2} align="center">
+                                                    <TableCell padding="none" width="10%" rowSpan={2} align="center">
                                                         <div style={{ padding: '0 10px' }}>
                                                             Selling Price (Rs.)
                                                         </div>
@@ -159,10 +162,7 @@ export default function StepFour(props) {
                                                     <TableCell padding="none" colSpan={2} align="center">
                                                         Free Qty.
                                                     </TableCell>
-                                                    <TableCell padding="none" colSpan={2} align="center">
-                                                        Return Qty.
-                                                    </TableCell>
-                                                    <TableCell padding="none" width="9%" rowSpan={2} align="center">
+                                                    <TableCell padding="none" width="14%" rowSpan={2} align="center">
                                                         <div style={{ padding: '0 10px' }}>
                                                             Gross Amount (Rs.)
                                                         </div>
@@ -173,8 +173,6 @@ export default function StepFour(props) {
                                                     <TableCell width="6%" padding="none" align="center">Pcs</TableCell>
                                                     <TableCell width="6%" padding="none" align="center">Cs</TableCell>
                                                     <TableCell width="6%" padding="none" align="center">Pcs</TableCell>
-                                                    <TableCell width="6%" padding="none" align="center">D</TableCell>
-                                                    <TableCell width="6%" padding="none" align="center">R</TableCell>
                                                 </TableRow>
                                             </TableHead>
                                         ),
@@ -184,7 +182,7 @@ export default function StepFour(props) {
                                             field: "description",
                                             cellStyle: {
                                                 padding: "12px 5px 12px 7px",
-                                                width: '37%',
+                                                width: '40%',
                                                 textAlign: 'left'
                                             },
                                         },
@@ -198,14 +196,16 @@ export default function StepFour(props) {
                                         },
                                         {
                                             field: "sellingprice",
+                                            render: rowData => NumberWithCommas(rowData.sellingprice),
                                             cellStyle: {
-                                                width: '6%',
+                                                width: '10%',
                                                 padding: "12px 5px 12px 7px",
                                                 textAlign: 'right'
                                             },
                                         },
                                         {
                                             field: "mrp",
+                                            render: rowData => NumberWithCommas(rowData.mrp),
                                             cellStyle: {
                                                 width: '6%',
                                                 padding: "12px 5px 12px 7px",
@@ -245,25 +245,10 @@ export default function StepFour(props) {
                                             },
                                         },
                                         {
-                                            field: "damaged",
-                                            cellStyle: {
-                                                width: '6%',
-                                                padding: "12px 5px 12px 7px",
-                                                textAlign: 'right'
-                                            },
-                                        },
-                                        {
-                                            field: "returns",
-                                            cellStyle: {
-                                                width: '6%',
-                                                padding: "12px 5px 12px 7px",
-                                                textAlign: 'right'
-                                            },
-                                        },
-                                        {
                                             field: "grossamount",
+                                            render: rowData => NumberWithCommas(rowData.grossamount),
                                             cellStyle: {
-                                                width: '9%',
+                                                width: '14%',
                                                 padding: "12px 12px 12px 7px",
                                                 textAlign: 'right'
                                             },

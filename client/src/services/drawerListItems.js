@@ -133,9 +133,9 @@ const getPurchasingManagerListItems = [
         icon: <ListAltIcon />
     },
     {
-        id: "Supplier Payment",
-        title: "Supplier Payment",
-        path: "http://localhost:3000/purchasing-manager/supplier-payment",
+        id: "Manage Supplier Payment",
+        title: "Manage Supplier Payment",
+        path: "http://localhost:3000/purchasing-manager/manage-supplier-payment",
         icon: <PaymentIcon />
     },
     {

@@ -32,15 +32,15 @@ export default function ViewOrder(props) {
             route: orderRecords.route,
             ordercreatedby: orderRecords.ordercreatedby,
             shippingaddress: orderRecords.shippingaddress,
-            total: parseInt(orderRecords.total),
-            loyaltypoints: parseInt(orderRecords.loyaltypoints),
-            minimumpayment: parseInt(orderRecords.minimumpayment),
-            advancepayment: parseInt(orderRecords.advancepayment),
-            creditamounttosettle: parseInt(orderRecords.creditamounttosettle),
+            total: orderRecords.total,
+            loyaltypoints: orderRecords.loyaltypoints,
+            minimumpayment: orderRecords.minimumpayment,
+            advancepayment: orderRecords.advancepayment,
+            creditamounttosettle: orderRecords.creditamounttosettle,
             eligibilityforcredit: orderRecords.eligibilityforcredit,
-            maximumcreditamount: parseInt(orderRecords.maximumcreditamount),
-            currentinvoicecreditamount: parseInt(orderRecords.currentinvoicecreditamount),
-            invoicesettlementvalue: parseInt(orderRecords.invoicesettlementvalue)
+            maximumcreditamount: orderRecords.maximumcreditamount,
+            currentinvoicecreditamount: orderRecords.currentinvoicecreditamount,
+            invoicesettlementvalue: orderRecords.invoicesettlementvalue
         }
     });
 

@@ -9,6 +9,9 @@ import Divider from '@mui/material/Divider';
 //Material UI Icons
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
+//Shared functions 
+import NumberWithCommas from '../NumberWithCommas';
+
 //SCSS Styling
 import style from './StepTwo.module.scss';
 
@@ -313,7 +316,7 @@ export default function StepTwo(props) {
                                 control={control}
                                 render={({ field: { value } }) => (
                                     <Typography className={style.input}>
-                                        Rs {value}
+                                        Rs {NumberWithCommas(value)}
                                     </Typography>
                                 )}
                             />
@@ -356,7 +359,7 @@ export default function StepTwo(props) {
                                 control={control}
                                 render={({ field: { value } }) => (
                                     <Typography className={style.input}>
-                                        Rs {value}
+                                        Rs {NumberWithCommas(value)}
                                     </Typography>
                                 )}
                             />

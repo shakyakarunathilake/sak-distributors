@@ -3,10 +3,49 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const authConfig = require('../config/auth.config');
+const emailNotify = require("./email.notify");
 
 const router = express.Router();
 
 const Employee = require("../models/employee.model");
+
+function changePassword(details) {
+    const newpassword = details.onetimepassword;
+
+    console.log("DETAILS: ", details);
+
+    bcrypt.hash(newpassword.toString(), 10, (err, hash) => {
+        if (err) {
+            console.log(err);
+        } else {
+            Employee
+                .findOneAndUpdate(
+                    { email: details.email },
+                    {
+                        password: hash,
+                        firsttimelogin: true
+                    },
+                    { new: true }
+                )
+                .exec()
+                .then(
+
+                    emailNotify.sendEmail({
+                        "tomail": details.email,
+                        "subject": "Instructions to reset your password",
+                        "content": `Please use this one time password with your username to login to your account: ${details.onetimepassword}. 
+                        Once you log in you will be redirected to change password page where you have to input above mentioned one time password as the current password.
+                         Thank you.`,
+                    })
+
+                )
+                .catch(err => {
+                    console.log(err);
+                });
+        }
+    });
+
+}
 
 //Sign in
 router.post("/signin", (req, res, next) => {
@@ -40,7 +79,7 @@ router.post("/signin", (req, res, next) => {
                     contactnumber: employee[0].contactnumber
                 },
                 authConfig.secret,
-                { expiresIn: 7200 }
+                { expiresIn: 99999 }
             );
 
             res.status(200).json({
@@ -75,10 +114,21 @@ router.post("/forgot-password", (req, res, next) => {
         .find({ email: req.body.email })
         .exec()
         .then(employee => {
+
+            changePassword({
+                onetimepassword: Math.floor(100000 + Math.random() * 900000),
+                email: req.body.email,
+            });
+
+            return employee;
+        })
+        .then(employee => {
+
             res.status(200).json({
                 type: "success",
                 message: `Hi ${employee[0].firstname} ${employee[0].lastname}. The reset instruction has been sent to your email address. Have a nice day`
-            });
+            })
+
         })
         .catch(err => {
             console.log(err);

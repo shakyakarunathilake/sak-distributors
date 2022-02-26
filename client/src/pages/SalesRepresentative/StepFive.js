@@ -17,6 +17,9 @@ import CalculateIcon from '@mui/icons-material/Calculate';
 //Shared Components
 import TextField from '../../shared/TextField/TextField';
 
+//Shared functions 
+import NumberWithCommas from '../NumberWithCommas';
+
 //SCSS Styling
 import style from './StepFive.module.scss';
 
@@ -63,12 +66,12 @@ export default function StepFive(props) {
             currentinvoicecreditamount = getValues('currentinvoicecreditamount');
         }
 
-        if (creditamounttosettle === 0.00 && currentinvoicecreditamount === 0.00) {
+        if (parseInt(creditamounttosettle) === 0 && parseInt(currentinvoicecreditamount) === 0) {
             setValue('minimumpayment', advancepayment);
             setValue('invoicesettlementvalue', total);
         }
 
-        if (creditamounttosettle !== 0.00 && currentinvoicecreditamount === 0.00) {
+        if (parseInt(creditamounttosettle) !== 0 && parseInt(currentinvoicecreditamount) === 0) {
             let minimumpayment = (parseInt(advancepayment) + parseInt(creditamounttosettle)).toFixed(2);
             let invoicesettlementvalue = (parseInt(total) + parseInt(creditamounttosettle)).toFixed(2);
 
@@ -76,7 +79,7 @@ export default function StepFive(props) {
             setValue('invoicesettlementvalue', invoicesettlementvalue);
         };
 
-        if (creditamounttosettle === 0.00 && currentinvoicecreditamount !== 0.00) {
+        if (parseInt(creditamounttosettle) === 0 && parseInt(currentinvoicecreditamount) !== 0) {
             let minimumpayment = (parseInt(advancepayment) - parseInt(currentinvoicecreditamount)).toFixed(2);
 
             setValue('minimumpayment', minimumpayment);
@@ -145,7 +148,7 @@ export default function StepFive(props) {
                                 Maximum credit allowed
                             </div>
                             <div className={style.data}>
-                                Rs {getValues('maximumcreditamount')}
+                                Rs {NumberWithCommas(getValues('maximumcreditamount'))}
                             </div>
                         </div>
 
@@ -163,7 +166,7 @@ export default function StepFive(props) {
                                 Previous credit amount to settle
                             </div>
                             <div className={style.customerData}>
-                                Rs. {getValues('creditamounttosettle')}
+                                Rs. {NumberWithCommas(getValues('creditamounttosettle'))}
                             </div>
                         </div>
                     }
@@ -173,7 +176,7 @@ export default function StepFive(props) {
                             Current Invoice Total
                         </div>
                         <div className={style.customerData}>
-                            Rs. {watch('total')}
+                            Rs. {NumberWithCommas(watch('total'))}
                         </div>
                     </div>
 
@@ -182,7 +185,7 @@ export default function StepFive(props) {
                             Current Invoice Advance Payment
                         </div>
                         <div className={style.customerData}>
-                            Rs. {watch('advancepayment')}
+                            Rs. {NumberWithCommas(watch('advancepayment'))}
                         </div>
                     </div>
 
@@ -221,8 +224,8 @@ export default function StepFive(props) {
                                     render={({ field }) => (
                                         <TextField
                                             {...field}
-                                            focused={getValues('maximumcreditamount') !== 0.00}
-                                            disabled={getValues('maximumcreditamount') === 0.00}
+                                            focused={getValues('maximumcreditamount') !== '0.00'}
+                                            disabled={getValues('maximumcreditamount') === '0.00'}
                                             type="number"
                                             error={errors.currentinvoicecreditamount ? true : false}
                                             helperText={errors.currentinvoicecreditamount && errors.currentinvoicecreditamount.message}
@@ -247,7 +250,7 @@ export default function StepFive(props) {
                                 <CalculateIcon
                                     className={style.icon}
                                     onClick={() => calculatePayments()}
-                                    disabled={getValues('maximumcreditamount') === 0.00}
+                                    disabled={getValues('maximumcreditamount') === 0}
                                 />
                             </div>
                         </div>
@@ -262,7 +265,7 @@ export default function StepFive(props) {
                             Minimum Payment
                         </div>
                         <div className={style.customerData}>
-                            Rs. {watch('minimumpayment')}
+                            Rs. {NumberWithCommas(watch('minimumpayment'))}
                         </div>
                     </div>
 
@@ -271,7 +274,7 @@ export default function StepFive(props) {
                             Invoice Settlement Value
                         </div>
                         <div className={style.customerData}>
-                            Rs. {watch('invoicesettlementvalue')}
+                            Rs. {NumberWithCommas(watch('invoicesettlementvalue'))}
                         </div>
                     </div>
 

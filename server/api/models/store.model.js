@@ -20,6 +20,8 @@ const storeSchema = mongoose.Schema({
         salesqtypieces: { type: String, required: false },
         freeqtycases: { type: String, required: false },
         freeqtypieces: { type: String, required: false },
+        damagedfreeqty: { type: String, required: false },
+        damagedsalesqty: { type: String, required: false },
     }],
 })
 

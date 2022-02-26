@@ -28,7 +28,7 @@ export default function ViewPurchaseOrder(props) {
             receiveddiscounts: parseInt(poRecords.receiveddiscounts).toFixed(2),
             damagedmissingitems: parseInt(poRecords.damagedmissingitems).toFixed(2),
             total: poRecords.total,
-            // customerid:poRecords.customerid ,
+            givenid: poRecords.givenid,
             customername: poRecords.customername,
             customeraddress: poRecords.customeraddress,
             contactnumber: poRecords.contactnumber,

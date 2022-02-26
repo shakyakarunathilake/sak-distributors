@@ -226,7 +226,7 @@ export default function ManageSupplier() {
                                                 title: "Name",
                                                 field: "name",
                                                 cellStyle: {
-                                                    width: "23%",
+                                                    width: "18%",
                                                     textAlign: 'left'
                                                 },
                                             },
@@ -240,6 +240,19 @@ export default function ManageSupplier() {
                                                 render: rowData => {
                                                     return (
                                                         <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.abbreviation}</p>
+                                                    )
+                                                }
+                                            },
+                                            {
+                                                title: "Given ID",
+                                                field: "givenid",
+                                                cellStyle: {
+                                                    width: "10%",
+                                                    textAlign: 'left'
+                                                },
+                                                render: rowData => {
+                                                    return (
+                                                        <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.givenid}</p>
                                                     )
                                                 }
                                             },
@@ -268,7 +281,7 @@ export default function ManageSupplier() {
                                                 title: "Email",
                                                 field: "email",
                                                 cellStyle: {
-                                                    width: "22%",
+                                                    width: "17%",
                                                     textAlign: 'left'
                                                 },
                                             },
@@ -307,6 +320,7 @@ export default function ManageSupplier() {
                                                 icon: 'edit',
                                                 tooltip: 'Edit',
                                                 onClick: (event, rowData) => {
+                                                    getEmployeeOptions();
                                                     setAction('Edit');
                                                     openInPopup(rowData.supplierid);
                                                 }

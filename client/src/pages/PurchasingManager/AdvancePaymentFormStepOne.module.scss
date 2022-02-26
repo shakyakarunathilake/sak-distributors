@@ -1,0 +1,139 @@
+@import "../../styles/variables";
+
+.container {
+    display: grid;
+    grid-template-rows: min-content auto min-content;
+    box-sizing: border-box;
+    width: 600px;
+    height: 660px;
+}
+
+.header {
+    .title {
+        display: grid;
+        grid-template-columns: auto min-content;
+        font-size: 1.55em;
+        font-weight: 600;
+        .icon {
+            color: red;
+            &:hover {
+                transform: scale(1.1);
+            }
+        }
+    }
+
+    .step {
+        margin: 5px 0 0 0;
+        color: $primaryLight;
+        font-size: 0.75em;
+    }
+}
+
+.body {
+    padding: 20px 10px 0 10px;
+
+    .row {
+        display: grid;
+        grid-template-columns: 300px calc(100% - 310px);
+        grid-column-gap: 10px;
+        margin: 15px 10px;
+
+        .boldText {
+            font-size: 1em;
+            font-weight: 700;
+            margin: auto 0 auto 0;
+        }
+
+        .customerData {
+            .input {
+            }
+
+            .rightInput {
+                text-align: right;
+            }
+
+            .yellow {
+                color: #eed202;
+                font-weight: 700;
+            }
+
+            .orange {
+                color: #fc6a03;
+                font-weight: 700;
+            }
+
+            .green {
+                color: #4cbb17;
+                font-weight: 700;
+            }
+
+            .blue {
+                color: $primaryMain;
+                font-weight: 700;
+            }
+        }
+    }
+
+    .box {
+        background-color: $layoutColor;
+        height: max-content;
+        padding: 1px 10px 0 10px;
+        border-radius: 10px;
+
+        .red {
+            color: red;
+        }
+
+        .rowTextField {
+            display: grid;
+            grid-template-columns: 150px calc(100% - 160px);
+            grid-column-gap: 10px;
+            margin: 10px 10px;
+            height: 70.34px;
+
+            .boldTextForTextField {
+                font-size: 1em;
+                font-weight: 700;
+                margin: 14.14px 0 auto 0;
+            }
+
+            .customerDataTextField {
+                display: grid;
+                grid-template-columns: min-content 200px;
+                text-align: right;
+                .icon {
+                    margin: 11.045px 0 auto 10px;
+                    font-size: 1.7em;
+                }
+            }
+        }
+    }
+}
+
+.footer {
+    display: grid;
+    grid-template-columns: auto auto;
+    padding: 20px 0px 5px 0px;
+
+    Button {
+        font-size: 1em;
+        height: 40px;
+        padding: $formButtonPadding2;
+    }
+
+    .resetBtn {
+        text-align: left;
+        Button {
+            background-color: #c2c2c2;
+            color: $inverseFontColor;
+        }
+    }
+
+    .nextBtn {
+        text-align: right;
+        Button {
+            background-color: $primaryMain;
+            color: $inverseFontColor;
+        }
+    }
+}

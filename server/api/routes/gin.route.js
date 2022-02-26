@@ -177,6 +177,109 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
 
             return result;
         })
+        .then(doc => {
+
+            doc.items.map(item => {
+
+                const name = item.description.substring(item.description.indexOf("-") + 1);
+                let pieces = 0;
+                let cases = 0;
+                let totalnumberofpieces = 0;
+
+                const getPieces = (noofpieces, piecespercase) => {
+                    pieces = noofpieces % piecespercase;
+                    return pieces;
+                }
+
+                const getCases = (noofpieces, piecespercase) => {
+                    cases = Math.floor(noofpieces / piecespercase);
+                    return cases;
+                }
+
+                const getTotalNumberOfPieces = (itemcases, itempieces, piecespercase) => {
+                    totalnumberofpieces = (itemcases * piecespercase) + itempieces;
+                    return totalnumberofpieces;
+                }
+
+                //GIN Quantities
+                let salesqtypieces = getPieces(getTotalNumberOfPieces(item.salesqtycases, item.salesqtypieces, item.piecespercase), item.piecespercase);
+                let salesqtycases = getCases(getTotalNumberOfPieces(item.salesqtycases, item.salesqtypieces, item.piecespercase), item.piecespercase);
+                let freeqtypieces = getPieces(getTotalNumberOfPieces(item.freeqtycases, item.freeqtypieces, item.piecespercase), item.piecespercase);
+                let freeqtycases = getCases(getTotalNumberOfPieces(item.freeqtycases, item.freeqtypieces, item.piecespercase), item.piecespercase);
+
+
+                Store
+                    .findOne({ name: name })
+                    .exec()
+                    .then(result => {
+                        let storesalesqtypieces = result.storequantity.salesqtypieces;
+                        let storesalesqtycases = result.storequantity.salesqtycases;
+                        let storefreeqtypieces = result.storequantity.freeqtypieces;
+                        let storefreeqtycases = result.storequantity.freeqtycases;
+                        let newstoresalesqtypieces = 0;
+                        let newstoresalesqtycases = 0;
+                        let newstorefreeqtypieces = 0;
+                        let newstorefreeqtycases = 0;
+
+                        if (storesalesqtypieces < salesqtypieces) {
+                            newstoresalesqtypieces = storesalesqtypieces + item.piecespercase - salesqtypieces;
+                            newstoresalesqtycases = storesalesqtycases - (1 + salesqtycases);
+                        }
+
+                        if (storefreeqtypieces < freeqtypieces) {
+                            newstorefreeqtypieces = storefreeqtypieces + item.piecespercase - freeqtypieces;
+                            newstorefreeqtycases = storefreeqtycases - (1 + freeqtycases);
+                        }
+
+                        Store
+                            .findOneAndUpdate(
+                                { name: name },
+                                {
+                                    $set: {
+                                        'storequantity.salesqtypieces': newstoresalesqtypieces,
+                                        'storequantity.salesqtycases': newstoresalesqtycases,
+                                        'storequantity.freeqtypieces': newstorefreeqtypieces,
+                                        'storequantity.freeqtycases': newstorefreeqtycases,
+                                    },
+                                    $push: {
+                                        'grngin': {
+                                            'grnnumberginnumber': doc.ginnumber,
+                                            'date': doc.createdat,
+                                            'piecespercase': item.piecespercase,
+                                            'listorsellingprice': item.sellingprice,
+                                            'salesqtycases': item.salesqtycases,
+                                            'salesqtypieces': item.salesqtypieces,
+                                            'freeqtycases': item.freeqtycases,
+                                            'freeqtypieces': item.freeqtypieces,
+                                        }
+                                    }
+                                },
+                                { new: true }
+                            )
+                            .exec()
+                            .then(
+                                console.log("**** ITEMS ADDED TO STORE ****")
+                            )
+                            .catch(err => {
+                                res.status(200).json({
+                                    type: 'error',
+                                    alert: `Something went wrong. Could not update store`,
+                                });
+                                console.log(err);
+                            })
+
+                    })
+                    .catch(err => {
+                        res.status(200).json({
+                            type: 'error',
+                            alert: `Something went wrong. Could not update store`,
+                        });
+                        console.log(err);
+                    })
+            })
+
+            return doc;
+        })
         .then(result =>
             res.status(201).json({
                 message: "Handeling POST requests to /gin/create-gin, GIN CREATED",
@@ -272,52 +375,6 @@ router.post("/approve-dispatch/:ginnumber", formDataBody.fields([]), (req, res, 
                     });
 
             });
-
-            return doc;
-        })
-        .then(doc => {
-
-            doc.items.map(item => {
-
-                const name = item.description.substring(item.description.indexOf("-") + 1);
-
-                Store
-                    .findOneAndUpdate(
-                        { name: name },
-                        {
-                            $inc: {
-                                'storequantity.salesqtycases': -parseInt(item.salesqtycases),
-                                'storequantity.salesqtypieces': -parseInt(item.salesqtypieces),
-                                'storequantity.freeqtypieces': -parseInt(item.freeqtypieces),
-                                'storequantity.freeqtycases': -parseInt(item.freeqtycases)
-                            },
-                            $push: {
-                                'grngin': {
-                                    'grnnumberginnumber': doc.ginnumber,
-                                    'date': doc.createdat,
-                                    'piecespercase': item.piecespercase,
-                                    'listorsellingprice': item.sellingprice,
-                                    'salesqtycases': item.salesqtycases,
-                                    'salesqtypieces': item.salesqtypieces,
-                                    'freeqtycases': item.freeqtycases,
-                                    'freeqtypieces': item.freeqtypieces,
-                                }
-                            }
-                        },
-                        { new: true }
-                    )
-                    .exec()
-                    .then(
-                        console.log("**** ITEMS ADDED TO STORE ****")
-                    )
-                    .catch(err => {
-                        res.status(200).json({
-                            type: 'error',
-                            alert: `Something went wrong. Could not update store`,
-                        });
-                        console.log(err);
-                    })
-            })
 
             return doc;
         })
