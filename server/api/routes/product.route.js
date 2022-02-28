@@ -387,15 +387,16 @@ router.post("/update-by-id/:productid/:variantid", uploads.single("productimage"
             {
                 '$set': {
                     'variants.$.type': req.body.type,
+                    'variants.$.offercaption': req.body.offercaption,
                     'variants.$.piecespercase': req.body.piecespercase,
                     'variants.$.bulkprice': req.body.bulkprice,
+                    'variants.$.purchaseprice': req.body.purchaseprice,
+                    'variants.$.sellingprice': req.body.sellingprice,
                     'variants.$.mrp': req.body.mrp,
-                    'variants.$.price': req.body.price,
-                    'variants.$.offercaption': req.body.offercaption,
                     'variants.$.status': req.body.variantstatus,
                 }
             },
-            { upsert: true }
+            { upsert: true, new: true }
         )
         .exec()
         .then(doc =>
