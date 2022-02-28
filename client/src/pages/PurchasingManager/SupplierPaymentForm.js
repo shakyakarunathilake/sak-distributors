@@ -46,7 +46,7 @@ export default function SupplierPaymentForm(props) {
       grndamagedmissingitems: paymentRecords ? paymentRecords.grndamagedmissingitems : '',
       grntotal: paymentRecords ? paymentRecords.grntotal : '',
       paidamount: paymentRecords ? paymentRecords.paidamount : '',
-      advancepayment: paymentRecords ? paymentRecords.advancepayment : '',
+      advancepayment: paymentRecords ? paymentRecords.advancepayment : ((50 / 100) * paymentRecords.pototal).toFixed(2),
       advancepaymentpaidat: paymentRecords.status !== "Advance Payment To Be Paid" ? paymentRecords.advancepaymentpaidat : dateTime,
       advancepaymentpaidby: paymentRecords.status !== "Advance Payment To Be Paid" ? paymentRecords.advancepaymentpaidby : `${firstname} ${lastname} (${employeeid})`,
       paymentcompletedat: paymentRecords.status !== "Payment To Be Complete" ? paymentRecords.paymentcompletedat : dateTime,
