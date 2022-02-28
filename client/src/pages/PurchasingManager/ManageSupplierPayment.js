@@ -182,7 +182,15 @@ export default function ManageSupplierPayment() {
                                             title: "Supplier",
                                             field: "supplier",
                                             cellStyle: {
-                                                width: "40%",
+                                                width: "20%",
+                                                textAlign: 'left'
+                                            }
+                                        },
+                                        {
+                                            title: "Completed at",
+                                            field: "paymentcompletedat",
+                                            cellStyle: {
+                                                width: "20%",
                                                 textAlign: 'left'
                                             }
                                         },

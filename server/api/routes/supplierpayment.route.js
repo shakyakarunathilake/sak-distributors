@@ -22,11 +22,12 @@ router.get("/get-all-supplier-payments-table-data", (req, res, next) => {
         .exec()
         .then(doc => {
 
-            const tbody = doc.map(x => ({
+            const tbody = doc.slice(0).reverse().map(x => ({
                 "ponumber": x.ponumber,
                 "supplier": x.supplier,
                 "grnnumber": x.grnnumber,
                 "status": x.status,
+                "paymentcompletedat": x.paymentcompletedat
             }))
 
             res.status(200).json({
