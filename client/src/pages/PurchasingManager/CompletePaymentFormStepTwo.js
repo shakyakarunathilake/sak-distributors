@@ -54,6 +54,34 @@ export default function CompletePaymentFormStepTwo(props) {
 
             <div className={style.body}>
 
+                <div className={style.details}>
+                    <div className={style.title}>
+                        PO Number
+                    </div>
+                    <div className={style.info}>
+                        {getValues('ponumber')}
+                    </div>
+                </div>
+
+                <div className={style.details}>
+                    <div className={style.title}>
+                        GRN Number
+                    </div>
+                    <div className={style.info}>
+                        {getValues('grnnumber')}
+                    </div>
+                </div>
+
+                <p>
+                    The above purchase order is going to be fully paid.
+                    <br />
+                    Once you approve, changes cannot be undone.
+                </p>
+
+                <p>
+                    Please confirm payment.
+                </p>
+
             </div>
 
             <div className={style.footer}>

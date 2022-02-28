@@ -4,8 +4,8 @@
     display: grid;
     grid-template-rows: min-content auto min-content;
     box-sizing: border-box;
-    width: 1000px;
-    height: 790px;
+    width: 500px;
+    height: min-content;
 }
 
 .header {
@@ -31,6 +31,20 @@
 
 .body {
     padding: 20px 10px 0 10px;
+
+    .details {
+        display: grid;
+        grid-template-columns: 40% 60%;
+
+        .title {
+            font-weight: 700;
+        }
+
+        .info {
+            color: $primaryMain;
+            font-weight: 500;
+        }
+    }
 }
 
 .footer {
