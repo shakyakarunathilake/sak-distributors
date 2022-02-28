@@ -33,7 +33,7 @@ router.get("/get-all-quotations-table-data", (req, res, next) => {
         .exec()
         .then(doc => {
 
-            const tbody = doc.map(x => ({
+            const tbody = doc.slice(0).reverse().map(x => ({
                 "quotationid": x.quotationid,
                 "supplier": x.supplier,
                 "validityperiod": x.validityperiod,

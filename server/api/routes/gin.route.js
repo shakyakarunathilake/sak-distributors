@@ -53,8 +53,8 @@ router.get("/get-all-gin-table-data/:employee", (req, res, next) => {
         .then(doc => {
 
             const candidates = doc.filter(x => x.status === "Dispatched" || "Complete")
-
-            const tbody = candidates.map(x => ({
+    
+            const tbody = candidates.slice(0).reverse().map(x => ({
                 ginnumber: x.ginnumber,
                 route: x.route,
                 incharge: x.incharge,

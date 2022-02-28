@@ -375,7 +375,7 @@ router.get("/get-all-sales-and-invoice-table-data", (req, res, next) => {
         .exec()
         .then(doc => {
 
-            const tbody = doc.map(x => ({
+            const tbody = doc.slice(0).reverse().map(x => ({
                 "orderno": x.orderno,
                 "customertype": x.customertype,
                 "storename": x.storename,
@@ -402,7 +402,7 @@ router.get("/get-all-sales-and-invoice-table-data-for-sales-representative/:empl
         .exec()
         .then(doc => {
 
-            const tbody = doc.map(x => ({
+            const tbody =  doc.slice(0).reverse().map(x => ({
                 "orderno": x.orderno,
                 "storename": x.storename,
                 "status": x.status,
@@ -426,7 +426,7 @@ router.get("/get-all-sales-and-invoice-table-data-for-delivery-representative/:e
         .exec()
         .then(doc => {
 
-            const tbody = doc.map(x => ({
+            const tbody =  doc.slice(0).reverse().map(x => ({
                 "orderno": x.orderno,
                 "storename": x.storename,
                 "status": x.status,
