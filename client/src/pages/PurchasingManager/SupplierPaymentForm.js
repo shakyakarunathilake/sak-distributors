@@ -153,9 +153,7 @@ export default function SupplierPaymentForm(props) {
         <section className={formStep === 1 ? style.visible : style.hidden}>
 
           <CompletePaymentStepTwo
-            action={action}
             handleClosePopUp={handleClosePopUp}
-            control={control}
             backFormStep={backFormStep}
             onSubmit={onSubmit}
             getValues={getValues}
