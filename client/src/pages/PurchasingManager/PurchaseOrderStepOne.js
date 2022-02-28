@@ -322,6 +322,7 @@ export default function PurchaseOrderStepOne(props) {
                                                 title: "Pieces Per Cases",
                                                 field: "piecespercase",
                                                 type: 'numeric',
+                                                initialEditValue: 24,
                                                 cellStyle: {
                                                     padding: "10px 5px 10px 7px",
                                                     width: '10%',
@@ -358,6 +359,7 @@ export default function PurchaseOrderStepOne(props) {
                                                 field: "listprice",
                                                 title: '55.00',
                                                 type: 'numeric',
+                                                initialEditValue: 30,
                                                 cellStyle: {
                                                     padding: "10px 5px 10px 7px",
                                                     width: '10%',
@@ -414,6 +416,7 @@ export default function PurchaseOrderStepOne(props) {
                                                 title: "Sales Pcs",
                                                 field: "salesqtypieces",
                                                 type: 'numeric',
+                                                initialEditValue: 0,
                                                 cellStyle: {
                                                     width: '7%',
                                                     padding: "10px 5px 10px 7px",
