@@ -26,9 +26,9 @@ export default function GRNForm(props) {
         (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
         (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
 
-    const time = (today.getHours() > 9 ? today.getHours() + 1 : `0${today.getHours() + 1}`) + ":" +
-        (today.getMinutes() > 9 ? today.getMinutes() + 1 : `0${today.getMinutes() + 1}`) + ":" +
-        (today.getSeconds() > 9 ? today.getSeconds() + 1 : `0${today.getSeconds() + 1}`);
+    const time = (today.getHours() > 9 ? today.getHours() : `0${today.getHours()}`) + ":" +
+        (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`) + ":" +
+        (today.getSeconds() > 9 ? today.getSeconds() : `0${today.getSeconds()}`);
 
     const dateTime = date + ' ' + time;
 
