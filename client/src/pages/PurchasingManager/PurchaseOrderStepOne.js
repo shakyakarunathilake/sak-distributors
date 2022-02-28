@@ -129,6 +129,8 @@ export default function PurchaseOrderStepOne(props) {
         completeFormStep();
     }
 
+    console.log(data);
+
     return (
         <div className={style.one}>
 
@@ -379,7 +381,6 @@ export default function PurchaseOrderStepOne(props) {
                                                 title: "Sales Cs",
                                                 field: "salesqtycases",
                                                 type: 'numeric',
-                                                initialEditValue: 30,
                                                 cellStyle: {
                                                     padding: "10px 5px 10px 7px",
                                                     width: '7%',
