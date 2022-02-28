@@ -26,7 +26,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Quotations from './Quotations';
 
 //Material Table
-import MaterialTable, { MTableAction, MTableToolbar } from 'material-table';
+import MaterialTable, { MTableAction, MTableToolbar, MTableEditRow } from 'material-table';
 
 //Shared functions 
 import NumberWithCommas from '../NumberWithCommas';
@@ -196,12 +196,13 @@ export default function PurchaseOrderStepOne(props) {
 
                             const bodyHeight = height - 170;
                             const pageSize = Math.floor((bodyHeight) / 48);
-                            // const pageSize = Math.floor((height - 310) / 48);
+
                             return (
                                 <div style={{ height: `${height}px`, width: `${width}px`, overflowY: 'auto' }}>
 
                                     <MaterialTable
                                         components={{
+
                                             Container: props => <Paper {...props} elevation={1} />,
                                             Action: props => {
                                                 //If isn't the add action
@@ -359,7 +360,6 @@ export default function PurchaseOrderStepOne(props) {
                                                 field: "listprice",
                                                 title: '55.00',
                                                 type: 'numeric',
-                                                initialEditValue: 30,
                                                 cellStyle: {
                                                     padding: "10px 5px 10px 7px",
                                                     width: '10%',
@@ -379,6 +379,7 @@ export default function PurchaseOrderStepOne(props) {
                                                 title: "Sales Cs",
                                                 field: "salesqtycases",
                                                 type: 'numeric',
+                                                initialEditValue: 30,
                                                 cellStyle: {
                                                     padding: "10px 5px 10px 7px",
                                                     width: '7%',
