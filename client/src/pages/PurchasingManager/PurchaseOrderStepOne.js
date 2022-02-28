@@ -382,7 +382,26 @@ export default function PurchaseOrderStepOne(props) {
                                                     width: '10%',
                                                     textAlign: 'right'
                                                 },
-                                                render: rowData => rowData.listprice,
+                                                editComponent: props =>
+                                                    <MuiTextField
+                                                        onChange={e => {
+                                                            let data = { ...props.rowData };
+                                                            data.listprice = e.target.value;
+                                                            let salesqtycases = isNaN(data.salesqtycases) ? 0 : data.salesqtycases;
+                                                            let salesqtypieces = isNaN(data.salesqtypieces) ? 0 : data.salesqtypieces;
+                                                            let piecespercase = isNaN(data.piecespercase) ? 0 : data.piecespercase;
+                                                            let listprice = isNaN(data.listprice) ? 0 : data.listprice;
+                                                            data.value = ((salesqtycases * piecespercase) + +salesqtypieces) * listprice;
+                                                            props.onRowDataChange(data);
+                                                        }}
+                                                        type="number"
+                                                        helperText={props.helperText}
+                                                        error={props.error}
+                                                        variant="standard"
+                                                        value={props.value}
+                                                        placeholder='9'
+                                                    />
+                                                ,
                                                 validate: (rowData) =>
                                                     rowData.listprice === undefined
                                                         ? { isValid: false, helperText: 'Required *' }
