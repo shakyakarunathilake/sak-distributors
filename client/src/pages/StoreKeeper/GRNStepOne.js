@@ -15,10 +15,11 @@ import {
     TextField as MuiTextField,
     Grid
 } from '@material-ui/core';
+import Tooltip from '@mui/material/Tooltip';
 
-//Material UI Icons
+//Material Icons
+import InfoIcon from '@mui/icons-material/Info';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import DeleteIcon from '@mui/icons-material/Delete';
 
 //Material Table
 import MaterialTable, { MTableToolbar } from 'material-table';
@@ -357,6 +358,9 @@ export default function GRNStepOne(props) {
                                                     </TableCell>
                                                     <TableCell padding="none" colSpan={2} align="center">
                                                         Damaged Qty.
+                                                        <Tooltip title="In Pieces" arrow>
+                                                            <InfoIcon style={{ fontSize: '1.3em', verticalAlign: 'top', marginLeft: '5px' }} />
+                                                        </Tooltip>
                                                     </TableCell>
                                                     <TableCell padding="none" width="7%" rowSpan={2} align="center">
                                                         <div style={{ padding: '0 10px' }}>
