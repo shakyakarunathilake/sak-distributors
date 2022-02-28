@@ -25,7 +25,7 @@ export default function CreatePurchaseOrder(props) {
 
     const dateTime = date + ' ' + time;
 
-    const podate = today.getFullYear().toString().substr(-2) + (today.getMonth() + 1) + today.getDate() + today.getHours() + today.getMinutes();
+    const podate = today.getFullYear().toString().substr(-2) + (today.getMonth() + 1) + today.getDate() + (today.getHours() + 1) + (today.getMinutes() + 1);
 
     const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
     const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
@@ -46,7 +46,7 @@ export default function CreatePurchaseOrder(props) {
             contactnumber: poRecords ? poRecords.contactnumber : "0352264009",
             status: poRecords ? poRecords.status : '',
             createdby: poRecords ? poRecords.createdby : `${firstname} ${lastname} (${employeeid})`,
-            createdat: poRecords ? poRecords.createdat : dateTime,
+            createdat: poRecords ? poRecords.createdat : '',
             approvedby: `${firstname} ${lastname} (${employeeid})`,
             approvedat: dateTime,
             deliveredat: poRecords ? poRecords.deliveredat : '',
@@ -149,6 +149,7 @@ export default function CreatePurchaseOrder(props) {
                         errors={errors}
                         podate={podate}
                         watch={watch}
+                        dateTime={dateTime}
                         action={action}
                     />
 

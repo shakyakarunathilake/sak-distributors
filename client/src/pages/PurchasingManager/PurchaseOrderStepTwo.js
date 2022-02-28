@@ -405,7 +405,7 @@ export default function PurchaseOrderStepTwo(props) {
                                         {
                                             field: "listprice",
                                             type: 'numeric',
-                                            render: rowData => NumberWithCommas(rowData.listprice.toFixed(2)),
+                                            render: rowData => NumberWithCommas(parseInt(rowData.listprice).toFixed(2)),
                                             cellStyle: {
                                                 padding: "10px 5px 10px 7px",
                                                 width: '9%',

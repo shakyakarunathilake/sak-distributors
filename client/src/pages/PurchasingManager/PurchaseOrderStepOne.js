@@ -75,6 +75,7 @@ export default function PurchaseOrderStepOne(props) {
         control,
         errors,
         podate,
+        dateTime
     } = props;
 
     const addActionRef = useRef();
@@ -121,6 +122,7 @@ export default function PurchaseOrderStepOne(props) {
 
         if (action === 'Create') {
             setValue("ponumber", supplier[0].abbreviation + podate);
+            setValue("createdat", dateTime);
             setValue("givenid", supplier[0].givenid);
             setValue("damagedmissingitems", supplier[0].damagedmissingitems);
             setValue("status", 'Waiting For Approval');
