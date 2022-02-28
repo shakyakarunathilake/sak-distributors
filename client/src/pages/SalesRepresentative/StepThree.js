@@ -17,7 +17,7 @@ import Box from '@mui/material/Box';
 import Autocomplete from '@mui/material/Autocomplete';
 
 //Material Table
-import MaterialTable, { MTableAction, MTableToolbar } from 'material-table';
+import MaterialTable, { MTableAction, MTableToolbar, MTableEditRow } from 'material-table';
 
 //Material UI Icons
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
@@ -79,6 +79,13 @@ export default function StepThree(props) {
         return productItemList;
 
     }, [data, productOptions]);
+
+
+    const handleEnterKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            e.stopPropagation()
+        }
+    }
 
     return (
         <div className={style.three}>
@@ -144,6 +151,11 @@ export default function StepThree(props) {
 
                                 <MaterialTable
                                     components={{
+                                        EditRow: props =>
+                                            <MTableEditRow
+                                                {...props}
+                                                onKeyDown={(e) => handleEnterKeyDown(e)}
+                                            />,
                                         Container: props => <Paper {...props} elevation={1} />,
                                         Action: props => {
                                             if (typeof props.action === typeof Function || props.action.tooltip !== 'Add') {
@@ -262,13 +274,15 @@ export default function StepThree(props) {
                                                     )}
                                                     // onChange={e => props.onChange(e.target.innerText)}
                                                     onChange={(e, option) => {
-                                                        props.onChange(option.title)
-                                                        let data = { ...props.rowData };
-                                                        data.description = option.title;
-                                                        data.sellingprice = parseInt(option.sellingprice).toFixed(2);
-                                                        data.piecespercase = option.piecespercase;
-                                                        data.mrp = parseInt(option.mrp).toFixed(2);
-                                                        props.onRowDataChange(data);
+                                                        if (option != null) {
+                                                            props.onChange(option.title)
+                                                            let data = { ...props.rowData };
+                                                            data.description = option.title;
+                                                            data.sellingprice = parseInt(option.sellingprice).toFixed(2);
+                                                            data.piecespercase = option.piecespercase;
+                                                            data.mrp = parseInt(option.mrp).toFixed(2);
+                                                            props.onRowDataChange(data);
+                                                        }
                                                     }}
                                                     inputValue={props.value}
                                                     renderInput={(params) => (
