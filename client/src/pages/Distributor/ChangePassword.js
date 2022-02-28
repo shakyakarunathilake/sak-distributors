@@ -186,7 +186,7 @@ export default function ChangePassword() {
                                     control={control}
                                     rules={{
                                         required: { value: true, message: "Required *" },
-                                        // pattern: { value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, message: "Invalid" }
+                                        pattern: { value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, message: "Invalid" }
                                     }}
                                     render={({ field }) => (
                                         <TextField
