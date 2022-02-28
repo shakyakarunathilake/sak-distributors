@@ -109,6 +109,12 @@ export default function PurchaseOrderStepOne(props) {
         }
     }
 
+    const handleEnterKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            e.stopPropagation()
+        }
+    }
+
     const onSubmit = () => {
 
         const supplier = supplierOptions.filter(x => x.title === getValues("supplier"))
@@ -204,7 +210,11 @@ export default function PurchaseOrderStepOne(props) {
 
                                     <MaterialTable
                                         components={{
-
+                                            EditRow: props =>
+                                                <MTableEditRow
+                                                    {...props}
+                                                    onKeyDown={(e) => handleEnterKeyDown(e)}
+                                                />,
                                             Container: props => <Paper {...props} elevation={1} />,
                                             Action: props => {
                                                 //If isn't the add action
@@ -302,6 +312,11 @@ export default function PurchaseOrderStepOne(props) {
                                                             props.onChange(e.target.innerText)
                                                         }
                                                         inputValue={props.value}
+                                                        onKeyDown={(event) => {
+                                                            if (event.key === 'Enter') {
+                                                                event.defaultMuiPrevented = true;
+                                                            }
+                                                        }}
                                                         renderInput={(params) =>
                                                             <MuiTextField
                                                                 {...params}
