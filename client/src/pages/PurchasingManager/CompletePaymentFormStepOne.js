@@ -418,26 +418,12 @@ export default function CompletePaymentFormStepOne(props) {
 
             <div className={style.footer}>
 
-                <div className={style.backBtn}>
-                    {
-                        action !== 'View Complete Payment' &&
-                        <Button
-                            onClick={backFormStep}
-                            variant="contained"
-                        >
-                            Back
-                        </Button>
-                    }
-                </div>
-
-                <div className={style.doneBtn}>
-                    <Button
-                        onClick={action === 'View Complete Payment' ? onSubmit : completeFormStep}
-                        variant="contained"
-                    >
-                        {action === 'View Complete Payment' ? "Done" : " Next"}
-                    </Button>
-                </div>
+                <Button
+                    onClick={action === 'View Complete Payment' ? onSubmit : completeFormStep}
+                    variant="contained"
+                >
+                    {action === 'View Complete Payment' ? "Done" : " Next"}
+                </Button>
 
             </div>
 
