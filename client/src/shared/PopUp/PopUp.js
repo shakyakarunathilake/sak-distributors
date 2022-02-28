@@ -50,6 +50,7 @@ export default function PopUp(props) {
             open={openPopup}
             maxWidth="lg"
             fullScreen={fullScreen}
+            disableBackdropClick
         >
 
             <DialogContent className={classes.content}>
