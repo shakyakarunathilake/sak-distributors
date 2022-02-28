@@ -27,7 +27,7 @@ router.get("/get-all-grn-table-data", (req, res, next) => {
         .exec()
         .then(doc => {
 
-            const tbody = doc.map(x => ({
+            const tbody = doc.slice(0).reverse().map(x => ({
                 ponumber: x.ponumber,
                 grnnumber: x.grnnumber,
                 supplier: x.supplier,

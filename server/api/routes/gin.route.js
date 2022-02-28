@@ -25,7 +25,7 @@ router.get("/get-all-gin-table-data", (req, res, next) => {
         .exec()
         .then(doc => {
 
-            const tbody = doc.map(x => ({
+            const tbody = doc.slice(0).reverse().map(x => ({
                 ginnumber: x.ginnumber,
                 route: x.route,
                 incharge: x.incharge,

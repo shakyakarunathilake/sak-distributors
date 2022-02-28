@@ -26,7 +26,7 @@ router.get("/get-all-purchaseorder-table-data", (req, res, next) => {
         .exec()
         .then(doc => {
 
-            const purchaseorder = doc.map(x => ({
+            const purchaseorder = doc.slice(0).reverse().map(x => ({
                 ponumber: x.ponumber,
                 supplier: x.supplier,
                 createdby: x.createdby,
