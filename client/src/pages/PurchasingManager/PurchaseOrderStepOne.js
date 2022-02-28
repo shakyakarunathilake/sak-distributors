@@ -363,7 +363,7 @@ export default function PurchaseOrderStepOne(props) {
                                                     width: '10%',
                                                     textAlign: 'right'
                                                 },
-                                                render: rowData => NumberWithCommas(rowData.listprice.toFixed(2)),
+                                                render: rowData => rowData.listprice,
                                                 validate: (rowData) =>
                                                     rowData.listprice === undefined
                                                         ? { isValid: false, helperText: 'Required *' }
