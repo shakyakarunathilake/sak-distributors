@@ -102,9 +102,11 @@ export default function ManagePurchaseOrder() {
     }
 
     const addOrEdit = (purchaseorder, ponumber) => {
+        
         for (let [key, value] of purchaseorder.entries()) {
             console.log(key, value);
         }
+
         if (action === "Create") {
             // axios
             //     .post("http://localhost:8080/purchaseorder/create-purchaseorder", purchaseorder, {
@@ -123,6 +125,7 @@ export default function ManagePurchaseOrder() {
             //     });
             // ;
         }
+
         if (action === "Edit") {
             // axios
             //     .post(`http://localhost:8080/purchaseorder/update-by-ponumber/${ponumber}`, purchaseorder, {
