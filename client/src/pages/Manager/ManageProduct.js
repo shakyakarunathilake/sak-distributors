@@ -341,62 +341,62 @@ export default function ManageProduct() {
 
                     <MaterialTable
                         // components={{
-                            // Header: props => (
-                            //     <TableHead {...props} className={classes.tablehead}>
-                            //         <TableRow className={classes.row}>
-                            //             <TableCell width="auto" padding="none">
-                            //                 <div style={{ padding: '0 10px' }}>
+                        // Header: props => (
+                        //     <TableHead {...props} className={classes.tablehead}>
+                        //         <TableRow className={classes.row}>
+                        //             <TableCell width="auto" padding="none">
+                        //                 <div style={{ padding: '0 10px' }}>
 
-                            //                 </div>
-                            //             </TableCell>
-                            //             <TableCell width="8%" padding="none">
-                            //                 <div style={{ padding: '0 10px' }}>
-                            //                     Product ID
-                            //                 </div>
-                            //             </TableCell>
-                            //             <TableCell width="8%" padding="none">
-                            //                 <div style={{ padding: '0 10px' }}>
-                            //                     Variant ID
-                            //                 </div>
-                            //             </TableCell>
-                            //             <TableCell width="22%" padding="none">
-                            //                 <div style={{ padding: '0 10px' }}>
-                            //                     Name
-                            //                 </div>
-                            //             </TableCell>
-                            //             <TableCell width="15%" padding="none">
-                            //                 <div style={{ padding: '0 10px' }}>
-                            //                     Supplier
-                            //                 </div>
-                            //             </TableCell>
-                            //             <TableCell width="6%" padding="none">
-                            //                 <div style={{ padding: '0 10px' }}>
-                            //                     Selling Price
-                            //                 </div>
-                            //             </TableCell>
-                            //             <TableCell width="8%" padding="none">
-                            //                 <div style={{ padding: '0 10px' }}>
-                            //                     Type
-                            //                 </div>
-                            //             </TableCell>
-                            //             <TableCell width="24%" padding="none">
-                            //                 <div style={{ padding: '0 10px' }}>
-                            //                     Offer Caption
-                            //                 </div>
-                            //             </TableCell>
-                            //             <TableCell width="8%" padding="none">
-                            //                 <div style={{ padding: '0 10px' }}>
-                            //                     Status
-                            //                 </div>
-                            //             </TableCell>
-                            //             <TableCell width="8%" padding="none" textAlign="center">
-                            //                 <div style={{ padding: '0 10px' }}>
-                            //                     Action
-                            //                 </div>
-                            //             </TableCell>
-                            //         </TableRow>
-                            //     </TableHead>
-                            // ),
+                        //                 </div>
+                        //             </TableCell>
+                        //             <TableCell width="8%" padding="none">
+                        //                 <div style={{ padding: '0 10px' }}>
+                        //                     Product ID
+                        //                 </div>
+                        //             </TableCell>
+                        //             <TableCell width="8%" padding="none">
+                        //                 <div style={{ padding: '0 10px' }}>
+                        //                     Variant ID
+                        //                 </div>
+                        //             </TableCell>
+                        //             <TableCell width="22%" padding="none">
+                        //                 <div style={{ padding: '0 10px' }}>
+                        //                     Name
+                        //                 </div>
+                        //             </TableCell>
+                        //             <TableCell width="15%" padding="none">
+                        //                 <div style={{ padding: '0 10px' }}>
+                        //                     Supplier
+                        //                 </div>
+                        //             </TableCell>
+                        //             <TableCell width="6%" padding="none">
+                        //                 <div style={{ padding: '0 10px' }}>
+                        //                     Selling Price
+                        //                 </div>
+                        //             </TableCell>
+                        //             <TableCell width="8%" padding="none">
+                        //                 <div style={{ padding: '0 10px' }}>
+                        //                     Type
+                        //                 </div>
+                        //             </TableCell>
+                        //             <TableCell width="24%" padding="none">
+                        //                 <div style={{ padding: '0 10px' }}>
+                        //                     Offer Caption
+                        //                 </div>
+                        //             </TableCell>
+                        //             <TableCell width="8%" padding="none">
+                        //                 <div style={{ padding: '0 10px' }}>
+                        //                     Status
+                        //                 </div>
+                        //             </TableCell>
+                        //             <TableCell width="8%" padding="none" textAlign="center">
+                        //                 <div style={{ padding: '0 10px' }}>
+                        //                     Action
+                        //                 </div>
+                        //             </TableCell>
+                        //         </TableRow>
+                        //     </TableHead>
+                        // ),
                         // }}
                         columns={[
                             {
@@ -442,8 +442,8 @@ export default function ManageProduct() {
                                 }
                             },
                             {
-                                title: "Selling Price",
-                                field: "sellingprice",
+                                title: "Purchase Price",
+                                field: "purchaseprice",
                                 cellStyle: {
                                     width: "8%",
                                     textAlign: 'left'

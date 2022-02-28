@@ -55,7 +55,7 @@ router.get("/get-all-product-table-data", (req, res, next) => {
                         productid: main.productid,
                         name: main.name,
                         supplier: main.supplier,
-                        sellingprice: sub.sellingprice,
+                        purchaseprice: sub.purchaseprice,
                         variantid: sub.variantid,
                         offercaption: sub.offercaption,
                         type: sub.type,
