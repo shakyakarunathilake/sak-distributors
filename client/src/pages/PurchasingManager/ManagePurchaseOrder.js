@@ -102,71 +102,71 @@ export default function ManagePurchaseOrder() {
     }
 
     const addOrEdit = (purchaseorder, ponumber) => {
-        
+
         for (let [key, value] of purchaseorder.entries()) {
             console.log(key, value);
         }
 
         if (action === "Create") {
-            // axios
-            //     .post("http://localhost:8080/purchaseorder/create-purchaseorder", purchaseorder, {
-            //         headers: {
-            //             'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
-            //         }
-            //     })
-            //     .then(res => {
-            //         setAlert(res.data.alert);
-            //         setType(res.data.type);
-            //         handleAlert();
-            //         setReRender(ponumber);
-            //     })
-            //     .catch(err => {
-            //         console.log(err);
-            //     });
-            // ;
+            axios
+                .post("http://localhost:8080/purchaseorder/create-purchaseorder", purchaseorder, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
+                .then(res => {
+                    setAlert(res.data.alert);
+                    setType(res.data.type);
+                    handleAlert();
+                    setReRender(ponumber);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+            ;
         }
 
         if (action === "Edit") {
-            // axios
-            //     .post(`http://localhost:8080/purchaseorder/update-by-ponumber/${ponumber}`, purchaseorder, {
-            //         headers: {
-            //             'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
-            //         }
-            //     })
-            //     .then(res => {
-            //         setAlert(res.data.alert);
-            //         setType(res.data.type);
-            //         handleAlert();
-            //         setReRender(ponumber);
-            //     })
-            //     .catch(err => {
-            //         console.log(err);
-            //     });
-            // ;
+            axios
+                .post(`http://localhost:8080/purchaseorder/update-by-ponumber/${ponumber}`, purchaseorder, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
+                .then(res => {
+                    setAlert(res.data.alert);
+                    setType(res.data.type);
+                    handleAlert();
+                    setReRender(ponumber);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+            ;
         }
 
         if (action === "Approve") {
-            // axios
-            //     .post(`http://localhost:8080/purchaseorder/approve-by-ponumber/${ponumber}`, purchaseorder, {
-            //         headers: {
-            //             'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
-            //         }
-            //     })
-            //     .then(res => {
-            //         setAlert(res.data.alert);
-            //         setType(res.data.type);
-            //         handleAlert();
-            //         setReRender(ponumber);
-            //     })
-            //     .catch(err => {
-            //         console.log(err);
-            //     });
-            // ;
+            axios
+                .post(`http://localhost:8080/purchaseorder/approve-by-ponumber/${ponumber}`, purchaseorder, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
+                .then(res => {
+                    setAlert(res.data.alert);
+                    setType(res.data.type);
+                    handleAlert();
+                    setReRender(ponumber);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+            ;
         }
 
-        // setPORecords(null);
-        // handleClosePopUp()
-        // setAction('');
+        setPORecords(null);
+        handleClosePopUp()
+        setAction('');
     }
 
     const handleClosePopUp = () => {
