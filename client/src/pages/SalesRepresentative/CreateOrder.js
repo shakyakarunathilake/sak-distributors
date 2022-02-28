@@ -48,7 +48,7 @@ export default function CreateOrder(props) {
     const { watch, reset, trigger, control, setValue, getValues, clearErrors, handleSubmit, formState: { isValid, errors } } = useForm({
         mode: "all",
         defaultValues: {
-            orderno: `${JSON.parse(sessionStorage.getItem("Auth")).employeeid}${nextOrderNo}`,
+            orderno: nextOrderNo,
             contactnumber: '',
             customertype: 'Registered Customer',
             customerid: '',
