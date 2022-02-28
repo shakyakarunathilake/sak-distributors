@@ -384,6 +384,9 @@ export default function PurchaseOrderStepTwo(props) {
                                                 width: '2%',
                                                 textAlign: 'left'
                                             },
+                                            render: rowData => {
+                                                return rowData.tableData.id + 1
+                                            }
                                         },
                                         {
                                             field: "description",
