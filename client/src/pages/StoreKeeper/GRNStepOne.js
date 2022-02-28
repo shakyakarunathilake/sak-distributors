@@ -730,14 +730,6 @@ export default function GRNStepOne(props) {
                                     ]}
                                     data={data}
                                     editable={{
-                                        onRowAdd: (newData) =>
-                                            new Promise((resolve, reject) => {
-                                                setTimeout(() => {
-                                                    setData(prevData => [...prevData, newData]);
-
-                                                    resolve();
-                                                }, 100);
-                                            }),
                                         onRowUpdate: (newData, oldData) =>
                                             new Promise((resolve, reject) => {
                                                 setTimeout(() => {
@@ -749,24 +741,6 @@ export default function GRNStepOne(props) {
                                                     resolve();
                                                 }, 1)
                                             }),
-                                        onRowDelete: oldData =>
-                                            new Promise((resolve, reject) => {
-                                                setTimeout(() => {
-                                                    const dataDelete = [...data];
-                                                    const index = oldData.tableData.id;
-                                                    dataDelete.splice(index, 1);
-                                                    setData([...dataDelete]);
-
-                                                    resolve()
-                                                }, 1)
-                                            }),
-                                    }}
-                                    icons={{
-                                        Delete: () => (
-                                            <div>
-                                                <DeleteIcon className={style.deleteItemBtn} />
-                                            </div>
-                                        )
                                     }}
                                     options={{
                                         pageSize: pageSize,
