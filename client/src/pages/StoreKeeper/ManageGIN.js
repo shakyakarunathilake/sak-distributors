@@ -184,24 +184,6 @@ export default function ManageGIN() {
                 })
         }
 
-        // if (action === "Edit") {
-        //     axios
-        //         .post(`http://localhost:8080/gin/update-by-ginnumber/${ginnumber}`, gin, {
-        //             headers: {
-        //                 'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
-        //             }
-        //         })
-        //         .then(res => {
-        //             setAlert(res.data.alert);
-        //             setType(res.data.type);
-        //             handleAlert();
-        //             setReRender(ginnumber);
-        //         })
-        //         .catch(err => {
-        //             console.log(err);
-        //         })
-        // }
-
         if (action === "Dispatch") {
             axios
                 .post(`http://localhost:8080/gin/approve-dispatch/${ginnumber}`, gin, {
@@ -219,24 +201,6 @@ export default function ManageGIN() {
                     console.log(err);
                 })
         }
-
-        // if (action === "Complete") {
-        //     axios
-        //         .post(`http://localhost:8080/gin/approve-complete/${ginnumber}`, gin, {
-        //             headers: {
-        //                 'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
-        //             }
-        //         })
-        //         .then(res => {
-        //             setAlert(res.data.alert);
-        //             setType(res.data.type);
-        //             handleAlert();
-        //             setReRender(ginnumber);
-        //         })
-        //         .catch(err => {
-        //             console.log(err);
-        //         })
-        // }
 
         setAction('');
         setGINRecords(null);
