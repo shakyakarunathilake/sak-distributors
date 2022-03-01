@@ -128,7 +128,7 @@ export default function ManageStore() {
                                     <TableCell width="5%" padding="none" rowSpan={2} align="left">
                                         <div style={{ padding: '0 10px' }}>
                                             Damaged Qty
-                                            <Tooltip title="Sales pieces / Free pieces" arrow>
+                                            <Tooltip title="Sales damaged pieces / Free damaged pieces" arrow>
                                                 <InfoIcon style={{ fontSize: '1.3em', verticalAlign: 'top', marginLeft: '5px' }} />
                                             </Tooltip>
                                         </div>
