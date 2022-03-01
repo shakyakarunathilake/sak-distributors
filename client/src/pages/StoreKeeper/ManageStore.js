@@ -125,7 +125,7 @@ export default function ManageStore() {
                                             Pieces per Case
                                         </div>
                                     </TableCell>
-                                    <TableCell width="5%" padding="none" rowSpan={2} align="left">
+                                    <TableCell width="5%" padding="none" rowSpan={2} align="center">
                                         <div style={{ padding: '0 10px' }}>
                                             Damaged Qty
                                             <Tooltip title="Sales damaged pieces / Free damaged pieces" arrow>
