@@ -125,9 +125,6 @@ export default function ManageStore() {
                                             Pieces per Case
                                         </div>
                                     </TableCell>
-                                    <TableCell padding="none" colSpan={2} align="center">
-                                        Total Qty.
-                                    </TableCell>
                                     <TableCell width="5%" padding="none" rowSpan={2} align="left">
                                         <div style={{ padding: '0 10px' }}>
                                             Damaged Qty
@@ -135,6 +132,9 @@ export default function ManageStore() {
                                                 <InfoIcon style={{ fontSize: '1.3em', verticalAlign: 'top', marginLeft: '5px' }} />
                                             </Tooltip>
                                         </div>
+                                    </TableCell>
+                                    <TableCell padding="none" colSpan={2} align="center">
+                                        Total Qty.
                                     </TableCell>
                                 </TableRow>
                                 <TableRow className={classes.row2}>
@@ -215,6 +215,15 @@ export default function ManageStore() {
                             }
                         },
                         {
+                            field: "damagedqty",
+                            type: 'numeric',
+                            cellStyle: {
+                                width: '6%',
+                                padding: "10px 7px 10px 7px",
+                                textAlign: 'right'
+                            }
+                        },
+                        {
                             field: "cases",
                             type: 'numeric',
                             cellStyle: {
@@ -227,15 +236,6 @@ export default function ManageStore() {
                             type: 'numeric',
                             cellStyle: {
                                 width: '6%',
-                                textAlign: 'right'
-                            }
-                        },
-                        {
-                            field: "damagedqty",
-                            type: 'numeric',
-                            cellStyle: {
-                                width: '6%',
-                                padding: "10px 7px 10px 7px",
                                 textAlign: 'right'
                             }
                         },
