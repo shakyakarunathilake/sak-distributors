@@ -231,7 +231,7 @@ export default function ManageStore() {
                             }
                         },
                         {
-                            field: "damagedsalesqty",
+                            field: "damagedqty",
                             type: 'numeric',
                             cellStyle: {
                                 width: '6%',
