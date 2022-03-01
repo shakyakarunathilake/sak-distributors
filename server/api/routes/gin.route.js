@@ -53,7 +53,7 @@ router.get("/get-all-gin-table-data/:employee", (req, res, next) => {
         .then(doc => {
 
             const candidates = doc.filter(x => x.status === "Dispatched" || "Complete")
-    
+
             const tbody = candidates.slice(0).reverse().map(x => ({
                 ginnumber: x.ginnumber,
                 route: x.route,
@@ -115,68 +115,68 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
 
     gin
         .save()
-        .then(result => {
+        // .then(result => {
 
-            result.ordernumbers.map(order => {
+        //     result.ordernumbers.map(order => {
 
-                Order
-                    .findOneAndUpdate(
-                        { orderno: order.ordernumber },
-                        {
-                            'status': result.status,
-                            'ginnumber': result.ginnumber
-                        },
-                        { new: true, upsert: true }
-                    )
-                    .exec()
-                    .then(
-                        console.log("**** ORDER STATUS UPDATED ****")
-                    )
-                    .catch(err => {
+        //         Order
+        //             .findOneAndUpdate(
+        //                 { orderno: order.ordernumber },
+        //                 {
+        //                     'status': result.status,
+        //                     'ginnumber': result.ginnumber
+        //                 },
+        //                 { new: true, upsert: true }
+        //             )
+        //             .exec()
+        //             .then(
+        //                 console.log("**** ORDER STATUS UPDATED ****")
+        //             )
+        //             .catch(err => {
 
-                        console.log("ORDER STATUS UPDATE ERROR: ", err);
+        //                 console.log("ORDER STATUS UPDATE ERROR: ", err);
 
-                        res.status(200).json({
-                            type: 'error',
-                            alert: `Something went wrong. Could not update order status`,
-                        });
-                    });
-            })
+        //                 res.status(200).json({
+        //                     type: 'error',
+        //                     alert: `Something went wrong. Could not update order status`,
+        //                 });
+        //             });
+        //     })
 
-            return result;
+        //     return result;
 
-        })
-        .then(result => {
+        // })
+        // .then(result => {
 
-            result.ordernumbers.map(order => {
+        //     result.ordernumbers.map(order => {
 
-                MetaData
-                    .findOneAndUpdate(
-                        {},
-                        {
-                            $pull: {
-                                'noofcustomerorders': {
-                                    'orderno': order.ordernumber
-                                }
-                            }
-                        },
-                        { upsert: true }
-                    )
-                    .exec()
-                    .then(
-                        console.log("**** META DATA ADDED ****")
-                    )
-                    .catch(err => {
-                        console.log(err);
-                        res.status(200).json({
-                            type: 'error',
-                            alert: `Something went wrong. Could not update Meta Data `,
-                        })
-                    });
-            })
+        //         MetaData
+        //             .findOneAndUpdate(
+        //                 {},
+        //                 {
+        //                     $pull: {
+        //                         'noofcustomerorders': {
+        //                             'orderno': order.ordernumber
+        //                         }
+        //                     }
+        //                 },
+        //                 { upsert: true }
+        //             )
+        //             .exec()
+        //             .then(
+        //                 console.log("**** META DATA ADDED ****")
+        //             )
+        //             .catch(err => {
+        //                 console.log(err);
+        //                 res.status(200).json({
+        //                     type: 'error',
+        //                     alert: `Something went wrong. Could not update Meta Data `,
+        //                 })
+        //             });
+        //     })
 
-            return result;
-        })
+        //     return result;
+        // })
         .then(doc => {
 
             doc.items.map(item => {
@@ -207,6 +207,13 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
                 let freeqtypieces = getPieces(getTotalNumberOfPieces(item.freeqtycases, item.freeqtypieces, item.piecespercase), item.piecespercase);
                 let freeqtycases = getCases(getTotalNumberOfPieces(item.freeqtycases, item.freeqtypieces, item.piecespercase), item.piecespercase);
 
+                console.log("********* here ***********")
+                console.log({
+                    "salesqtypieces": salesqtypieces,
+                    "salesqtycases": salesqtycases,
+                    "freeqtypieces": freeqtypieces,
+                    "freeqtycases": freeqtycases,
+                })
 
                 Store
                     .findOne({ name: name })
@@ -233,42 +240,50 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
                             newstorefreeqtycases = storefreeqtycases - ((item.piecespercase * releasecases) + freeqtycases);
                         }
 
-                        Store
-                            .findOneAndUpdate(
-                                { name: name },
-                                {
-                                    $set: {
-                                        'storequantity.salesqtypieces': newstoresalesqtypieces,
-                                        'storequantity.salesqtycases': newstoresalesqtycases,
-                                        'storequantity.freeqtypieces': newstorefreeqtypieces,
-                                        'storequantity.freeqtycases': newstorefreeqtycases,
-                                    },
-                                    $push: {
-                                        'grngin': {
-                                            'grnnumberginnumber': doc.ginnumber,
-                                            'date': doc.createdat,
-                                            'piecespercase': item.piecespercase,
-                                            'listorsellingprice': item.sellingprice,
-                                            'salesqtycases': item.salesqtycases,
-                                            'salesqtypieces': item.salesqtypieces,
-                                            'freeqtycases': item.freeqtycases,
-                                            'freeqtypieces': item.freeqtypieces,
-                                        }
-                                    }
-                                },
-                                { new: true, upsert: true }
-                            )
-                            .exec()
-                            .then(
-                                console.log("**** ITEMS ADDED TO STORE ****")
-                            )
-                            .catch(err => {
-                                res.status(200).json({
-                                    type: 'error',
-                                    alert: `Something went wrong. Could not update store`,
-                                });
-                                console.log(err);
-                            })
+                        console.log("********* here ***********")
+                        console.log({
+                            "newstoresalesqtypieces": newstoresalesqtypieces,
+                            "newstoresalesqtycases": newstoresalesqtycases,
+                            "newstorefreeqtypieces": newstorefreeqtypieces,
+                            "newstorefreeqtycases": newstorefreeqtycases,
+                        })
+
+                        // Store
+                        //     .findOneAndUpdate(
+                        //         { name: name },
+                        //         {
+                        //             $set: {
+                        //                 'storequantity.salesqtypieces': newstoresalesqtypieces,
+                        //                 'storequantity.salesqtycases': newstoresalesqtycases,
+                        //                 'storequantity.freeqtypieces': newstorefreeqtypieces,
+                        //                 'storequantity.freeqtycases': newstorefreeqtycases,
+                        //             },
+                        //             $push: {
+                        //                 'grngin': {
+                        //                     'grnnumberginnumber': doc.ginnumber,
+                        //                     'date': doc.createdat,
+                        //                     'piecespercase': item.piecespercase,
+                        //                     'listorsellingprice': item.sellingprice,
+                        //                     'salesqtycases': item.salesqtycases,
+                        //                     'salesqtypieces': item.salesqtypieces,
+                        //                     'freeqtycases': item.freeqtycases,
+                        //                     'freeqtypieces': item.freeqtypieces,
+                        //                 }
+                        //             }
+                        //         },
+                        //         { new: true, upsert: true }
+                        //     )
+                        //     .exec()
+                        //     .then(
+                        //         console.log("**** ITEMS ADDED TO STORE ****")
+                        //     )
+                        //     .catch(err => {
+                        //         res.status(200).json({
+                        //             type: 'error',
+                        //             alert: `Something went wrong. Could not update store`,
+                        //         });
+                        //         console.log(err);
+                        //     })
 
                     })
                     .catch(err => {
