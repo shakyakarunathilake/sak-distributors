@@ -226,6 +226,7 @@ export default function ManageStore() {
                         {
                             field: "cases",
                             type: 'numeric',
+                            defaultSort: 'asc',
                             cellStyle: {
                                 width: '6%',
                                 textAlign: 'right'
@@ -243,6 +244,7 @@ export default function ManageStore() {
                     data={data}
                     parentChildData={(row, rows) => rows.find(a => a.id === row.parentid)}
                     options={{
+                        sorting: true,
                         addRowPosition: "first",
                         toolbar: false,
                         paging: false,
