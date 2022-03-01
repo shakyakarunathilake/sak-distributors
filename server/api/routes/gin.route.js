@@ -115,76 +115,74 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
 
     gin
         .save()
-        // .then(result => {
+        .then(result => {
 
-        //     result.ordernumbers.map(order => {
+            result.ordernumbers.map(order => {
 
-        //         Order
-        //             .findOneAndUpdate(
-        //                 { orderno: order.ordernumber },
-        //                 {
-        //                     'status': result.status,
-        //                     'ginnumber': result.ginnumber
-        //                 },
-        //                 { new: true, upsert: true }
-        //             )
-        //             .exec()
-        //             .then(
-        //                 console.log("**** ORDER STATUS UPDATED ****")
-        //             )
-        //             .catch(err => {
+                Order
+                    .findOneAndUpdate(
+                        { orderno: order.ordernumber },
+                        {
+                            'status': result.status,
+                            'ginnumber': result.ginnumber
+                        },
+                        { new: true, upsert: true }
+                    )
+                    .exec()
+                    .then(
+                        console.log("**** ORDER STATUS UPDATED ****")
+                    )
+                    .catch(err => {
 
-        //                 console.log("ORDER STATUS UPDATE ERROR: ", err);
+                        console.log("ORDER STATUS UPDATE ERROR: ", err);
 
-        //                 res.status(200).json({
-        //                     type: 'error',
-        //                     alert: `Something went wrong. Could not update order status`,
-        //                 });
-        //             });
-        //     })
+                        res.status(200).json({
+                            type: 'error',
+                            alert: `Something went wrong. Could not update order status`,
+                        });
+                    });
+            })
 
-        //     return result;
+            return result;
 
-        // })
-        // .then(result => {
+        })
+        .then(result => {
 
-        //     result.ordernumbers.map(order => {
+            result.ordernumbers.map(order => {
 
-        //         MetaData
-        //             .findOneAndUpdate(
-        //                 {},
-        //                 {
-        //                     $pull: {
-        //                         'noofcustomerorders': {
-        //                             'orderno': order.ordernumber
-        //                         }
-        //                     }
-        //                 },
-        //                 { upsert: true }
-        //             )
-        //             .exec()
-        //             .then(
-        //                 console.log("**** META DATA ADDED ****")
-        //             )
-        //             .catch(err => {
-        //                 console.log(err);
-        //                 res.status(200).json({
-        //                     type: 'error',
-        //                     alert: `Something went wrong. Could not update Meta Data `,
-        //                 })
-        //             });
-        //     })
+                MetaData
+                    .findOneAndUpdate(
+                        {},
+                        {
+                            $pull: {
+                                'noofcustomerorders': {
+                                    'orderno': order.ordernumber
+                                }
+                            }
+                        },
+                        { upsert: true }
+                    )
+                    .exec()
+                    .then(
+                        console.log("**** META DATA ADDED ****")
+                    )
+                    .catch(err => {
+                        console.log(err);
+                        res.status(200).json({
+                            type: 'error',
+                            alert: `Something went wrong. Could not update Meta Data `,
+                        })
+                    });
+            })
 
-        //     return result;
-        // })
+            return result;
+        })
         .then(doc => {
 
             doc.items.map((item, i) => {
 
                 const name = item.description.substring(item.description.indexOf("-") + 1);
 
-                console.log(`${i})`, name);
-                
                 let pieces = 0;
                 let cases = 0;
                 let totalnumberofpieces = 0;
@@ -214,6 +212,7 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
                     .findOne({ name: name })
                     .exec()
                     .then(result => {
+
                         let storesalesqtypieces = result.storequantity.salesqtypieces;
                         let storesalesqtycases = result.storequantity.salesqtycases;
                         let storefreeqtypieces = result.storequantity.freeqtypieces;
@@ -224,73 +223,70 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
                         let newstorefreeqtypieces = 0;
                         let newstorefreeqtycases = 0;
 
-                        if (storesalesqtypieces < salesqtypieces) {
-                            let releasecases = Math.ceil(salesqtypieces / item.piecespercase);
-                            newstoresalesqtypieces = storesalesqtypieces + (item.piecespercase * releasecases) - salesqtypieces;
-                            newstoresalesqtycases = storesalesqtycases - releasecases - salesqtycases;
+                        if (storesalesqtycases !== 0) {
+                            if (storesalesqtypieces < salesqtypieces) {
+                                let releasecases = Math.ceil(salesqtypieces / item.piecespercase);
+                                newstoresalesqtypieces = storesalesqtypieces + (item.piecespercase * releasecases) - salesqtypieces;
+                                newstoresalesqtycases = storesalesqtycases - releasecases - salesqtycases;
+                            } else {
+                                newstoresalesqtypieces = storesalesqtypieces - salesqtypieces;
+                                newstoresalesqtycases = storesalesqtycases - salesqtycases;
+                            }
                         } else {
-                            newstoresalesqtypieces = storesalesqtypieces - salesqtypieces;
-                            newstoresalesqtycases = storesalesqtycases - salesqtycases;
+                            newstoresalesqtypieces = (salesqtypieces ? -salesqtypieces : salesqtypieces);
+                            newstoresalesqtycases = (salesqtycases ? -salesqtycases : salesqtycases);
                         }
 
-                        if (storefreeqtypieces < freeqtypieces) {
-                            let releasecases = Math.ceil(freeqtypieces / item.piecespercase);
-                            newstorefreeqtypieces = storefreeqtypieces + (item.piecespercase * releasecases) - freeqtypieces;
-                            newstorefreeqtycases = storefreeqtycases - releasecases - freeqtycases;
+                        if (storefreeqtycases !== 0) {
+                            if (storefreeqtypieces < freeqtypieces) {
+                                let releasecases = Math.ceil(freeqtypieces / item.piecespercase);
+                                newstorefreeqtypieces = storefreeqtypieces + (item.piecespercase * releasecases) - freeqtypieces;
+                                newstorefreeqtycases = storefreeqtycases - releasecases - freeqtycases;
+                            } else {
+                                newstorefreeqtypieces = storefreeqtypieces - freeqtypieces;
+                                newstorefreeqtycases = storefreeqtycases - freeqtycases;
+                            }
                         } else {
-                            newstorefreeqtypieces = storefreeqtypieces - freeqtypieces;
-                            newstorefreeqtycases = storefreeqtycases - freeqtycases;
+                            newstorefreeqtypieces = (freeqtypieces ? -freeqtypieces : freeqtypieces);
+                            newstorefreeqtycases = (freeqtycases ? -freeqtycases : freeqtycases);
                         }
-
-                        console.log(`${i})`, 'NEW QUANTITIES CALCULATED');
 
                         Store
                             .findOne({ name: name })
-                            // .findOneAndUpdate(
-                            //     { name: name },
-                            //     {
-                            //         $set: {
-                            //             'storequantity.salesqtypieces': newstoresalesqtypieces,
-                            //             'storequantity.salesqtycases': newstoresalesqtycases,
-                            //             'storequantity.freeqtypieces': newstorefreeqtypieces,
-                            //             'storequantity.freeqtycases': newstorefreeqtycases,
-                            //         },
-                            //         $push: {
-                            //             'grngin': {
-                            //                 'grnnumberginnumber': doc.ginnumber,
-                            //                 'date': doc.createdat,
-                            //                 'piecespercase': item.piecespercase,
-                            //                 'listorsellingprice': item.sellingprice,
-                            //                 'salesqtycases': item.salesqtycases,
-                            //                 'salesqtypieces': item.salesqtypieces,
-                            //                 'freeqtycases': item.freeqtycases,
-                            //                 'freeqtypieces': item.freeqtypieces,
-                            //             }
-                            //         }
-                            //     },
-                            //     { new: true, upsert: true }
-                            // )
-                            .exec()
-                            .then(
-                                // console.log("**** ITEMS ADDED TO STORE ****")
-                                console.log(`${i})`, 'ITEM FOUND IN STORE')
+                            .findOneAndUpdate(
+                                { name: name },
+                                {
+                                    $set: {
+                                        'storequantity.salesqtypieces': newstoresalesqtypieces,
+                                        'storequantity.salesqtycases': newstoresalesqtycases,
+                                        'storequantity.freeqtypieces': newstorefreeqtypieces,
+                                        'storequantity.freeqtycases': newstorefreeqtycases,
+                                    },
+                                    $push: {
+                                        'grngin': {
+                                            'grnnumberginnumber': doc.ginnumber,
+                                            'date': doc.createdat,
+                                            'piecespercase': item.piecespercase,
+                                            'listorsellingprice': item.sellingprice,
+                                            'salesqtycases': item.salesqtycases,
+                                            'salesqtypieces': item.salesqtypieces,
+                                            'freeqtycases': item.freeqtycases,
+                                            'freeqtypieces': item.freeqtypieces,
+                                        }
+                                    }
+                                },
+                                { new: true, upsert: true }
                             )
-                            .catch(err => {
-                                res.status(200).json({
-                                    type: 'error',
-                                    alert: `Something went wrong. Could not update store`,
-                                });
-                                console.log(err);
-                            })
+                            .exec()
+                            .then()
+                            .catch(err =>
+                                console.log(err)
+                            )
 
                     })
-                    .catch(err => {
-                        res.status(200).json({
-                            type: 'error',
-                            alert: `Something went wrong. Could not update store`,
-                        });
-                        console.log(err);
-                    })
+                    .catch(err =>
+                        console.log(err)
+                    )
             })
 
             return doc;
@@ -313,36 +309,6 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
         })
 })
 
-// //Update GIN by GIN Number
-// router.post("/update-by-ginnumber/:ginnumber", formDataBody.fields([]), (req, res, next) => {
-
-//     GIN
-//         .findOneAndUpdate(
-//             { "ginnumber": req.params.ginnumber },
-//             {
-//                 '$set': {
-//                     'vehicle': req.body.vehicle,
-//                     'incharge': req.body.incharge,
-//                 }
-//             },
-//             { upsert: true }
-//         )
-//         .exec()
-//         .then(doc =>
-//             res.status(200).json({
-//                 message: "Handling POST requests to /gin/update-by-id/:ginnumber, GIN UPDATED",
-//                 type: 'success',
-//                 alert: `${doc.ginnumber} updated`,
-//             })
-//         )
-//         .catch(err => {
-//             res.status(200).json({
-//                 type: 'error',
-//                 alert: `Something went wrong. Could not update GIN`,
-//             });
-//             console.log(err);
-//         });
-// });
 
 //Approve dispatch GIN by GIN Number
 router.post("/approve-dispatch/:ginnumber", formDataBody.fields([]), (req, res, next) => {
@@ -408,35 +374,5 @@ router.post("/approve-dispatch/:ginnumber", formDataBody.fields([]), (req, res, 
             console.log(err);
         });
 });
-
-//Approve complete GIN by GIN Number
-// router.post("/approve-complete/:ginnumber", formDataBody.fields([]), (req, res, next) => {
-
-//     GIN
-//         .findOneAndUpdate(
-//             { "ginnumber": req.params.ginnumber },
-//             {
-//                 '$set': {
-//                     'status': req.body.status,
-//                 }
-//             },
-//             { upsert: true }
-//         )
-//         .exec()
-//         .then(doc =>
-//             res.status(200).json({
-//                 message: "Handling POST requests to /gin/approve-complete/:ginnumber, GIN STATUS CHANGED TO COMPLETED",
-//                 type: 'success',
-//                 alert: `${doc.ginnumber} status updated`,
-//             })
-//         )
-//         .catch(err => {
-//             res.status(200).json({
-//                 type: 'error',
-//                 alert: `Something went wrong. Could not update GIN`,
-//             });
-//             console.log(err);
-//         });
-// });
 
 module.exports = router;
