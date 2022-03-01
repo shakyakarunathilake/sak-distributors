@@ -217,6 +217,7 @@ export default function ManageStore() {
                         {
                             field: "damagedqty",
                             type: 'numeric',
+                            render: rowData => rowData.damagedqty ? rowData.damagedqty : '-',
                             cellStyle: {
                                 width: '6%',
                                 padding: "10px 7px 10px 7px",

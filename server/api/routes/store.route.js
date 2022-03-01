@@ -49,7 +49,7 @@ router.get("/get-all-store-table-data", (req, res, next) => {
                         grnnumberginnumber: details.grnnumberginnumber,
                         date: details.date,
                         piecespercase: details.piecespercase,
-                        damagedqty: details.damagedsalesqty ? `${details.damagedsalesqty} / ${details.damagedfreeqty}` : '-',
+                        damagedqty: `${details.damagedsalesqty} / ${details.damagedfreeqty}`,
                         cases: `${details.salesqtycases} / ${details.freeqtycases}`,
                         pieces: `${details.salesqtypieces} / ${details.freeqtypieces}`,
                         // freeqtycases: details.freeqtycases,
