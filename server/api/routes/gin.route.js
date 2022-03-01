@@ -223,6 +223,7 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
                         let storesalesqtycases = result.storequantity.salesqtycases;
                         let storefreeqtypieces = result.storequantity.freeqtypieces;
                         let storefreeqtycases = result.storequantity.freeqtycases;
+                        
                         let newstoresalesqtypieces = 0;
                         let newstoresalesqtycases = 0;
                         let newstorefreeqtypieces = 0;
@@ -231,13 +232,19 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
                         if (storesalesqtypieces < salesqtypieces) {
                             let releasecases = Math.ceil(salesqtypieces / item.piecespercase);
                             newstoresalesqtypieces = storesalesqtypieces + (item.piecespercase * releasecases) - salesqtypieces;
-                            newstoresalesqtycases = storesalesqtycases - ((item.piecespercase * releasecases) + salesqtycases);
+                            newstoresalesqtycases = storesalesqtycases - releasecases - salesqtycases;
+                        } else {
+                            newstoresalesqtypieces = storesalesqtypieces - salesqtypieces;
+                            newstoresalesqtycases = storesalesqtycases - salesqtycases;
                         }
 
                         if (storefreeqtypieces < freeqtypieces) {
                             let releasecases = Math.ceil(freeqtypieces / item.piecespercase);
                             newstorefreeqtypieces = storefreeqtypieces + (item.piecespercase * releasecases) - freeqtypieces;
-                            newstorefreeqtycases = storefreeqtycases - ((item.piecespercase * releasecases) + freeqtycases);
+                            newstorefreeqtycases = storefreeqtycases - releasecases - freeqtycases;
+                        } else {
+                            newstorefreeqtypieces = storefreeqtypieces - freeqtypieces;
+                            newstorefreeqtycases = storefreeqtycases - freeqtycases;
                         }
 
                         console.log("********* here ***********")
