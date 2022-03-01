@@ -12,12 +12,7 @@ import style from './ManageProduct.module.scss';
 import { makeStyles } from '@material-ui/core/styles';
 
 //Material UI 
-import {
-    TableHead,
-    TableRow,
-    TableCell,
-    Button,
-} from '@material-ui/core';
+import { Button } from '@material-ui/core';
 
 //Material UI Icons
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -340,64 +335,6 @@ export default function ManageProduct() {
                 <div className={style.pagecontent}>
 
                     <MaterialTable
-                        // components={{
-                        // Header: props => (
-                        //     <TableHead {...props} className={classes.tablehead}>
-                        //         <TableRow className={classes.row}>
-                        //             <TableCell width="auto" padding="none">
-                        //                 <div style={{ padding: '0 10px' }}>
-
-                        //                 </div>
-                        //             </TableCell>
-                        //             <TableCell width="8%" padding="none">
-                        //                 <div style={{ padding: '0 10px' }}>
-                        //                     Product ID
-                        //                 </div>
-                        //             </TableCell>
-                        //             <TableCell width="8%" padding="none">
-                        //                 <div style={{ padding: '0 10px' }}>
-                        //                     Variant ID
-                        //                 </div>
-                        //             </TableCell>
-                        //             <TableCell width="22%" padding="none">
-                        //                 <div style={{ padding: '0 10px' }}>
-                        //                     Name
-                        //                 </div>
-                        //             </TableCell>
-                        //             <TableCell width="15%" padding="none">
-                        //                 <div style={{ padding: '0 10px' }}>
-                        //                     Supplier
-                        //                 </div>
-                        //             </TableCell>
-                        //             <TableCell width="6%" padding="none">
-                        //                 <div style={{ padding: '0 10px' }}>
-                        //                     Selling Price
-                        //                 </div>
-                        //             </TableCell>
-                        //             <TableCell width="8%" padding="none">
-                        //                 <div style={{ padding: '0 10px' }}>
-                        //                     Type
-                        //                 </div>
-                        //             </TableCell>
-                        //             <TableCell width="24%" padding="none">
-                        //                 <div style={{ padding: '0 10px' }}>
-                        //                     Offer Caption
-                        //                 </div>
-                        //             </TableCell>
-                        //             <TableCell width="8%" padding="none">
-                        //                 <div style={{ padding: '0 10px' }}>
-                        //                     Status
-                        //                 </div>
-                        //             </TableCell>
-                        //             <TableCell width="8%" padding="none" textAlign="center">
-                        //                 <div style={{ padding: '0 10px' }}>
-                        //                     Action
-                        //                 </div>
-                        //             </TableCell>
-                        //         </TableRow>
-                        //     </TableHead>
-                        // ),
-                        // }}
                         columns={[
                             {
                                 title: "Product ID",
