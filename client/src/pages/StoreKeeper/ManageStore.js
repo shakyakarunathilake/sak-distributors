@@ -92,12 +92,12 @@ export default function ManageStore() {
                                         <div style={{ padding: '0 10px' }}>
                                         </div>
                                     </TableCell>
-                                    <TableCell width="9%" padding="none" rowSpan={2}>
+                                    <TableCell width="7%" padding="none" rowSpan={2}>
                                         <div style={{ padding: '0 10px' }}>
                                             Prod. ID
                                         </div>
                                     </TableCell>
-                                    <TableCell width="28%" padding="none" rowSpan={2} align="left">
+                                    <TableCell width="25%" padding="none" rowSpan={2} align="left">
                                         <div style={{ padding: '0 10px' }}>
                                             Description
                                         </div>
@@ -128,12 +128,14 @@ export default function ManageStore() {
                                     <TableCell padding="none" colSpan={2} align="center">
                                         Total Qty.
                                     </TableCell>
-                                    {/* <TableCell padding="none" colSpan={2} align="center">
-                                        Free Qty.
-                                    </TableCell> */}
-                                    {/* <TableCell padding="none" colSpan={2} align="center">
-                                        Return Qty.
-                                    </TableCell> */}
+                                    <TableCell width="5%" padding="none" rowSpan={2} align="left">
+                                        <div style={{ padding: '0 10px' }}>
+                                            Damaged Qty
+                                            <Tooltip title="In Pieces" arrow>
+                                                <InfoIcon style={{ fontSize: '1.3em', verticalAlign: 'top', marginLeft: '5px' }} />
+                                            </Tooltip>
+                                        </div>
+                                    </TableCell>
                                 </TableRow>
                                 <TableRow className={classes.row2}>
                                     <TableCell width="6%" padding="none" align="center">
@@ -148,10 +150,6 @@ export default function ManageStore() {
                                             <InfoIcon style={{ fontSize: '1.3em', verticalAlign: 'top', marginLeft: '5px' }} />
                                         </Tooltip>
                                     </TableCell>
-                                    {/* <TableCell width="6%" padding="none" align="center">Cs</TableCell>
-                                    <TableCell width="6%" padding="none" align="center">Pcs</TableCell> */}
-                                    {/* <TableCell width="6%" padding="none" align="center">R</TableCell> */}
-                                    {/* <TableCell width="6%" padding="none" align="center">D</TableCell> */}
                                 </TableRow>
                             </TableHead>
                         ),
@@ -232,40 +230,15 @@ export default function ManageStore() {
                                 textAlign: 'right'
                             }
                         },
-                        // {
-                        //     field: "freeqtycases",
-                        //     type: 'numeric',
-                        //     cellStyle: {
-                        //         width: '6%',
-                        //         textAlign: 'right'
-                        //     }
-                        // },
-                        // {
-                        //     field: "freeqtypieces",
-                        //     type: 'numeric',
-                        //     cellStyle: {
-                        //         width: '6%',
-                        //         textAlign: 'right'
-                        //     }
-                        // },
-                        // {
-                        //     field: "returned",
-                        //     type: 'numeric',
-                        //     cellStyle: {
-                        //         width: '6%',
-                        //         padding: "10px 7px 10px 7px",
-                        //         textAlign: 'right'
-                        //     }
-                        // },
-                        // {
-                        //     field: "damaged",
-                        //     type: 'numeric',
-                        //     cellStyle: {
-                        //         width: '6%',
-                        //         padding: "10px 7px 10px 7px",
-                        //         textAlign: 'right'
-                        //     }
-                        // },
+                        {
+                            field: "damagedsalesqty",
+                            type: 'numeric',
+                            cellStyle: {
+                                width: '6%',
+                                padding: "10px 7px 10px 7px",
+                                textAlign: 'right'
+                            }
+                        },
                     ]}
                     data={data}
                     parentChildData={(row, rows) => rows.find(a => a.id === row.parentid)}
