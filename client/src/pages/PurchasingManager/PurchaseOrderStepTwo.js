@@ -265,7 +265,7 @@ export default function PurchaseOrderStepTwo(props) {
                 <AutoSizer>
                     {({ height, width }) => {
 
-                        const value = (action === 'View' ? 430 : action === 'Edit' ? 400 : action === 'Approve' ? 420 : 460);
+                        const value = (action === "Approve" ? 480 : 460);
 
                         console.log(value);
 
