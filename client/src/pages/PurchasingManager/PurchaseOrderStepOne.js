@@ -315,6 +315,7 @@ export default function PurchaseOrderStepOne(props) {
                                                         options={getProductItemList}
                                                         getOptionLabel={(option) => option.name}
                                                         onChange={(e, option) => {
+                                                            props.onChange(option.name)
                                                             let data = { ...props.rowData };
                                                             data.productid = option.productid;
                                                             data.description = option.name;
