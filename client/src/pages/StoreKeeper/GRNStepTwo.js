@@ -398,7 +398,7 @@ export default function GRNStepTwo(props) {
                                         },
                                         {
                                             field: "listprice",
-                                            render: rowData => NumberWithCommas(rowData.listprice.toFixed(2)),
+                                            render: rowData => NumberWithCommas(parseInt(rowData.listprice).toFixed(2)),
                                             type: 'numeric',
                                             cellStyle: {
                                                 padding: "10px 7px 10px 7px",

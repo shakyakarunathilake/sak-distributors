@@ -425,8 +425,7 @@ export default function GRNStepOne(props) {
                                         {
                                             field: "listprice",
                                             type: 'numeric',
-                                            render: rowData =>
-                                                NumberWithCommas(rowData.listprice.toFixed(2)),
+                                            render: rowData => NumberWithCommas(parseInt(rowData.listprice).toFixed(2)),
                                             editable: 'never',
                                             cellStyle: {
                                                 padding: "10px 7px 10px 7px",
