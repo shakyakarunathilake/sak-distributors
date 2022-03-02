@@ -20,6 +20,7 @@ import ManageEmployee from '../pages/HR/ManageEmployee';
 import ManageCustomer from '../pages/Manager/ManageCustomer';
 import ManageProduct from '../pages/Manager/ManageProduct';
 import ManageSupplier from '../pages/Manager/ManageSupplier';
+import ManageVehicle from '../pages/Manager/ManageVehicle';
 
 //Purchasing Manager
 import ManagePurchaseOrder from '../pages/PurchasingManager/ManagePurchaseOrder';
@@ -88,6 +89,7 @@ function App() {
             <Route exact path='/manager/manage-products' component={ManageProduct} />
             <Route exact path='/manager/manage-customers' component={ManageCustomer} />
             <Route exact path='/manager/sales-and-invoice' component={SalesAndInvoice} />
+            <Route exact path='/manager/manage-vehicles' component={ManageVehicle} />
 
             {/* Purchasing Manager */}
             <Route exact path='/purchasing-manager/dashboard' component={Dashboard} />

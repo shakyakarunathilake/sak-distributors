@@ -13,6 +13,7 @@ import DescriptionIcon from '@material-ui/icons/Description';
 import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import StoreIcon from '@mui/icons-material/Store';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import DirectionsBusIcon from '@mui/icons-material/DirectionsBus';
 
 const getDistributorListItems = [
     {
@@ -86,6 +87,12 @@ const getManagerListItems = [
         title: "Manage Customers",
         path: "http://localhost:3000/manager/manage-customers",
         icon: <PersonIcon />,
+    },
+    {
+        id: "Manage Vehicles",
+        title: "Manage Vehicles",
+        path: "http://localhost:3000/manager/manage-vehicles",
+        icon: <DirectionsBusIcon />,
     },
     {
         id: "Sales and Invoice",
