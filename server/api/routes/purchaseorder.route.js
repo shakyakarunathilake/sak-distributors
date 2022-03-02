@@ -252,6 +252,7 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
             result.items.forEach(item => {
 
                 items.push({
+                    "productid": item.productid,
                     "freeqtycases": item.freeqtycases,
                     "deliveredfreeqtycases": item.deliveredfreeqtycases ? item.deliveredfreeqtycases : item.freeqtycases,
                     "freeqtypieces": item.freeqtypieces,

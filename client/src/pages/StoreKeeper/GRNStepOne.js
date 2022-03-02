@@ -405,6 +405,7 @@ export default function GRNStepOne(props) {
                                         },
                                         {
                                             field: "description",
+                                            render: rowData => `${rowData.productid} ${rowData.description}`,
                                             editable: 'never',
                                             cellStyle: {
                                                 padding: "10px 7px 10px 7px",

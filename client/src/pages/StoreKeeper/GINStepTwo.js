@@ -265,7 +265,12 @@ export default function GINStepTwo(props) {
                                         Header: props => (
                                             <TableHead {...props} className={classes.tablehead} >
                                                 <TableRow className={classes.row1}>
-                                                    <TableCell width="42%" padding="none" rowSpan={2}>
+                                                    <TableCell width="8%" padding="none" rowSpan={2}>
+                                                        <div style={{ padding: '0 10px' }}>
+                                                            Prod. ID
+                                                        </div>
+                                                    </TableCell>
+                                                    <TableCell width="35%" padding="none" rowSpan={2}>
                                                         <div style={{ padding: '0 10px' }}>
                                                             Description
                                                         </div>
@@ -275,7 +280,7 @@ export default function GINStepTwo(props) {
                                                             Selling Price (Rs.)
                                                         </div>
                                                     </TableCell>
-                                                    <TableCell width="8%" padding="none" rowSpan={2} align="center">
+                                                    <TableCell width="7%" padding="none" rowSpan={2} align="center">
                                                         <div style={{ padding: '0 10px' }}>
                                                             Pieces per Case
                                                         </div>
@@ -303,9 +308,21 @@ export default function GINStepTwo(props) {
                                     }}
                                     columns={[
                                         {
-                                            field: "description",
+                                            field: "productid",
+                                            render: rowData => `${rowData.productid} ${rowData.variantid}`,
                                             cellStyle: {
-                                                width: "42%",
+                                                width: "8%",
+                                                textAlign: 'left'
+                                            }
+                                        },
+                                        {
+                                            field: "variantid",
+                                            hidden: true,
+                                        },
+                                        {
+                                            field: "name",
+                                            cellStyle: {
+                                                width: "35%",
                                                 textAlign: 'left'
                                             }
                                         },
@@ -320,7 +337,7 @@ export default function GINStepTwo(props) {
                                         {
                                             field: 'piecespercase',
                                             cellStyle: {
-                                                width: "8%",
+                                                width: "7%",
                                                 textAlign: 'right'
                                             }
                                         },

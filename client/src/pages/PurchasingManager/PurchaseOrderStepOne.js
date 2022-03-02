@@ -299,6 +299,10 @@ export default function PurchaseOrderStepOne(props) {
                                         }}
                                         columns={[
                                             {
+                                                field: "productid",
+                                                hidden: true,
+                                            },
+                                            {
                                                 title: "Description",
                                                 field: "description",
                                                 cellStyle: {
@@ -310,9 +314,12 @@ export default function PurchaseOrderStepOne(props) {
                                                     <Autocomplete
                                                         options={getProductItemList}
                                                         getOptionLabel={(option) => option.name}
-                                                        onChange={e =>
-                                                            props.onChange(e.target.innerText)
-                                                        }
+                                                        onChange={(e, option) => {
+                                                            let data = { ...props.rowData };
+                                                            data.productid = option.productid;
+                                                            data.description = option.name;
+                                                            props.onRowDataChange(data);
+                                                        }}
                                                         inputValue={props.value}
                                                         onKeyDown={(event) => {
                                                             if (event.key === 'Enter') {

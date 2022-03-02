@@ -181,6 +181,18 @@ export default function StepFour(props) {
                                     }}
                                     columns={[
                                         {
+                                            field: "productid",
+                                            hidden: true,
+                                        },
+                                        {
+                                            field: "variantid",
+                                            hidden: true,
+                                        },
+                                        {
+                                            field: "name",
+                                            hidden: true,
+                                        },
+                                        {
                                             field: "description",
                                             cellStyle: {
                                                 padding: "12px 5px 12px 7px",

@@ -181,7 +181,7 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
 
             doc.items.map((item, i) => {
 
-                const name = item.description.substring(item.description.indexOf("-") + 1);
+                const productid = item.productid;
 
                 let pieces = 0;
                 let cases = 0;
@@ -209,7 +209,7 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
                 let freeqtycases = getCases(getTotalNumberOfPieces(item.freeqtycases, item.freeqtypieces, item.piecespercase), item.piecespercase);
 
                 Store
-                    .findOne({ name: name })
+                    .findOne({ productid: productid })
                     .exec()
                     .then(result => {
 
@@ -252,9 +252,8 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
                         }
 
                         Store
-                            .findOne({ name: name })
                             .findOneAndUpdate(
-                                { name: name },
+                                { productid: productid },
                                 {
                                     $set: {
                                         'storequantity.salesqtypieces': newstoresalesqtypieces,

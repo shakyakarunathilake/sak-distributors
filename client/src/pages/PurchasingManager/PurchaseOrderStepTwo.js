@@ -340,17 +340,22 @@ export default function PurchaseOrderStepTwo(props) {
                                                             #
                                                         </div>
                                                     </TableCell>
-                                                    <TableCell width="38%" padding="none" rowSpan={2}>
+                                                    <TableCell width="7%" padding="none" rowSpan={2}>
+                                                        <div style={{ padding: '0 10px' }}>
+                                                            Prod. ID
+                                                        </div>
+                                                    </TableCell>
+                                                    <TableCell width="35%" padding="none" rowSpan={2}>
                                                         <div style={{ padding: '0 10px' }}>
                                                             Description
                                                         </div>
                                                     </TableCell>
-                                                    <TableCell width="9%" padding="none" rowSpan={2} align="center">
+                                                    <TableCell width="7%" padding="none" rowSpan={2} align="center">
                                                         <div style={{ padding: '0 10px' }}>
                                                             Pieces per Case
                                                         </div>
                                                     </TableCell>
-                                                    <TableCell width="9%" padding="none" rowSpan={2} align="center">
+                                                    <TableCell width="7%" padding="none" rowSpan={2} align="center">
                                                         <div style={{ padding: '0 10px' }}>
                                                             List Price (Rs.)
                                                         </div>
@@ -389,10 +394,18 @@ export default function PurchaseOrderStepTwo(props) {
                                             }
                                         },
                                         {
+                                            field: "productid",
+                                            cellStyle: {
+                                                padding: "10px 5px 10px 7px",
+                                                width: '7%',
+                                                textAlign: 'left'
+                                            },
+                                        },
+                                        {
                                             field: "description",
                                             cellStyle: {
                                                 padding: "10px 5px 10px 7px",
-                                                width: '38%',
+                                                width: '35%',
                                                 textAlign: 'left'
                                             },
                                         },
@@ -401,7 +414,7 @@ export default function PurchaseOrderStepTwo(props) {
                                             field: "piecespercase",
                                             cellStyle: {
                                                 padding: "10px 5px 10px 7px",
-                                                width: '9%',
+                                                width: '7%',
                                                 textAlign: 'right'
                                             },
                                         },
@@ -411,7 +424,7 @@ export default function PurchaseOrderStepTwo(props) {
                                             render: rowData => NumberWithCommas(parseInt(rowData.listprice).toFixed(2)),
                                             cellStyle: {
                                                 padding: "10px 5px 10px 7px",
-                                                width: '9%',
+                                                width: '7%',
                                                 textAlign: 'right'
                                             },
                                         },

@@ -380,6 +380,7 @@ export default function GRNStepTwo(props) {
                                         },
                                         {
                                             field: "description",
+                                            render: rowData => `${rowData.productid} ${rowData.description}`,
                                             cellStyle: {
                                                 padding: "10px 7px 10px 7px",
                                                 width: '27%',

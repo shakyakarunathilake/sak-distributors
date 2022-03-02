@@ -200,7 +200,7 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
 
                 Store
                     .findOneAndUpdate(
-                        { name: item.description },
+                        { productid: item.productid },
                         {
                             $inc: {
                                 'storequantity.salesqtypieces': salesqtypieces,

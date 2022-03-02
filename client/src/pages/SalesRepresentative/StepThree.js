@@ -228,6 +228,18 @@ export default function StepThree(props) {
                                     }}
                                     columns={[
                                         {
+                                            field: "productid",
+                                            hidden: true,
+                                        },
+                                        {
+                                            field: "variantid",
+                                            hidden: true,
+                                        },
+                                        {
+                                            field: "name",
+                                            hidden: true,
+                                        },
+                                        {
                                             field: "description",
                                             cellStyle: {
                                                 padding: "10px 5px 10px 7px",
@@ -278,9 +290,13 @@ export default function StepThree(props) {
                                                             props.onChange(option.title)
                                                             let data = { ...props.rowData };
                                                             data.description = option.title;
+                                                            data.productid = option.productid;
+                                                            data.variantid = option.variantid;
+                                                            data.name = option.name;
                                                             data.sellingprice = parseInt(option.sellingprice).toFixed(2);
                                                             data.piecespercase = option.piecespercase;
                                                             data.mrp = parseInt(option.mrp).toFixed(2);
+                                                            console.log(data)
                                                             props.onRowDataChange(data);
                                                         }
                                                     }}
