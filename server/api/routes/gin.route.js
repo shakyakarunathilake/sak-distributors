@@ -223,7 +223,10 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
                         let newstorefreeqtypieces = 0;
                         let newstorefreeqtycases = 0;
 
-                        if (storesalesqtycases !== 0) {
+                        if (storesalesqtycases < 1) {
+                            newstoresalesqtypieces = storesalesqtypieces + (salesqtypieces ? -salesqtypieces : salesqtypieces);
+                            newstoresalesqtycases = storesalesqtycases + (salesqtycases ? -salesqtycases : salesqtycases);
+                        } else {
                             if (storesalesqtypieces < salesqtypieces) {
                                 let releasecases = Math.ceil(salesqtypieces / item.piecespercase);
                                 newstoresalesqtypieces = storesalesqtypieces + (item.piecespercase * releasecases) - salesqtypieces;
@@ -232,12 +235,12 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
                                 newstoresalesqtypieces = storesalesqtypieces - salesqtypieces;
                                 newstoresalesqtycases = storesalesqtycases - salesqtycases;
                             }
-                        } else {
-                            newstoresalesqtypieces = (salesqtypieces ? -salesqtypieces : salesqtypieces);
-                            newstoresalesqtycases = (salesqtycases ? -salesqtycases : salesqtycases);
                         }
 
-                        if (storefreeqtycases !== 0) {
+                        if (storefreeqtycases < 0) {
+                            newstorefreeqtypieces = storefreeqtypieces + (freeqtypieces ? -freeqtypieces : freeqtypieces);
+                            newstorefreeqtycases = storefreeqtycases + (freeqtycases ? -freeqtycases : freeqtycases);
+                        } else {
                             if (storefreeqtypieces < freeqtypieces) {
                                 let releasecases = Math.ceil(freeqtypieces / item.piecespercase);
                                 newstorefreeqtypieces = storefreeqtypieces + (item.piecespercase * releasecases) - freeqtypieces;
@@ -246,9 +249,6 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
                                 newstorefreeqtypieces = storefreeqtypieces - freeqtypieces;
                                 newstorefreeqtycases = storefreeqtycases - freeqtycases;
                             }
-                        } else {
-                            newstorefreeqtypieces = (freeqtypieces ? -freeqtypieces : freeqtypieces);
-                            newstorefreeqtycases = (freeqtycases ? -freeqtycases : freeqtycases);
                         }
 
                         Store
