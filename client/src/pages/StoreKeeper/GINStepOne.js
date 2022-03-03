@@ -127,6 +127,8 @@ export default function GINStepOne(props) {
 
             order.items.forEach(item => {
                 itemList.push({
+                    'productid': item.productid,
+                    'variantid': item.variantid,
                     'description': item.description,
                     'sellingprice': item.sellingprice,
                     'piecespercase': item.piecespercase,
@@ -375,7 +377,7 @@ export default function GINStepOne(props) {
                                     columns={[
                                         {
                                             field: "productid",
-                                            render: rowData => rowData ? `${rowData.productid} ${rowData.variantid}` : '',
+                                            render: rowData => `${rowData.productid} ${rowData.variantid}`,
                                             cellStyle: {
                                                 width: "8%",
                                                 textAlign: 'left'
