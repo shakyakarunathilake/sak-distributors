@@ -57,7 +57,6 @@ router.get("/:ponumber", (req, res, next) => {
                 "grnnumber": doc.grnnumber,
                 "status": doc.status,
                 "pogrosstotal": doc.pogrosstotal,
-                "podamagedmissingitems": doc.podamagedmissingitems,
                 "receiveddiscounts": doc.receiveddiscounts,
                 "pototal": doc.pototal,
                 "grngrosstotal": doc.grngrosstotal,
@@ -138,6 +137,34 @@ router.post("/payment-complete/:ponumber", formDataBody.fields([]), (req, res, n
             { new: true, upsert: true }
         )
         .exec()
+        .then(doc => {
+
+            Supplier
+                .findOneAndUpdate(
+                    { name: doc.supplier },
+                    {
+                        $inc: {
+                            'damagedmissingitems': -parseInt(doc.damagedmissingitems)
+                        }
+                    },
+                    { new: true, upsert: true }
+                )
+                .exec()
+                .then(
+                    console.log("******** SUPPLIER DAMAGED MISSING ITEMS REFUND UPDATED ********")
+                )
+                .catch(err => {
+                    console.log("******** COULDN'T UPDATE SUPPLIER DAMAGED MISSING ITEMS REFUND ********");
+                    console.log(err);
+
+                    res.status(200).json({
+                        type: 'error',
+                        alert: `Something went wrong. Could not update Meta Data `,
+                    })
+                });
+
+            return doc;
+        })
         .then(doc =>
             res.status(200).json({
                 message: "Handling POST requests to /supplier-payments/payment-complete/:ponumber, SUPPLIER PAYMENT UPDATED",

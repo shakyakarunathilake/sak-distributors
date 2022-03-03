@@ -267,8 +267,6 @@ export default function PurchaseOrderStepTwo(props) {
 
                         const value = (action === "Approve" ? 480 : 460);
 
-                        console.log(value);
-
                         const pageSize = Math.floor((height - value) / 48);
 
                         return (
@@ -302,18 +300,6 @@ export default function PurchaseOrderStepTwo(props) {
                                                     <Grid item align="Right" style={{ margin: "0px 10px  0px 0px", width: '200px' }}>
                                                         <Typography style={{ fontWeight: 600 }}>
                                                             {getValues('receiveddiscounts') === 0 ? '0.00' : NumberWithCommas(getValues('receiveddiscounts'))}
-                                                        </Typography>
-                                                    </Grid>
-                                                </Grid>
-                                                <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
-                                                    <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '200px' }}>
-                                                        <Typography style={{ fontWeight: 600 }}>
-                                                            Damaged / Missing Items (Rs.)
-                                                        </Typography>
-                                                    </Grid>
-                                                    <Grid item align="Right" style={{ margin: "0px 10px  0px 0px", width: '200px' }}>
-                                                        <Typography style={{ fontWeight: 600 }}>
-                                                            {getValues('damagedmissingitems') === 0 ? '0.00' : NumberWithCommas(getValues('damagedmissingitems'))}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>

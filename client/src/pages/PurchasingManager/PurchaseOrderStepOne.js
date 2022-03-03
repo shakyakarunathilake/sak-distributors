@@ -95,9 +95,8 @@ export default function PurchaseOrderStepOne(props) {
         let total = 0;
         let grosstotal = getValues('grosstotal');
         let receiveddiscounts = getValues('receiveddiscounts');
-        let damagedmissingitems = getValues('damagedmissingitems');
 
-        total = parseInt(grosstotal) - (parseInt(receiveddiscounts) + parseInt(damagedmissingitems));
+        total = parseInt(grosstotal) - parseInt(receiveddiscounts);
 
         setValue('total', total.toFixed(2));
     }
@@ -124,7 +123,6 @@ export default function PurchaseOrderStepOne(props) {
             setValue("ponumber", supplier[0].abbreviation + podate);
             setValue("createdat", dateTime);
             setValue("givenid", supplier[0].givenid);
-            setValue("damagedmissingitems", supplier[0].damagedmissingitems);
             setValue("status", 'Waiting For Approval');
         }
 
@@ -136,8 +134,6 @@ export default function PurchaseOrderStepOne(props) {
         calculateTotal();
         completeFormStep();
     }
-
-    console.log(data);
 
     return (
         <div className={style.one}>

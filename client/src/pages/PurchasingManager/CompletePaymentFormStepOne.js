@@ -270,23 +270,6 @@ export default function CompletePaymentFormStepOne(props) {
 
                     <div className={style.row}>
                         <div className={style.boldText}>
-                            Previous GRN Damaged/Missing items
-                        </div>
-                        <div className={style.customerData}>
-                            <Controller
-                                name={"podamagedmissingitems"}
-                                control={control}
-                                render={({ field: { value } }) => (
-                                    <Typography className={style.rightInput}>
-                                        Rs. {NumberWithCommas(value)}
-                                    </Typography>
-                                )}
-                            />
-                        </div>
-                    </div>
-
-                    <div className={style.row}>
-                        <div className={style.boldText}>
                             PO Total
                         </div>
                         <div className={style.customerData}>

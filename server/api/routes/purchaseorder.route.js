@@ -346,7 +346,6 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
                 receiveddiscounts: result.receiveddiscounts,
                 pototal: result.total,
                 grngrosstotal: '0.00',
-                podamagedmissingitems: result.damagedmissingitems,
                 grntotal: '0.00',
                 paidamount: '0.00',
                 advancepayment: '',

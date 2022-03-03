@@ -8,7 +8,6 @@ const SupplierPaymentSchema = mongoose.Schema({
     status: { type: String, required: false },
     pogrosstotal: { type: String, required: false },
     receiveddiscounts: { type: String, required: false },
-    podamagedmissingitems: { type: String, required: false },
     pototal: { type: String, required: false },
     grngrosstotal: { type: String, required: false },
     grndamagedmissingitems: { type: String, required: false },
