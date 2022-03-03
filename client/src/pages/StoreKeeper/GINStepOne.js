@@ -375,7 +375,7 @@ export default function GINStepOne(props) {
                                     columns={[
                                         {
                                             field: "productid",
-                                            render: rowData => `${rowData.productid} ${rowData.variantid}`,
+                                            render: rowData => rowData ? `${rowData.productid} ${rowData.variantid}` : '',
                                             cellStyle: {
                                                 width: "8%",
                                                 textAlign: 'left'
