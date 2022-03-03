@@ -316,7 +316,7 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
                 pogrosstotal: result.grosstotal,
                 receiveddiscounts: result.receiveddiscounts,
                 pototal: result.total,
-                grngrosstotal: '0.00',
+                grndamagedmissingitems: '',
                 grntotal: '0.00',
                 paidamount: '0.00',
                 advancepayment: '',
@@ -324,7 +324,6 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
                 advancepaymentpaidby: '',
                 paymentcompletedat: '',
                 paymentcompletedby: '',
-                grndamagedmissingitems: '',
                 debt: parseInt(result.total),
             });
 

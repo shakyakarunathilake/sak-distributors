@@ -19,7 +19,6 @@ export default function ViewSupplierPayment(props) {
       pogrosstotal: paymentRecords.pogrosstotal,
       receiveddiscounts: paymentRecords.receiveddiscounts,
       pototal: paymentRecords.pototal,
-      grngrosstotal: paymentRecords.grngrosstotal,
       grndamagedmissingitems: paymentRecords.grndamagedmissingitems,
       grntotal: paymentRecords.grntotal,
       paidamount: paymentRecords.paidamount,

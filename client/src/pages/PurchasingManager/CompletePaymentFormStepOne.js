@@ -22,7 +22,6 @@ export default function CompletePaymentFormStepOne(props) {
         action,
         handleClosePopUp,
         control,
-        backFormStep,
         completeFormStep,
         onSubmit
     } = props;
@@ -309,23 +308,6 @@ export default function CompletePaymentFormStepOne(props) {
                 </div>
 
                 <div className={style.box}>
-
-                    <div className={style.row}>
-                        <div className={style.boldText}>
-                            GRN Gross Total
-                        </div>
-                        <div className={style.customerData}>
-                            <Controller
-                                name={"grngrosstotal"}
-                                control={control}
-                                render={({ field: { value } }) => (
-                                    <Typography className={style.rightInput}>
-                                        Rs. {NumberWithCommas(value)}
-                                    </Typography>
-                                )}
-                            />
-                        </div>
-                    </div>
 
                     <div className={style.row}>
                         <div className={style.boldText}>

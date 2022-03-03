@@ -26,7 +26,6 @@ export default function ViewGRNForm(props) {
             createdat: GRNRecords.createdat,
             createdby: GRNRecords.createdby,
             damagedmissingitems: GRNRecords.damagedmissingitems,
-            previousdamagedmissingitems: GRNRecords.previousdamagedmissingitems,
             grntotal: GRNRecords.grntotal,
             customername: "S.A.K Distributors",
             customeraddress: "No.233, Kiriwallapitiya, Rambukkana, Srilanka",

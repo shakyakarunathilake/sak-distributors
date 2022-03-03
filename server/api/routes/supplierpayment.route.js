@@ -59,7 +59,6 @@ router.get("/:ponumber", (req, res, next) => {
                 "pogrosstotal": doc.pogrosstotal,
                 "receiveddiscounts": doc.receiveddiscounts,
                 "pototal": doc.pototal,
-                "grngrosstotal": doc.grngrosstotal,
                 "grndamagedmissingitems": doc.grndamagedmissingitems,
                 "grntotal": doc.grntotal,
                 "paidamount": doc.paidamount,

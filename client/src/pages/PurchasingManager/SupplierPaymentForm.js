@@ -41,7 +41,6 @@ export default function SupplierPaymentForm(props) {
       pogrosstotal: paymentRecords ? paymentRecords.pogrosstotal : '',
       receiveddiscounts: paymentRecords.receiveddiscounts !== '0' ? paymentRecords.receiveddiscounts : '0.00',
       pototal: paymentRecords ? paymentRecords.pototal : '',
-      grngrosstotal: paymentRecords ? paymentRecords.grngrosstotal : '',
       grndamagedmissingitems: paymentRecords ? paymentRecords.grndamagedmissingitems : '',
       grntotal: paymentRecords ? paymentRecords.grntotal : '',
       paidamount: paymentRecords ? paymentRecords.paidamount : '',
