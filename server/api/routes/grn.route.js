@@ -67,7 +67,6 @@ router.get("/:grnnumber", (req, res, next) => {
                 'createdat': doc.createdat,
                 'createdby': doc.createdby,
                 'items': doc.items,
-                'previousdamagedmissingitems': doc.previousdamagedmissingitems,
                 'damagedmissingitems': doc.damagedmissingitems,
                 'grntotal': doc.grntotal,
             }
@@ -114,7 +113,6 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
                             'status': 'Delivered',
                             'deliveredat': doc.createdat,
                             'total': doc.grntotal,
-                            'damagedmissingitems': doc.damagedmissingitems,
                         }
                     },
                     { new: true, upsert: true }

@@ -11,7 +11,6 @@ const GRNSchema = mongoose.Schema({
     createdat: { type: String, required: false },
     createdby: { type: String, requried: false },
     pototal: { type: String, required: false },
-    previousdamagedmissingitems: { type: String, required: false },
     damagedmissingitems: { type: String, required: false },
     grntotal: { type: String, required: false },
 })

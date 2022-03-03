@@ -227,7 +227,7 @@ export default function ManageStore() {
                         {
                             field: "cases",
                             type: 'numeric',
-                            defaultSort: 'asc',
+                            customSort: (a, b) => - a.cases < b.cases,
                             cellStyle: {
                                 width: '6%',
                                 textAlign: 'right'

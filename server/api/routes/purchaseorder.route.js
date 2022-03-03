@@ -112,7 +112,6 @@ router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) =
         items: items,
         grosstotal: req.body.grosstotal,
         receiveddiscounts: req.body.receiveddiscounts,
-        damagedmissingitems: req.body.damagedmissingitems,
         total: req.body.total,
     });
 
@@ -142,34 +141,6 @@ router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) =
                     console.log(err);
                     res.status(500).json({ "Error": err });
                 })
-
-            return result;
-        })
-        .then(result => {
-
-            Supplier
-                .findOneAndUpdate(
-                    { name: result.supplier },
-                    {
-                        $inc: {
-                            'damagedmissingitems': -parseInt(result.damagedmissingitems)
-                        }
-                    },
-                    { new: true, upsert: true }
-                )
-                .exec()
-                .then(
-                    console.log("******** SUPPLIER DAMAGED MISSING ITEMS REFUND UPDATED ********")
-                )
-                .catch(err => {
-                    console.log("******** COULDN'T UPDATE SUPPLIER DAMAGED MISSING ITEMS REFUND ********");
-                    console.log(err);
-
-                    res.status(200).json({
-                        type: 'error',
-                        alert: `Something went wrong. Could not update Meta Data `,
-                    })
-                });
 
             return result;
         })
@@ -284,7 +255,6 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
                 createdat: '',
                 createdby: '',
                 pototal: result.total,
-                previousdamagedmissingitems: result.damagedmissingitems,
                 damagedmissingitems: '0.00',
                 grntotal: '0.00'
             });

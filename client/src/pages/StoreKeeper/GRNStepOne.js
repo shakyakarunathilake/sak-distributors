@@ -273,18 +273,6 @@ export default function GRNStepOne(props) {
                                                 <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
                                                     <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '300px' }}>
                                                         <Typography style={{ fontWeight: 600 }}>
-                                                            Previous GRN Damaged / Missing Items (Rs.)
-                                                        </Typography>
-                                                    </Grid>
-                                                    <Grid item align="Right" style={{ margin: "0px 102.56px 0px 0px", width: '200px' }}>
-                                                        <Typography style={{ fontWeight: 600 }}>
-                                                            {NumberWithCommas(getValues("previousdamagedmissingitems"))}
-                                                        </Typography>
-                                                    </Grid>
-                                                </Grid>
-                                                <Grid container style={{ background: "#f5f5f5", padding: 7 }}>
-                                                    <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '300px' }}>
-                                                        <Typography style={{ fontWeight: 600 }}>
                                                             Purchase Order Total (Rs.)
                                                         </Typography>
                                                     </Grid>
