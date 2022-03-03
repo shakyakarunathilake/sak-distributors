@@ -111,6 +111,7 @@ router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) =
         deliveredat: '',
         items: items,
         grosstotal: req.body.grosstotal,
+        damagedmissingitems: '',
         receiveddiscounts: req.body.receiveddiscounts,
         total: req.body.total,
     });
