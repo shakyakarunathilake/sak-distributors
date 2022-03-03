@@ -39,6 +39,7 @@ export default function CreatePurchaseOrder(props) {
             supplier: poRecords ? poRecords.supplier : '',
             grosstotal: poRecords ? poRecords.grosstotal : 0.00,
             receiveddiscounts: poRecords ? parseInt(poRecords.receiveddiscounts).toFixed(2) : 0.00,
+            damagedmissingitems: poRecords ? parseInt(poRecords.damagedmissingitems).toFixed(2) : 0.00,
             total: poRecords ? poRecords.total : 0.00,
             givenid: poRecords ? poRecords.givenid : '',
             customername: poRecords ? poRecords.customername : "S.A.K Distributors",

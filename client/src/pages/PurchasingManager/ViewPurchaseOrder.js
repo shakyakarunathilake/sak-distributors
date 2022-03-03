@@ -26,6 +26,7 @@ export default function ViewPurchaseOrder(props) {
             supplier: poRecords.supplier,
             grosstotal: poRecords.grosstotal,
             receiveddiscounts: parseInt(poRecords.receiveddiscounts).toFixed(2),
+            damagedmissingitems: parseInt(poRecords.damagedmissingitems).toFixed(2),
             total: poRecords.total,
             givenid: poRecords.givenid,
             customername: poRecords.customername,
