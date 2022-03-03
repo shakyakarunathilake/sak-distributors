@@ -24,6 +24,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 //Axios
 import axios from 'axios';
+import { fontSize, fontWeight } from '@mui/material/node_modules/@mui/system';
 
 const useStyles = makeStyles({
     row1: {
@@ -227,7 +228,8 @@ export default function ManageStore() {
                         {
                             field: "cases",
                             type: 'numeric',
-                            customSort: (a, b) => - a.cases < b.cases,
+                            defaultSort: 'asc',
+                            render: rowData => rowData.cases < 0 ? <span style={{ color: 'red', fontWeight: '700' }}>{rowData.cases}</span> : rowData.cases,
                             cellStyle: {
                                 width: '6%',
                                 textAlign: 'right'
@@ -236,6 +238,8 @@ export default function ManageStore() {
                         {
                             field: "pieces",
                             type: 'numeric',
+                            // defaultSort: 'asc',
+                            render: rowData => rowData.pieces < 0 ? <span style={{ color: 'red', fontWeight: '700' }}>{rowData.pieces}</span> : rowData.pieces,
                             cellStyle: {
                                 width: '6%',
                                 textAlign: 'right'
