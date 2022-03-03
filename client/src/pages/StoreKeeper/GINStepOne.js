@@ -129,7 +129,7 @@ export default function GINStepOne(props) {
                 itemList.push({
                     'productid': item.productid,
                     'variantid': item.variantid,
-                    'description': item.description,
+                    'name': item.name,
                     'sellingprice': item.sellingprice,
                     'piecespercase': item.piecespercase,
                     'salesqtycases': parseInt(item.salesqtycases),
@@ -143,7 +143,7 @@ export default function GINStepOne(props) {
             return itemList;
         })).reduce((a, c) => {
 
-            const filtered = a.filter(el => el.description === c.description);
+            const filtered = a.filter(el => el.name === c.name);
 
             if (filtered.length > 0) {
                 a[a.indexOf(filtered[0])].salesqtycases += +c.salesqtycases;
