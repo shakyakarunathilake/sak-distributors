@@ -24,7 +24,6 @@ import { makeStyles } from '@material-ui/core/styles';
 
 //Axios
 import axios from 'axios';
-import { fontSize, fontWeight } from '@mui/material/node_modules/@mui/system';
 
 const useStyles = makeStyles({
     row1: {
