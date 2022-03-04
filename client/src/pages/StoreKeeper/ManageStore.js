@@ -227,7 +227,6 @@ export default function ManageStore() {
                         {
                             field: "cases",
                             type: 'numeric',
-                            defaultSort: 'asc',
                             render: rowData => rowData.cases < 0 ? <span style={{ color: 'red', fontWeight: '700' }}>{rowData.cases}</span> : rowData.cases,
                             cellStyle: {
                                 width: '6%',
@@ -237,7 +236,6 @@ export default function ManageStore() {
                         {
                             field: "pieces",
                             type: 'numeric',
-                            // defaultSort: 'asc',
                             render: rowData => rowData.pieces < 0 ? <span style={{ color: 'red', fontWeight: '700' }}>{rowData.pieces}</span> : rowData.pieces,
                             cellStyle: {
                                 width: '6%',
