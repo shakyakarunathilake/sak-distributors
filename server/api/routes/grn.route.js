@@ -207,10 +207,10 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
                         let storefreeqtycases = result.storequantity.freeqtycases;
 
                         let newNoOfTotalSalesPieces = (storesalesqtycases * item.piecespercase) + storesalesqtypieces + (salesqtycases * item.piecespercase) + salesqtypieces;
+                        let newNoOfTotalFreePieces = (storefreeqtycases * item.piecespercase) + storefreeqtypieces + (freeqtycases * item.piecespercase) + freeqtypieces;
+                        
                         let newstoresalesqtypieces = newNoOfTotalSalesPieces % item.piecespercase;
                         let newstoresalesqtycases = Math.floor(newNoOfTotalSalesPieces / item.piecespercase);
-
-                        let newNoOfTotalFreePieces = (storefreeqtycases * item.piecespercase) + storefreeqtypieces + (freeqtycases * item.piecespercase) + freeqtypieces;
                         let newstorefreeqtypieces = newNoOfTotalFreePieces % item.piecespercase;
                         let newstorefreeqtycases = Math.floor(newNoOfTotalFreePieces / item.piecespercase);
 
