@@ -197,43 +197,63 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
                 let freeqtycases = getCases(getTotalNumberOfPieces(item.deliveredfreeqtycases, item.deliveredfreeqtypieces, item.damagedfreeqty, item.piecespercase), item.piecespercase);
 
                 Store
-                    .findOneAndUpdate(
-                        { productid: item.productid },
-                        {
-                            $inc: {
-                                'storequantity.salesqtypieces': salesqtypieces,
-                                'storequantity.salesqtycases': salesqtycases,
-                                'storequantity.freeqtypieces': freeqtypieces,
-                                'storequantity.freeqtycases': freeqtycases,
-                            },
-                            $push: {
-                                'grngin': {
-                                    'grnnumberginnumber': doc.grnnumber,
-                                    'date': req.body.createdat,
-                                    'piecespercase': item.piecespercase,
-                                    'listorsellingprice': parseInt(item.listprice).toFixed(2),
-                                    'salesqtycases': item.deliveredsalesqtycases,
-                                    'salesqtypieces': item.deliveredsalesqtypieces,
-                                    'freeqtycases': item.deliveredfreeqtycases,
-                                    'freeqtypieces': item.deliveredfreeqtypieces,
-                                    'damagedfreeqty': item.damagedfreeqty,
-                                    'damagedsalesqty': item.damagedsalesqty
-                                }
-                            }
-                        },
-                        { new: true }
-                    )
+                    .findOne({ productid: productid })
                     .exec()
-                    .then(
-                        console.log("******** ITEMS ADDED TO STORE ********")
-                    )
-                    .catch(err => {
-                        res.status(200).json({
-                            type: 'error',
-                            alert: `Something went wrong. Could not update store`,
-                        });
-                        console.log(err);
+                    .then(result => {
+
+                        let storesalesqtypieces = result.storequantity.salesqtypieces;
+                        let storesalesqtycases = result.storequantity.salesqtycases;
+                        let storefreeqtypieces = result.storequantity.freeqtypieces;
+                        let storefreeqtycases = result.storequantity.freeqtycases;
+
+                        let newNoOfTotalSalesPieces = (storesalesqtycases * item.piecespercase) + storesalesqtypieces + (salesqtycases * item.piecespercase) + salesqtypieces;
+                        let newstoresalesqtypieces = newNoOfTotalSalesPieces % item.piecespercase;
+                        let newstoresalesqtycases = Math.floor(newNoOfTotalSalesPieces / item.piecespercase);
+
+                        let newNoOfTotalFreePieces = (storefreeqtycases * item.piecespercase) + storefreeqtypieces + (freeqtycases * item.piecespercase) + freeqtypieces;
+                        let newstorefreeqtypieces = newNoOfTotalFreePieces % item.piecespercase;
+                        let newstorefreeqtycases = Math.floor(newNoOfTotalFreePieces / item.piecespercase);
+
+                        Store
+                            .findOneAndUpdate(
+                                { productid: item.productid },
+                                {
+                                    $inc: {
+                                        'storequantity.salesqtypieces': newstoresalesqtypieces,
+                                        'storequantity.salesqtycases': newstoresalesqtycases,
+                                        'storequantity.freeqtypieces': newstorefreeqtypieces,
+                                        'storequantity.freeqtycases': newstorefreeqtycases,
+                                    },
+                                    $push: {
+                                        'grngin': {
+                                            'grnnumberginnumber': doc.grnnumber,
+                                            'date': req.body.createdat,
+                                            'piecespercase': item.piecespercase,
+                                            'listorsellingprice': parseInt(item.listprice).toFixed(2),
+                                            'salesqtycases': item.deliveredsalesqtycases,
+                                            'salesqtypieces': item.deliveredsalesqtypieces,
+                                            'freeqtycases': item.deliveredfreeqtycases,
+                                            'freeqtypieces': item.deliveredfreeqtypieces,
+                                            'damagedfreeqty': item.damagedfreeqty,
+                                            'damagedsalesqty': item.damagedsalesqty
+                                        }
+                                    }
+                                },
+                                { new: true }
+                            )
+                            .exec()
+                            .then(
+                                console.log("******** ITEMS ADDED TO STORE ********")
+                            )
+                            .catch(err => {
+                                console.log(err);
+                            })
+
                     })
+                    .catch(err =>
+                        console.log(err)
+                    )
+
             })
 
             return doc;
