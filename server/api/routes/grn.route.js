@@ -197,7 +197,7 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
                 let freeqtycases = getCases(getTotalNumberOfPieces(item.deliveredfreeqtycases, item.deliveredfreeqtypieces, item.damagedfreeqty, item.piecespercase), item.piecespercase);
 
                 Store
-                    .findOne({ productid: productid })
+                    .findOne({ productid: item.productid })
                     .exec()
                     .then(result => {
 
