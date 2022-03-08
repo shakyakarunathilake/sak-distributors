@@ -183,31 +183,6 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
 
                 const productid = item.productid;
 
-                let pieces = 0;
-                let cases = 0;
-                let totalnumberofpieces = 0;
-
-                const getPieces = (noofpieces, piecespercase) => {
-                    pieces = noofpieces % piecespercase;
-                    return pieces;
-                }
-
-                const getCases = (noofpieces, piecespercase) => {
-                    cases = Math.floor(noofpieces / piecespercase);
-                    return cases;
-                }
-
-                const getTotalNumberOfPieces = (itemcases, itempieces, piecespercase) => {
-                    totalnumberofpieces = (itemcases * piecespercase) + itempieces;
-                    return totalnumberofpieces;
-                }
-
-                //GIN Quantities
-                let salesqtypieces = getPieces(getTotalNumberOfPieces(item.salesqtycases, item.salesqtypieces, item.piecespercase), item.piecespercase);
-                let salesqtycases = getCases(getTotalNumberOfPieces(item.salesqtycases, item.salesqtypieces, item.piecespercase), item.piecespercase);
-                let freeqtypieces = getPieces(getTotalNumberOfPieces(item.freeqtycases, item.freeqtypieces, item.piecespercase), item.piecespercase);
-                let freeqtycases = getCases(getTotalNumberOfPieces(item.freeqtycases, item.freeqtypieces, item.piecespercase), item.piecespercase);
-
                 Store
                     .findOne({ productid: productid })
                     .exec()
@@ -218,38 +193,26 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
                         let storefreeqtypieces = result.storequantity.freeqtypieces;
                         let storefreeqtycases = result.storequantity.freeqtycases;
 
-                        let newstoresalesqtypieces = 0;
+                        let newNoOfTotalSalesPieces = (storesalesqtycases * piecespercase) + storesalesqtypieces - (item.salesqtycases * piecespercase) - item.salesqtypieces;
+                        let newNoOfTotalFreePieces = (storefreeqtycases * piecespercase) + storefreeqtypieces - (item.freeqtycases * piecespercase) - item.freeqtypieces;
+
+                        let newstoresalesqtypieces = newNoOfTotalSalesPieces % piecespercase;
+                        let newstorefreeqtypieces = newNoOfTotalFreePieces % piecespercase;
                         let newstoresalesqtycases = 0;
-                        let newstorefreeqtypieces = 0;
                         let newstorefreeqtycases = 0;
 
-                        if (storesalesqtycases < 1) {
-                            newstoresalesqtypieces = storesalesqtypieces + (salesqtypieces ? -salesqtypieces : salesqtypieces);
-                            newstoresalesqtycases = storesalesqtycases + (salesqtycases ? -salesqtycases : salesqtycases);
+                        if (storesalesqtycases > 0) {
+                            newstoresalesqtycases = Math.floor(newNoOfTotalSalesPieces / piecespercase);
                         } else {
-                            if (storesalesqtypieces < salesqtypieces) {
-                                let releasecases = Math.ceil(salesqtypieces / item.piecespercase);
-                                newstoresalesqtypieces = storesalesqtypieces + (item.piecespercase * releasecases) - salesqtypieces;
-                                newstoresalesqtycases = storesalesqtycases - releasecases - salesqtycases;
-                            } else {
-                                newstoresalesqtypieces = storesalesqtypieces - salesqtypieces;
-                                newstoresalesqtycases = storesalesqtycases - salesqtycases;
-                            }
+                            newstoresalesqtycases = Math.ceil(newNoOfTotalSalesPieces / piecespercase);
                         }
 
-                        if (storefreeqtycases < 0) {
-                            newstorefreeqtypieces = storefreeqtypieces + (freeqtypieces ? -freeqtypieces : freeqtypieces);
-                            newstorefreeqtycases = storefreeqtycases + (freeqtycases ? -freeqtycases : freeqtycases);
+                        if (storesalesqtycases > 0) {
+                            newstorefreeqtycases = Math.floor(newNoOfTotalFreePieces / piecespercase);
                         } else {
-                            if (storefreeqtypieces < freeqtypieces) {
-                                let releasecases = Math.ceil(freeqtypieces / item.piecespercase);
-                                newstorefreeqtypieces = storefreeqtypieces + (item.piecespercase * releasecases) - freeqtypieces;
-                                newstorefreeqtycases = storefreeqtycases - releasecases - freeqtycases;
-                            } else {
-                                newstorefreeqtypieces = storefreeqtypieces - freeqtypieces;
-                                newstorefreeqtycases = storefreeqtycases - freeqtycases;
-                            }
+                            newstorefreeqtycases = Math.ceil(newNoOfTotalFreePieces / piecespercase);
                         }
+
 
                         Store
                             .findOneAndUpdate(

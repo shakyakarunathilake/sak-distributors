@@ -171,31 +171,6 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
 
             doc.items.map(item => {
 
-                let pieces = 0;
-                let cases = 0;
-                let totalnumberofpieces = 0;
-
-                const getPieces = (noofpieces, piecespercase) => {
-                    pieces = noofpieces % piecespercase;
-                    return pieces;
-                }
-
-                const getCases = (noofpieces, piecespercase) => {
-                    cases = Math.floor(noofpieces / piecespercase);
-                    return cases;
-                }
-
-                const getTotalNumberOfPieces = (itemcases, itempieces, damaged, piecespercase) => {
-                    totalnumberofpieces = (itemcases * piecespercase) + itempieces - damaged;
-                    return totalnumberofpieces;
-                }
-
-
-                let salesqtypieces = getPieces(getTotalNumberOfPieces(item.deliveredsalesqtycases, item.deliveredsalesqtypieces, item.damagedsalesqty, item.piecespercase), item.piecespercase);
-                let salesqtycases = getCases(getTotalNumberOfPieces(item.deliveredsalesqtycases, item.deliveredsalesqtypieces, item.damagedsalesqty, item.piecespercase), item.piecespercase);
-                let freeqtypieces = getPieces(getTotalNumberOfPieces(item.deliveredfreeqtycases, item.deliveredfreeqtypieces, item.damagedfreeqty, item.piecespercase), item.piecespercase);
-                let freeqtycases = getCases(getTotalNumberOfPieces(item.deliveredfreeqtycases, item.deliveredfreeqtypieces, item.damagedfreeqty, item.piecespercase), item.piecespercase);
-
                 Store
                     .findOne({ productid: item.productid })
                     .exec()
@@ -206,9 +181,9 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
                         let storefreeqtypieces = result.storequantity.freeqtypieces;
                         let storefreeqtycases = result.storequantity.freeqtycases;
 
-                        let newNoOfTotalSalesPieces = (storesalesqtycases * item.piecespercase) + storesalesqtypieces + (salesqtycases * item.piecespercase) + salesqtypieces;
-                        let newNoOfTotalFreePieces = (storefreeqtycases * item.piecespercase) + storefreeqtypieces + (freeqtycases * item.piecespercase) + freeqtypieces;
-                        
+                        let newNoOfTotalSalesPieces = (storesalesqtycases * item.piecespercase) + storesalesqtypieces + (item.deliveredsalesqtycases * item.piecespercase) + item.deliveredsalesqtypieces - item.damagedsalesqty;
+                        let newNoOfTotalFreePieces = (storefreeqtycases * item.piecespercase) + storefreeqtypieces + (item.deliveredfreeqtycases * item.piecespercase) + item.deliveredfreeqtypieces - item.damagedfreeqty;
+
                         let newstoresalesqtypieces = newNoOfTotalSalesPieces % item.piecespercase;
                         let newstoresalesqtycases = Math.floor(newNoOfTotalSalesPieces / item.piecespercase);
                         let newstorefreeqtypieces = newNoOfTotalFreePieces % item.piecespercase;
