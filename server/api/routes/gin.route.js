@@ -193,24 +193,24 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
                         let storefreeqtypieces = result.storequantity.freeqtypieces;
                         let storefreeqtycases = result.storequantity.freeqtycases;
 
-                        let newNoOfTotalSalesPieces = (storesalesqtycases * piecespercase) + storesalesqtypieces - (item.salesqtycases * piecespercase) - item.salesqtypieces;
-                        let newNoOfTotalFreePieces = (storefreeqtycases * piecespercase) + storefreeqtypieces - (item.freeqtycases * piecespercase) - item.freeqtypieces;
+                        let newNoOfTotalSalesPieces = (storesalesqtycases * item.piecespercase) + storesalesqtypieces - (item.salesqtycases * item.piecespercase) - item.salesqtypieces;
+                        let newNoOfTotalFreePieces = (storefreeqtycases * item.piecespercase) + storefreeqtypieces - (item.freeqtycases * item.piecespercase) - item.freeqtypieces;
 
-                        let newstoresalesqtypieces = newNoOfTotalSalesPieces % piecespercase;
-                        let newstorefreeqtypieces = newNoOfTotalFreePieces % piecespercase;
+                        let newstoresalesqtypieces = newNoOfTotalSalesPieces % item.piecespercase;
+                        let newstorefreeqtypieces = newNoOfTotalFreePieces % item.piecespercase;
                         let newstoresalesqtycases = 0;
                         let newstorefreeqtycases = 0;
 
                         if (storesalesqtycases > 0) {
-                            newstoresalesqtycases = Math.floor(newNoOfTotalSalesPieces / piecespercase);
+                            newstoresalesqtycases = Math.floor(newNoOfTotalSalesPieces / item.piecespercase);
                         } else {
-                            newstoresalesqtycases = Math.ceil(newNoOfTotalSalesPieces / piecespercase);
+                            newstoresalesqtycases = Math.ceil(newNoOfTotalSalesPieces / item.piecespercase);
                         }
 
                         if (storesalesqtycases > 0) {
-                            newstorefreeqtycases = Math.floor(newNoOfTotalFreePieces / piecespercase);
+                            newstorefreeqtycases = Math.floor(newNoOfTotalFreePieces / item.piecespercase);
                         } else {
-                            newstorefreeqtycases = Math.ceil(newNoOfTotalFreePieces / piecespercase);
+                            newstorefreeqtycases = Math.ceil(newNoOfTotalFreePieces / item.piecespercase);
                         }
 
 
