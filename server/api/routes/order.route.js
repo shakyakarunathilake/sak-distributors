@@ -23,10 +23,12 @@ router.get("/get-next-orderno/:employeeid", (req, res, next) => {
     const employeeid = req.params.employeeid;
 
     var today = new Date();
-    var date = `${today.getFullYear()}${(today.getMonth() + 1)}${today.getDate()}`;
+    // var date = `${today.getFullYear()}${(today.getMonth() + 1)}${today.getDate()}`;
+    var date = "202116";
 
     function pad(num, size) {
-        while (num.length < size) num = "0" + num;
+        while (num.length < size)
+            num = "0" + num;
         return date + num;
     }
 
@@ -38,13 +40,25 @@ router.get("/get-next-orderno/:employeeid", (req, res, next) => {
             let invoicearray;
 
             if (doc.length !== 0) {
-                invoicearray = doc.map(x => {
-                    if (x.orderno.substring(0, 6) === employeeid) {
-                        return parseInt(x.orderno.slice(14))
-                    } else {
-                        return 000
-                    }
-                });
+
+                let length = 6 + date.length;
+
+                let dateCandidates = doc.filter(x =>
+                    x.orderno.substring(6, length) === date
+                )
+
+                let employeeIdCandidates = dateCandidates.filter(x =>
+                    x.orderno.substring(0, 6) === employeeid
+                )
+
+                if (employeeIdCandidates !== 0) {
+                    invoicearray = employeeIdCandidates.map(x =>
+                        parseInt(x.orderno.slice(12))
+                    )
+                } else {
+                    invoicearray = [000];
+                }
+                
             } else {
                 invoicearray = [000];
             }
@@ -402,7 +416,7 @@ router.get("/get-all-sales-and-invoice-table-data-for-sales-representative/:empl
         .exec()
         .then(doc => {
 
-            const tbody =  doc.slice(0).reverse().map(x => ({
+            const tbody = doc.slice(0).reverse().map(x => ({
                 "orderno": x.orderno,
                 "storename": x.storename,
                 "status": x.status,
@@ -426,7 +440,7 @@ router.get("/get-all-sales-and-invoice-table-data-for-delivery-representative/:e
         .exec()
         .then(doc => {
 
-            const tbody =  doc.slice(0).reverse().map(x => ({
+            const tbody = doc.slice(0).reverse().map(x => ({
                 "orderno": x.orderno,
                 "storename": x.storename,
                 "status": x.status,
