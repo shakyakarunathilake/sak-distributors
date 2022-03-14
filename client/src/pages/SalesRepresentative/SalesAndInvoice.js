@@ -412,7 +412,7 @@ export default function SalesAndInvoice() {
                                                     setAction('Delivered');
                                                     openInPopup(rowData.orderno);
                                                 },
-                                                disabled: designation !== "Delivery Representative" || rowData.status === 'Delivered'
+                                                disabled: designation !== "Delivery Representative" || rowData.status === 'Delivered' || rowData.status === 'Paid'
                                             }),
                                             rowData => ({
                                                 icon: PaymentIcon,
