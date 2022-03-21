@@ -18,13 +18,13 @@ router.get("/", (req, res, next) => {
 });
 
 //Get next invoice number
-router.get("/get-next-orderno/:employeeid", (req, res, next) => {
+router.get("/get-next-orderno/:employee", (req, res, next) => {
 
-    const employeeid = req.params.employeeid;
+    const employee = req.params.employee;
+    const employeeid = employee.substring(employee.length - 7, employee.length - 1);
 
     var today = new Date();
-    // var date = `${today.getFullYear()}${(today.getMonth() + 1)}${today.getDate()}`;
-    var date = "202116";
+    var date = `${today.getFullYear()}${(today.getMonth() + 1)}${today.getDate()}`;
 
     function pad(num, size) {
         while (num.length < size)
@@ -33,13 +33,16 @@ router.get("/get-next-orderno/:employeeid", (req, res, next) => {
     }
 
     Order
-        .find({}, { orderno: 1, _id: 0 })
+        .find(
+            { ordercreatedby: employee },
+            { orderno: 1, _id: 0 }
+        )
         .exec()
         .then(doc => {
 
             let invoicearray;
 
-            if (doc.length !== 0) {
+            if (doc.length) {
 
                 let length = 6 + date.length;
 
@@ -47,18 +50,14 @@ router.get("/get-next-orderno/:employeeid", (req, res, next) => {
                     x.orderno.substring(6, length) === date
                 )
 
-                let employeeIdCandidates = dateCandidates.filter(x =>
-                    x.orderno.substring(0, 6) === employeeid
-                )
-
-                if (employeeIdCandidates !== 0) {
-                    invoicearray = employeeIdCandidates.map(x =>
+                if (dateCandidates != 0) {
+                    invoicearray = dateCandidates.map(x =>
                         parseInt(x.orderno.slice(12))
                     )
                 } else {
                     invoicearray = [000];
                 }
-                
+
             } else {
                 invoicearray = [000];
             }
