@@ -18,10 +18,9 @@ router.get("/", (req, res, next) => {
 });
 
 //Get next invoice number
-router.get("/get-next-orderno/:employee", (req, res, next) => {
+router.get("/get-next-orderno/:employeeid", (req, res, next) => {
 
-    const employee = req.params.employee;
-    const employeeid = employee.substring(employee.length - 7, employee.length - 1);
+    const employeeid = req.params.employeeid;
 
     var today = new Date();
     var date = `${today.getFullYear()}${(today.getMonth() + 1)}${today.getDate()}`;
@@ -34,7 +33,12 @@ router.get("/get-next-orderno/:employee", (req, res, next) => {
 
     Order
         .find(
-            { ordercreatedby: employee },
+            {
+                "ordercreatedby": {
+                    "$regex": employeeid,
+                    "$options": "i"
+                }
+            },
             { orderno: 1, _id: 0 }
         )
         .exec()
