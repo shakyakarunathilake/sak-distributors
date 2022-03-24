@@ -144,7 +144,7 @@ router.post("/payment-complete/:ponumber", formDataBody.fields([]), (req, res, n
                     { name: doc.supplier },
                     {
                         $inc: {
-                            'damagedmissingitems': -parseInt(doc.damagedmissingitems)
+                            'damagedmissingitems': -parseInt(doc.grndamagedmissingitems)
                         }
                     },
                     { new: true, upsert: true }
@@ -156,11 +156,6 @@ router.post("/payment-complete/:ponumber", formDataBody.fields([]), (req, res, n
                 .catch(err => {
                     console.log("******** COULDN'T UPDATE SUPPLIER DAMAGED MISSING ITEMS REFUND ********");
                     console.log(err);
-
-                    res.status(200).json({
-                        type: 'error',
-                        alert: `Something went wrong. Could not update Meta Data `,
-                    })
                 });
 
             return doc;
