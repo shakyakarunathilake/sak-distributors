@@ -74,47 +74,47 @@ export default function ManageSupplierPayment() {
             console.log(key, value);
         }
 
-        if (action === 'Pay Advance Payment') {
-            axios
-                .post(`http://localhost:8080/supplier-payments/advance-payment-complete/${ponumber}`, payment, {
-                    headers: {
-                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
-                    }
-                })
-                .then(res => {
-                    setAlert(res.data.alert);
-                    setType(res.data.type);
-                    handleAlert();
-                    setReRender(ponumber);
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-            ;
-        }
+        // if (action === 'Pay Advance Payment') {
+        //     axios
+        //         .post(`http://localhost:8080/supplier-payments/advance-payment-complete/${ponumber}`, payment, {
+        //             headers: {
+        //                 'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+        //             }
+        //         })
+        //         .then(res => {
+        //             setAlert(res.data.alert);
+        //             setType(res.data.type);
+        //             handleAlert();
+        //             setReRender(ponumber);
+        //         })
+        //         .catch(err => {
+        //             console.log(err);
+        //         });
+        //     ;
+        // }
 
-        if (action === 'Complete Payment') {
-            axios
-                .post(`http://localhost:8080/supplier-payments/payment-complete/${ponumber}`, payment, {
-                    headers: {
-                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
-                    }
-                })
-                .then(res => {
-                    setAlert(res.data.alert);
-                    setType(res.data.type);
-                    handleAlert();
-                    setReRender(ponumber);
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-            ;
-        }
+        // if (action === 'Complete Payment') {
+        //     axios
+        //         .post(`http://localhost:8080/supplier-payments/payment-complete/${ponumber}`, payment, {
+        //             headers: {
+        //                 'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+        //             }
+        //         })
+        //         .then(res => {
+        //             setAlert(res.data.alert);
+        //             setType(res.data.type);
+        //             handleAlert();
+        //             setReRender(ponumber);
+        //         })
+        //         .catch(err => {
+        //             console.log(err);
+        //         });
+        //     ;
+        // }
 
-        setPaymentRecords(null)
-        setAction('');
-        handleClosePopUp();
+        // setPaymentRecords(null)
+        // setAction('');
+        // handleClosePopUp();
     }
 
     const openInPopup = (ponumber) => {
