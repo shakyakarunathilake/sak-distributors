@@ -22,14 +22,10 @@ router.get("/get-next-orderno/:employeeid", (req, res, next) => {
 
     const employeeid = req.params.employeeid;
 
-    var today = new Date();
-    var date = `${today.getFullYear()}${(today.getMonth() + 1)}${today.getDate()}`;
-
-    function pad(num, size) {
-        while (num.length < size)
-            num = "0" + num;
-        return date + num;
-    }
+    const today = new Date();
+    const date = today.getFullYear() +
+        (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) +
+        (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
 
     Order
         .find(
@@ -41,32 +37,23 @@ router.get("/get-next-orderno/:employeeid", (req, res, next) => {
             },
             { orderno: 1, _id: 0 }
         )
+        .sort({ orderno: 'desc' })
         .exec()
         .then(doc => {
 
-            let invoicearray;
+            let postfix = "001";
 
-            if (doc.length) {
+            if (doc.length && doc.length > 0) {
 
-                let length = 6 + date.length;
+                let firstelementdate = doc[0].orderno.substring(6, (doc[0].orderno.length - 3));
 
-                let dateCandidates = doc.filter(x =>
-                    x.orderno.substring(6, length) === date
-                )
-
-                if (dateCandidates != 0) {
-                    invoicearray = dateCandidates.map(x =>
-                        parseInt(x.orderno.slice(12))
-                    )
-                } else {
-                    invoicearray = [000];
+                if (firstelementdate === date) {
+                    firstelementnumber = parseInt(doc[0].orderno.slice(-3)) + 1;
+                    postfix = firstelementnumber.toString().padStart(3, '0')
                 }
-
-            } else {
-                invoicearray = [000];
             }
 
-            const nextorderno = employeeid + pad(String(Math.max(...invoicearray) + 1), 3);
+            const nextorderno = employeeid + date + postfix;
 
             res.status(200).json({
                 message: "Handeling GET requests to /get-next-orderno",
