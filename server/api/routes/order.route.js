@@ -33,13 +33,21 @@ router.get("/get-next-orderno/:employeeid", (req, res, next) => {
                 "ordercreatedby": {
                     "$regex": employeeid,
                     "$options": "i"
-                }
+                },
             },
-            { orderno: 1, _id: 0 }
+            {
+                orderno: 1,
+                orderplacedat: 1,
+                _id: 0
+            }
         )
-        .sort({ orderno: 'desc' })
+        .sort({
+            orderplacedat: 'desc'
+        })
         .exec()
         .then(doc => {
+
+            console.log("DOC :", doc);
 
             let postfix = "001";
 
