@@ -76,7 +76,7 @@ router.get("/product-options-for-product", (req, res, next) => {
         .find()
         .exec()
         .then(doc => {
-            function pad(str, num, size) {
+            function getVariantId(str, num, size) {
                 var matches = str.match(/\b(\w)/g);
                 var acronym = matches.join('');
                 while (num.length < size) num = "0" + num;
@@ -91,7 +91,7 @@ router.get("/product-options-for-product", (req, res, next) => {
                 addeddate: x.addeddate,
                 productimage: x.productimage,
                 status: x.status,
-                variantid: pad(x.name, String(x.variants.length + 1), 4)
+                variantid: getVariantId(x.name, String(x.variants.length + 1), 4)
             }))
 
             res.status(200).json({

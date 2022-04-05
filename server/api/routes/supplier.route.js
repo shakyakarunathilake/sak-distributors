@@ -18,20 +18,28 @@ router.get("/", (req, res, next) => {
 //Get Next Registration Number
 router.get("/get-next-regno", (req, res, next) => {
 
-    function pad(num, size) {
-        while (num.length < size) num = "0" + num;
-        return "S" + num;
-    }
-
     Supplier
-        .find({}, { supplierid: 1, _id: 0 })
+        .find(
+            {},
+            {
+                supplierid: 1,
+                _id: 0
+            }
+        )
+        .sort({
+            supplierid: 'desc'
+        })
         .exec()
         .then(doc => {
-            const supplieridarray = doc.map(x => {
-                return parseInt(x.supplierid.slice(1))
-            })
 
-            const nextsupplierid = pad(String(Math.max(...supplieridarray) + 1), 4);
+            let postfix = "0001";
+
+            if (doc.length && doc.length > 0) {
+                const firstelementnumber = doc[0].supplierid.substring(1, 5);
+                postfix = parseInt(firstelementnumber) + 1;
+            }
+
+            const nextsupplierid = 'S' + postfix.toString().padStart(4, '0');
 
             res.status(200).json({
                 message: "Handeling GET requests to /get-next-regno",

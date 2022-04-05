@@ -17,20 +17,30 @@ router.get("/", (req, res, next) => {
 //Get Next Registration Number
 router.get("/get-next-regno", (req, res, next) => {
 
-    function pad(num, size) {
-        while (num.length < size) num = "0" + num;
-        return "C" + num;
-    }
-
     Customer
-        .find({}, { customerid: 1, _id: 0 })
+        .find(
+            {},
+            {
+                customerid: 1,
+                _id: 0
+            }
+        )
+        .sort({
+            customerid: 'desc'
+        })
         .exec()
         .then(doc => {
-            const customeridarray = doc.map(x => {
-                return parseInt(x.customerid.slice(1))
-            })
 
-            const nextcustomerid = pad(String(Math.max(...customeridarray) + 1), 5);
+            console.log(doc)
+            
+            let postfix = "00001";
+
+            if (doc.length && doc.length > 0) {
+                const firstelementnumber = doc[0].customerid.substring(1, 6);
+                postfix = parseInt(firstelementnumber) + 1;
+            }
+
+            const nextcustomerid = 'C' + postfix.toString().padStart(5, '0');
 
             res.status(200).json({
                 message: "Handeling GET requests to /get-next-regno",

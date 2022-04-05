@@ -80,26 +80,28 @@ router.get("/get-all-product-table-data", (req, res, next) => {
 // Get next product id
 router.get("/get-next-productid", (req, res, next) => {
 
-    function pad(num, size) {
-        while (num.length < size) num = "0" + num;
-        return "P" + num;
-    }
-
     Product
-        .find({}, { productid: 1, _id: 0 })
+        .find(
+            {},
+            {
+                productid: 1,
+                _id: 0
+            }
+        )
+        .sort({
+            productid: 'desc'
+        })
         .exec()
         .then(doc => {
 
-            let nextproductid;
+            let postfix = "00001";
 
-            if (doc.length === 0) {
-                nextproductid = "P000001"
-            } else {
-                const productidarray = doc.map(x => {
-                    return parseInt(x.productid.slice(1))
-                })
-                nextproductid = pad(String(Math.max(...productidarray) + 1), 6);
+            if (doc.length && doc.length > 0) {
+                const firstelementnumber = doc[0].productid.substring(1, 7);
+                postfix = parseInt(firstelementnumber) + 1;
             }
+
+            const nextproductid = 'P' + postfix.toString().padStart(6, '0');
 
             res.status(200).json({
                 message: "Handeling GET requests to /get-next-productid",

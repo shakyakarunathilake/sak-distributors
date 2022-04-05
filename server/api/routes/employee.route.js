@@ -30,20 +30,28 @@ router.get("/", (req, res, next) => {
 //Get Next Registration Number
 router.get("/get-next-regno", (req, res, next) => {
 
-    function pad(num, size) {
-        while (num.length < size) num = "0" + num;
-        return "E" + num;
-    }
-
     Employee
-        .find({}, { employeeid: 1, _id: 0 })
+        .find(
+            {},
+            {
+                employeeid: 1,
+                _id: 0
+            }
+        )
+        .sort({
+            employeeid: 'desc'
+        })
         .exec()
         .then(doc => {
-            const employeeidarray = doc.map(x => {
-                return parseInt(x.employeeid.slice(1))
-            })
 
-            const nextemployeeid = pad(String(Math.max(...employeeidarray) + 1), 5);
+            let postfix = "00001";
+
+            if (doc.length && doc.length > 0) {
+                const firstelementnumber = doc[0].employeeid.substring(1, 6);
+                postfix = parseInt(firstelementnumber) + 1;
+            }
+
+            const nextemployeeid = 'E' + postfix.toString().padStart(5, '0');
 
             res.status(200).json({
                 message: "Handeling GET requests to /get-next-regno",
