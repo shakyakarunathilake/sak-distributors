@@ -70,7 +70,8 @@ export default function VehicleForm(props) {
         customerFormData.append('title', getValues('title'));
         customerFormData.append('contactperson', getValues('contactperson'));
         customerFormData.append("contactnumber", getValues('contactnumber'));
-        customerFormData.append("rateperday", getValues('rateperday'));
+        customerFormData.append("rate", getValues('rate'));
+        customerFormData.append("per", getValues('per'));
 
         addOrEdit(customerFormData, getValues('licenseplatenumber'));
     };
@@ -107,6 +108,7 @@ export default function VehicleForm(props) {
                 <section className={formStep === 1 ? style.visible : style.hidden}>
 
                     <StepTwo
+                        watch={watch}
                         action={action}
                         setOpenPopup={setOpenPopup}
                         control={control}

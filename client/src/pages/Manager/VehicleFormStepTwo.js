@@ -14,6 +14,7 @@ import style from './VehicleFormStepTwo.module.scss';
 export default function VehicleFormStepTwo(props) {
 
     const {
+        watch,
         control,
         action,
         setOpenPopup,
@@ -135,115 +136,140 @@ export default function VehicleFormStepTwo(props) {
 
                 </div>
 
-                <div className={style.row}>
+                {
+                    watch("ownership") !== "Company's" &&
+                    <div className={style.row}>
 
-                    <div className={style.boldText}>
-                        Owner
+                        <div className={style.boldText}>
+                            Owner
+                        </div>
+
+                        <div>
+                            <Controller
+                                render={({ field: { value } }) => (
+                                    <Typography className={style.input}>
+                                        Rs. {value}
+                                    </Typography>
+                                )}
+                                control={control}
+                                name={"vehicleowner"}
+                            />
+                        </div>
+
                     </div>
+                }
 
-                    <div>
-                        <Controller
-                            render={({ field: { value } }) => (
-                                <Typography className={style.input}>
-                                    Rs. {value}
-                                </Typography>
-                            )}
-                            control={control}
-                            name={"vehicleowner"}
-                        />
+                {
+                    watch("ownership") !== "Company's" &&
+                    <div className={style.row}>
+
+                        <div className={style.boldText}>
+                            Rate
+                        </div>
+
+                        <div>
+                            <Controller
+                                render={({ field: { value } }) => (
+                                    <Typography className={style.input}>
+                                        Rs. {value} /
+                                    </Typography>
+                                )}
+                                control={control}
+                                name={"rate"}
+                            />
+                            &nbsp;
+                            <Controller
+                                render={({ field: { value } }) => (
+                                    <Typography className={style.input}>
+                                        {value}
+                                    </Typography>
+                                )}
+                                control={control}
+                                name={"per"}
+                            />
+                        </div>
+
                     </div>
+                }
 
-                </div>
+                {
+                    watch("ownership") !== "Company's" &&
+                    <div className={style.row}>
 
-                <div className={style.row}>
+                        <div className={style.boldText}>
+                            Contact Person
+                        </div>
 
-                    <div className={style.boldText}>
-                        Contact Person
+                        <div>
+                            <Controller
+                                render={({ field: { value } }) => (
+                                    <Typography className={style.input}>
+                                        {value}
+                                    </Typography>
+                                )}
+                                control={control}
+                                name={"title"}
+                            />
+                            &nbsp;
+                            <Controller
+                                render={({ field: { value } }) => (
+                                    <Typography className={style.input}>
+                                        {value}
+                                    </Typography>
+                                )}
+                                control={control}
+                                name={"contactperson"}
+                            />
+                        </div>
+
                     </div>
+                }
 
-                    <div>
-                        <Controller
-                            render={({ field: { value } }) => (
-                                <Typography className={style.input}>
-                                    {value}
-                                </Typography>
-                            )}
-                            control={control}
-                            name={"title"}
-                        />
-                        &nbsp;
-                        <Controller
-                            render={({ field: { value } }) => (
-                                <Typography className={style.input}>
-                                    {value}
-                                </Typography>
-                            )}
-                            control={control}
-                            name={"contactperson"}
-                        />
+                {
+                    watch("ownership") !== "Company's" &&
+                    <div className={style.row}>
+
+                        <div className={style.boldText}>
+                            Contact No.
+                        </div>
+
+                        <div>
+                            <Controller
+                                render={({ field: { value } }) => (
+                                    <Typography className={style.input}>
+                                        {value}
+                                    </Typography>
+                                )}
+                                control={control}
+                                name={"contactnumber"}
+                            />
+                        </div>
+
                     </div>
+                }
 
-                </div>
+                {
+                    watch("ownership") !== "Company's" &&
+                    <div className={style.row}>
 
-                <div className={style.row}>
+                        <div className={style.boldText}>
+                            Address
+                        </div>
 
-                    <div className={style.boldText}>
-                        Contact No.
+                        <div>
+                            <Controller
+                                render={({ field: { value } }) => (
+                                    <Typography className={style.input}>
+                                        {value}
+                                    </Typography>
+                                )}
+                                control={control}
+                                name={"address"}
+                            />
+                        </div>
+
                     </div>
-
-                    <div>
-                        <Controller
-                            render={({ field: { value } }) => (
-                                <Typography className={style.input}>
-                                    {value}
-                                </Typography>
-                            )}
-                            control={control}
-                            name={"contactnumber"}
-                        />
-                    </div>
-
-                </div>
-
-                <div className={style.row}>
-
-                    <div className={style.boldText}>
-                        Email
-                    </div>
-
-                    <div>
-                        <Controller
-                            render={({ field: { value } }) => (
-                                <Typography className={style.input}>
-                                    {value}
-                                </Typography>
-                            )}
-                            control={control}
-                            name={"email"}
-                        />
-                    </div>
-
-                </div>
-
-                <div className={style.row}>
-
-                    <div className={style.boldText}>
-                        Address
-                    </div>
-
-                    <div>
-                        <Controller
-                            render={({ field: { value } }) => (
-                                <Typography className={style.input}>
-                                    {value}
-                                </Typography>
-                            )}
-                            control={control}
-                            name={"address"}
-                        />
-                    </div>
-
-                </div>
+                }
 
                 <div className={style.row}>
 

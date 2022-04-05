@@ -13,6 +13,7 @@ import DatePicker from '../../shared/DatePicker/DatePicker';
 
 //Material UI Components
 import Button from '@material-ui/core/Button';
+import { InputAdornment } from '@material-ui/core';
 
 //Material UI Icons
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
@@ -229,87 +230,138 @@ export default function VehicleFormStepOne(props) {
 
                 </div>
 
-                <div className={style.reversegridrow}>
+                <div className={classnames(style.row, style.twocolumns)}>
 
-                    <div className={style.twocolumns}>
+                    <Controller
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                fullWidth={true}
+                                error={errors.rate ? true : false}
+                                helperText={errors.rate && errors.rate.message}
+                                placeholder="999.99"
+                                size="small"
+                                label="Rate"
+                                className={style.field}
+                                disabled={watch("ownership") === "Company's"}
+                                type="number"
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            Rs
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        )}
+                        control={control}
+                        name={"rate"}
+                        rules={{
+                            required: {
+                                value: watch("ownership") === "Company's" ? false : true,
+                                message: "Required *"
+                            },
+                            pattern: { value: /^[0-9]+\.[0-9]{2}$/, message: "Invalid" }
+                        }}
+                    />
 
-                        <Controller
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    fullWidth={true}
-                                    error={errors.contactnumber ? true : false}
-                                    helperText={errors.contactnumber && errors.contactnumber.message}
-                                    placeholder="Ex:  025 2236244"
-                                    size="small"
-                                    label="Contact Number"
-                                    className={style.field}
-                                    disabled={watch("ownership") === "Company's"}
-                                />
-                            )}
-                            control={control}
-                            name={"contactnumber"}
-                            rules={{
-                                required: {
-                                    value: watch("ownership") === "Company's" ? false : true,
-                                    message: "Required *"
-                                },
-                                pattern: { value: /^[0-9]{10}$/, message: "Invalid" }
-                            }}
-                        />
+                    <Controller
+                        render={({ field }) => (
+                            <Select
+                                {...field}
+                                options={employeeservice.getRatePerOptions()}
+                                error={errors.per ? true : false}
+                                helperText={errors.per && errors.per.message}
+                                size="small"
+                                label="Per *"
+                                className={style.field}
+                                disabled={watch("ownership") === "Company's"}
+                            />
+                        )}
+                        control={control}
+                        name={"per"}
+                        rules={{
+                            required: {
+                                value: watch("ownership") === "Company's" ? false : true,
+                                message: "Required *"
+                            },
+                        }}
+                    />
 
-                        <Controller
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    fullWidth={true}
-                                    error={errors.contactperson ? true : false}
-                                    helperText={errors.contactperson && errors.contactperson.message}
-                                    placeholder="Ex: Lasitha Abeynayaka"
-                                    size="small"
-                                    label="Contact Person *"
-                                    className={style.field}
-                                    disabled={watch("ownership") === "Company's"}
-                                />
-                            )}
-                            control={control}
-                            name={"contactperson"}
-                            rules={{
-                                required: {
-                                    value: watch("ownership") === "Company's" ? false : true,
-                                    message: "Required *"
-                                }
-                            }}
-                        />
+                </div>
 
-                    </div>
+                <div className={classnames(style.row, style.threecolumns)}>
 
-                    <div>
+                    <Controller
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                fullWidth={true}
+                                error={errors.contactnumber ? true : false}
+                                helperText={errors.contactnumber && errors.contactnumber.message}
+                                placeholder="Ex:  025 2236244"
+                                size="small"
+                                label="Contact Number"
+                                className={style.field}
+                                disabled={watch("ownership") === "Company's"}
+                            />
+                        )}
+                        control={control}
+                        name={"contactnumber"}
+                        rules={{
+                            required: {
+                                value: watch("ownership") === "Company's" ? false : true,
+                                message: "Required *"
+                            },
+                            pattern: { value: /^[0-9]{10}$/, message: "Invalid" }
+                        }}
+                    />
 
-                        <Controller
-                            render={({ field }) => (
-                                <Select
-                                    {...field}
-                                    options={employeeservice.getTitleOptions()}
-                                    error={errors.title ? true : false}
-                                    helperText={errors.title && errors.title.message}
-                                    size="small"
-                                    label="Title *"
-                                    disabled={watch("ownership") === "Company's"}
-                                />
-                            )}
-                            control={control}
-                            name={"title"}
-                            rules={{
-                                required: {
-                                    value: watch("ownership") === "Company's" ? false : true,
-                                    message: "Required *"
-                                },
-                            }}
-                        />
+                    <Controller
+                        render={({ field }) => (
+                            <Select
+                                {...field}
+                                options={employeeservice.getTitleOptions()}
+                                error={errors.title ? true : false}
+                                helperText={errors.title && errors.title.message}
+                                size="small"
+                                label="Title *"
+                                disabled={watch("ownership") === "Company's"}
+                            />
+                        )}
+                        control={control}
+                        name={"title"}
+                        rules={{
+                            required: {
+                                value: watch("ownership") === "Company's" ? false : true,
+                                message: "Required *"
+                            },
+                        }}
+                    />
 
-                    </div>
-
+                    <Controller
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                fullWidth={true}
+                                error={errors.contactperson ? true : false}
+                                helperText={errors.contactperson && errors.contactperson.message}
+                                placeholder="Ex: Lasitha Abeynayaka"
+                                size="small"
+                                label="Contact Person *"
+                                className={style.field}
+                                disabled={watch("ownership") === "Company's"}
+                            />
+                        )}
+                        control={control}
+                        name={"contactperson"}
+                        rules={{
+                            required: {
+                                value: watch("ownership") === "Company's" ? false : true,
+                                message: "Required *"
+                            }
+                        }}
+                    />
 
                 </div>
 

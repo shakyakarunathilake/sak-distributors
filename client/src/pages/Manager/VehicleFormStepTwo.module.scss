@@ -31,12 +31,13 @@
     .body {
         display: grid;
         grid-template-rows: auto min-content;
-        margin: auto auto 0 auto;
+        margin: auto auto auto auto;
 
         .input {
             text-align: left;
             font-size: 1em;
             white-space: normal;
+            display: inline;
         }
 
         .row {

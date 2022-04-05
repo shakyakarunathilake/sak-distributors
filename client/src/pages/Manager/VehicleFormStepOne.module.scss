@@ -38,7 +38,7 @@
         }
 
         .row {
-            padding: 10px 0;
+            padding: 6px 0;
         }
 
         .columns {
@@ -57,20 +57,6 @@
             // text-align: center;
         }
 
-        .reversegridrow {
-            display: grid;
-            grid-template-columns: auto 160px;
-            grid-column-gap: 20px;
-            padding: 10px 0;
-        }
-
-        .gridrow {
-            display: grid;
-            grid-template-columns: 160px auto;
-            grid-column-gap: 20px;
-            padding: 10px 0;
-        }
-
         .twocolumns {
             display: grid;
             grid-template-columns: calc(50% - 10px) calc(50% - 10px);
@@ -79,7 +65,7 @@
 
         .threecolumns {
             display: grid;
-            grid-template-columns: calc(20% - 10px) calc(20% - 10px) calc(60% - 20px);
+            grid-template-columns: calc(30% - 10px) calc(20% - 10px) calc(50% - 20px);
             grid-column-gap: 20px;
         }
     }
