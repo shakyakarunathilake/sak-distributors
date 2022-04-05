@@ -271,7 +271,6 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
         })
 })
 
-
 //Approve dispatch GIN by GIN Number
 router.post("/approve-dispatch/:ginnumber", formDataBody.fields([]), (req, res, next) => {
 
