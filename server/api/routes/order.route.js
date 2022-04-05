@@ -47,8 +47,6 @@ router.get("/get-next-orderno/:employeeid", (req, res, next) => {
         .exec()
         .then(doc => {
 
-            console.log("DOC :", doc);
-
             let postfix = "001";
 
             if (doc.length && doc.length > 0) {
@@ -268,32 +266,29 @@ router.post("/approve-delivery/:orderno", formDataBody.fields([]), (req, res, ne
                     'deliveredby': req.body.deliveredby
                 }
             },
-            { new: true, upsert: true }
+            { new: true, upsert: false }
         )
         .exec()
         .then(doc => {
 
             console.log("**** ORDER STATUS UPDATED ****")
 
-            const ordernumber = doc.orderno;
-            const ginnumber = doc.ginnumber;
-
             GIN
                 .findOneAndUpdate(
-                    { "ginnumber": ginnumber, "ordernumbers.ordernumber": ordernumber },
+                    { "ginnumber": doc.ginnumber, "ordernumbers.ordernumber": doc.orderno },
                     {
                         '$set': {
                             'ordernumbers.$.complete': 'Yes'
                         }
                     },
-                    { new: true, upsert: true }
+                    { new: true, upsert: false }
                 )
                 .exec()
                 .then(doc => {
 
                     console.log("**** GIN ORDER NUMBERS ARRAY UPDATED ****")
 
-                    if (!doc.ordernumbers.some(e => e.complete === 'No')) {
+                    if (doc.ordernumbers.every(e => e.complete === 'Yes')) {
 
                         GIN
                             .findOneAndUpdate(
@@ -303,18 +298,15 @@ router.post("/approve-delivery/:orderno", formDataBody.fields([]), (req, res, ne
                                         'status': 'Complete'
                                     }
                                 },
-                                { new: true, upsert: true }
+                                { new: true, upsert: false }
                             )
                             .exec()
                             .then(
                                 console.log("**** GIN STATUS SET TO COMPLETE ****")
                             )
                             .catch(err => {
-                                res.status(200).json({
-                                    type: 'error',
-                                    alert: `Something went wrong. Could not update GIN`,
-                                });
-                                console.log(err);
+                                console.log("**** ERROR ****")
+                                console.log("**** COULD NOT SET GIN STATUS TO COMPLETE ****")
                             });
                     }
                 })
