@@ -307,21 +307,19 @@ router.post("/approve-delivery/:orderno", formDataBody.fields([]), (req, res, ne
                             .catch(err => {
                                 console.log("**** ERROR ****")
                                 console.log("**** COULD NOT SET GIN STATUS TO COMPLETE ****")
+                                console.log(err)
                             });
                     }
                 })
                 .catch(err => {
-                    res.status(200).json({
-                        type: 'error',
-                        alert: `Something went wrong. Could not update GIN`,
-                    });
-                    console.log(err);
+                    console.log("**** ERROR ****")
+                    console.log("**** COULD NOT SET GIN STATUS TO COMPLETE ****")
+                    console.log(err)
                 });
 
             return doc;
         })
         .then(doc => {
-
             res.status(200).json({
                 message: "Handling POST requests to /orders/approve-delivery/:orderno, ORDER STATUS CHANGED TO COMPLETE",
                 type: 'success',
