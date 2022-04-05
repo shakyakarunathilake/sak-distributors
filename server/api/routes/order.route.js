@@ -281,7 +281,7 @@ router.post("/approve-delivery/:orderno", formDataBody.fields([]), (req, res, ne
                             'ordernumbers.$.complete': 'Yes'
                         }
                     },
-                    { new: true, upsert: false }
+                    { new: true }
                 )
                 .exec()
                 .then(doc => {
@@ -298,7 +298,7 @@ router.post("/approve-delivery/:orderno", formDataBody.fields([]), (req, res, ne
                                         'status': 'Complete'
                                     }
                                 },
-                                { new: true, upsert: false }
+                                { new: true }
                             )
                             .exec()
                             .then(
