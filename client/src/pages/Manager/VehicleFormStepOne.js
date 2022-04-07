@@ -303,7 +303,7 @@ export default function VehicleFormStepOne(props) {
                                 helperText={errors.contactnumber && errors.contactnumber.message}
                                 placeholder="Ex:  025 2236244"
                                 size="small"
-                                label="Contact Number"
+                                label="Contact Number *"
                                 className={style.field}
                                 disabled={watch("ownership") !== "Rent"}
                             />
@@ -378,7 +378,7 @@ export default function VehicleFormStepOne(props) {
                                 helperText={errors.address && errors.address.message}
                                 placeholder="Ex: 57 Colombo, Negombo Rd, Kandana 11320"
                                 size="small"
-                                label="Address*"
+                                label="Address *"
                                 className={style.field}
                                 disabled={watch("ownership") !== "Rent"}
                             />
