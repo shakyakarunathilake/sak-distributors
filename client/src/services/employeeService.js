@@ -93,3 +93,10 @@ export const getValidityPeriodOptions = () => ([
     { id: "vp11", title: "1 Month" },
     { id: "vp12", title: "1 Year" },
 ])
+
+export const getRatePerOptions = () => ([
+    { id: "rp01", title: "Hour" },
+    { id: "rp02", title: "Day" },
+    { id: "rp03", title: "Week" },
+    { id: "rp04", title: "Month" },
+])

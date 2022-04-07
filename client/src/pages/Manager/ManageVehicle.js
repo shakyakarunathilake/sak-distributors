@@ -9,7 +9,7 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
 //SCSS styles
-import style from './ManageSupplier.module.scss';
+import style from './ManageVehicle.module.scss';
 
 //Material UI 
 import Button from '@material-ui/core/Button';
@@ -18,9 +18,9 @@ import Button from '@material-ui/core/Button';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 
-//Supplier Form
-import SupplierForm from './SupplierForm';
-import ViewSupplier from './ViewSupplier';
+//Vehicle Form
+import VehicleForm from './VehicleForm';
+import ViewVehicle from './ViewVehicle';
 
 //Connecting to Backend
 import axios from 'axios';
@@ -29,7 +29,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-export default function ManageSupplier() {
+export default function ManageVehicle() {
 
     const [type, setType] = React.useState();
     const [open, setOpen] = React.useState(false);
@@ -37,11 +37,10 @@ export default function ManageSupplier() {
 
     const [records, setRecords] = useState([]);
 
-    const [supplierRecords, setSupplierRecords] = useState(null);
+    const [vehicleRecords, setVehicleRecords] = useState(null);
     const [action, setAction] = useState('');
     const [openPopup, setOpenPopup] = useState(false);
 
-    const [nextSupId, setNextSupId] = useState();
     const [reRender, setReRender] = useState(null);
 
     const handleAlert = () => {
@@ -57,13 +56,13 @@ export default function ManageSupplier() {
 
     useEffect(() => {
         axios
-            .get("http://localhost:8080/suppliers/get-all-supplier-table-data", {
+            .get("http://localhost:8080/vehicles/get-all-vehicle-table-data", {
                 headers: {
                     'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
                 }
             })
             .then(res => {
-                sessionStorage.setItem("SupplierTableData", JSON.stringify(res.data));
+                sessionStorage.setItem("VehicleTableData", JSON.stringify(res.data));
                 setRecords(res.data.tbody);
                 setReRender(null);
             })
@@ -72,15 +71,21 @@ export default function ManageSupplier() {
             })
     }, [reRender]);
 
-    const addOrEdit = (supplier, supplierid) => {
+    const handleClosePopUp = () => {
+        setOpenPopup(false)
+        setVehicleRecords(null)
+        setAction('');
+    }
 
-        for (let [key, value] of supplier.entries()) {
+    const addOrEdit = (vehicle, licenseplatenumber) => {
+
+        for (let [key, value] of vehicle.entries()) {
             console.log(key, value);
         }
 
         if (action === "Create") {
             axios
-                .post("http://localhost:8080/suppliers/create-supplier", supplier, {
+                .post("http://localhost:8080/vehicles/add-vehicle", vehicle, {
                     headers: {
                         'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
                     }
@@ -89,7 +94,7 @@ export default function ManageSupplier() {
                     setAlert(res.data.alert);
                     setType(res.data.type);
                     handleAlert();
-                    setReRender(supplierid);
+                    setReRender(licenseplatenumber);
                 })
                 .catch(err => {
                     console.log(err);
@@ -99,7 +104,7 @@ export default function ManageSupplier() {
 
         if (action === "Edit") {
             axios
-                .post(`http://localhost:8080/suppliers/update-by-id/${supplierid}`, supplier, {
+                .post(`http://localhost:8080/vehicles/update-by-licenseplatenumber/${licenseplatenumber}`, vehicle, {
                     headers: {
                         'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
                     }
@@ -108,7 +113,7 @@ export default function ManageSupplier() {
                     setAlert(res.data.alert);
                     setType(res.data.type);
                     handleAlert();
-                    setReRender(supplierid);
+                    setReRender(licenseplatenumber);
                 })
                 .catch(err => {
                     console.log(err);
@@ -116,20 +121,18 @@ export default function ManageSupplier() {
             ;
         }
 
-        setSupplierRecords(null)
-        setOpenPopup(false);
-        setAction('');
+        handleClosePopUp();
     }
 
-    const openInPopup = supplierid => {
+    const openInPopup = licenseplatenumber => {
         axios
-            .get(`http://localhost:8080/suppliers/${supplierid}`, {
+            .get(`http://localhost:8080/vehicles/${licenseplatenumber}`, {
                 headers: {
                     'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
                 }
             })
             .then(res => {
-                setSupplierRecords(res.data.supplier);
+                setVehicleRecords(res.data.vehicle);
                 setOpenPopup(true);
             })
             .catch(err => {
@@ -137,23 +140,8 @@ export default function ManageSupplier() {
             })
     }
 
-    const getNextSupplierId = () => {
-        axios
-            .get("http://localhost:8080/suppliers/get-next-regno", {
-                headers: {
-                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
-                }
-            })
-            .then(res => {
-                setNextSupId(res.data.nextsupplierid);
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    }
-
     return (
-        <Page title="Manage Suppliers">
+        <Page title="Manage Vehicles">
 
             <div className={style.container}>
 
@@ -167,16 +155,12 @@ export default function ManageSupplier() {
                         onClick={
                             () => {
                                 setAction('Create');
-                                getNextSupplierId();
                                 setOpenPopup(true);
-                                setSupplierRecords(null);
                             }
                         }
                     >
-
                         <AddCircleIcon className={style.icon} />
-                        Add New Supplier
-
+                        Add New Vehicle
                     </Button>
 
                 </div>
@@ -185,87 +169,73 @@ export default function ManageSupplier() {
 
                     <AutoSizer>
                         {({ height, width }) => {
+
                             const pageSize = Math.floor((height - 199.28) / 48);
+
                             return (
                                 <div style={{ height: `${height}px`, width: `${width}px`, overflowY: 'auto' }}>
 
                                     <MaterialTable
                                         columns={[
                                             {
-                                                title: "Sup. ID",
-                                                field: "supplierid",
+                                                title: "License Plate No.",
+                                                field: "licenseplatenumber",
+                                                cellStyle: {
+                                                    width: "14%",
+                                                    textAlign: 'left'
+                                                },
+                                                render: rowData => {
+                                                    return (
+                                                        <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.licenseplatenumber}</p>
+                                                    )
+                                                }
+                                            },
+                                            {
+                                                title: "Vehicle",
+                                                field: "vehicle",
+                                                cellStyle: {
+                                                    width: "14%",
+                                                    textAlign: 'left'
+                                                }
+                                            },
+                                            {
+                                                title: "Ownership",
+                                                field: "ownership",
+                                                cellStyle: {
+                                                    width: "14%",
+                                                    textAlign: 'left'
+                                                }
+                                            },
+                                            {
+                                                title: "Owner",
+                                                field: "vehicleowner",
+                                                cellStyle: {
+                                                    width: "33%",
+                                                    textAlign: 'left'
+                                                }
+                                            },
+                                            {
+                                                title: "Rate (Rs)",
+                                                field: "rate",
+                                                cellStyle: {
+                                                    width: "15%",
+                                                    textAlign: 'left'
+                                                }
+                                            },
+                                            {
+                                                title: "Status",
+                                                field: "status",
                                                 cellStyle: {
                                                     width: "10%",
                                                     textAlign: 'left'
                                                 },
                                                 render: rowData => {
                                                     return (
-                                                        <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.supplierid}</p>
+                                                        rowData.status === "Active" ?
+                                                            <p style={{ padding: "0", margin: "0", color: "#4cbb17", fontWeight: "700" }}>{rowData.status}</p> :
+                                                            <p style={{ padding: "0", margin: "0", color: "#FC6A03", fontWeight: "700" }}>{rowData.status}</p>
                                                     )
                                                 }
-                                            },
-                                            {
-                                                title: "Name",
-                                                field: "name",
-                                                cellStyle: {
-                                                    width: "18%",
-                                                    textAlign: 'left'
-                                                },
-                                            },
-                                            {
-                                                title: "Abbreviation",
-                                                field: "abbreviation",
-                                                cellStyle: {
-                                                    width: "10%",
-                                                    textAlign: 'left'
-                                                },
-                                                render: rowData => {
-                                                    return (
-                                                        <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.abbreviation}</p>
-                                                    )
-                                                }
-                                            },
-                                            {
-                                                title: "Given ID",
-                                                field: "givenid",
-                                                cellStyle: {
-                                                    width: "10%",
-                                                    textAlign: 'left'
-                                                },
-                                                render: rowData => {
-                                                    return (
-                                                        <p style={{ padding: "0", margin: "0", color: "#20369f", fontWeight: "700" }}>{rowData.givenid}</p>
-                                                    )
-                                                }
-                                            },
-                                            {
-                                                title: "Contact Person",
-                                                field: "contactperson",
-                                                cellStyle: {
-                                                    width: "20%",
-                                                    textAlign: 'left'
-                                                },
-                                            },
-                                            {
-                                                title: "Contact No.",
-                                                field: "contactnumber",
-                                                cellStyle: {
-                                                    width: "10%",
-                                                    textAlign: 'left'
-                                                },
-                                                render: rowData => {
-                                                    return (
-                                                        <p style={{ padding: "0", margin: "0" }}>0{rowData.contactnumber}</p>
-                                                    )
-                                                }
-                                            },
-                                            {
-                                                title: "Email",
-                                                field: "email",
-                                                cellStyle: {
-                                                    width: "17%",
-                                                    textAlign: 'left'
-                                                },
                                             },
                                         ]}
                                         data={records}
@@ -294,20 +264,21 @@ export default function ManageSupplier() {
                                                 icon: VisibilityIcon,
                                                 tooltip: 'View',
                                                 onClick: (event, rowData) => {
+                                                    openInPopup(rowData.licenseplatenumber);
                                                     setAction('View');
-                                                    openInPopup(rowData.supplierid);
                                                 }
                                             },
                                             {
                                                 icon: 'edit',
                                                 tooltip: 'Edit',
                                                 onClick: (event, rowData) => {
+                                                    openInPopup(rowData.licenseplatenumber);
                                                     setAction('Edit');
-                                                    openInPopup(rowData.supplierid);
                                                 }
                                             }
                                         ]}
                                     />
+
                                 </div>
                             );
                         }}
@@ -318,25 +289,25 @@ export default function ManageSupplier() {
                 <PopUp
                     openPopup={openPopup}
                     setOpenPopup={setOpenPopup}
+                    fullscreen={false}
                 >
 
                     {
                         action === 'View' &&
-                        <ViewSupplier
-                            supplierRecords={supplierRecords}
-                            setOpenPopup={setOpenPopup}
+                        <ViewVehicle
+                            vehicleRecords={vehicleRecords}
+                            handleClosePopUp={handleClosePopUp}
                             setAction={setAction}
                             action={action}
                         />
                     }
 
                     {
-                        (action === 'Create' || action === 'Edit') &&
-                        <SupplierForm
+                        (action === 'Edit' || action === 'Create') &&
+                        <VehicleForm
                             addOrEdit={addOrEdit}
-                            supplierRecords={supplierRecords}
-                            setOpenPopup={setOpenPopup}
-                            nextSupId={nextSupId}
+                            vehicleRecords={vehicleRecords}
+                            handleClosePopUp={handleClosePopUp}
                             action={action}
                         />
                     }
@@ -352,6 +323,7 @@ export default function ManageSupplier() {
                         horizontal: 'center',
                     }}
                 >
+
                     <Alert
                         onClose={handleClose}
                         severity={type}
@@ -359,6 +331,7 @@ export default function ManageSupplier() {
                     >
                         {alert}
                     </Alert>
+
                 </Snackbar>
 
             </div>

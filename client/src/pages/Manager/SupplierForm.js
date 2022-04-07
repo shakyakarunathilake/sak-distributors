@@ -14,13 +14,17 @@ import StepTwo from './SupplierFormStepTwo';
 
 export default function SupplierForm(props) {
 
-    const { setOpenPopup, addOrEdit, supplierRecords, nextSupId, action, employeeOptions } = props;
+    const { setOpenPopup, addOrEdit, supplierRecords, nextSupId, action } = props;
 
     const today = new Date();
-    
+
     const date = today.getFullYear() + '-' +
-    (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
-    (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+        (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
+        (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+
+    const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
+    const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
+    const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
 
     const { handleSubmit, formState: { errors, isValid }, control, reset, trigger, getValues } = useForm({
         mode: "all",
@@ -32,7 +36,7 @@ export default function SupplierForm(props) {
             address: supplierRecords ? supplierRecords.address : '',
             title: supplierRecords ? supplierRecords.title : '',
             contactperson: supplierRecords ? supplierRecords.contactperson : '',
-            addedby: supplierRecords ? supplierRecords.addedby : '',
+            addedby: supplierRecords ? supplierRecords.addedby : `${firstname} ${lastname} (${employeeid})`,
             addeddate: supplierRecords ? supplierRecords.addeddate : date,
             contactnumber: supplierRecords ? supplierRecords.contactnumber : '',
             email: supplierRecords ? supplierRecords.email : '',
@@ -93,7 +97,6 @@ export default function SupplierForm(props) {
                         completeFormStep={completeFormStep}
                         action={action}
                         setOpenPopup={setOpenPopup}
-                        employeeOptions={employeeOptions}
                         resetForm={resetForm}
                     />
 

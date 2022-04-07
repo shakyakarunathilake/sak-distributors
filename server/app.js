@@ -23,6 +23,7 @@ const metaDataRoutes = require("./api/routes/metadata.route");
 const storeRoutes = require("./api/routes/store.route");
 const quotationRoutes = require("./api/routes/quotation.route");
 const supplierPaymentRoutes = require("./api/routes/supplierpayment.route");
+const vehicleRoutes = require("./api/routes/vehicle.route");
 
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -64,6 +65,7 @@ app.use("/auth", authRoutes);
 // app.use("/metadata", checkAuth, metaDataRoutes);
 // app.use("/quotations", checkAuth, quotationRoutes);
 // app.use("/supplier-payments", checkAuth, supplierPaymentRoutes);
+app.use("/vehicles", checkAuth, vehicleRoutes);
 
 
 //Development Stage
@@ -82,5 +84,6 @@ app.use("/store", storeRoutes);
 app.use("/metadata", metaDataRoutes);
 app.use("/quotations", quotationRoutes);
 app.use("/supplier-payments", supplierPaymentRoutes);
+// app.use("/vehicles", vehicleRoutes);
 
 module.exports = app;

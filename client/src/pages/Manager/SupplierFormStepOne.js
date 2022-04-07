@@ -28,7 +28,6 @@ export default function SupplierFormStepOne(props) {
         completeFormStep,
         action,
         setOpenPopup,
-        employeeOptions,
         resetForm
     } = props;
 
@@ -154,13 +153,15 @@ export default function SupplierFormStepOne(props) {
 
                     <Controller
                         render={({ field }) => (
-                            <Select
+                            <TextField
                                 {...field}
-                                options={employeeOptions || []}
+                                fullWidth={true}
                                 error={errors.addedby ? true : false}
                                 helperText={errors.addedby && errors.addedby.message}
-                                label="Added By"
+                                placeholder="Ex: Upeksha Karunathilake (E00003)"
                                 size="small"
+                                label="Added By *"
+                                disabled={action === "Edit"}
                             />
                         )}
                         control={control}

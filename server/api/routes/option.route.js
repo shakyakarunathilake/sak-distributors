@@ -158,7 +158,7 @@ router.get("/employee-options-for-admin", (req, res, next) => {
 })
 
 //Get all employee options for admin
-router.get("/employee-options-for-supplier", (req, res, next) => {
+router.get("/all-active-employees", (req, res, next) => {
 
     Employee
         .find()
@@ -166,14 +166,16 @@ router.get("/employee-options-for-supplier", (req, res, next) => {
         .then(doc => {
 
             const candidates = doc.filter(x =>
-                x.designation === 'Manager' && x.employeestatus === 'Active'
+                x.employeestatus === 'Active'
             );
 
             const employeeOptions = candidates.map(x => ({
-                title: `${x.employeeid} : ${x.firstname} ${x.lastname} (${x.designation})`,
-                id: x.employeeid
+                title: `${x.firstname} ${x.lastname} (${x.employeeid})`,
+                id: `${x.firstname} ${x.lastname} (${x.employeeid})`
             }))
 
+            employeeOptions.unshift({ title: "", id: "" });
+            
             res.status(201).json({
                 message: "Handeling GET requests to /employee-options-for-supplier",
                 employeeOptions: employeeOptions,
