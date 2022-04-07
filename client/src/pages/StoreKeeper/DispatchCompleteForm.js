@@ -63,7 +63,8 @@ export default function DispatchCompleteForm(props) {
         action,
         addOrEdit,
         GINRecords,
-        inChargeOptions
+        inChargeOptions,
+        vehicleOptions
     } = props;
 
     const { formState: { isValid, errors }, getValues, control, handleSubmit, setValue } = useForm({
@@ -78,6 +79,12 @@ export default function DispatchCompleteForm(props) {
     const handleInChargeChange = (event, option) => {
         if (option) {
             setValue("incharge", option.title);
+        }
+    }
+
+    const handleVehicleChange = (event, option) => {
+        if (option) {
+            setValue("vehicle", option.title);
         }
     }
 
@@ -158,24 +165,33 @@ export default function DispatchCompleteForm(props) {
                             />
                         </ThemeProvider>
 
-                        <Controller
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    fullWidth={true}
-                                    error={errors.vehicle ? true : false}
-                                    helperText={errors.vehicle && errors.vehicle.message}
-                                    placeholder="Ex: Van (PND 8430)"
-                                    margin="dense"
-                                    label="Vehicle *"
-                                />
-                            )}
-                            control={control}
-                            name={"vehicle"}
-                            rules={{
-                                required: { value: true, message: "Required *" },
-                            }}
-                        />
+                        <ThemeProvider theme={theme}>
+                            <Controller
+                                render={() => (
+                                    <Autocomplete
+                                        options={vehicleOptions || []}
+                                        getOptionLabel={(option) => option.title}
+                                        onChange={handleVehicleChange}
+                                        renderInput={(params) => (
+                                            <MuiTextField
+                                                {...params}
+                                                helperText={errors.vehicle && errors.vehicle.message}
+                                                error={errors.vehicle ? true : false}
+                                                variant="outlined"
+                                                margin="dense"
+                                                placeholder="Ex: Van (PND 8430)"
+                                                label="Vehicle *"
+                                            />
+                                        )}
+                                    />
+                                )}
+                                control={control}
+                                name={"vehicle"}
+                                rules={{
+                                    required: { value: true, message: "Required *" },
+                                }}
+                            />
+                        </ThemeProvider>
 
                     </div>
                 }
