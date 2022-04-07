@@ -9,6 +9,7 @@ import MuiAlert from '@mui/material/Alert';
 
 //Styles
 import style from './ManageProduct.module.scss';
+import { makeStyles } from '@material-ui/core/styles';
 
 //Material UI 
 import { Button } from '@material-ui/core';
@@ -31,7 +32,26 @@ const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
+const useStyles = makeStyles({
+    tablehead: {
+        position: 'sticky',
+        top: 0,
+        zIndex: 999
+    },
+    row: {
+        "& .MuiTableCell-head": {
+            color: "white",
+            backgroundColor: "#20369f",
+            fontSize: "0.8em",
+            border: "none",
+            padding: "16px"
+        },
+    },
+});
+
 export default function ManageProduct() {
+
+    const classes = useStyles();
 
     const [type, setType] = useState();
     const [open, setOpen] = useState(false);
