@@ -37,7 +37,6 @@ export default function ManageSupplier() {
 
     const [records, setRecords] = useState([]);
 
-    const [employeeOptions, setEmployeeOptions] = useState(null);
     const [supplierRecords, setSupplierRecords] = useState(null);
     const [action, setAction] = useState('');
     const [openPopup, setOpenPopup] = useState(false);
@@ -153,22 +152,6 @@ export default function ManageSupplier() {
             });
     }
 
-    const getEmployeeOptions = () => {
-        axios
-            .get("http://localhost:8080/options/employee-options-for-supplier", {
-                headers: {
-                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
-                }
-            })
-            .then(res => {
-                setEmployeeOptions(res.data.employeeOptions);
-                setOpenPopup(true);
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    }
-
     return (
         <Page title="Manage Suppliers">
 
@@ -185,7 +168,6 @@ export default function ManageSupplier() {
                             () => {
                                 setAction('Create');
                                 getNextSupplierId();
-                                getEmployeeOptions();
                                 setOpenPopup(true);
                                 setSupplierRecords(null);
                             }
@@ -320,7 +302,6 @@ export default function ManageSupplier() {
                                                 icon: 'edit',
                                                 tooltip: 'Edit',
                                                 onClick: (event, rowData) => {
-                                                    getEmployeeOptions();
                                                     setAction('Edit');
                                                     openInPopup(rowData.supplierid);
                                                 }
@@ -354,7 +335,6 @@ export default function ManageSupplier() {
                         <SupplierForm
                             addOrEdit={addOrEdit}
                             supplierRecords={supplierRecords}
-                            employeeOptions={employeeOptions}
                             setOpenPopup={setOpenPopup}
                             nextSupId={nextSupId}
                             action={action}
