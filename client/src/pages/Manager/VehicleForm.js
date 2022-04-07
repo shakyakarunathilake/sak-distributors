@@ -11,7 +11,7 @@ import StepTwo from './VehicleFormStepTwo';
 
 export default function VehicleForm(props) {
 
-    const { setOpenPopup, addOrEdit, vehicleRecords, action } = props;
+    const { handleClosePopUp, addOrEdit, vehicleRecords, action } = props;
 
     const today = new Date();
 
@@ -23,7 +23,7 @@ export default function VehicleForm(props) {
     const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
     const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
 
-    const { handleSubmit, formState: { errors, isValid }, control, reset, trigger, getValues, watch } = useForm({
+    const { handleSubmit, formState: { errors, isValid }, control, reset, trigger, setValue, getValues, watch } = useForm({
         mode: "all",
         defaultValues: {
             licenseplatenumber: vehicleRecords ? vehicleRecords.licenseplatenumber : '',
@@ -37,7 +37,8 @@ export default function VehicleForm(props) {
             title: vehicleRecords ? vehicleRecords.title : '',
             contactperson: vehicleRecords ? vehicleRecords.contactperson : '',
             contactnumber: vehicleRecords ? vehicleRecords.contactnumber : '',
-            rateperday: vehicleRecords ? vehicleRecords.rateperday : '',
+            rate: vehicleRecords ? vehicleRecords.rate : '',
+            per: vehicleRecords ? vehicleRecords.per : '',
         }
     });
 
@@ -54,7 +55,6 @@ export default function VehicleForm(props) {
     const backFormStep = () => {
         setFormStep(x => x - 1);
     }
-
 
     const onSubmit = () => {
         const customerFormData = new formData();
@@ -91,12 +91,13 @@ export default function VehicleForm(props) {
                 <section className={formStep === 0 ? style.visible : style.hidden}>
 
                     <StepOne
-                        watch={watch}
                         errors={errors}
                         control={control}
                         completeFormStep={completeFormStep}
                         action={action}
-                        setOpenPopup={setOpenPopup}
+                        handleClosePopUp={handleClosePopUp}
+                        watch={watch}
+                        setValue={setValue}
                         resetForm={resetForm}
                     />
 
@@ -110,7 +111,7 @@ export default function VehicleForm(props) {
                     <StepTwo
                         watch={watch}
                         action={action}
-                        setOpenPopup={setOpenPopup}
+                        handleClosePopUp={handleClosePopUp}
                         control={control}
                         backFormStep={backFormStep}
                         onSubmit={onSubmit}

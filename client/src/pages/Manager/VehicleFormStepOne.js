@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import classnames from 'classnames';
 
 import { Controller } from 'react-hook-form';
@@ -28,9 +28,9 @@ export default function VehicleFormStepOne(props) {
         control,
         completeFormStep,
         action,
-        setOpenPopup,
+        handleClosePopUp,
         watch,
-        resetForm
+        resetForm,
     } = props;
 
     return (
@@ -49,7 +49,7 @@ export default function VehicleFormStepOne(props) {
                     <div>
                         <HighlightOffIcon
                             className={style.icon}
-                            onClick={() => { setOpenPopup(false) }}
+                            onClick={handleClosePopUp}
                         />
                     </div>
 
@@ -79,6 +79,7 @@ export default function VehicleFormStepOne(props) {
                                 placeholder="Ex: 6TRJ244 "
                                 size="small"
                                 label="Licenses Plate Number *"
+                                disabled={action === "Edit"}
                             />
                         )}
                         control={control}
@@ -95,7 +96,7 @@ export default function VehicleFormStepOne(props) {
                                 fullWidth={true}
                                 error={errors.vehicle ? true : false}
                                 helperText={errors.vehicle && errors.vehicle.message}
-                                placeholder="Ex: 6TRJ244 "
+                                placeholder="Ex: Box Truck "
                                 size="small"
                                 label="Vehicle *"
                             />
@@ -139,8 +140,7 @@ export default function VehicleFormStepOne(props) {
                                 {...field}
                                 options={[
                                     { id: "t01", title: "Company's" },
-                                    { id: "t03", title: "Employee's" },
-                                    { id: "t02", title: "Rent" },
+                                    { id: "t03", title: "Rent" },
                                 ]}
                                 error={errors.ownership ? true : false}
                                 helperText={errors.ownership && errors.ownership.message}
@@ -170,6 +170,7 @@ export default function VehicleFormStepOne(props) {
                                 placeholder="Ex: Upeksha Karunathilake (E00003)"
                                 size="small"
                                 label="Added By *"
+                                disabled={action === "Edit"}
                             />
                         )}
                         control={control}
@@ -187,6 +188,7 @@ export default function VehicleFormStepOne(props) {
                                 helperText={errors.addeddate && errors.addeddate.message}
                                 size="small"
                                 label="Adding Date *"
+                                disabled={action === "Edit"}
                             />
                         )}
                         control={control}
@@ -211,18 +213,18 @@ export default function VehicleFormStepOne(props) {
                                 fullWidth={true}
                                 error={errors.vehicleowner ? true : false}
                                 helperText={errors.vehicleowner && errors.vehicleowner.message}
-                                placeholder="Ex: A H R Rent A Car / Lasitha Abeynayaka"
+                                placeholder="Ex: A H R Rent A Vehicle"
                                 size="small"
-                                label="Owner Name / Rented from"
+                                label="Vehicle Owner *"
                                 className={style.field}
-                                disabled={watch("ownership") === "Company's"}
+                                disabled={watch("ownership") !== "Rent"}
                             />
                         )}
                         control={control}
                         name={"vehicleowner"}
                         rules={{
                             required: {
-                                value: watch("ownership") === "Company's" ? false : true,
+                                value: watch("ownership") !== "Rent" ? false : true,
                                 message: "Required *"
                             }
                         }}
@@ -241,9 +243,9 @@ export default function VehicleFormStepOne(props) {
                                 helperText={errors.rate && errors.rate.message}
                                 placeholder="999.99"
                                 size="small"
-                                label="Rate"
+                                label="Rate *"
                                 className={style.field}
-                                disabled={watch("ownership") === "Company's"}
+                                disabled={watch("ownership") !== "Rent"}
                                 type="number"
                                 InputProps={{
                                     endAdornment: (
@@ -258,7 +260,7 @@ export default function VehicleFormStepOne(props) {
                         name={"rate"}
                         rules={{
                             required: {
-                                value: watch("ownership") === "Company's" ? false : true,
+                                value: watch("ownership") !== "Rent" ? false : true,
                                 message: "Required *"
                             },
                             pattern: { value: /^[0-9]+\.[0-9]{2}$/, message: "Invalid" }
@@ -275,16 +277,16 @@ export default function VehicleFormStepOne(props) {
                                 size="small"
                                 label="Per *"
                                 className={style.field}
-                                disabled={watch("ownership") === "Company's"}
+                                disabled={watch("ownership") !== "Rent"}
                             />
                         )}
                         control={control}
                         name={"per"}
                         rules={{
                             required: {
-                                value: watch("ownership") === "Company's" ? false : true,
+                                value: watch("ownership") !== "Rent" ? false : true,
                                 message: "Required *"
-                            },
+                            }
                         }}
                     />
 
@@ -303,14 +305,14 @@ export default function VehicleFormStepOne(props) {
                                 size="small"
                                 label="Contact Number"
                                 className={style.field}
-                                disabled={watch("ownership") === "Company's"}
+                                disabled={watch("ownership") !== "Rent"}
                             />
                         )}
                         control={control}
                         name={"contactnumber"}
                         rules={{
                             required: {
-                                value: watch("ownership") === "Company's" ? false : true,
+                                value: watch("ownership") !== "Rent" ? false : true,
                                 message: "Required *"
                             },
                             pattern: { value: /^[0-9]{10}$/, message: "Invalid" }
@@ -326,14 +328,14 @@ export default function VehicleFormStepOne(props) {
                                 helperText={errors.title && errors.title.message}
                                 size="small"
                                 label="Title *"
-                                disabled={watch("ownership") === "Company's"}
+                                disabled={watch("ownership") !== "Rent"}
                             />
                         )}
                         control={control}
                         name={"title"}
                         rules={{
                             required: {
-                                value: watch("ownership") === "Company's" ? false : true,
+                                value: watch("ownership") !== "Rent" ? false : true,
                                 message: "Required *"
                             },
                         }}
@@ -350,14 +352,14 @@ export default function VehicleFormStepOne(props) {
                                 size="small"
                                 label="Contact Person *"
                                 className={style.field}
-                                disabled={watch("ownership") === "Company's"}
+                                disabled={watch("ownership") !== "Rent"}
                             />
                         )}
                         control={control}
                         name={"contactperson"}
                         rules={{
                             required: {
-                                value: watch("ownership") === "Company's" ? false : true,
+                                value: watch("ownership") !== "Rent" ? false : true,
                                 message: "Required *"
                             }
                         }}
@@ -378,14 +380,14 @@ export default function VehicleFormStepOne(props) {
                                 size="small"
                                 label="Address*"
                                 className={style.field}
-                                disabled={watch("ownership") === "Company's"}
+                                disabled={watch("ownership") !== "Rent"}
                             />
                         )}
                         control={control}
                         name={"address"}
                         rules={{
                             required: {
-                                value: watch("ownership") === "Company's" ? false : true,
+                                value: watch("ownership") !== "Rent" ? false : true,
                                 message: "Required *"
                             }
                         }}

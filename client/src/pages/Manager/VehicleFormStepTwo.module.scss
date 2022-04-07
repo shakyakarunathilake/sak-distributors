@@ -42,9 +42,9 @@
 
         .row {
             display: grid;
-            grid-template-columns: 200px calc(100% - 230px);
-            grid-column-gap: 30px;
-            padding: 8px 20px;
+            grid-template-columns: 150px calc(100% - 170px);
+            grid-column-gap: 20px;
+            padding: 8px;
 
             .boldText {
                 font-size: 1em;

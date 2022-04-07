@@ -17,7 +17,7 @@ export default function VehicleFormStepTwo(props) {
         watch,
         control,
         action,
-        setOpenPopup,
+        handleClosePopUp,
         onSubmit,
         backFormStep
     } = props;
@@ -39,7 +39,7 @@ export default function VehicleFormStepTwo(props) {
                     <div>
                         <HighlightOffIcon
                             className={style.icon}
-                            onClick={() => { setOpenPopup(false) }}
+                            onClick={handleClosePopUp}
                         />
                     </div>
 
@@ -193,7 +193,7 @@ export default function VehicleFormStepTwo(props) {
                 }
 
                 {
-                    watch("ownership") !== "Company's" &&
+                    watch("ownership") === "Rent" &&
                     <div className={style.row}>
 
                         <div className={style.boldText}>
@@ -226,7 +226,7 @@ export default function VehicleFormStepTwo(props) {
                 }
 
                 {
-                    watch("ownership") !== "Company's" &&
+                    watch("ownership") === "Rent" &&
                     <div className={style.row}>
 
                         <div className={style.boldText}>
@@ -249,7 +249,7 @@ export default function VehicleFormStepTwo(props) {
                 }
 
                 {
-                    watch("ownership") !== "Company's" &&
+                    watch("ownership") === "Rent" &&
                     <div className={style.row}>
 
                         <div className={style.boldText}>

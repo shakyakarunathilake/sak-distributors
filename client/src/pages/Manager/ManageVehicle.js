@@ -71,6 +71,12 @@ export default function ManageVehicle() {
             })
     }, [reRender]);
 
+    const handleClosePopUp = () => {
+        setOpenPopup(false)
+        setVehicleRecords(null)
+        setAction('');
+    }
+
     const addOrEdit = (vehicle, licenseplatenumber) => {
 
         for (let [key, value] of vehicle.entries()) {
@@ -79,7 +85,7 @@ export default function ManageVehicle() {
 
         if (action === "Create") {
             axios
-                .post("http://localhost:8080/vehicles/create-vehicle", vehicle, {
+                .post("http://localhost:8080/vehicles/add-vehicle", vehicle, {
                     headers: {
                         'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
                     }
@@ -98,7 +104,7 @@ export default function ManageVehicle() {
 
         if (action === "Edit") {
             axios
-                .post(`http://localhost:8080/vehicles/update-by-id/${licenseplatenumber}`, vehicle, {
+                .post(`http://localhost:8080/vehicles/update-by-licenseplatenumber/${licenseplatenumber}`, vehicle, {
                     headers: {
                         'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
                     }
@@ -115,9 +121,7 @@ export default function ManageVehicle() {
             ;
         }
 
-        setVehicleRecords(null)
-        setOpenPopup(false);
-        setAction('');
+        handleClosePopUp();
     }
 
     const openInPopup = licenseplatenumber => {
@@ -151,7 +155,6 @@ export default function ManageVehicle() {
                         onClick={
                             () => {
                                 setAction('Create');
-                                setVehicleRecords(null);
                                 setOpenPopup(true);
                             }
                         }
@@ -178,7 +181,7 @@ export default function ManageVehicle() {
                                                 title: "License Plate No.",
                                                 field: "licenseplatenumber",
                                                 cellStyle: {
-                                                    width: "15%",
+                                                    width: "14%",
                                                     textAlign: 'left'
                                                 },
                                                 render: rowData => {
@@ -191,7 +194,7 @@ export default function ManageVehicle() {
                                                 title: "Vehicle",
                                                 field: "vehicle",
                                                 cellStyle: {
-                                                    width: "15%",
+                                                    width: "14%",
                                                     textAlign: 'left'
                                                 }
                                             },
@@ -199,7 +202,7 @@ export default function ManageVehicle() {
                                                 title: "Ownership",
                                                 field: "ownership",
                                                 cellStyle: {
-                                                    width: "15%",
+                                                    width: "14%",
                                                     textAlign: 'left'
                                                 }
                                             },
@@ -207,7 +210,15 @@ export default function ManageVehicle() {
                                                 title: "Owner",
                                                 field: "vehicleowner",
                                                 cellStyle: {
-                                                    width: "40%",
+                                                    width: "33%",
+                                                    textAlign: 'left'
+                                                }
+                                            },
+                                            {
+                                                title: "Rate (Rs)",
+                                                field: "rate",
+                                                cellStyle: {
+                                                    width: "15%",
                                                     textAlign: 'left'
                                                 }
                                             },
@@ -215,8 +226,15 @@ export default function ManageVehicle() {
                                                 title: "Status",
                                                 field: "status",
                                                 cellStyle: {
-                                                    width: "15%",
+                                                    width: "10%",
                                                     textAlign: 'left'
+                                                },
+                                                render: rowData => {
+                                                    return (
+                                                        rowData.status === "Active" ?
+                                                            <p style={{ padding: "0", margin: "0", color: "#4cbb17", fontWeight: "700" }}>{rowData.status}</p> :
+                                                            <p style={{ padding: "0", margin: "0", color: "#FC6A03", fontWeight: "700" }}>{rowData.status}</p>
+                                                    )
                                                 }
                                             },
                                         ]}
@@ -246,16 +264,16 @@ export default function ManageVehicle() {
                                                 icon: VisibilityIcon,
                                                 tooltip: 'View',
                                                 onClick: (event, rowData) => {
-                                                    setAction('View');
                                                     openInPopup(rowData.licenseplatenumber);
+                                                    setAction('View');
                                                 }
                                             },
                                             {
                                                 icon: 'edit',
                                                 tooltip: 'Edit',
                                                 onClick: (event, rowData) => {
-                                                    setAction('Edit');
                                                     openInPopup(rowData.licenseplatenumber);
+                                                    setAction('Edit');
                                                 }
                                             }
                                         ]}
@@ -278,7 +296,7 @@ export default function ManageVehicle() {
                         action === 'View' &&
                         <ViewVehicle
                             vehicleRecords={vehicleRecords}
-                            setOpenPopup={setOpenPopup}
+                            handleClosePopUp={handleClosePopUp}
                             setAction={setAction}
                             action={action}
                         />
@@ -289,7 +307,7 @@ export default function ManageVehicle() {
                         <VehicleForm
                             addOrEdit={addOrEdit}
                             vehicleRecords={vehicleRecords}
-                            setOpenPopup={setOpenPopup}
+                            handleClosePopUp={handleClosePopUp}
                             action={action}
                         />
                     }
