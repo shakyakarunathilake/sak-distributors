@@ -344,15 +344,6 @@ export default function ManageGIN() {
                                                     openInPopup(rowData.ginnumber);
                                                 }
                                             },
-                                            // (rowData) => ({
-                                            //     disabled: rowData.status === 'Dispatched' || rowData.status === 'Complete' || designation === "Delivery Representative",
-                                            //     icon: 'edit',
-                                            //     tooltip: 'Edit',
-                                            //     onClick: (event, rowData) => {
-                                            //         setAction('Edit');
-                                            //         openInPopup(rowData.ginnumber);
-                                            //     }
-                                            // }),
                                             (rowData) => ({
                                                 disabled: rowData.status !== 'Processing' || designation === "Delivery Representative",
                                                 icon: LocalShippingIcon,
@@ -363,15 +354,6 @@ export default function ManageGIN() {
                                                     openInPopup(rowData.ginnumber);
                                                 }
                                             }),
-                                            // (rowData) => ({
-                                            //     disabled: designation !== "Delivery Representative" || rowData.status === "Complete",
-                                            //     icon: DoneIcon,
-                                            //     tooltip: 'Complete',
-                                            //     onClick: (event, rowData) => {
-                                            //         setAction('Complete');
-                                            //         openInPopup(rowData.ginnumber);
-                                            //     }
-                                            // }),
                                         ]}
                                     />
 
