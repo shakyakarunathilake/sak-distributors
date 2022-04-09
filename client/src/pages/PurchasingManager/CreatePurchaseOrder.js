@@ -26,7 +26,11 @@ export default function CreatePurchaseOrder(props) {
     console.log(today.getHours())
     const dateTime = date + ' ' + time;
 
-    const podate = today.getFullYear().toString().substr(-2) + (today.getMonth() + 1) + today.getDate() + today.getHours() + today.getMinutes();
+    const podate = today.getFullYear() +
+        (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) +
+        (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`) +
+        (today.getHours() > 9 ? today.getHours() : `0${today.getHours()}`) +
+        (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`);
 
     const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
     const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
