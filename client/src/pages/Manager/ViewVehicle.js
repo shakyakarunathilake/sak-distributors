@@ -6,7 +6,7 @@ import StepTwo from './VehicleFormStepTwo';
 
 export default function ViewVehicle(props) {
 
-    const { setOpenPopup, setAction, vehicleRecords, action } = props;
+    const { setOpenPopup, vehicleRecords, action } = props;
 
     const { handleSubmit, control, watch } = useForm({
         defaultValues: {

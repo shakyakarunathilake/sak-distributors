@@ -87,11 +87,6 @@ export default function VariantForm(props) {
         }
     }
 
-    // Handle Image Upload
-    const handleImageChange = e => {
-        setFile(URL.createObjectURL(e.target.files[0]));
-    }
-
     const resetForm = () => {
         setFile("");
         reset();
@@ -149,7 +144,6 @@ export default function VariantForm(props) {
                         action={action}
                         handleClosePopUp={handleClosePopUp}
                         employeeOptions={employeeOptions}
-                        handleImageChange={handleImageChange}
                         handleProductChange={handleProductChange}
                         productOptions={productOptions}
                         resetForm={resetForm}
