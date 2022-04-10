@@ -23,7 +23,7 @@ export default function ViewOrderDetails() {
         if (JSON.parse(localStorage.getItem(ordernumber)) != null) {
             setData(JSON.parse(localStorage.getItem(ordernumber)).items);
         }
-    }, [])
+    }, [ordernumber])
 
     const { control, watch } = useForm({
         defaultValues: {
@@ -58,7 +58,7 @@ export default function ViewOrderDetails() {
     }
 
     return (
-        <div className={style.one}>
+        <div className={style.container}>
 
             <div className={style.header}>
 
