@@ -5,4 +5,48 @@
     width: 100vw;
     padding: 20px;
     box-sizing: border-box;
+
+    .icon {
+        display: none;
+    }
+
+    .grnNumber {
+        padding: 0;
+        margin: 0;
+        color: #1338bd;
+        font-weight: 700;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    .grnNumber:hover .icon {
+        display: inline;
+        cursor: pointer;
+        font-size: 1.2em;
+        vertical-align: text-bottom;
+        padding: 0 0 0 5px;
+        color: $secondaryFontColor;
+    }
+
+    .ginNumber {
+        padding: 0;
+        margin: 0;
+        color: #fc6a03;
+        font-weight: 700;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    .ginNumber:hover .icon {
+        display: inline;
+        cursor: pointer;
+        font-size: 1.2em;
+        vertical-align: text-bottom;
+        padding: 0 0 0 5px;
+        color: $secondaryFontColor;
+    }
 }
