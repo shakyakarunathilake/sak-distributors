@@ -9,8 +9,10 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import style from './ViewOrderDetails.module.scss';
 
 //Rows
-import RowOne from './RowOne';
-import RowTwo from './RowTwo';
+import RegisteredCustomerRowOne from './RegisteredCustomerRowOne';
+import RegisteredCustomerRowTwo from './RegisteredCustomerRowTwo';
+import UnregisteredCustomerRowOne from './UnregisteredCustomerRowOne';
+import UnregisteredCustomerRowTwo from './UnregisteredCustomerRowTwo';
 
 export default function ViewOrderDetails() {
 
@@ -76,18 +78,39 @@ export default function ViewOrderDetails() {
 
                 <div className={style.rowOne}>
 
-                    <RowOne
-                        control={control}
-                    />
+                    {
+                        watch("customertype") === "Registered Customer" &&
+                        <RegisteredCustomerRowOne
+                            control={control}
+                        />
+                    }
+
+                    {
+                        watch("customertype") === "Unregistered Customer" &&
+                        <UnregisteredCustomerRowOne
+                            control={control}
+                        />
+                    }
 
                 </div>
 
                 <div className={style.rowTwo}>
 
-                    <RowTwo
-                        data={data}
-                        watch={watch}
-                    />
+                    {
+                        watch("customertype") === "Registered Customer" &&
+                        <RegisteredCustomerRowTwo
+                            data={data}
+                            watch={watch}
+                        />
+                    }
+
+                    {
+                        watch("customertype") === "Unregistered Customer" &&
+                        <UnregisteredCustomerRowTwo
+                            watch={watch}
+                            data={data}
+                        />
+                    }
 
                 </div>
 

@@ -19,7 +19,7 @@ import MaterialTable from 'material-table';
 import NumberWithCommas from '../NumberWithCommas';
 
 //Style
-import style from './RowTwo.module.scss';
+import style from './UnregisteredCustomerRowTwo.module.scss';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
@@ -48,7 +48,7 @@ const useStyles = makeStyles({
     }
 });
 
-export default function RowTwo(props) {
+export default function UnregisteredCustomerRowTwo(props) {
 
     const { data, watch } = props;
 
@@ -60,7 +60,7 @@ export default function RowTwo(props) {
 
             <AutoSizer>
                 {({ height, width }) => {
-                    const pageSize = Math.floor((height - 250) / 48);
+                    const pageSize = Math.floor((height - 160) / 48);
 
                     return (
                         <div style={{ height: `${height}px`, width: `${width}px`, overflowY: 'auto' }}>
@@ -74,31 +74,11 @@ export default function RowTwo(props) {
                                         }} >
                                             <Grid container style={{ background: "#f5f5f5", padding: 5 }}>
                                                 <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '300px' }}>
-                                                    <Typography style={{ fontWeight: 600 }}>  Previous credit amount to settle (Rs.) </Typography>
-                                                </Grid>
-                                                <Grid item align="Right" style={{ margin: "0px 10px  0px 0px", width: '100px' }}>
-                                                    <Typography style={{ fontWeight: 600 }}>
-                                                        {NumberWithCommas(watch('creditamounttosettle'))}
-                                                    </Typography>
-                                                </Grid>
-                                            </Grid>
-                                            <Grid container style={{ background: "#f5f5f5", padding: 5 }}>
-                                                <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '300px' }}>
                                                     <Typography style={{ fontWeight: 600 }}>  Current Invoice Total (Rs.) </Typography>
                                                 </Grid>
                                                 <Grid item align="Right" style={{ margin: "0px 10px  0px 0px", width: '100px' }}>
                                                     <Typography style={{ fontWeight: 600 }}>
                                                         {NumberWithCommas(watch('total'))}
-                                                    </Typography>
-                                                </Grid>
-                                            </Grid>
-                                            <Grid container style={{ background: "#f5f5f5", padding: 5 }}>
-                                                <Grid item align="Left" style={{ margin: "0px 120px 0px auto", width: '300px' }}>
-                                                    <Typography style={{ fontWeight: 600 }}>  Current Invoice Credit Amount (Rs.) </Typography>
-                                                </Grid>
-                                                <Grid item align="Right" style={{ margin: "0px 10px  0px 0px", width: '100px' }}>
-                                                    <Typography style={{ fontWeight: 600 }}>
-                                                        {NumberWithCommas(watch('currentinvoicecreditamount'))}
                                                     </Typography>
                                                 </Grid>
                                             </Grid>
