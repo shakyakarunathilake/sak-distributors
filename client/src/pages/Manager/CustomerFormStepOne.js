@@ -1,6 +1,5 @@
 import React from 'react';
 import classnames from 'classnames';
-
 import { Controller } from 'react-hook-form';
 
 //Development Stage
@@ -57,7 +56,7 @@ export default function CustomerFormStepOne(props) {
                 </div>
 
             </div>
-            
+
             <div className={style.body}>
 
                 <div className={style.redFont}>
