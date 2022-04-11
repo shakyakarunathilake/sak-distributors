@@ -40,7 +40,7 @@ import SalesAndInvoice from '../pages/SalesRepresentative/SalesAndInvoice';
 import DoughnutChart from '../pages/Analytics/DoughnutChart';
 import VerticalBarChart from '../pages/Analytics/VerticalBarChart';
 import HorizontalBarChart from '../pages/Analytics/HorizontalBarChart';
-import LineChart from '../pages/Analytics/LineChart';
+import SalesAnalytics from '../pages/Analytics/SalesAnalytics';
 
 const theme = createTheme({
   palette: {
@@ -74,10 +74,7 @@ function App() {
           <Switch>
 
             {/* Development Stage */}
-            <Route exact path='/doughnut-chart' component={DoughnutChart} />
-            <Route exact path='/vertical-bar-chart' component={VerticalBarChart} />
-            <Route exact path='/horizontal-bar-chart' component={HorizontalBarChart} />
-            <Route exact path='/line-chart' component={LineChart} />
+            <Route exact path='/sales-analytics' component={SalesAnalytics} />
 
             {/* Shared */}
             <Route exact path='/' component={Login} />
