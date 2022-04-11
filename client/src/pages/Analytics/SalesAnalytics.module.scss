@@ -1,0 +1,55 @@
+@import "../../styles/variables";
+
+.container {
+    display: grid;
+    grid-template-columns: 20% 80%;
+    height: calc(100vh - 86px);
+    box-sizing: border-box;
+    padding: 20px;
+
+    .form {
+        display: grid;
+        grid-template-rows: auto min-content;
+
+        .toggleButtonDiv {
+            display: grid;
+            grid-template-rows: auto auto auto;
+
+            .toggleButton {
+                margin: auto 0;
+
+                .redFontCenter {
+                    color: red;
+                    text-align: center;
+                    font-size: 0.7em;
+                }
+            }
+        }
+
+        .btnDiv {
+            margin: 10px auto;
+
+            Button {
+                font-size: 1em;
+                height: 40px;
+                padding: $formButtonPadding2;
+            }
+
+            .fetchButton {
+                background-color: $primaryMain;
+                color: $inverseFontColor;
+                margin: 0 20px 0 0;
+            }
+
+            .resetButton {
+                background-color: $secondaryMain;
+                color: $inverseFontColor;
+            }
+        }
+    }
+
+    .chart {
+        display: grid;
+        height: calc(100vh - 126px);
+    }
+}
