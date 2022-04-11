@@ -40,27 +40,9 @@ const getDistributorListItems = [
         icon: <TimelineIcon />
     },
     {
-        id: "Doughnut Chart",
-        title: "Doughnut Chart",
-        path: "http://localhost:3000/doughnut-chart",
-        icon: <TimelineIcon />
-    },
-    {
-        id: "Vertical Bar Chart",
-        title: "Vertical Bar Chart",
-        path: "http://localhost:3000/vertical-bar-chart",
-        icon: <TimelineIcon />
-    },
-    {
-        id: "Horizontal Bar Chart",
-        title: "Horizontal Bar Chart",
-        path: "http://localhost:3000/horizontal-bar-chart",
-        icon: <TimelineIcon />
-    },
-    {
-        id: "Line Chart",
-        title: "Line Chart",
-        path: "http://localhost:3000/line-chart",
+        id: "Sales Analytics",
+        title: "Sales Analytics",
+        path: "http://localhost:3000/sales-analytics",
         icon: <TimelineIcon />
     },
 ];
@@ -144,12 +126,6 @@ const getPurchasingManagerListItems = [
         path: "http://localhost:3000/purchasing-manager/manage-purchase-orders",
         icon: <ListAltIcon />
     },
-    // {
-    //     id: "Create Purchase Order",
-    //     title: "Create Purchase Order",
-    //     path: "http://localhost:3000/purchasing-manager/create-purchase-order",
-    //     icon: <AddCircleIcon />
-    // },
     {
         id: "Manage Quotations",
         title: "Manage Quotations",
