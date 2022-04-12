@@ -1,10 +1,9 @@
 import React from 'react';
 import { Line } from 'react-chartjs-2';
 
-
 export default function LineChart(props) {
 
-    const { labels, dataSets } = props;
+    const { label, labels, chartData, } = props;
 
     const options = {
         responsive: true,
@@ -21,7 +20,15 @@ export default function LineChart(props) {
 
     const data = {
         labels,
-        datasets: dataSets,
+        datasets: [
+            {
+                label: label,
+                data: chartData,
+                borderColor: 'rgb(255, 99, 132)',
+                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                fill: false
+            }
+        ]
     };
 
     return (

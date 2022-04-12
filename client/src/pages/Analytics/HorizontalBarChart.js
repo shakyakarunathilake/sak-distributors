@@ -3,7 +3,7 @@ import { HorizontalBar } from 'react-chartjs-2';
 
 export default function HorizontalBarChart(props) {
 
-    const { labels, dataSets } = props;
+    const { label, labels, chartData, } = props;
 
     const options = {
         indexAxis: 'y',
@@ -24,9 +24,18 @@ export default function HorizontalBarChart(props) {
         },
     };
 
+
+
     const data = {
         labels,
-        datasets: dataSets,
+        datasets: [
+            {
+                label: label,
+                data: chartData,
+                borderColor: 'rgb(255, 99, 132)',
+                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            }
+        ]
     };
 
     return (

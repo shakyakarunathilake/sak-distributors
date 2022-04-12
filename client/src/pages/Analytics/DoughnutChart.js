@@ -3,12 +3,12 @@ import { Doughnut } from 'react-chartjs-2';
 
 export default function DoughnutChart(props) {
 
-    const { labels, dataSets } = props;
+    const { labels, chartData } = props;
 
     const data = {
         labels: labels,
         datasets: [{
-            data: dataSets,
+            data: chartData,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',

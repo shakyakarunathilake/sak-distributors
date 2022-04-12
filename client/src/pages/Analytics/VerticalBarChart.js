@@ -3,7 +3,7 @@ import { Bar } from 'react-chartjs-2';
 
 export default function VerticalBarChar(props) {
 
-    const { labels, dataSets } = props;
+    const { label, labels, chartData, } = props;
 
     const options = {
         responsive: true,
@@ -20,7 +20,13 @@ export default function VerticalBarChar(props) {
 
     const data = {
         labels,
-        datasets: dataSets
+        datasets: [
+            {
+                label: label,
+                data: chartData,
+                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            }
+        ]
     };
 
     return (
