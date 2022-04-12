@@ -55,7 +55,7 @@ router.get("/daily", (req, res, next) => {
                 message: "Handeling GET requests to /get-total-sales",
                 labels: labels,
                 chartData: chartData,
-                label: 'No. of Orders per Route'
+                label: 'No. of Orders per Sales Representative'
             })
         })
         .catch(err => {
