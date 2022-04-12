@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 //React Hook Form
 import { useForm } from 'react-hook-form';
@@ -27,8 +27,10 @@ import axios from 'axios';
 
 export default function SalesAnalytics() {
 
-    const [dataSets, setDataSets] = useState([]);
+    const [chartData, setChartData] = useState([]);
     const [labels, setLabels] = useState([]);
+    const [label, setLabel] = useState('');
+    const [fetched, setFetched] = useState(false);
 
     const { formState: { errors, isValid }, control, getValues, trigger, reset, watch } = useForm({
         mode: "all",
@@ -39,76 +41,71 @@ export default function SalesAnalytics() {
         }
     });
 
+    const renderCharts = () => (
+        <>
+            {
+                watch("charttype") === "line-chart" &&
+                < LineChart
+                    label={label}
+                    labels={labels}
+                    chartData={chartData}
+                />
+            }
+
+            {
+                watch("charttype") === "doughnut-chart" &&
+                <DoughnutChart
+                    labels={labels}
+                    chartData={chartData}
+                />
+            }
+
+            {
+                watch("charttype") === "horizontal-bar-chart" &&
+                <HorizontalBarChart
+                    label={label}
+                    labels={labels}
+                    chartData={chartData}
+                />
+            }
+
+            {
+                watch("charttype") === "vertical-bar-chart" &&
+                <VerticalBarChart
+                    label={label}
+                    labels={labels}
+                    chartData={chartData}
+                />
+            }
+        </>
+    );
+
+    const resetData = () => {
+        reset();
+        setChartData([]);
+        setLabels([]);
+        setLabel('');
+        setFetched(false);
+    }
+
     const onSubmit = () => {
         if (isValid) {
 
-            {
-                watch("analytics") === "Total Sales" &&
-                    axios
-                        .get(`http://localhost:8080/get-total-sales/${getValues("periodical").toLowerCase()}`, {
-                            headers: {
-                                'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
-                            }
-                        })
-                        .then(res => {
-                            setLabels(res.labels);
-                            setDataSets(res.dataSets);
-                        })
-                        .catch(err => {
-                            console.log(err);
-                        });
-            }
-
-            {
-                watch("analytics") === "Sales Per Customer" &&
-                    axios
-                        .get(`http://localhost:8080/get-sales-per-customer/${getValues("periodical").toLowerCase()}`, {
-                            headers: {
-                                'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
-                            }
-                        })
-                        .then(res => {
-                            setLabels(res.labels);
-                            setDataSets(res.dataSets);
-                        })
-                        .catch(err => {
-                            console.log(err);
-                        });
-            }
-
-            {
-                watch("analytics") === "Sales Per Route" &&
-                    axios
-                        .get(`http://localhost:8080/get-sales-per-route/${getValues("periodical").toLowerCase()}`, {
-                            headers: {
-                                'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
-                            }
-                        })
-                        .then(res => {
-                            setLabels(res.labels);
-                            setDataSets(res.dataSets);
-                        })
-                        .catch(err => {
-                            console.log(err);
-                        });
-            }
-
-            {
-                watch("analytics") === "Sales Per Sales Representative" &&
-                    axios
-                        .get(`http://localhost:8080/get-sales-per-sales-representative/${getValues("periodical").toLowerCase()}`, {
-                            headers: {
-                                'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
-                            }
-                        })
-                        .then(res => {
-                            setLabels(res.labels);
-                            setDataSets(res.dataSets);
-                        })
-                        .catch(err => {
-                            console.log(err);
-                        });
-            }
+            axios
+                .get(`http://localhost:8080/${getValues('analytics')}/${getValues("periodical")}`, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
+                .then(res => {
+                    setLabel(res.data.label);
+                    setLabels(res.data.labels);
+                    setChartData(res.data.chartData);
+                    setFetched(true);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
 
         } else {
             trigger();
@@ -134,56 +131,18 @@ export default function SalesAnalytics() {
                                         fullWidth
                                         orientation="vertical"
                                         exclusive
+                                        disabled={fetched}
                                     >
-                                        <ToggleButton value="Daily">
-                                            Daily
-                                        </ToggleButton>
-                                        <ToggleButton value="Weekly">
-                                            Weekly
-                                        </ToggleButton>
-                                        <ToggleButton value="Monthly">
-                                            Monthly
-                                        </ToggleButton>
-                                        <ToggleButton value="Yearly">
-                                            Yearly
-                                        </ToggleButton>
-                                    </ToggleButtonGroup>
-                                )}
-                                name={"periodical"}
-                                control={control}
-                                rules={{
-                                    required: { value: true, message: "Required *" }
-                                }}
-                            />
-
-                            <div className={style.redFontCenter}>
-                                {
-                                    errors.periodical && errors.periodical.message
-                                }
-                            </div>
-
-                        </div>
-
-                        <div className={style.toggleButton}>
-                            <Controller
-                                render={({ field }) => (
-                                    <ToggleButtonGroup
-                                        {...field}
-                                        color="primary"
-                                        fullWidth
-                                        orientation="vertical"
-                                        exclusive
-                                    >
-                                        <ToggleButton value="Total Sales">
+                                        <ToggleButton value="total-sales">
                                             Total Sales
                                         </ToggleButton>
-                                        <ToggleButton value="Sales per Customer">
+                                        <ToggleButton value="sales-per-customer">
                                             Sales per Customer
                                         </ToggleButton>
-                                        <ToggleButton value="Sales per Route">
+                                        <ToggleButton value="sales-per-route">
                                             Sales per Route
                                         </ToggleButton>
-                                        <ToggleButton value="Sales per Sales Rep.">
+                                        <ToggleButton value="sales-per-sales-representative">
                                             Sales per Sales Rep.
                                         </ToggleButton>
                                     </ToggleButtonGroup>
@@ -212,17 +171,58 @@ export default function SalesAnalytics() {
                                         fullWidth
                                         orientation="vertical"
                                         exclusive
+                                        disabled={fetched}
                                     >
-                                        <ToggleButton value="Line Chart">
+                                        <ToggleButton value="daily">
+                                            Daily
+                                        </ToggleButton>
+                                        <ToggleButton value="weekly">
+                                            Weekly
+                                        </ToggleButton>
+                                        <ToggleButton value="monthly">
+                                            Monthly
+                                        </ToggleButton>
+                                        <ToggleButton value="yearly">
+                                            Yearly
+                                        </ToggleButton>
+                                    </ToggleButtonGroup>
+                                )}
+                                name={"periodical"}
+                                control={control}
+                                rules={{
+                                    required: { value: true, message: "Required *" }
+                                }}
+                            />
+
+                            <div className={style.redFontCenter}>
+                                {
+                                    errors.periodical && errors.periodical.message
+                                }
+                            </div>
+
+                        </div>
+
+
+                        <div className={style.toggleButton}>
+                            <Controller
+                                render={({ field }) => (
+                                    <ToggleButtonGroup
+                                        {...field}
+                                        color="primary"
+                                        fullWidth
+                                        orientation="vertical"
+                                        exclusive
+                                    >
+                                        <ToggleButton value="line-chart">
                                             Line Chart
                                         </ToggleButton>
-                                        <ToggleButton value="Doughnut Chart">
+                                        <ToggleButton value="doughnut-chart">
                                             Doughnut Chart
                                         </ToggleButton>
-                                        <ToggleButton value="Horizontal Bar Chart">
+                                        <ToggleButton value="horizontal-bar-chart">
                                             Horizontal Bar Chart
                                         </ToggleButton>
-                                        <ToggleButton value="Vertical Bar Chart">
+                                        <ToggleButton value="vertical-bar-chart">
                                             Vertical Bar Chart
                                         </ToggleButton>
                                     </ToggleButtonGroup>
@@ -256,7 +256,7 @@ export default function SalesAnalytics() {
 
                         <Button
                             className={style.resetButton}
-                            onClick={() => reset()}
+                            onClick={resetData}
                             variant="contained"
                         >
                             Reset
@@ -269,35 +269,7 @@ export default function SalesAnalytics() {
                 <div className={style.chart}>
 
                     {
-                        watch("charttype") === "Line Chart" &&
-                        <LineChart
-                            labels={labels}
-                            dataSets={dataSets}
-                        />
-                    }
-
-                    {
-                        watch("charttype") === "Doughnut Chart" &&
-                        <DoughnutChart
-                            labels={labels}
-                            dataSets={dataSets}
-                        />
-                    }
-
-                    {
-                        watch("charttype") === "Horizontal Bar Chart" &&
-                        <HorizontalBarChart
-                            labels={labels}
-                            dataSets={dataSets}
-                        />
-                    }
-
-                    {
-                        watch("charttype") === "Vertical Bar Chart" &&
-                        <VerticalBarChart
-                            labels={labels}
-                            dataSets={dataSets}
-                        />
+                        chartData.length !== 0 && renderCharts()
                     }
 
                 </div>
