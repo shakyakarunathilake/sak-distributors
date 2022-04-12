@@ -22,7 +22,10 @@ const ginRoutes = require("./api/routes/gin.route");
 const metaDataRoutes = require("./api/routes/metadata.route");
 const storeRoutes = require("./api/routes/store.route");
 const quotationRoutes = require("./api/routes/quotation.route");
-const getTotalSalesRoutes = require("./api/routes/gettotalsales.route");
+const totalSalesRoutes = require("./api/routes/totalsales.route");
+const salesPerCustomerRoutes = require("./api/routes/salespercustomer.route");
+const salesPerRouteRoutes = require("./api/routes/salesperroute.route");
+const salesPerSalesRepresentativeRoutes = require("./api/routes/salespersalesrepresentative.route");
 
 
 app.use(morgan("dev"));
@@ -64,6 +67,9 @@ app.use("/gin", checkAuth, ginRoutes);
 app.use("/store", checkAuth, storeRoutes);
 app.use("/metadata", checkAuth, metaDataRoutes);
 app.use("/quotations", checkAuth, quotationRoutes);
-app.use("/get-total-sales", checkAuth, getTotalSalesRoutes);
+app.use("/total-sales", checkAuth, totalSalesRoutes);
+app.use("/sales-per-customer", checkAuth, salesPerCustomerRoutes);
+app.use("/sales-per-route", checkAuth, salesPerRouteRoutes);
+app.use("/sales-per-sales-representative", checkAuth, salesPerSalesRepresentativeRoutes);
 
 module.exports = app;

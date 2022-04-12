@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const mongoose = require("mongoose");
 
 const Order = require("../models/order.model");
 
@@ -25,18 +24,38 @@ router.get("/daily", (req, res, next) => {
 
     Order
         .find(
-
+            {
+                completedat: {
+                    $gte: "2021-01-01",
+                    $lte: "2021-01-14"
+                }
+            },
         )
+        .sort({
+            completedat: 'asc'
+        })
         .exec()
         .then(doc => {
 
-            const labels = [];
-            const dataSets = [];
+            const labelsWithDuplicates = doc.map(x => x.route);
+
+            const labels = labelsWithDuplicates.filter(function (item, pos) {
+                return labelsWithDuplicates.indexOf(item) == pos;
+            })
+
+            const dataSetsWithLabels = {};
+
+            labelsWithDuplicates.forEach(x => {
+                dataSetsWithLabels[x] = (dataSetsWithLabels[x] || 0) + 1
+            });
+
+            const chartData = Object.values(dataSetsWithLabels);
 
             res.status(201).json({
                 message: "Handeling GET requests to /get-total-sales",
                 labels: labels,
-                dataSets: dataSets
+                chartData: chartData,
+                label: 'No. of Orders per Route'
             })
         })
         .catch(err => {
