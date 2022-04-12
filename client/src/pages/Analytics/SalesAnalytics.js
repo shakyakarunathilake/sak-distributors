@@ -6,7 +6,6 @@ import { Controller } from 'react-hook-form';
 
 //Shared Components
 import Page from '../../shared/Page/Page';
-import Select from '../../shared/Select/Select';
 
 //Material UI Components
 import Button from '@material-ui/core/Button';
@@ -32,7 +31,7 @@ export default function SalesAnalytics() {
     const [label, setLabel] = useState('');
     const [fetched, setFetched] = useState(false);
 
-    const { formState: { errors, isValid }, control, getValues, trigger, reset, watch } = useForm({
+    const { formState: { errors, isValid }, control, getValues, trigger, reset, watch, setValue } = useForm({
         mode: "all",
         defaultValues: {
             charttype: "line-chart",
@@ -40,6 +39,12 @@ export default function SalesAnalytics() {
             analytics: "total-sales",
         }
     });
+
+    useEffect(() => {
+        if (watch("analytics") !== "total-sales") {
+            setValue("periodical", "daily");
+        }
+    }, [watch("analytics")])
 
     const renderCharts = () => (
         <>
