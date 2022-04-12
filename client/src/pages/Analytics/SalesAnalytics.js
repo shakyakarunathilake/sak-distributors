@@ -35,9 +35,9 @@ export default function SalesAnalytics() {
     const { formState: { errors, isValid }, control, getValues, trigger, reset, watch } = useForm({
         mode: "all",
         defaultValues: {
-            charttype: '',
-            periodical: '',
-            analytics: '',
+            charttype: "line-chart",
+            periodical: "daily",
+            analytics: "total-sales",
         }
     });
 
@@ -171,7 +171,7 @@ export default function SalesAnalytics() {
                                         fullWidth
                                         orientation="vertical"
                                         exclusive
-                                        disabled={fetched}
+                                        disabled={fetched || watch("analytics") !== "total-sales"}
                                     >
                                         <ToggleButton value="daily">
                                             Daily
