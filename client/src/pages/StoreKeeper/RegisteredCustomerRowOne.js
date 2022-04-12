@@ -8,9 +8,9 @@ import { Typography } from '@material-ui/core';
 import NumberWithCommas from '../NumberWithCommas';
 
 //Style
-import style from './RowOne.module.scss';
+import style from './RegisteredCustomerRowOne.module.scss';
 
-export default function RowOne(props) {
+export default function RegisteredCustomerRowOne(props) {
 
     const { control } = props;
 

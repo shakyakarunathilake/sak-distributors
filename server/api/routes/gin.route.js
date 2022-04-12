@@ -96,6 +96,8 @@ router.get("/:ginnumber", (req, res, next) => {
 //Create GIN
 router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
 
+    // console.log("REQUEST: ", req.body);
+
     const items = JSON.parse(req.body.items);
     const ordernumbers = JSON.parse(req.body.ordernumbers);
 
@@ -113,18 +115,22 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
         vehicle: ''
     })
 
+    // console.log("GIN: ", gin);
+
     gin
         .save()
-        .then(result => {
+        .then(doc => {
 
-            result.ordernumbers.map(order => {
+            // console.log("GIN :", doc);
+
+            doc.ordernumbers.map(order => {
 
                 Order
                     .findOneAndUpdate(
                         { orderno: order.ordernumber },
                         {
-                            'status': result.status,
-                            'ginnumber': result.ginnumber
+                            'status': doc.status,
+                            'ginnumber': doc.ginnumber
                         },
                         { new: true, upsert: true }
                     )
@@ -143,12 +149,14 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
                     });
             })
 
-            return result;
+            return doc;
 
         })
-        .then(result => {
+        .then(doc => {
 
-            result.ordernumbers.map(order => {
+            // console.log("METADATA :", doc);
+
+            doc.ordernumbers.map(order => {
 
                 MetaData
                     .findOneAndUpdate(
@@ -160,7 +168,7 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
                                 }
                             }
                         },
-                        { upsert: true }
+                        { new: true, upsert: true }
                     )
                     .exec()
                     .then(
@@ -175,16 +183,16 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
                     });
             })
 
-            return result;
+            return doc;
         })
         .then(doc => {
 
+            // console.log("STORE :", doc);
+
             doc.items.map((item, i) => {
 
-                const productid = item.productid;
-
                 Store
-                    .findOne({ productid: productid })
+                    .findOne({ productid: item.productid })
                     .exec()
                     .then(result => {
 
@@ -213,10 +221,19 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
                             newstorefreeqtycases = Math.ceil(newNoOfTotalFreePieces / item.piecespercase);
                         }
 
+                        console.log("ITEM.NAME :", item.name);
+                        console.log("newstoresalesqtypieces :", newstoresalesqtypieces);
+                        console.log("newstoresalesqtycases :", newstoresalesqtycases);
+                        console.log("newstorefreeqtypieces :", newstorefreeqtypieces);
+                        console.log("newstorefreeqtycases :", newstorefreeqtycases);
+                        console.log("item.salesqtycases :", item.salesqtycases);
+                        console.log("item.salesqtypieces :", item.salesqtypieces);
+                        console.log("item.freeqtycases :", item.freeqtycases);
+                        console.log("item.freeqtypieces :", item.freeqtypieces);
 
                         Store
                             .findOneAndUpdate(
-                                { productid: productid },
+                                { productid: item.productid },
                                 {
                                     $set: {
                                         'storequantity.salesqtypieces': newstoresalesqtypieces,
@@ -253,11 +270,12 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
 
             return doc;
         })
-        .then(result =>
+        .then(doc =>
+
             res.status(201).json({
                 message: "Handeling POST requests to /gin/create-gin, GIN CREATED",
                 type: 'success',
-                alert: `${result.ginnumber} added`,
+                alert: `${doc.ginnumber} added`,
             })
         )
         .catch(err => {

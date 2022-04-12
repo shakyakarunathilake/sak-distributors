@@ -14,6 +14,7 @@ import Tooltip from '@mui/material/Tooltip';
 
 //Material Icons
 import InfoIcon from '@mui/icons-material/Info';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 //Material Table
 import MaterialTable, { MTableToolbar } from 'material-table';
@@ -68,6 +69,42 @@ export default function ManageStore() {
                 console.log(error)
             })
     }, []);
+
+    const handleClick = (grnnumberginnumber, type) => {
+
+        if (type === "GRN") {
+            axios
+                .get(`http://localhost:8080/grn/${grnnumberginnumber}`, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
+                .then(res => {
+                    localStorage.setItem(grnnumberginnumber, JSON.stringify(res.data.grn));
+                    window.open(`http://localhost:3000/store-keeper/view-grn-details/${grnnumberginnumber}`, "_blank");
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        }
+
+        if (type === "GIN") {
+            axios
+                .get(`http://localhost:8080/gin/${grnnumberginnumber}`, {
+                    headers: {
+                        'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                    }
+                })
+                .then(res => {
+                    localStorage.setItem(grnnumberginnumber, JSON.stringify(res.data.gin));
+                    window.open(`http://localhost:3000/store-keeper/view-gin-details/${grnnumberginnumber}`, "_blank");
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        }
+
+    }
 
     return (
         <Page title="Manage Store">
@@ -189,8 +226,25 @@ export default function ManageStore() {
 
                                 return (
                                     grnnumberginnumber === "GRN" ?
-                                        <p style={{ padding: "0", margin: "0", color: "#1338BD", fontWeight: "700" }}>{rowData.grnnumberginnumber}</p> :
-                                        <p style={{ padding: "0", margin: "0", color: "#FC6A03", fontWeight: "700" }}>{rowData.grnnumberginnumber}</p>
+                                        <p
+                                            className={style.grnNumber}
+                                            onClick={() => handleClick(rowData.grnnumberginnumber, "GRN")}
+                                        >
+                                            {rowData.grnnumberginnumber}
+                                            <OpenInNewIcon
+                                                className={style.icon}
+
+                                            />
+                                        </p> :
+                                        <p
+                                            className={style.ginNumber}
+                                            onClick={() => handleClick(rowData.grnnumberginnumber, "GIN")}
+                                        >
+                                            {rowData.grnnumberginnumber}
+                                            <OpenInNewIcon
+                                                className={style.icon}
+                                            />
+                                        </p>
                                 )
                             },
                             cellStyle: {

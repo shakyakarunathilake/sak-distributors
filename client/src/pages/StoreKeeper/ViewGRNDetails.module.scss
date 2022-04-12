@@ -1,0 +1,72 @@
+@import "../../styles/variables";
+
+.container {
+    display: grid;
+    grid-template-rows: min-content auto;
+    height: inherit;
+    box-sizing: border-box;
+
+    .header {
+        display: grid;
+        grid-template-columns: auto min-content;
+        font-size: 1.55em;
+        font-weight: 600;
+        padding: 20px;
+
+        .blue {
+            color: $primaryMain;
+        }
+
+        .icon {
+            color: red;
+            &:hover {
+                transform: scale(1.1);
+            }
+        }
+    }
+
+    .body {
+        display: grid;
+        grid-template-rows: min-content auto;
+        height: calc(100vh - 73px);
+
+        .rowOne {
+            display: grid;
+            grid-template-columns: 40% 60%;
+            padding: 0 40px;
+
+            .details {
+                table-layout: auto !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+
+                tr {
+                    th {
+                        width: 200px !important;
+                        height: 30px;
+                    }
+
+                    td {
+                        .input {
+                            display: inline;
+                        }
+                    }
+
+                    .blue {
+                        color: $primaryMain;
+                        font-weight: 600;
+                    }
+
+                    .red {
+                        color: red;
+                        font-weight: 600;
+                    }
+                }
+            }
+        }
+
+        .rowTwo {
+            padding: 20px;
+        }
+    }
+}

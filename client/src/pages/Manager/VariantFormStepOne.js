@@ -1,5 +1,4 @@
 import React from 'react';
-import classnames from 'classnames';
 import { Controller } from 'react-hook-form';
 
 //Development Stage
@@ -73,7 +72,6 @@ export default function VariantFormStepOne(props) {
         action,
         handleClosePopUp,
         employeeOptions,
-        handleImageChange,
         handleProductChange,
         productOptions,
         resetForm,

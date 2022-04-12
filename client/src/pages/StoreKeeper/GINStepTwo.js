@@ -265,12 +265,12 @@ export default function GINStepTwo(props) {
                                         Header: props => (
                                             <TableHead {...props} className={classes.tablehead} >
                                                 <TableRow className={classes.row1}>
-                                                    <TableCell width="8%" padding="none" rowSpan={2}>
+                                                    <TableCell width="13%" padding="none" rowSpan={2}>
                                                         <div style={{ padding: '0 10px' }}>
                                                             Prod. ID
                                                         </div>
                                                     </TableCell>
-                                                    <TableCell width="35%" padding="none" rowSpan={2}>
+                                                    <TableCell width="30%" padding="none" rowSpan={2}>
                                                         <div style={{ padding: '0 10px' }}>
                                                             Description
                                                         </div>

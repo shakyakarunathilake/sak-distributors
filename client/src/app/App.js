@@ -33,6 +33,9 @@ import ManageGRN from '../pages/StoreKeeper/ManageGRN';
 import ManageGIN from '../pages/StoreKeeper/ManageGIN';
 import ManageStore from '../pages/StoreKeeper/ManageStore';
 import ViewOrderDetails from '../pages/StoreKeeper/ViewOrderDetails';
+import ViewGRNDetails from '../pages/StoreKeeper/ViewGRNDetails';
+import ViewGINDetails from '../pages/StoreKeeper/ViewGINDetails';
+
 
 //Sales Representative
 import SalesAndInvoice from '../pages/SalesRepresentative/SalesAndInvoice';
@@ -105,6 +108,10 @@ function App() {
             <Route exact path='/store-keeper/manage-store' component={ManageStore} />
             <Route exact path='/store-keeper/manage-products' component={ManageProduct} />
             <Route exact path='/store-keeper/view-order-details/:ordernumber' component={ViewOrderDetails} />
+            <Route exact path='/store-keeper/view-grn-details/:grnnumberginnumber' component={ViewGRNDetails} />
+            <Route exact path='/store-keeper/view-gin-details/:grnnumberginnumber' component={ViewGINDetails} />
+
+
 
             {/* Sales Representative */}
             <Route exact path='/sales-representative/dashboard' component={Dashboard} />
