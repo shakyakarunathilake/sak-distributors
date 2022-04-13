@@ -34,6 +34,7 @@ export default function SalesAnalytics() {
     const { formState: { errors, isValid }, control, getValues, trigger, reset, watch, setValue } = useForm({
         mode: "all",
         defaultValues: {
+
             charttype: "line-chart",
             periodical: "daily",
             analytics: "total-sales",
@@ -41,7 +42,19 @@ export default function SalesAnalytics() {
     });
 
     useEffect(() => {
-        if (watch("analytics") !== "total-sales") {
+        if (watch("analytics") === "total-sales") {
+            setValue("charttype", "line-chart");
+        }
+        if (watch("analytics") === "sales-per-customer") {
+            setValue("charttype", "vertical-bar-chart");
+            setValue("periodical", "daily");
+        }
+        if (watch("analytics") === "sales-per-route") {
+            setValue("charttype", "doughnut-chart");
+            setValue("periodical", "daily");
+        }
+        if (watch("analytics") === "sales-per-sales-representative") {
+            setValue("charttype", "vertical-bar-chart");
             setValue("periodical", "daily");
         }
     }, [watch("analytics")])
@@ -148,7 +161,7 @@ export default function SalesAnalytics() {
                                             Sales per Route
                                         </ToggleButton>
                                         <ToggleButton value="sales-per-sales-representative">
-                                            Sales per Sales Rep.
+                                            Sales per Sales Representative
                                         </ToggleButton>
                                     </ToggleButtonGroup>
                                 )}
@@ -218,10 +231,10 @@ export default function SalesAnalytics() {
                                         orientation="vertical"
                                         exclusive
                                     >
-                                        <ToggleButton value="line-chart">
+                                        <ToggleButton value="line-chart" disabled={watch("analytics") !== "total-sales"}>
                                             Line Chart
                                         </ToggleButton>
-                                        <ToggleButton value="doughnut-chart">
+                                        <ToggleButton value="doughnut-chart"  disabled={watch("analytics") === "sales-per-customer"}>
                                             Doughnut Chart
                                         </ToggleButton>
                                         <ToggleButton value="horizontal-bar-chart">
