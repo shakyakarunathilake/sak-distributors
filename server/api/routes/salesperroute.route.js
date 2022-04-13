@@ -1,7 +1,6 @@
 const express = require("express");
+const { db } = require("../models/order.model");
 const router = express.Router();
-
-const Order = require("../models/order.model");
 
 //Checks whether the endpoint works
 router.get("/", (req, res, next) => {
@@ -12,7 +11,6 @@ router.get("/", (req, res, next) => {
 
 //Get daily total sales analytics
 router.get("/daily", (req, res, next) => {
-
     var today = new Date();
     var first = today.getDate() - today.getDay();
 
@@ -20,48 +18,64 @@ router.get("/daily", (req, res, next) => {
     var firstDateTwoWeeksBack = new Date(today.setDate(first - 12));
 
     const firstDateTwoWeeksBackWithoutTime = firstDateTwoWeeksBack.getFullYear() + '-' + (firstDateTwoWeeksBack.getMonth() > 9 ? firstDateTwoWeeksBack.getMonth() + 1 : `0${firstDateTwoWeeksBack.getMonth() + 1}`) + '-' + (firstDateTwoWeeksBack.getDate() > 9 ? firstDateTwoWeeksBack.getDate() : `0${firstDateTwoWeeksBack.getDate()}`);
-    const lastDateTwoWeeksBackWithoutTime = lastDateTwoWeeksBack.getFullYear() + '-' + (lastDateTwoWeeksBack.getMonth() > 9 ? lastDateTwoWeeksBack.getMonth() + 1 : `0${lastDateTwoWeeksBack.getMonth() + 1}`) + '-' + (lastDateTwoWeeksBack.getDate() > 9 ? lastDateTwoWeeksBack.getDate() : `0${lastDateTwoWeeksBack.getDate()}`);
+    const lastDateTwoWeeksBackWithoutTime = lastDateTwoWeeksBack.getFullYear() + '-' + (lastDateTwoWeeksBack.getMonth() > 9 ? lastDateTwoWeeksBack.getMonth() + 1 : `0${lastDateTwoWeeksBack.getMonth() + 1}`) + '-' + (lastDateTwoWeeksBack.getDate() > 9 ? lastDateTwoWeeksBack.getDate() + 1 : `0${lastDateTwoWeeksBack.getDate() + 1}`);
 
-    Order
-        .find(
-            {
-                completedat: {
-                    $gte: "2021-01-01",
-                    $lte: "2021-01-14"
+    var pipeline = [
+        {
+            $match: {
+                "orderplacedat": {
+                    $gte: "2021-01-04",
+                    $lte: "2021-01-15"
                 }
-            },
-        )
-        .sort({
-            completedat: 'asc'
-        })
-        .exec()
-        .then(doc => {
+            }
+        },
+        {
+            $group: {
+                _id: "$route",
+                totalValue: {
+                    $sum: {
+                        $toDouble: "$total"
+                    }
+                },
+            }
+        },
+        {
+            $sort: {
+                _id: 1
+            }
+        }
+    ];
 
-            const labelsWithDuplicates = doc.map(x => x.route);
+    const doc = db.collection('orders').aggregate(pipeline);
 
-            const labels = labelsWithDuplicates.filter(function (item, pos) {
-                return labelsWithDuplicates.indexOf(item) == pos;
-            })
+    doc.toArray((error, result) => {
 
-            const dataSetsWithLabels = {};
+        if (error) {
 
-            labelsWithDuplicates.forEach(x => {
-                dataSetsWithLabels[x] = (dataSetsWithLabels[x] || 0) + 1
+            return res.status(500).send(error);
+
+        } else {
+
+            const labels = [];
+            const chartData = [];
+
+            result.forEach((element) => {
+
+                labels.push(element._id)
+                chartData.push(element.totalValue)
+
             });
-
-            const chartData = Object.values(dataSetsWithLabels);
 
             res.status(201).json({
                 message: "Handeling GET requests to /get-total-sales",
                 labels: labels,
                 chartData: chartData,
-                label: 'No. of Orders per Route'
+                label: 'Total Values of Sales per Route'
             })
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({ "Error": err });
-        })
+        }
+
+    });
+
 
 });
 

@@ -2,8 +2,6 @@ const express = require("express");
 const { db } = require("../models/order.model");
 const router = express.Router();
 
-const Order = require("../models/order.model");
-
 //Checks whether the endpoint works
 router.get("/", (req, res, next) => {
     res.status(200).json({
@@ -21,48 +19,96 @@ router.get("/daily", (req, res, next) => {
     var firstDateTwoWeeksBack = new Date(today.setDate(first - 12));
 
     const firstDateTwoWeeksBackWithoutTime = firstDateTwoWeeksBack.getFullYear() + '-' + (firstDateTwoWeeksBack.getMonth() > 9 ? firstDateTwoWeeksBack.getMonth() + 1 : `0${firstDateTwoWeeksBack.getMonth() + 1}`) + '-' + (firstDateTwoWeeksBack.getDate() > 9 ? firstDateTwoWeeksBack.getDate() : `0${firstDateTwoWeeksBack.getDate()}`);
-    const lastDateTwoWeeksBackWithoutTime = lastDateTwoWeeksBack.getFullYear() + '-' + (lastDateTwoWeeksBack.getMonth() > 9 ? lastDateTwoWeeksBack.getMonth() + 1 : `0${lastDateTwoWeeksBack.getMonth() + 1}`) + '-' + (lastDateTwoWeeksBack.getDate() > 9 ? lastDateTwoWeeksBack.getDate() : `0${lastDateTwoWeeksBack.getDate()}`);
+    const lastDateTwoWeeksBackWithoutTime = lastDateTwoWeeksBack.getFullYear() + '-' + (lastDateTwoWeeksBack.getMonth() > 9 ? lastDateTwoWeeksBack.getMonth() + 1 : `0${lastDateTwoWeeksBack.getMonth() + 1}`) + '-' + (lastDateTwoWeeksBack.getDate() > 9 ? lastDateTwoWeeksBack.getDate() + 1 : `0${lastDateTwoWeeksBack.getDate() + 1}`);
 
-    Order
-        .find(
-            {
-                completedat: {
-                    $gte: "2021-01-01",
-                    $lte: "2021-01-14"
+    var pipeline = [
+        {
+            $match: {
+                "orderplacedat": {
+                    $gte: "2021-01-04",
+                    $lte: "2021-01-15"
                 }
-            },
-        )
-        .sort({
-            completedat: 'asc'
-        })
-        .exec()
-        .then(doc => {
+            }
+        },
+        {
+            $group: {
+                _id: {
+                    day: {
+                        $dayOfYear: {
+                            $dateFromString: {
+                                dateString: "$orderplacedat"
+                            }
+                        }
+                    },
+                    month: {
+                        $month: {
+                            $dateFromString: {
+                                dateString: "$orderplacedat"
+                            }
+                        }
+                    },
+                    year: {
+                        $year: {
+                            $dateFromString: {
+                                dateString: "$orderplacedat"
+                            }
+                        }
+                    },
+                },
+                totalValue: {
+                    $sum: {
+                        $toDouble: "$total"
+                    }
+                },
+            }
+        },
+        {
+            $project: {
+                totalValue: 1,
+                date: {
+                    $dateFromParts: {
+                        'year': "$_id.year",
+                        'month': "$_id.month",
+                        'day': "$_id.day",
+                    }
+                },
+                _id: 0
+            }
+        },
+        {
+            $sort: {
+                Date: 1
+            }
+        }
+    ];
 
-            const labelsWithDuplicates = doc.map(x => x.completedat.slice(0, 10));
+    const doc = db.collection('orders').aggregate(pipeline);
 
-            const labels = labelsWithDuplicates.filter(function (item, pos) {
-                return labelsWithDuplicates.indexOf(item) == pos;
-            })
+    doc.toArray((error, result) => {
 
-            const dataSetsWithLabels = {};
+        if (error) {
 
-            labelsWithDuplicates.forEach(x => {
-                dataSetsWithLabels[x] = (dataSetsWithLabels[x] || 0) + 1
+            return res.status(500).send(error);
+
+        } else {
+
+            const labels = [];
+            const chartData = [];
+
+            result.forEach((element) => {
+                labels.push(element.date.toISOString().slice(0, 10))
+                chartData.push(element.totalValue)
             });
-
-            const chartData = Object.values(dataSetsWithLabels);
 
             res.status(201).json({
                 message: "Handeling GET requests to /get-total-sales",
                 labels: labels,
                 chartData: chartData,
-                label: 'No. of Orders'
+                label: 'Total Value of Sales per Day'
             })
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({ "Error": err });
-        })
+        }
+
+    });
 
 });
 
