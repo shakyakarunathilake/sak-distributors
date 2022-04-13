@@ -14,9 +14,6 @@ import Tooltip from '@mui/material/Tooltip';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import InfoIcon from '@mui/icons-material/Info';
 
-//Shared Components
-import TextField from '../../shared/TextField/TextField';
-
 //Style
 import style from './DispatchCompleteForm.module.scss';
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
@@ -67,43 +64,38 @@ export default function DispatchCompleteForm(props) {
         vehicleOptions
     } = props;
 
-    const { formState: { isValid, errors }, getValues, control, handleSubmit, setValue } = useForm({
-        mode: "all",
+    const { formState: { isValid, errors }, getValues, control, watch, handleSubmit, trigger } = useForm({
+        mode: 'all',
         defaultValues: {
             ginnumber: GINRecords.ginnumber,
-            incharge: '',
-            vehicle: ''
+            incharge: inChargeOptions[0],
+            vehicle: vehicleOptions[0]
         }
     });
 
-    const handleInChargeChange = (event, option) => {
-        if (option) {
-            setValue("incharge", option.title);
-        }
-    }
-
-    const handleVehicleChange = (event, option) => {
-        if (option) {
-            setValue("vehicle", option.title);
-        }
-    }
-
     const onSubmit = () => {
 
-        const ginFormData = new formData();
+        console.log(isValid);
+        console.log(watch());
+        console.log(errors);
 
-        if (action === 'Dispatch') {
-            ginFormData.append('vehicle', getValues('vehicle'));
-            ginFormData.append('incharge', getValues('incharge'));
-            ginFormData.append('status', 'Dispatched');
+        if (isValid) {
+            const ginFormData = new formData();
+
+            if (action === 'Dispatch') {
+                ginFormData.append('vehicle', getValues('vehicle'));
+                ginFormData.append('incharge', getValues('incharge'));
+                ginFormData.append('status', 'Dispatched');
+            }
+
+            if (action === 'Complete') {
+                ginFormData.append('status', 'Complete');
+            }
+
+            addOrEdit(ginFormData, getValues('ginnumber'));
+        } else {
+            trigger();
         }
-
-        if (action === 'Complete') {
-            ginFormData.append('status', 'Complete');
-        }
-
-        addOrEdit(ginFormData, getValues('ginnumber'));
-
     }
 
     return (
@@ -139,11 +131,12 @@ export default function DispatchCompleteForm(props) {
 
                         <ThemeProvider theme={theme}>
                             <Controller
-                                render={() => (
+                                render={(field) => (
                                     <Autocomplete
+                                        {...field}
                                         options={inChargeOptions || []}
-                                        getOptionLabel={(option) => option.title}
-                                        onChange={handleInChargeChange}
+                                        getOptionLabel={(option) => option}
+                                        // onChange={field.onChange}
                                         renderInput={(params) => (
                                             <MuiTextField
                                                 {...params}
@@ -167,11 +160,12 @@ export default function DispatchCompleteForm(props) {
 
                         <ThemeProvider theme={theme}>
                             <Controller
-                                render={() => (
+                                render={(field) => (
                                     <Autocomplete
+                                        {...field}
                                         options={vehicleOptions || []}
-                                        getOptionLabel={(option) => option.title}
-                                        onChange={handleVehicleChange}
+                                        getOptionLabel={(option) => option}
+                                        // onChange={field.onChange}
                                         renderInput={(params) => (
                                             <MuiTextField
                                                 {...params}
@@ -217,7 +211,6 @@ export default function DispatchCompleteForm(props) {
                 <Button
                     color="primary"
                     variant="contained"
-                    disabled={!isValid}
                     onClick={onSubmit}
                 >
                     {action === 'Dispatch' && 'Approve Dispatch'}

@@ -412,6 +412,7 @@ export default function ManageGIN() {
                             addOrEdit={addOrEdit}
                             action={action}
                             inChargeOptions={inChargeOptions}
+                            vehicleOptions={vehicleOptions}
                         />
                     }
 

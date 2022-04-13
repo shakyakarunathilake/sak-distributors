@@ -263,10 +263,9 @@ router.get("/employee-options-for-gin", (req, res, next) => {
                 x.designation === 'Delivery Representative' && x.employeestatus === 'Active'
             );
 
-            const employeeOptions = candidates.map(x => ({
-                title: `${x.firstname} ${x.lastname} (${x.employeeid})`,
-                id: x.employeeid
-            }))
+            const employeeOptions = candidates.map(x =>
+                `${x.firstname} ${x.lastname} (${x.employeeid})`
+            )
 
             res.status(201).json({
                 message: "Handeling GET requests to /employee-options-for-gin",
@@ -291,10 +290,9 @@ router.get("/vehicle-options-for-gin", (req, res, next) => {
                 x.status === 'Active'
             );
 
-            const vehicleOptions = candidates.map(x => ({
-                title: `${x.vehicle} (${x.licenseplatenumber})`,
-                id: x.licenseplatenumber
-            }))
+            const vehicleOptions = candidates.map(x =>
+                `${x.vehicle} (${x.licenseplatenumber})`
+            )
 
             res.status(201).json({
                 message: "Handeling GET requests to /vehicle-options-for-gin",
