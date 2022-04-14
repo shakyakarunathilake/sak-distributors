@@ -40,6 +40,7 @@ export default function ManageProduct() {
     const [records, setRecords] = useState([]);
 
     const [productOptions, setProductOptions] = useState(null);
+    const [productVariantOptions, setProductVariantOptions] = useState(null);
     const [employeeOptions, setEmployeeOptions] = useState(null);
     const [productRecords, setProductRecords] = useState(null);
 
@@ -212,6 +213,21 @@ export default function ManageProduct() {
         }
     }
 
+    const getProductVariantOptions = () => {
+        axios
+            .get("http://localhost:8080/options/product-variant-options-for-product", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
+            .then(res => {
+                setProductVariantOptions(res.data.productVariantOptions);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
     const getProductOptions = () => {
         axios
             .get("http://localhost:8080/options/product-options-for-product", {
@@ -284,6 +300,7 @@ export default function ManageProduct() {
                                     setAction('Create');
                                     setFormType('Variant')
                                     getProductOptions();
+                                    getProductVariantOptions();
                                     getEmployeeOptions();
                                 }
                             }
@@ -484,6 +501,7 @@ export default function ManageProduct() {
                             productRecords={productRecords}
                             addVariant={addVariant}
                             productOptions={productOptions}
+                            productVariantOptions={productVariantOptions}
                             employeeOptions={employeeOptions}
                             handleClosePopUp={handleClosePopUp}
                             action={action}

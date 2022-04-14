@@ -104,6 +104,13 @@ router.get("/product-options-for-product", (req, res, next) => {
         })
 })
 
+//Get all product variant options
+router.get("/product-variant-options-for-product", (req, res, next) => {
+
+
+})
+
+
 //Get all employee options
 router.get("/employee-options-for-product", (req, res, next) => {
 

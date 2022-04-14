@@ -18,7 +18,8 @@ export default function VariantForm(props) {
         productOptions,
         action,
         employeeOptions,
-        productRecords
+        productRecords,
+        productVariantOptions
     } = props;
 
     const [file, setFile] = useState("");
@@ -51,7 +52,7 @@ export default function VariantForm(props) {
             eligibleqtytype: productRecords ? productRecords.eligibleqtytype : '',
             freeqty: productRecords ? productRecords.freeqty : '',
             freeqtytype: productRecords ? productRecords.freeqtytype : '',
-            freeproduct: productRecords ? productRecords.freeproduct : '',
+            freeproductname: productRecords ? productRecords.freeproductname : '',
             offercaption: productRecords ? productRecords.variant.offercaption : '',
             variantstatus: productRecords ? productRecords.variant.status : '',
             variantaddeddate: productRecords ? productRecords.variant.addeddate : date,
@@ -89,6 +90,13 @@ export default function VariantForm(props) {
             setValue("variantid", option.variantid);
             setValue("productstatus", option.status);
             clearErrors();
+        }
+    }
+
+    const handleFreeProductNameChange = (event, option) => {
+        if (option) {
+            setValue("freeproductname", option);
+            clearErrors("freeproductname");
         }
     }
 
@@ -150,7 +158,9 @@ export default function VariantForm(props) {
                         handleClosePopUp={handleClosePopUp}
                         employeeOptions={employeeOptions}
                         handleProductChange={handleProductChange}
+                        handleFreeProductNameChange={handleFreeProductNameChange}
                         productOptions={productOptions}
+                        productVariantOptions={productVariantOptions}
                         resetForm={resetForm}
                         watch={watch}
                     />

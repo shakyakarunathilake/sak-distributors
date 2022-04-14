@@ -62,7 +62,8 @@ export const getSupplierOptions = () => ([
 
 export const getVariantTypeOptions = () => ([
     { id: "vt001", title: "General" },
-    { id: "vt002", title: "Promotion" },
+    { id: "vt002", title: "Promotion (Free Products)" },
+    { id: "vt003", title: "Promotion (Discounts)" },
 ])
 
 export const getVariantStatusOptions = () => ([

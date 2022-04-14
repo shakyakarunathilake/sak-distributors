@@ -73,7 +73,9 @@ export default function VariantFormStepOne(props) {
         handleClosePopUp,
         employeeOptions,
         handleProductChange,
+        handleFreeProductNameChange,
         productOptions,
+        productVariantOptions,
         resetForm,
         watch
     } = props;
@@ -324,7 +326,7 @@ export default function VariantFormStepOne(props) {
                     </div>
 
                     {
-                        watch('type') === "Promotion" &&
+                        watch('type') === "Promotion (Free Products)" &&
                         <>
 
                             <div className={style.fourminicolumns}>
@@ -415,24 +417,34 @@ export default function VariantFormStepOne(props) {
 
                             <div className={style.row}>
 
-                                <Controller
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            fullWidth={true}
-                                            helperText={errors.freeproduct && errors.freeproduct.message}
-                                            error={errors.freeproduct ? true : false}
-                                            placeholder="Ex: Buy 24 and get 6 free"
-                                            label="Free Product *"
-                                            size="small"
-                                        />
-                                    )}
-                                    name={"freeproduct"}
-                                    control={control}
-                                    rules={{
-                                        required: { value: true, message: "Required *" },
-                                    }}
-                                />
+                                <ThemeProvider theme={theme}>
+                                    <Controller
+                                        render={({ field }) => (
+                                            <Autocomplete
+                                                options={productVariantOptions || []}
+                                                fullWidth
+                                                getOptionLabel={(option) => option}
+                                                onChange={handleFreeProductNameChange}
+                                                disabled={action === "Edit"}
+                                                renderInput={(params) => (
+                                                    <MuiTextField
+                                                        {...params}
+                                                        error={errors.freeproductname ? true : false}
+                                                        helperText={errors.freeproductname && errors.freeproductname.message}
+                                                        label="Product"
+                                                        variant="outlined"
+                                                        size="small"
+                                                    />
+                                                )}
+                                            />
+                                        )}
+                                        name={"freeproductname"}
+                                        control={control}
+                                        rules={{
+                                            required: { value: true, message: "Required *" },
+                                        }}
+                                    />
+                                </ThemeProvider>
 
                             </div>
 
