@@ -99,6 +99,13 @@
                 padding: 10px 0;
             }
 
+            .fourminicolumns {
+                display: grid;
+                grid-template-columns: calc(25% - 15px) calc(25% - 15px) calc(25% - 15px) calc(25% - 15px);
+                grid-column-gap: 20px;
+                padding: 10px 0;
+            }
+
             .gridrow {
                 display: grid;
                 grid-template-columns: calc(50% - 10px) calc(50% - 10px);

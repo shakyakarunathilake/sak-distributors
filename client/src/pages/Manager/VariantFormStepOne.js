@@ -325,28 +325,141 @@ export default function VariantFormStepOne(props) {
 
                     {
                         watch('type') === "Promotion" &&
-                        <div className={style.row}>
+                        <>
 
-                            <Controller
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        fullWidth={true}
-                                        helperText={errors.offercaption && errors.offercaption.message}
-                                        error={errors.offercaption ? true : false}
-                                        placeholder="Ex: Buy 24 and get 6 free"
-                                        label="Offer Caption"
-                                        size="small"
-                                    />
-                                )}
-                                name={"offercaption"}
-                                control={control}
-                                rules={{
-                                    required: { value: true, message: "Required *" },
-                                }}
-                            />
+                            <div className={style.fourminicolumns}>
 
-                        </div>
+                                <Controller
+                                    render={({ field }) => (
+                                        <TextField
+                                            {...field}
+                                            fullWidth={true}
+                                            helperText={errors.eligibleqty && errors.eligibleqty.message}
+                                            error={errors.eligibleqty ? true : false}
+                                            placeholder="9"
+                                            size="small"
+                                            label="Eligible Qty *"
+                                        />
+                                    )}
+                                    name={"eligibleqty"}
+                                    control={control}
+                                    rules={{
+                                        required: { value: true, message: "Required *" },
+                                        pattern: { value: /^[0-9]*$/, message: "Invalid" }
+                                    }}
+                                />
+
+                                <Controller
+                                    render={({ field }) => (
+                                        <Select
+                                            {...field}
+                                            options={[
+                                                { id: "pcs", title: "Pieces" },
+                                                { id: "cases", title: "Cases" }
+                                            ]}
+                                            helperText={errors.eligibleqtytype && errors.eligibleqtytype.message}
+                                            error={errors.eligibleqtytype ? true : false}
+                                            size="small"
+                                            label="Pcs / Cases *"
+                                        />
+                                    )}
+                                    name={"eligibleqtytype"}
+                                    control={control}
+                                    rules={{
+                                        required: { value: true, message: "Required *" },
+                                    }}
+                                />
+
+                                <Controller
+                                    render={({ field }) => (
+                                        <TextField
+                                            {...field}
+                                            fullWidth={true}
+                                            helperText={errors.freeqty && errors.freeqty.message}
+                                            error={errors.freeqty ? true : false}
+                                            placeholder="9"
+                                            size="small"
+                                            label="Free Qty *"
+                                        />
+                                    )}
+                                    name={"freeqty"}
+                                    control={control}
+                                    rules={{
+                                        required: { value: true, message: "Required *" },
+                                        pattern: { value: /^[0-9]*$/, message: "Invalid" }
+                                    }}
+                                />
+
+                                <Controller
+                                    render={({ field }) => (
+                                        <Select
+                                            {...field}
+                                            options={[
+                                                { id: "pcs", title: "Pieces" },
+                                                { id: "cases", title: "Cases" }
+                                            ]}
+                                            helperText={errors.freeqtytype && errors.freeqtytype.message}
+                                            error={errors.freeqtytype ? true : false}
+                                            size="small"
+                                            label="Pcs / Cases *"
+                                        />
+                                    )}
+                                    name={"freeqtytype"}
+                                    control={control}
+                                    rules={{
+                                        required: { value: true, message: "Required *" },
+                                    }}
+                                />
+
+                            </div>
+
+                            <div className={style.row}>
+
+                                <Controller
+                                    render={({ field }) => (
+                                        <TextField
+                                            {...field}
+                                            fullWidth={true}
+                                            helperText={errors.freeproduct && errors.freeproduct.message}
+                                            error={errors.freeproduct ? true : false}
+                                            placeholder="Ex: Buy 24 and get 6 free"
+                                            label="Free Product *"
+                                            size="small"
+                                        />
+                                    )}
+                                    name={"freeproduct"}
+                                    control={control}
+                                    rules={{
+                                        required: { value: true, message: "Required *" },
+                                    }}
+                                />
+
+                            </div>
+
+                            <div className={style.row}>
+
+                                <Controller
+                                    render={({ field }) => (
+                                        <TextField
+                                            {...field}
+                                            fullWidth={true}
+                                            helperText={errors.offercaption && errors.offercaption.message}
+                                            error={errors.offercaption ? true : false}
+                                            placeholder="Ex: Buy 24 and get 6 free"
+                                            label="Offer Caption *"
+                                            size="small"
+                                        />
+                                    )}
+                                    name={"offercaption"}
+                                    control={control}
+                                    rules={{
+                                        required: { value: true, message: "Required *" },
+                                    }}
+                                />
+
+                            </div>
+
+                        </>
                     }
 
                     <div className={style.gridrow}>
