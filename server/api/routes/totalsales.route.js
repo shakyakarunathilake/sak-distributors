@@ -13,13 +13,20 @@ router.get("/", (req, res, next) => {
 router.get("/daily", (req, res, next) => {
 
     var today = new Date();
-    var first = today.getDate() - today.getDay();
+    var first = today.getDate();
 
     var lastDateTwoWeeksBack = new Date(today.setDate(first));
-    var firstDateTwoWeeksBack = new Date(today.setDate(first - 12));
+    var firstDateTwoWeeksBack = new Date(today.setDate(first - 14));
 
-    const firstDateTwoWeeksBackWithoutTime = firstDateTwoWeeksBack.getFullYear() + '-' + (firstDateTwoWeeksBack.getMonth() > 9 ? firstDateTwoWeeksBack.getMonth() + 1 : `0${firstDateTwoWeeksBack.getMonth() + 1}`) + '-' + (firstDateTwoWeeksBack.getDate() > 9 ? firstDateTwoWeeksBack.getDate() : `0${firstDateTwoWeeksBack.getDate()}`);
-    const lastDateTwoWeeksBackWithoutTime = lastDateTwoWeeksBack.getFullYear() + '-' + (lastDateTwoWeeksBack.getMonth() > 9 ? lastDateTwoWeeksBack.getMonth() + 1 : `0${lastDateTwoWeeksBack.getMonth() + 1}`) + '-' + (lastDateTwoWeeksBack.getDate() > 9 ? lastDateTwoWeeksBack.getDate() + 1 : `0${lastDateTwoWeeksBack.getDate() + 1}`);
+    const firstDate =
+        firstDateTwoWeeksBack.getFullYear() + '-' +
+        (firstDateTwoWeeksBack.getMonth() > 9 ? firstDateTwoWeeksBack.getMonth() + 1 : `0${firstDateTwoWeeksBack.getMonth() + 1}`) + '-' +
+        (firstDateTwoWeeksBack.getDate() > 9 ? firstDateTwoWeeksBack.getDate() : `0${firstDateTwoWeeksBack.getDate()}`);
+
+    const lastDate =
+        lastDateTwoWeeksBack.getFullYear() + '-' +
+        (lastDateTwoWeeksBack.getMonth() > 9 ? lastDateTwoWeeksBack.getMonth() + 1 : `0${lastDateTwoWeeksBack.getMonth() + 1}`) + '-' +
+        (lastDateTwoWeeksBack.getDate() > 9 ? lastDateTwoWeeksBack.getDate() : `0${lastDateTwoWeeksBack.getDate()}`);
 
     var pipeline = [
         {
@@ -112,31 +119,367 @@ router.get("/daily", (req, res, next) => {
 
 });
 
-
 //Get weekly total sales analytics
 router.get("/weekly", (req, res, next) => {
 
+    var today = new Date();
+    var first = today.getDate();
+
+    var lastDateTwoWeeksBack = new Date(today.setDate(first));
+    var firstDateTwoWeeksBack = new Date(today.setDate(first - 56));
+
+    const firstDate =
+        firstDateTwoWeeksBack.getFullYear() + '-' +
+        (firstDateTwoWeeksBack.getMonth() > 9 ? firstDateTwoWeeksBack.getMonth() + 1 : `0${firstDateTwoWeeksBack.getMonth() + 1}`) + '-' +
+        (firstDateTwoWeeksBack.getDate() > 9 ? firstDateTwoWeeksBack.getDate() : `0${firstDateTwoWeeksBack.getDate()}`);
+
+    const lastDate =
+        lastDateTwoWeeksBack.getFullYear() + '-' +
+        (lastDateTwoWeeksBack.getMonth() > 9 ? lastDateTwoWeeksBack.getMonth() + 1 : `0${lastDateTwoWeeksBack.getMonth() + 1}`) + '-' +
+        (lastDateTwoWeeksBack.getDate() > 9 ? lastDateTwoWeeksBack.getDate() : `0${lastDateTwoWeeksBack.getDate()}`);
+
+    console.log("firstDate: ", firstDate);
+    console.log("lastDate: ", lastDate);
+
     var pipeline = [
-        { $sort: { "completedat": 1 } },
         {
-            $project: {
-                "completedatweek": { "$week": "$completedat" },
+            $match: {
+                "orderplacedat": {
+                    $gte: "2021-01-01",
+                    $lte: "2021-02-28"
+                }
             }
         },
         {
-            $unwind: "$completedatweek"
-        }
+            $group: {
+                _id: {
+                    week: {
+                        $week: {
+                            $subtract: [
+                                {
+                                    $dateFromString: {
+                                        dateString: "$orderplacedat"
+                                    }
+                                },
+                                25200000
+                            ]
+                        }
+                    },
+                    year: {
+                        $year: {
+                            $subtract: [
+                                {
+                                    $dateFromString: {
+                                        dateString: "$orderplacedat"
+                                    }
+                                },
+                                25200000
+                            ]
+                        }
+                    },
+                },
+                totalValue: {
+                    $sum: {
+                        $toDouble: "$total"
+                    }
+                },
+            }
+        },
+        {
+            $sort: {
+                _id: 1
+            }
+        },
+        {
+            $project: {
+                totalValue: 1,
+                startDate: {
+                    $dateToString: {
+                        date: {
+                            $dateFromParts: {
+                                isoWeekYear: "$_id.year",
+                                isoWeek: "$_id.week"
+                            }
+                        },
+                        format: "%Y-%m-%d",
+                    },
+                },
+                endDate: {
+                    $dateToString: {
+                        date: {
+                            $add: [
+                                {
+                                    $dateFromParts: {
+                                        isoWeekYear: "$_id.year",
+                                        isoWeek: "$_id.week"
+                                    }
+                                },
+                                518400000,
+                            ],
+                        },
+                        format: "%Y-%m-%d",
+                    },
+                },
+                _id: 0
+            }
+        },
     ];
 
     const doc = db.collection('orders').aggregate(pipeline);
 
     doc.toArray((error, result) => {
+
         if (error) {
+
             return res.status(500).send(error);
+
+        } else {
+
+            const labels = [];
+            const chartData = [];
+
+            console.log(result)
+
+            result.forEach((element) => {
+                labels.push(element.startDate + " to " + element.endDate)
+                chartData.push(element.totalValue)
+            });
+
+            res.status(201).json({
+                message: "Handeling GET requests to /get-total-sales",
+                labels: labels,
+                chartData: chartData,
+                label: 'Total Value of Sales per Week'
+            })
         }
-        // res.send(result);
-        console.log("RESULT: ", result);
+
     });
+
+});
+
+//Get monthly total sales analytics
+router.get("/monthly", (req, res, next) => {
+
+    var today = new Date();
+    var first = today.getDate();
+
+    var lastDateTwoWeeksBack = new Date(today.setDate(first));
+    var firstDateTwoWeeksBack = new Date(today.setDate(first - 365));
+
+    const firstDate =
+        firstDateTwoWeeksBack.getFullYear() + '-' +
+        (firstDateTwoWeeksBack.getMonth() > 9 ? firstDateTwoWeeksBack.getMonth() + 1 : `0${firstDateTwoWeeksBack.getMonth() + 1}`) + '-' +
+        (firstDateTwoWeeksBack.getDate() > 9 ? firstDateTwoWeeksBack.getDate() : `0${firstDateTwoWeeksBack.getDate()}`);
+
+    const lastDate =
+        lastDateTwoWeeksBack.getFullYear() + '-' +
+        (lastDateTwoWeeksBack.getMonth() > 9 ? lastDateTwoWeeksBack.getMonth() + 1 : `0${lastDateTwoWeeksBack.getMonth() + 1}`) + '-' +
+        (lastDateTwoWeeksBack.getDate() > 9 ? lastDateTwoWeeksBack.getDate() : `0${lastDateTwoWeeksBack.getDate()}`);
+
+    console.log("firstDate: ", firstDate);
+    console.log("lastDate: ", lastDate);
+
+    var pipeline = [
+        {
+            $match: {
+                "orderplacedat": {
+                    $gte: "2020-02-28",
+                    $lte: "2021-02-28"
+                }
+            }
+        },
+        {
+            $group: {
+                _id: {
+                    month: {
+                        $month: {
+                            $subtract: [
+                                {
+                                    $dateFromString: {
+                                        dateString: "$orderplacedat"
+                                    }
+                                },
+                                25200000
+                            ]
+                        }
+                    },
+                    year: {
+                        $year: {
+                            $subtract: [
+                                {
+                                    $dateFromString: {
+                                        dateString: "$orderplacedat"
+                                    }
+                                },
+                                25200000
+                            ]
+                        }
+                    },
+                },
+                totalValue: {
+                    $sum: {
+                        $toDouble: "$total"
+                    }
+                },
+            }
+        },
+        {
+            $sort: {
+                _id: 1
+            }
+        },
+        {
+            $addFields: {
+                month: {
+                    $let: {
+                        vars: {
+                            monthsInString: [, 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                        },
+                        in: {
+                            $arrayElemAt: ['$$monthsInString', '$_id.month']
+                        }
+                    }
+                },
+                year: "$_id.year"
+            },
+        },
+        {
+            $project: {
+                totalValue: 1,
+                month: 1,
+                year: 1,
+                _id: 0
+            }
+        },
+    ];
+
+    const doc = db.collection('orders').aggregate(pipeline);
+
+    doc.toArray((error, result) => {
+
+        if (error) {
+
+            return res.status(500).send(error);
+
+        } else {
+
+            const labels = [];
+            const chartData = [];
+
+            console.log(result)
+
+            result.forEach((element) => {
+                labels.push(element.month + " " + element.year)
+                chartData.push(element.totalValue)
+            });
+
+            res.status(201).json({
+                message: "Handeling GET requests to /get-total-sales",
+                labels: labels,
+                chartData: chartData,
+                label: 'Total Value of Sales per Month'
+            })
+        }
+
+    });
+
+});
+
+//Get annually total sales analytics
+router.get("/annually", (req, res, next) => {
+
+    var today = new Date();
+    var first = today.getDate();
+
+    var lastDateTwoWeeksBack = new Date(today.setDate(first));
+    var firstDateTwoWeeksBack = new Date(today.setDate(first - 2922));
+
+    const firstDate =
+        firstDateTwoWeeksBack.getFullYear() + '-' +
+        (firstDateTwoWeeksBack.getMonth() > 9 ? firstDateTwoWeeksBack.getMonth() + 1 : `0${firstDateTwoWeeksBack.getMonth() + 1}`) + '-' +
+        (firstDateTwoWeeksBack.getDate() > 9 ? firstDateTwoWeeksBack.getDate() : `0${firstDateTwoWeeksBack.getDate()}`);
+
+    const lastDate =
+        lastDateTwoWeeksBack.getFullYear() + '-' +
+        (lastDateTwoWeeksBack.getMonth() > 9 ? lastDateTwoWeeksBack.getMonth() + 1 : `0${lastDateTwoWeeksBack.getMonth() + 1}`) + '-' +
+        (lastDateTwoWeeksBack.getDate() > 9 ? lastDateTwoWeeksBack.getDate() : `0${lastDateTwoWeeksBack.getDate()}`);
+
+    var pipeline = [
+        {
+            $match: {
+                "orderplacedat": {
+                    $gte: firstDate,
+                    $lte: lastDate
+                }
+            }
+        },
+        {
+            $group: {
+                _id: {
+                    year: {
+                        $year: {
+                            $subtract: [
+                                {
+                                    $dateFromString: {
+                                        dateString: "$orderplacedat"
+                                    }
+                                },
+                                25200000
+                            ]
+                        }
+                    },
+                },
+                totalValue: {
+                    $sum: {
+                        $toDouble: "$total"
+                    }
+                },
+            }
+        },
+        {
+            $sort: {
+                _id: 1
+            }
+        },
+        {
+            $project: {
+                totalValue: 1,
+                year: "$_id.year",
+                _id: 0
+            }
+        },
+    ];
+
+    const doc = db.collection('orders').aggregate(pipeline);
+
+    doc.toArray((error, result) => {
+
+        if (error) {
+
+            return res.status(500).send(error);
+
+        } else {
+
+            const labels = [];
+            const chartData = [];
+
+            console.log(result)
+
+            result.forEach((element) => {
+                labels.push(element.year)
+                chartData.push(element.totalValue)
+            });
+
+            res.status(201).json({
+                message: "Handeling GET requests to /get-total-sales",
+                labels: labels,
+                chartData: chartData,
+                label: 'Total Value of Sales per Month'
+            })
+        }
+
+    });
+
 });
 
 module.exports = router;
