@@ -11,14 +11,22 @@ router.get("/", (req, res, next) => {
 
 //Get daily total sales analytics
 router.get("/daily", (req, res, next) => {
+
     var today = new Date();
-    var first = today.getDate() - today.getDay();
+    var first = today.getDate();
 
     var lastDateTwoWeeksBack = new Date(today.setDate(first));
-    var firstDateTwoWeeksBack = new Date(today.setDate(first - 12));
+    var firstDateTwoWeeksBack = new Date(today.setDate(first - 14));
 
-    const firstDateTwoWeeksBackWithoutTime = firstDateTwoWeeksBack.getFullYear() + '-' + (firstDateTwoWeeksBack.getMonth() > 9 ? firstDateTwoWeeksBack.getMonth() + 1 : `0${firstDateTwoWeeksBack.getMonth() + 1}`) + '-' + (firstDateTwoWeeksBack.getDate() > 9 ? firstDateTwoWeeksBack.getDate() : `0${firstDateTwoWeeksBack.getDate()}`);
-    const lastDateTwoWeeksBackWithoutTime = lastDateTwoWeeksBack.getFullYear() + '-' + (lastDateTwoWeeksBack.getMonth() > 9 ? lastDateTwoWeeksBack.getMonth() + 1 : `0${lastDateTwoWeeksBack.getMonth() + 1}`) + '-' + (lastDateTwoWeeksBack.getDate() > 9 ? lastDateTwoWeeksBack.getDate() + 1 : `0${lastDateTwoWeeksBack.getDate() + 1}`);
+    const firstDate =
+        firstDateTwoWeeksBack.getFullYear() + '-' +
+        (firstDateTwoWeeksBack.getMonth() > 9 ? firstDateTwoWeeksBack.getMonth() + 1 : `0${firstDateTwoWeeksBack.getMonth() + 1}`) + '-' +
+        (firstDateTwoWeeksBack.getDate() > 9 ? firstDateTwoWeeksBack.getDate() : `0${firstDateTwoWeeksBack.getDate()}`);
+
+    const lastDate =
+        lastDateTwoWeeksBack.getFullYear() + '-' +
+        (lastDateTwoWeeksBack.getMonth() > 9 ? lastDateTwoWeeksBack.getMonth() + 1 : `0${lastDateTwoWeeksBack.getMonth() + 1}`) + '-' +
+        (lastDateTwoWeeksBack.getDate() > 9 ? lastDateTwoWeeksBack.getDate() : `0${lastDateTwoWeeksBack.getDate()}`);
 
     var pipeline = [
         {
