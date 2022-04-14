@@ -2,12 +2,11 @@ import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import formData from 'form-data';
 
+//Shared Components
+import Select from '../../shared/Select/Select';
+
 //Material UI 
-import {
-    Button,
-    TextField as MuiTextField
-} from '@material-ui/core';
-import Autocomplete from '@mui/material/Autocomplete';
+import { Button } from '@material-ui/core';
 import Tooltip from '@mui/material/Tooltip';
 
 //Material UI Icons
@@ -16,42 +15,6 @@ import InfoIcon from '@mui/icons-material/Info';
 
 //Style
 import style from './DispatchCompleteForm.module.scss';
-import { createTheme, ThemeProvider } from "@material-ui/core/styles";
-
-const theme = createTheme({
-    overrides: {
-        MuiFormLabel: {
-            root: {
-                fontSize: '0.8571428571428571rem',
-            }
-        },
-        MuiInputBase: {
-            root: {
-                fontSize: '0.9em',
-                fontFamily: 'Roboto, Poppins, sans-serif',
-            }
-        },
-        MuiFormHelperText: {
-            root: {
-                fontSize: '0.64em',
-                fontFamily: 'Roboto, Poppins, sans-serif',
-            }
-        },
-        MuiOutlinedInput: {
-            inputMarginDense: {
-                paddingTop: "10px",
-                paddingBottom: "10px"
-            }
-        },
-        MuiAutocomplete: {
-            inputRoot: {
-                '&&[class*="MuiOutlinedInput-root"] $input': {
-                    padding: 1
-                }
-            }
-        },
-    }
-});
 
 export default function DispatchCompleteForm(props) {
 
@@ -64,22 +27,19 @@ export default function DispatchCompleteForm(props) {
         vehicleOptions
     } = props;
 
-    const { formState: { isValid, errors }, getValues, control, watch, handleSubmit, trigger } = useForm({
+    const { formState: { isValid, errors }, getValues, control, handleSubmit, trigger } = useForm({
         mode: 'all',
         defaultValues: {
             ginnumber: GINRecords.ginnumber,
-            incharge: inChargeOptions[0],
-            vehicle: vehicleOptions[0]
+            incharge: '',
+            vehicle: ''
         }
     });
 
     const onSubmit = () => {
 
-        console.log(isValid);
-        console.log(watch());
-        console.log(errors);
-
         if (isValid) {
+            
             const ginFormData = new formData();
 
             if (action === 'Dispatch') {
@@ -93,6 +53,7 @@ export default function DispatchCompleteForm(props) {
             }
 
             addOrEdit(ginFormData, getValues('ginnumber'));
+
         } else {
             trigger();
         }
@@ -127,67 +88,51 @@ export default function DispatchCompleteForm(props) {
 
                 {
                     action === 'Dispatch' &&
+
                     <div className={style.fields}>
 
-                        <ThemeProvider theme={theme}>
-                            <Controller
-                                render={(field) => (
-                                    <Autocomplete
-                                        {...field}
-                                        options={inChargeOptions || []}
-                                        getOptionLabel={(option) => option}
-                                        // onChange={field.onChange}
-                                        renderInput={(params) => (
-                                            <MuiTextField
-                                                {...params}
-                                                helperText={errors.incharge && errors.incharge.message}
-                                                error={errors.incharge ? true : false}
-                                                variant="outlined"
-                                                margin="dense"
-                                                placeholder="Ex: Buddhika Bandara (E00006)"
-                                                label="In Charge *"
-                                            />
-                                        )}
-                                    />
-                                )}
-                                control={control}
-                                name={"incharge"}
-                                rules={{
-                                    required: { value: true, message: "Required *" },
-                                }}
-                            />
-                        </ThemeProvider>
+                        <Controller
+                            render={({ field }) => (
+                                <Select
+                                    {...field}
+                                    fullWidth={true}
+                                    options={inChargeOptions || []}
+                                    helperText={errors.incharge && errors.incharge.message}
+                                    error={errors.incharge ? true : false}
+                                    size="small"
+                                    label="In Charge *"
 
-                        <ThemeProvider theme={theme}>
-                            <Controller
-                                render={(field) => (
-                                    <Autocomplete
-                                        {...field}
-                                        options={vehicleOptions || []}
-                                        getOptionLabel={(option) => option}
-                                        // onChange={field.onChange}
-                                        renderInput={(params) => (
-                                            <MuiTextField
-                                                {...params}
-                                                helperText={errors.vehicle && errors.vehicle.message}
-                                                error={errors.vehicle ? true : false}
-                                                variant="outlined"
-                                                margin="dense"
-                                                placeholder="Ex: Van (PND 8430)"
-                                                label="Vehicle *"
-                                            />
-                                        )}
-                                    />
-                                )}
-                                control={control}
-                                name={"vehicle"}
-                                rules={{
-                                    required: { value: true, message: "Required *" },
-                                }}
-                            />
-                        </ThemeProvider>
+                                />
+                            )}
+                            name={"incharge"}
+                            control={control}
+                            rules={{
+                                required: { value: true, message: "Required *" },
+                            }}
+                        />
+
+                        <Controller
+                            render={({ field }) => (
+                                <Select
+                                    {...field}
+                                    fullWidth={true}
+                                    options={vehicleOptions || []}
+                                    helperText={errors.vehicle && errors.vehicle.message}
+                                    error={errors.vehicle ? true : false}
+                                    size="small"
+                                    label="Vehicle *"
+
+                                />
+                            )}
+                            name={"vehicle"}
+                            control={control}
+                            rules={{
+                                required: { value: true, message: "Required *" },
+                            }}
+                        />
 
                     </div>
+
                 }
 
                 Once you approve, changes cannot be undone.
