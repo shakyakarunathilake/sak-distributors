@@ -3,11 +3,10 @@ const router = express.Router();
 const mongoose = require("mongoose");
 
 const Employee = require("../models/employee.model");
-const Order = require("../models/order.model");
-const PurchaseOrder = require("../models/purchaseorder.model");
 const Product = require("../models/product.model");
 const Customer = require("../models/customer.model");
 const Supplier = require("../models/supplier.model");
+const Vehicle = require("../models/vehicle.model");
 
 //Check whether the endpoint works
 router.get("/", (req, res, next) => {
@@ -157,36 +156,6 @@ router.get("/employee-options-for-admin", (req, res, next) => {
         })
 })
 
-//Get all employee options for admin
-router.get("/all-active-employees", (req, res, next) => {
-
-    Employee
-        .find()
-        .exec()
-        .then(doc => {
-
-            const candidates = doc.filter(x =>
-                x.employeestatus === 'Active'
-            );
-
-            const employeeOptions = candidates.map(x => ({
-                title: `${x.firstname} ${x.lastname} (${x.employeeid})`,
-                id: `${x.firstname} ${x.lastname} (${x.employeeid})`
-            }))
-
-            employeeOptions.unshift({ title: "", id: "" });
-            
-            res.status(201).json({
-                message: "Handeling GET requests to /employee-options-for-supplier",
-                employeeOptions: employeeOptions,
-            })
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({ "Error": err });
-        })
-})
-
 //Get all product options for create order 
 router.get("/product-options", (req, res, next) => {
 
@@ -282,7 +251,7 @@ router.get("/customer-options", (req, res, next) => {
         })
 })
 
-//Get all employee options for admin
+//Get all employee options for gin
 router.get("/employee-options-for-gin", (req, res, next) => {
 
     Employee
@@ -302,6 +271,34 @@ router.get("/employee-options-for-gin", (req, res, next) => {
             res.status(201).json({
                 message: "Handeling GET requests to /employee-options-for-gin",
                 employeeOptions: employeeOptions,
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        })
+})
+
+//Get all vehicle options for gin
+router.get("/vehicle-options-for-gin", (req, res, next) => {
+
+    Vehicle
+        .find()
+        .exec()
+        .then(doc => {
+
+            const candidates = doc.filter(x =>
+                x.status === 'Active'
+            );
+
+            const vehicleOptions = candidates.map(x => ({
+                title: `${x.vehicle} (${x.licenseplatenumber})`,
+                id: x.licenseplatenumber
+            }))
+
+            res.status(201).json({
+                message: "Handeling GET requests to /vehicle-options-for-gin",
+                vehicleOptions: vehicleOptions,
             })
         })
         .catch(err => {

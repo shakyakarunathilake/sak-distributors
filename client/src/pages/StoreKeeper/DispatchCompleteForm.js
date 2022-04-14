@@ -2,59 +2,19 @@ import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import formData from 'form-data';
 
+//Shared Components
+import Select from '../../shared/Select/Select';
+
 //Material UI 
-import {
-    Button,
-    TextField as MuiTextField
-} from '@material-ui/core';
-import Autocomplete from '@mui/material/Autocomplete';
+import { Button } from '@material-ui/core';
 import Tooltip from '@mui/material/Tooltip';
 
 //Material UI Icons
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import InfoIcon from '@mui/icons-material/Info';
 
-//Shared Components
-import TextField from '../../shared/TextField/TextField';
-
 //Style
 import style from './DispatchCompleteForm.module.scss';
-import { createTheme, ThemeProvider } from "@material-ui/core/styles";
-
-const theme = createTheme({
-    overrides: {
-        MuiFormLabel: {
-            root: {
-                fontSize: '0.8571428571428571rem',
-            }
-        },
-        MuiInputBase: {
-            root: {
-                fontSize: '0.9em',
-                fontFamily: 'Roboto, Poppins, sans-serif',
-            }
-        },
-        MuiFormHelperText: {
-            root: {
-                fontSize: '0.64em',
-                fontFamily: 'Roboto, Poppins, sans-serif',
-            }
-        },
-        MuiOutlinedInput: {
-            inputMarginDense: {
-                paddingTop: "10px",
-                paddingBottom: "10px"
-            }
-        },
-        MuiAutocomplete: {
-            inputRoot: {
-                '&&[class*="MuiOutlinedInput-root"] $input': {
-                    padding: 1
-                }
-            }
-        },
-    }
-});
 
 export default function DispatchCompleteForm(props) {
 
@@ -63,11 +23,12 @@ export default function DispatchCompleteForm(props) {
         action,
         addOrEdit,
         GINRecords,
-        inChargeOptions
+        inChargeOptions,
+        vehicleOptions
     } = props;
 
-    const { formState: { isValid, errors }, getValues, control, handleSubmit, setValue } = useForm({
-        mode: "all",
+    const { formState: { isValid, errors }, getValues, control, handleSubmit, trigger } = useForm({
+        mode: 'all',
         defaultValues: {
             ginnumber: GINRecords.ginnumber,
             incharge: '',
@@ -75,28 +36,27 @@ export default function DispatchCompleteForm(props) {
         }
     });
 
-    const handleInChargeChange = (event, option) => {
-        if (option) {
-            setValue("incharge", option.title);
-        }
-    }
-
     const onSubmit = () => {
 
-        const ginFormData = new formData();
+        if (isValid) {
+            
+            const ginFormData = new formData();
 
-        if (action === 'Dispatch') {
-            ginFormData.append('vehicle', getValues('vehicle'));
-            ginFormData.append('incharge', getValues('incharge'));
-            ginFormData.append('status', 'Dispatched');
+            if (action === 'Dispatch') {
+                ginFormData.append('vehicle', getValues('vehicle'));
+                ginFormData.append('incharge', getValues('incharge'));
+                ginFormData.append('status', 'Dispatched');
+            }
+
+            if (action === 'Complete') {
+                ginFormData.append('status', 'Complete');
+            }
+
+            addOrEdit(ginFormData, getValues('ginnumber'));
+
+        } else {
+            trigger();
         }
-
-        if (action === 'Complete') {
-            ginFormData.append('status', 'Complete');
-        }
-
-        addOrEdit(ginFormData, getValues('ginnumber'));
-
     }
 
     return (
@@ -128,56 +88,51 @@ export default function DispatchCompleteForm(props) {
 
                 {
                     action === 'Dispatch' &&
-                    <div className={style.fields}>
 
-                        <ThemeProvider theme={theme}>
-                            <Controller
-                                render={() => (
-                                    <Autocomplete
-                                        options={inChargeOptions || []}
-                                        getOptionLabel={(option) => option.title}
-                                        onChange={handleInChargeChange}
-                                        renderInput={(params) => (
-                                            <MuiTextField
-                                                {...params}
-                                                helperText={errors.incharge && errors.incharge.message}
-                                                error={errors.incharge ? true : false}
-                                                variant="outlined"
-                                                margin="dense"
-                                                placeholder="Ex: Buddhika Bandara (E00006)"
-                                                label="In Charge *"
-                                            />
-                                        )}
-                                    />
-                                )}
-                                control={control}
-                                name={"incharge"}
-                                rules={{
-                                    required: { value: true, message: "Required *" },
-                                }}
-                            />
-                        </ThemeProvider>
+                    <div className={style.fields}>
 
                         <Controller
                             render={({ field }) => (
-                                <TextField
+                                <Select
                                     {...field}
                                     fullWidth={true}
-                                    error={errors.vehicle ? true : false}
-                                    helperText={errors.vehicle && errors.vehicle.message}
-                                    placeholder="Ex: Van (PND 8430)"
-                                    margin="dense"
-                                    label="Vehicle *"
+                                    options={inChargeOptions || []}
+                                    helperText={errors.incharge && errors.incharge.message}
+                                    error={errors.incharge ? true : false}
+                                    size="small"
+                                    label="In Charge *"
+
                                 />
                             )}
+                            name={"incharge"}
                             control={control}
+                            rules={{
+                                required: { value: true, message: "Required *" },
+                            }}
+                        />
+
+                        <Controller
+                            render={({ field }) => (
+                                <Select
+                                    {...field}
+                                    fullWidth={true}
+                                    options={vehicleOptions || []}
+                                    helperText={errors.vehicle && errors.vehicle.message}
+                                    error={errors.vehicle ? true : false}
+                                    size="small"
+                                    label="Vehicle *"
+
+                                />
+                            )}
                             name={"vehicle"}
+                            control={control}
                             rules={{
                                 required: { value: true, message: "Required *" },
                             }}
                         />
 
                     </div>
+
                 }
 
                 Once you approve, changes cannot be undone.
@@ -201,7 +156,6 @@ export default function DispatchCompleteForm(props) {
                 <Button
                     color="primary"
                     variant="contained"
-                    disabled={!isValid}
                     onClick={onSubmit}
                 >
                     {action === 'Dispatch' && 'Approve Dispatch'}

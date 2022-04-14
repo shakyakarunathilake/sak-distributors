@@ -46,6 +46,7 @@ export default function ManageGIN() {
     const [orderRecords, setOrderRecords] = useState([]);
     const [GINRecords, setGINRecords] = useState(null);
     const [inChargeOptions, setInChargeOptions] = useState([]);
+    const [vehicleOptions, setVehicleOptions] = useState([]);
 
     const [openPopup, setOpenPopup] = useState(false);
     const [reRender, setReRender] = useState(null);
@@ -106,7 +107,7 @@ export default function ManageGIN() {
         }
     }, [reRender, firstname, lastname, designation, employeeid]);
 
-    const getInChargeOptions = () => {
+    const getInChargeVehicleOptions = () => {
         axios
             .get('http://localhost:8080/options/employee-options-for-gin', {
                 headers: {
@@ -115,6 +116,19 @@ export default function ManageGIN() {
             })
             .then(res => {
                 setInChargeOptions(res.data.employeeOptions)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+
+        axios
+            .get('http://localhost:8080/options/vehicle-options-for-gin', {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
+            .then(res => {
+                setVehicleOptions(res.data.vehicleOptions)
             })
             .catch(error => {
                 console.log(error)
@@ -350,7 +364,7 @@ export default function ManageGIN() {
                                                 tooltip: 'Dispatch',
                                                 onClick: (event, rowData) => {
                                                     setAction('Dispatch');
-                                                    getInChargeOptions();
+                                                    getInChargeVehicleOptions();
                                                     openInPopup(rowData.ginnumber);
                                                 }
                                             }),
@@ -398,6 +412,7 @@ export default function ManageGIN() {
                             addOrEdit={addOrEdit}
                             action={action}
                             inChargeOptions={inChargeOptions}
+                            vehicleOptions={vehicleOptions}
                         />
                     }
 
