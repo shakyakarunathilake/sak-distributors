@@ -200,8 +200,8 @@ export default function SalesAnalytics() {
                                         <ToggleButton value="monthly">
                                             Monthly
                                         </ToggleButton>
-                                        <ToggleButton value="yearly">
-                                            Yearly
+                                        <ToggleButton value="annually">
+                                            Annually
                                         </ToggleButton>
                                     </ToggleButtonGroup>
                                 )}
@@ -234,7 +234,7 @@ export default function SalesAnalytics() {
                                         <ToggleButton value="line-chart" disabled={watch("analytics") !== "total-sales"}>
                                             Line Chart
                                         </ToggleButton>
-                                        <ToggleButton value="doughnut-chart"  disabled={watch("analytics") === "sales-per-customer"}>
+                                        <ToggleButton value="doughnut-chart" disabled={watch("analytics") === "sales-per-customer"}>
                                             Doughnut Chart
                                         </ToggleButton>
                                         <ToggleButton value="horizontal-bar-chart">
