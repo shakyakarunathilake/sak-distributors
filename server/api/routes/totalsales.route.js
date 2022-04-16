@@ -107,11 +107,17 @@ router.get("/daily", (req, res, next) => {
                 chartData.push(element.totalValue)
             });
 
+            const label = {
+                label: 'Total Value of Sales per Day',
+                axisLabelOne: 'Total Value',
+                axisLabelTwo: 'Date'
+            }
+
             res.status(201).json({
-                message: "Handeling GET requests to /get-total-sales",
+                message: "Handeling GET requests to /get-total-sales/daily",
                 labels: labels,
                 chartData: chartData,
-                label: 'Total Value of Sales per Day'
+                label: label
             })
         }
 
@@ -245,11 +251,17 @@ router.get("/weekly", (req, res, next) => {
                 chartData.push(element.totalValue)
             });
 
+            const label = {
+                label: 'Total Value of Sales per Day',
+                axisLabelOne: 'Total Value',
+                axisLabelTwo: 'Week'
+            }
+
             res.status(201).json({
-                message: "Handeling GET requests to /get-total-sales",
+                message: "Handeling GET requests to /get-total-sales/weekly",
                 labels: labels,
                 chartData: chartData,
-                label: 'Total Value of Sales per Week'
+                label: label
             })
         }
 
@@ -373,11 +385,17 @@ router.get("/monthly", (req, res, next) => {
                 chartData.push(element.totalValue)
             });
 
+            const label = {
+                label: 'Total Value of Sales per Day',
+                axisLabelOne: 'Total Value',
+                axisLabelTwo: 'Month'
+            }
+
             res.status(201).json({
-                message: "Handeling GET requests to /get-total-sales",
+                message: "Handeling GET requests to /get-total-sales/monthly",
                 labels: labels,
                 chartData: chartData,
-                label: 'Total Value of Sales per Month'
+                label: label
             })
         }
 
@@ -470,11 +488,17 @@ router.get("/annually", (req, res, next) => {
                 chartData.push(element.totalValue)
             });
 
+            const label = {
+                label: 'Total Value of Sales per Day',
+                axisLabelOne: 'Total Value',
+                axisLabelTwo: 'Year'
+            }
+
             res.status(201).json({
-                message: "Handeling GET requests to /get-total-sales",
+                message: "Handeling GET requests to /get-total-sales/annually",
                 labels: labels,
                 chartData: chartData,
-                label: 'Total Value of Sales per Month'
+                label: label
             })
         }
 

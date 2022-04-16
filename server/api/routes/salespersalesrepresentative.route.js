@@ -74,12 +74,19 @@ router.get("/daily", (req, res, next) => {
 
             });
 
+            const label = {
+                label: 'Total Values of Sales per Sales Representative',
+                axisLabelOne: 'Total Value',
+                axisLabelTwo: 'Sales Representative'
+            }
+
             res.status(201).json({
-                message: "Handeling GET requests to /get-total-sales",
+                message: "Handeling GET requests to /sales-per-sales-representative/daily",
                 labels: labels,
                 chartData: chartData,
-                label: 'Total Values of Sales per Sales Representative'
+                label: label
             })
+
         }
 
     });

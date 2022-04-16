@@ -16,13 +16,32 @@ export default function VerticalBarChar(props) {
                 text: 'Chart.js Bar Chart',
             },
         },
+        scales: {
+            yAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: label.axisLabelOne,
+                },
+                ticks: {
+                    callback: function (value) {
+                        return 'Rs ' + value.toLocaleString();
+                    }
+                }
+            }],
+            xAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: label.axisLabelTwo,
+                }
+            }]
+        }
     };
 
     const data = {
         labels,
         datasets: [
             {
-                label: label,
+                label: label.label,
                 data: chartData,
                 backgroundColor: 'rgba(255, 99, 132, 0.5)',
             }

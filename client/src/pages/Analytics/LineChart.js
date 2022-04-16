@@ -10,19 +10,39 @@ export default function LineChart(props) {
         plugins: {
             legend: {
                 position: 'top',
+
             },
             title: {
                 display: true,
                 text: 'Chart.js Line Chart',
             },
         },
+        scales: {
+            yAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: label.axisLabelOne,
+                },
+                ticks: {
+                    callback: function (value) {
+                        return 'Rs ' + value.toLocaleString();
+                    }
+                },
+            }],
+            xAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: label.axisLabelTwo,
+                },
+            }],
+        }
     };
 
     const data = {
         labels,
         datasets: [
             {
-                label: label,
+                label: label.label,
                 data: chartData,
                 borderColor: 'rgb(255, 99, 132)',
                 backgroundColor: 'rgba(255, 99, 132, 0.5)',

@@ -74,11 +74,17 @@ router.get("/daily", (req, res, next) => {
 
             });
 
+            const label = {
+                label: 'Total Values of Sales per Route',
+                axisLabelOne: 'Total Value',
+                axisLabelTwo: 'Route'
+            }
+
             res.status(201).json({
-                message: "Handeling GET requests to /get-total-sales",
+                message: "Handeling GET requests to /sales-per-route/daily",
                 labels: labels,
                 chartData: chartData,
-                label: 'Total Values of Sales per Route'
+                label: label
             })
         }
 

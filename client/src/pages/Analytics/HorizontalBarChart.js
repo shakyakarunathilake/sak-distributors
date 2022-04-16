@@ -22,6 +22,25 @@ export default function HorizontalBarChart(props) {
                 text: 'Chart.js Horizontal Bar Chart',
             },
         },
+        scales: {
+            yAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: label.axisLabelTwo,
+                }
+            }],
+            xAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: label.axisLabelOne,
+                },
+                ticks: {
+                    callback: function (value) {
+                        return 'Rs ' + value.toLocaleString();
+                    }
+                }
+            }]
+        }
     };
 
 
@@ -30,7 +49,7 @@ export default function HorizontalBarChart(props) {
         labels,
         datasets: [
             {
-                label: label,
+                label: label.label,
                 data: chartData,
                 borderColor: 'rgb(255, 99, 132)',
                 backgroundColor: 'rgba(255, 99, 132, 0.5)',

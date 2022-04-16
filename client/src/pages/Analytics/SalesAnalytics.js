@@ -268,6 +268,7 @@ export default function SalesAnalytics() {
                             className={style.fetchButton}
                             onClick={onSubmit}
                             variant="contained"
+                            disabled={fetched}
                         >
                             Fetch
                         </Button>
