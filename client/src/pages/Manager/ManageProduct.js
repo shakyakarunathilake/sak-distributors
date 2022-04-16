@@ -299,8 +299,8 @@ export default function ManageProduct() {
                                 () => {
                                     setAction('Create');
                                     setFormType('Variant')
-                                    getProductOptions();
                                     getProductVariantOptions();
+                                    getProductOptions();
                                     getEmployeeOptions();
                                 }
                             }
