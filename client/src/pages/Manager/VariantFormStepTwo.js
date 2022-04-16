@@ -212,7 +212,7 @@ export default function VariantFormStepTwo(props) {
                     </div>
 
                     {
-                        watch('type') === "Promotion" &&
+                        watch('type') !== "General" &&
                         <div className={style.row}>
                             <div className={style.boldText}>
                                 Offer Caption

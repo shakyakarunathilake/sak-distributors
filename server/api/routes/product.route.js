@@ -204,10 +204,16 @@ router.post("/add-new-variant/:productid", uploads.single("productimage"), (req,
                         'mrp': req.body.mrp,
                         'sellingprice': req.body.sellingprice,
                         'purchaseprice': req.body.purchaseprice,
-                        'offercaption': req.body.offercaption,
                         'status': req.body.variantstatus,
+                        'eligibleqty': req.body.eligibleqty ? req.body.eligibleqty : '',
+                        'eligibleqtytype': req.body.eligibleqtytype ? req.body.eligibleqtytype : '',
+                        'freeqty': req.body.freeqty ? req.body.freeqty : '',
+                        'freeqtytype': req.body.freeqtytype ? req.body.freeqtytype : '',
+                        'discount': req.body.discount ? req.body.discount : '',
+                        'freeproductname': req.body.freeproductname ? req.body.freeproductname : '',
+                        'offercaption': req.body.offercaption ? req.body.offercaption : '',
                         'addeddate': req.body.variantaddeddate,
-                        'addedby': req.body.variantaddedby
+                        'addedby': req.body.variantaddedby,
                     }
                 }
             },
@@ -297,10 +303,16 @@ router.get("/:productid/:variantid", (req, res, next) => {
                     'mrp': variant.mrp.toFixed(2),
                     'sellingprice': variant.sellingprice.toFixed(2),
                     'purchaseprice': variant.purchaseprice.toFixed(2),
-                    'offercaption': variant.offercaption,
                     'status': variant.status,
                     'addeddate': variant.addeddate,
-                    'addedby': variant.addedby
+                    'addedby': variant.addedby,
+                    'eligibleqty': variant.eligibleqty,
+                    'eligibleqtytype': variant.eligibleqtytype,
+                    'freeqty': variant.freeqty,
+                    'freeqtytype': variant.freeqtytype,
+                    'discount': variant.discount,
+                    'freeproductname': variant.freeproductname,
+                    'offercaption': variant.offercaption,
                 }
             }
 
@@ -390,13 +402,19 @@ router.post("/update-by-id/:productid/:variantid", uploads.single("productimage"
             {
                 '$set': {
                     'variants.$.type': req.body.type,
-                    'variants.$.offercaption': req.body.offercaption,
                     'variants.$.piecespercase': req.body.piecespercase,
                     'variants.$.bulkprice': req.body.bulkprice,
                     'variants.$.purchaseprice': req.body.purchaseprice,
                     'variants.$.sellingprice': req.body.sellingprice,
                     'variants.$.mrp': req.body.mrp,
                     'variants.$.status': req.body.variantstatus,
+                    'variants.$.eligibleqty': req.body.eligibleqty ? req.body.eligibleqty : '',
+                    'variants.$.eligibleqtytype': req.body.eligibleqtytype ? req.body.eligibleqtytype : '',
+                    'variants.$.freeqty': req.body.freeqty ? req.body.freeqty : '',
+                    'variants.$.freeqtytype': req.body.freeqtytype ? req.body.freeqtytype : '',
+                    'variants.$.discount': req.body.discount ? req.body.discount : '',
+                    'variants.$.freeproductname': req.body.freeproductname ? req.body.freeproductname : '',
+                    'variants.$.offercaption': req.body.offercaption ? req.body.offercaption : '',
                 }
             },
             { upsert: true, new: true }

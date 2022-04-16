@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 
+const { db } = require("../models/product.model");
+
 const Employee = require("../models/employee.model");
 const Product = require("../models/product.model");
 const Customer = require("../models/customer.model");
@@ -107,6 +109,48 @@ router.get("/product-options-for-product", (req, res, next) => {
 //Get all product variant options
 router.get("/product-variant-options-for-product", (req, res, next) => {
 
+    var pipeline = [
+
+        {
+            $unwind: "$variants"
+        },
+        {
+            $match: {
+                "variants.type": "General"
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                productid: "$productid",
+                variantid: "$variants.variantid",
+                name: "$name"
+            }
+        }
+    ];
+
+
+    const doc = db.collection('products').aggregate(pipeline);
+
+    doc.toArray((error, result) => {
+
+        if (error) {
+
+            return res.status(500).send(error);
+
+        } else {
+
+            const productVariantOptions = result.map(x => 
+                `${x.productid} ${x.variantid} ${x.name}`
+            )
+
+            res.status(201).json({
+                message: "Handeling GET requests to /get-total-sales",
+                productVariantOptions: productVariantOptions,
+            })
+        }
+
+    });
 
 })
 

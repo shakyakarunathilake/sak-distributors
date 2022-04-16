@@ -425,7 +425,6 @@ export default function VariantFormStepOne(props) {
                                                 fullWidth
                                                 getOptionLabel={(option) => option}
                                                 onChange={handleFreeProductNameChange}
-                                                disabled={action === "Edit"}
                                                 renderInput={(params) => (
                                                     <MuiTextField
                                                         {...params}
@@ -448,29 +447,110 @@ export default function VariantFormStepOne(props) {
 
                             </div>
 
-                            <div className={style.row}>
+                        </>
+                    }
+
+                    {
+                        watch('type') === "Promotion (Discounts)" &&
+                        <>
+
+                            <div className={style.minicolumns}>
 
                                 <Controller
                                     render={({ field }) => (
                                         <TextField
                                             {...field}
                                             fullWidth={true}
-                                            helperText={errors.offercaption && errors.offercaption.message}
-                                            error={errors.offercaption ? true : false}
-                                            placeholder="Ex: Buy 24 and get 6 free"
-                                            label="Offer Caption *"
+                                            helperText={errors.eligibleqty && errors.eligibleqty.message}
+                                            error={errors.eligibleqty ? true : false}
+                                            placeholder="9"
                                             size="small"
+                                            label="Eligible Qty *"
                                         />
                                     )}
-                                    name={"offercaption"}
+                                    name={"eligibleqty"}
+                                    control={control}
+                                    rules={{
+                                        required: { value: true, message: "Required *" },
+                                        pattern: { value: /^[0-9]*$/, message: "Invalid" }
+                                    }}
+                                />
+
+                                <Controller
+                                    render={({ field }) => (
+                                        <Select
+                                            {...field}
+                                            options={[
+                                                { id: "pcs", title: "Pieces" },
+                                                { id: "cases", title: "Cases" }
+                                            ]}
+                                            helperText={errors.eligibleqtytype && errors.eligibleqtytype.message}
+                                            error={errors.eligibleqtytype ? true : false}
+                                            size="small"
+                                            label="Pcs / Cases *"
+                                        />
+                                    )}
+                                    name={"eligibleqtytype"}
                                     control={control}
                                     rules={{
                                         required: { value: true, message: "Required *" },
                                     }}
                                 />
 
+                                <Controller
+                                    render={({ field }) => (
+                                        <TextField
+                                            {...field}
+                                            fullWidth={true}
+                                            helperText={errors.discount && errors.discount.message}
+                                            error={errors.discount ? true : false}
+                                            placeholder="9"
+                                            size="small"
+                                            label="Discount *"
+                                        />
+                                    )}
+                                    name={"discount"}
+                                    control={control}
+                                    rules={{
+                                        required: { value: true, message: "Required *" },
+                                        pattern: { value: /^[0-9]*$/, message: "Invalid" }
+                                    }}
+                                />
+
                             </div>
 
+                            <div className={style.row}>
+
+                                <ThemeProvider theme={theme}>
+                                    <Controller
+                                        render={({ field }) => (
+                                            <Autocomplete
+                                                options={productVariantOptions || []}
+                                                fullWidth
+                                                getOptionLabel={(option) => option}
+                                                onChange={handleFreeProductNameChange}
+                                                disabled={action === "Edit"}
+                                                renderInput={(params) => (
+                                                    <MuiTextField
+                                                        {...params}
+                                                        error={errors.freeproductname ? true : false}
+                                                        helperText={errors.freeproductname && errors.freeproductname.message}
+                                                        label="Product"
+                                                        variant="outlined"
+                                                        size="small"
+                                                    />
+                                                )}
+                                            />
+                                        )}
+                                        name={"freeproductname"}
+                                        control={control}
+                                        rules={{
+                                            required: { value: true, message: "Required *" },
+                                        }}
+                                    />
+                                </ThemeProvider>
+
+                            </div>
                         </>
                     }
 
