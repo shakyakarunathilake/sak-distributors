@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import Select from 'react-select';
 import { Controller } from 'react-hook-form';
 
 //Development Stage
@@ -6,15 +7,13 @@ import * as employeeservice from "../../services/employeeService";
 
 //Shared Components
 import TextField from '../../shared/TextField/TextField';
-import Select from '../../shared/Select/Select';
+import SharedSelect from '../../shared/Select/Select';
 import DatePicker from '../../shared/DatePicker/DatePicker';
 
 //Material UI Components
 import Button from '@material-ui/core/Button';
 import Divider from '@mui/material/Divider';
 import { InputAdornment } from '@material-ui/core';
-import Autocomplete from '@mui/material/Autocomplete';
-import { TextField as MuiTextField } from '@material-ui/core';
 
 //Material UI Icons
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
@@ -24,43 +23,6 @@ import product from '../../images/product.svg';
 
 //Styles
 import style from './VariantFormStepOne.module.scss';
-import { createTheme, ThemeProvider } from "@material-ui/core/styles";
-
-const theme = createTheme({
-    overrides: {
-        MuiFormLabel: {
-            root: {
-                fontSize: '0.9em',
-                fontFamily: 'Roboto, Poppins, sans-serif',
-            }
-        },
-        MuiInputBase: {
-            root: {
-                fontSize: '0.9em',
-                fontFamily: 'Roboto, Poppins, sans-serif',
-            }
-        },
-        MuiFormHelperText: {
-            root: {
-                fontSize: '0.64em',
-                fontFamily: 'Roboto, Poppins, sans-serif',
-            }
-        },
-        MuiOutlinedInput: {
-            inputMarginDense: {
-                paddingTop: "10px",
-                paddingBottom: "10px"
-            }
-        },
-        MuiAutocomplete: {
-            inputRoot: {
-                '&&[class*="MuiOutlinedInput-root"] $input': {
-                    padding: 1
-                }
-            }
-        },
-    }
-});
 
 export default function VariantFormStepOne(props) {
 
@@ -79,6 +41,10 @@ export default function VariantFormStepOne(props) {
         resetForm,
         watch
     } = props;
+
+    useEffect(() => {
+        watch()
+    }, [watch()])
 
     return (
         <div className={style.container}>
@@ -151,7 +117,40 @@ export default function VariantFormStepOne(props) {
 
                     <div className={style.row}>
 
-                        <ThemeProvider theme={theme}>
+                        <Controller
+                            render={({ field: { onChange, value, name, ref } }) => (
+                                <Select
+                                    options={productOptions}
+                                    menuPortalTarget={document.body}
+                                    inputRef={ref}
+                                    value={productOptions.find(c => c.value === value)}
+                                    onChange={val => onChange(val.value.name)}
+                                    styles={{
+                                        menuPortal: base => ({ ...base, zIndex: 9999 }),
+                                        control: (base, { isFocused }) => ({
+                                            ...base,
+                                            border: isFocused ? '2px solid #20369f' : '1px solid #BDBDBD',
+                                            '&:hover': { border: '1px solid #212121' },
+                                            boxShadow: 'none',
+                                            color: "#212121"
+                                        }),
+                                        option: (styles, { isSelected }) => ({
+                                            ...styles,
+                                            backgroundColor: isSelected ? '#EBEBEB' : "white",
+                                            '&:hover': { backgroundColor: '#F5F5F5' },
+                                            color: "#212121"
+                                        })
+                                    }}
+                                />
+                            )}
+                            name={"name"}
+                            control={control}
+                            rules={{
+                                required: { value: true, message: "Required *" },
+                            }}
+                        />
+
+                        {/* <ThemeProvider theme={theme}>
                             <Controller
                                 render={({ field }) => (
                                     <Autocomplete
@@ -178,7 +177,7 @@ export default function VariantFormStepOne(props) {
                                     required: { value: true, message: "Required *" },
                                 }}
                             />
-                        </ThemeProvider>
+                        </ThemeProvider> */}
 
                     </div>
 
@@ -186,7 +185,7 @@ export default function VariantFormStepOne(props) {
 
                         <Controller
                             render={({ field }) => (
-                                <Select
+                                <SharedSelect
                                     {...field}
                                     options={employeeservice.getSupplierOptions()}
                                     size="small"
@@ -207,7 +206,7 @@ export default function VariantFormStepOne(props) {
 
                         <Controller
                             render={({ field }) => (
-                                <Select
+                                <SharedSelect
                                     {...field}
                                     fullWidth={true}
                                     options={employeeOptions || []}
@@ -252,7 +251,7 @@ export default function VariantFormStepOne(props) {
 
                             <Controller
                                 render={({ field }) => (
-                                    <Select
+                                    <SharedSelect
                                         {...field}
                                         options={employeeservice.getProductStatusOptions()}
                                         size="small"
@@ -305,7 +304,7 @@ export default function VariantFormStepOne(props) {
 
                             <Controller
                                 render={({ field }) => (
-                                    <Select
+                                    <SharedSelect
                                         {...field}
                                         options={employeeservice.getVariantTypeOptions()}
                                         helperText={errors.type && errors.type.message}
@@ -353,7 +352,7 @@ export default function VariantFormStepOne(props) {
 
                                 <Controller
                                     render={({ field }) => (
-                                        <Select
+                                        <SharedSelect
                                             {...field}
                                             options={[
                                                 { id: "pcs", title: "Pieces" },
@@ -394,7 +393,7 @@ export default function VariantFormStepOne(props) {
 
                                 <Controller
                                     render={({ field }) => (
-                                        <Select
+                                        <SharedSelect
                                             {...field}
                                             options={[
                                                 { id: "pcs", title: "Pieces" },
@@ -417,7 +416,7 @@ export default function VariantFormStepOne(props) {
 
                             <div className={style.row}>
 
-                                <ThemeProvider theme={theme}>
+                                {/* <ThemeProvider theme={theme}>
                                     <Controller
                                         render={({ field }) => (
                                             <Autocomplete
@@ -443,7 +442,7 @@ export default function VariantFormStepOne(props) {
                                             required: { value: true, message: "Required *" },
                                         }}
                                     />
-                                </ThemeProvider>
+                                </ThemeProvider> */}
 
                             </div>
 
@@ -478,7 +477,7 @@ export default function VariantFormStepOne(props) {
 
                                 <Controller
                                     render={({ field }) => (
-                                        <Select
+                                        <SharedSelect
                                             {...field}
                                             options={[
                                                 { id: "pcs", title: "Pieces" },
@@ -520,7 +519,7 @@ export default function VariantFormStepOne(props) {
                             </div>
 
                             <div className={style.row}>
-
+                                {/* 
                                 <ThemeProvider theme={theme}>
                                     <Controller
                                         render={({ field }) => (
@@ -548,7 +547,7 @@ export default function VariantFormStepOne(props) {
                                             required: { value: true, message: "Required *" },
                                         }}
                                     />
-                                </ThemeProvider>
+                                </ThemeProvider> */}
 
                             </div>
                         </>
@@ -714,7 +713,7 @@ export default function VariantFormStepOne(props) {
 
                         <Controller
                             render={({ field }) => (
-                                <Select
+                                <SharedSelect
                                     {...field}
                                     fullWidth={true}
                                     options={employeeOptions || []}
@@ -740,7 +739,7 @@ export default function VariantFormStepOne(props) {
 
                             <Controller
                                 render={({ field }) => (
-                                    <Select
+                                    <SharedSelect
                                         {...field}
                                         options={employeeservice.getVariantStatusOptions()}
                                         helperText={errors.variantstatus && errors.variantstatus.message}
