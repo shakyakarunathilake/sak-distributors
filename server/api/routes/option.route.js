@@ -85,15 +85,19 @@ router.get("/product-options-for-product", (req, res, next) => {
             }
 
             const productOptions = doc.map(x => ({
-                productid: x.productid,
-                name: x.name,
-                supplier: x.supplier,
-                addedby: x.addedby,
-                addeddate: x.addeddate,
-                productimage: x.productimage,
-                status: x.status,
-                variantid: getVariantId(x.name, String(x.variants.length + 1), 4)
+                label: x.name,
+                value: {
+                    name: x.name,
+                    productid: x.productid,
+                    supplier: x.supplier,
+                    addedby: x.addedby,
+                    addeddate: x.addeddate,
+                    productimage: x.productimage,
+                    status: x.status,
+                    variantid: getVariantId(x.name, String(x.variants.length + 1), 4)
+                }
             }))
+
 
             res.status(200).json({
                 message: "Handeling GET requests to /product-options-for-product",
@@ -140,7 +144,7 @@ router.get("/product-variant-options-for-product", (req, res, next) => {
 
         } else {
 
-            const productVariantOptions = result.map(x => 
+            const productVariantOptions = result.map(x =>
                 `${x.productid} ${x.variantid} ${x.name}`
             )
 
