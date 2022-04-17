@@ -452,7 +452,8 @@ export default function ManageProduct() {
                                 onClick: (event, rowData) => {
                                     setAction('Edit');
                                     openInPopup(rowData.productid, rowData.variantid);
-                                    getProductVariantOptions();
+                                    // getProductOptions();
+                                    // getProductVariantOptions();
                                     getEmployeeOptions();
                                 }
                             }
