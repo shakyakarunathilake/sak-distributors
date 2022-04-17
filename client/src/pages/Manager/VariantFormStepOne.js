@@ -42,10 +42,6 @@ export default function VariantFormStepOne(props) {
         watch
     } = props;
 
-    useEffect(() => {
-        watch()
-    }, [watch()])
-
     return (
         <div className={style.container}>
 
