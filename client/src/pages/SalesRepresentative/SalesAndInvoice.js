@@ -222,10 +222,12 @@ export default function SalesAndInvoice() {
             .then(res => {
                 setOrderRecords(res.data.order);
 
-                if (action === 'Create' || action === 'Edit') {
-                    getOptions();
+                if (action !== 'View') {
+                    getCustomerOptions();
+                    getProductOptions();
+                    setTimeout(setOpenPopupTrue, 500);
                 } else {
-                    setOpenPopup(true);
+                    setTimeout(setOpenPopupTrue, 500);
                 }
             })
             .catch(err => {
@@ -243,7 +245,6 @@ export default function SalesAndInvoice() {
             })
             .then(res => {
                 setNextOrderNo(res.data.nextorderno);
-                getOptions();
             })
             .catch(err => {
                 console.log(err);
@@ -251,7 +252,7 @@ export default function SalesAndInvoice() {
 
     }
 
-    const getOptions = () => {
+    const getCustomerOptions = () => {
         axios
             .get("http://localhost:8080/options/customer-options", {
                 headers: {
@@ -264,7 +265,9 @@ export default function SalesAndInvoice() {
             .catch(err => {
                 console.log(err);
             })
+    }
 
+    const getProductOptions = () => {
         axios
             .get("http://localhost:8080/options/product-options", {
                 headers: {
@@ -273,12 +276,15 @@ export default function SalesAndInvoice() {
             })
             .then(res => {
                 setProductOptions(res.data.productoptions);
-                setOpenPopup(true);
             })
             .catch(err => {
                 console.log(err);
             })
 
+    }
+
+    const setOpenPopupTrue = () => {
+        setOpenPopup(true)
     }
 
     return (
@@ -297,9 +303,12 @@ export default function SalesAndInvoice() {
                             variant="contained"
                             onClick={
                                 () => {
+                                    getNextOrderNo();
+                                    getCustomerOptions();
+                                    getProductOptions();
                                     setAction('Create');
                                     setOrderRecords(null);
-                                    getNextOrderNo();
+                                    setTimeout(setOpenPopupTrue, 500);
                                 }
                             }
                         >
@@ -400,6 +409,7 @@ export default function SalesAndInvoice() {
                                                 icon: 'edit',
                                                 tooltip: 'Edit',
                                                 onClick: (event, rowData) => {
+                                                    getProductOptions();
                                                     setAction('Edit');
                                                     openInPopup(rowData.orderno);
                                                 },
