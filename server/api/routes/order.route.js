@@ -18,14 +18,19 @@ router.get("/", (req, res, next) => {
 });
 
 //Get next invoice number
-router.get("/get-next-orderno/:employeeid", (req, res, next) => {
+// router.get("/get-next-orderno/:employeeid", (req, res, next) => {
+router.get("/get-next-orderno/:employeeid/:date", (req, res, next) => {
 
     const employeeid = req.params.employeeid;
 
-    const today = new Date();
-    const date = today.getFullYear() +
-        (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) +
-        (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+    const date = req.params.date;
+
+    console.log(req.params)
+
+    // const today = new Date();
+    // const date = today.getFullYear() +
+    //     (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) +
+    //     (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
 
     Order
         .find(

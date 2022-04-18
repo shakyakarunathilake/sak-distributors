@@ -29,6 +29,9 @@ import EditOrder from './EditOrder';
 import CreateOrder from './CreateOrder';
 import DeliveredPaidForm from '../DeliveryRepresentative/DeliveredPaidForm';
 
+//Development Stage
+import * as ManualTimeSetting from '../DateTIme';
+
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
@@ -238,7 +241,7 @@ export default function SalesAndInvoice() {
 
     const getNextOrderNo = () => {
         axios
-            .get(`http://localhost:8080/orders/get-next-orderno/${employeeid}`, {
+            .get(`http://localhost:8080/orders/get-next-orderno/${employeeid}/${ManualTimeSetting.ManualOrderIDDate}`, {
                 headers: {
                     'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
                 }
