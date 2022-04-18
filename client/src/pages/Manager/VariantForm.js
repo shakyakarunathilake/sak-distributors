@@ -42,7 +42,7 @@ export default function VariantForm(props) {
             addedby: productRecords ? productRecords.addedby : '',
             productstatus: productRecords ? productRecords.status : '',
             variantid: productRecords ? productRecords.variant.variantid : '',
-            type: productRecords ? productRecords.variant.type : '',
+            type: productRecords ? productRecords.variant.type : 'General',
             piecespercase: productRecords ? productRecords.variant.piecespercase : 24,
             bulkprice: productRecords ? productRecords.variant.bulkprice : '',
             mrp: productRecords ? productRecords.variant.mrp : '',
@@ -89,14 +89,14 @@ export default function VariantForm(props) {
             setValue("addedby", option.addedby);
             setValue("variantid", option.variantid);
             setValue("productstatus", option.status);
-            clearErrors();
+            // clearErrors();
         }
     }
 
     const handleFreeProductNameChange = (event, option) => {
         if (option) {
             setValue("freeproductname", option);
-            clearErrors("freeproductname");
+            // clearErrors("freeproductname");
         }
     }
 
