@@ -176,18 +176,43 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
                     .exec()
                     .then(result => {
 
+                        console.log("*******************************************************")
+
+                        console.log("ITEM.NAME :", item.name);
+                        console.log("item.salesqtycases :", item.salesqtycases);
+                        console.log("item.salesqtypieces :", item.salesqtypieces);
+                        console.log("item.freeqtycases :", item.freeqtycases);
+                        console.log("item.freeqtypieces :", item.freeqtypieces);
+
                         let storesalesqtypieces = result.storequantity.salesqtypieces;
                         let storesalesqtycases = result.storequantity.salesqtycases;
                         let storefreeqtypieces = result.storequantity.freeqtypieces;
                         let storefreeqtycases = result.storequantity.freeqtycases;
 
+                        console.log("storesalesqtycases :", storesalesqtycases);
+                        console.log("storesalesqtypieces :", storesalesqtypieces);
+                        console.log("storefreeqtycases :", storefreeqtycases);
+                        console.log("storefreeqtypieces :", storefreeqtypieces);
+
                         let newNoOfTotalSalesPieces = (storesalesqtycases * item.piecespercase) + storesalesqtypieces + (item.deliveredsalesqtycases * item.piecespercase) + item.deliveredsalesqtypieces - item.damagedsalesqty;
                         let newNoOfTotalFreePieces = (storefreeqtycases * item.piecespercase) + storefreeqtypieces + (item.deliveredfreeqtycases * item.piecespercase) + item.deliveredfreeqtypieces - item.damagedfreeqty;
+
+
+                        console.log("newNoOfTotalSalesPieces :", newNoOfTotalSalesPieces);
+                        console.log("newNoOfTotalFreePieces :", newNoOfTotalFreePieces);
 
                         let newstoresalesqtypieces = newNoOfTotalSalesPieces % item.piecespercase;
                         let newstoresalesqtycases = Math.floor(newNoOfTotalSalesPieces / item.piecespercase);
                         let newstorefreeqtypieces = newNoOfTotalFreePieces % item.piecespercase;
                         let newstorefreeqtycases = Math.floor(newNoOfTotalFreePieces / item.piecespercase);
+
+
+                        console.log("newstoresalesqtycases :", newstoresalesqtycases);
+                        console.log("newstoresalesqtypieces :", newstoresalesqtypieces);
+                        console.log("newstorefreeqtycases :", newstorefreeqtycases);
+                        console.log("newstorefreeqtypieces :", newstorefreeqtypieces);
+
+                        console.log("*******************************************************")
 
                         Store
                             .findOneAndUpdate(

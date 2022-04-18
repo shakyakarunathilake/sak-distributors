@@ -96,7 +96,8 @@ router.get("/:ginnumber", (req, res, next) => {
 //Create GIN
 router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
 
-    // console.log("REQUEST: ", req.body);
+    // console.log(" ***** REQUEST ***** ");
+    // console.log(req.body);
 
     const items = JSON.parse(req.body.items);
     const ordernumbers = JSON.parse(req.body.ordernumbers);
@@ -115,13 +116,15 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
         vehicle: ''
     })
 
-    // console.log("GIN: ", gin);
+    // console.log(" ***** GIN ***** ");
+    // console.log(gin);
 
     gin
         .save()
         .then(doc => {
 
-            // console.log("GIN :", doc);
+            // console.log(" ***** GIN ***** ");
+            // console.log(doc);
 
             doc.ordernumbers.map(order => {
 
@@ -154,7 +157,8 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
         })
         .then(doc => {
 
-            // console.log("METADATA :", doc);
+            // console.log(" ***** METADATA ***** ");
+            // console.log(doc);
 
             doc.ordernumbers.map(order => {
 
@@ -187,7 +191,8 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
         })
         .then(doc => {
 
-            // console.log("STORE :", doc);
+            // console.log(" ***** STORE ***** ");
+            // console.log(doc);
 
             doc.items.map((item, i) => {
 
@@ -196,13 +201,30 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
                     .exec()
                     .then(result => {
 
+                        console.log("*******************************************************")
+
+                        console.log("ITEM.NAME :", item.name);
+                        console.log("item.salesqtycases :", item.salesqtycases);
+                        console.log("item.salesqtypieces :", item.salesqtypieces);
+                        console.log("item.freeqtycases :", item.freeqtycases);
+                        console.log("item.freeqtypieces :", item.freeqtypieces);
+
                         let storesalesqtypieces = result.storequantity.salesqtypieces;
                         let storesalesqtycases = result.storequantity.salesqtycases;
                         let storefreeqtypieces = result.storequantity.freeqtypieces;
                         let storefreeqtycases = result.storequantity.freeqtycases;
 
+                        console.log("storesalesqtycases :", storesalesqtycases);
+                        console.log("storesalesqtypieces :", storesalesqtypieces);
+                        console.log("storefreeqtycases :", storefreeqtycases);
+                        console.log("storefreeqtypieces :", storefreeqtypieces);
+
+
                         let newNoOfTotalSalesPieces = (storesalesqtycases * item.piecespercase) + storesalesqtypieces - (item.salesqtycases * item.piecespercase) - item.salesqtypieces;
                         let newNoOfTotalFreePieces = (storefreeqtycases * item.piecespercase) + storefreeqtypieces - (item.freeqtycases * item.piecespercase) - item.freeqtypieces;
+
+                        console.log("newNoOfTotalSalesPieces :", newNoOfTotalSalesPieces);
+                        console.log("newNoOfTotalFreePieces :", newNoOfTotalFreePieces);
 
                         let newstoresalesqtypieces = newNoOfTotalSalesPieces % item.piecespercase;
                         let newstorefreeqtypieces = newNoOfTotalFreePieces % item.piecespercase;
@@ -221,15 +243,12 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
                             newstorefreeqtycases = Math.ceil(newNoOfTotalFreePieces / item.piecespercase);
                         }
 
-                        console.log("ITEM.NAME :", item.name);
-                        console.log("newstoresalesqtypieces :", newstoresalesqtypieces);
                         console.log("newstoresalesqtycases :", newstoresalesqtycases);
-                        console.log("newstorefreeqtypieces :", newstorefreeqtypieces);
+                        console.log("newstoresalesqtypieces :", newstoresalesqtypieces);
                         console.log("newstorefreeqtycases :", newstorefreeqtycases);
-                        console.log("item.salesqtycases :", item.salesqtycases);
-                        console.log("item.salesqtypieces :", item.salesqtypieces);
-                        console.log("item.freeqtycases :", item.freeqtycases);
-                        console.log("item.freeqtypieces :", item.freeqtypieces);
+                        console.log("newstorefreeqtypieces :", newstorefreeqtypieces);
+
+                        console.log("*******************************************************")
 
                         Store
                             .findOneAndUpdate(
