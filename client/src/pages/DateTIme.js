@@ -24,7 +24,14 @@ export const ManualPurchaseOrderDateTime = '';
     Format
     2021-01-07T09:23:24
 **/
-export const ManualOrderDate = '';
+export const ManualOrderDate = '2021-01-07T09:23:24';
+
+/**
+    Format
+    20210110
+    YYYYMMDD
+**/
+export const ManualOrderIDDate = '20210116';
 
 
 /**
@@ -32,11 +39,11 @@ export const ManualOrderDate = '';
     2021-01-10
     (If today is 2021-01-07, then ManualOrderDeliveryDate is 3 days ahead a.k.a 2021-01-10)
 **/
-export const ManualOrderDeliveryDate = '';
+export const ManualOrderDeliveryDate = '2021-01-10';
 
 /**
     Format
-    20210113171747
+    20210107171747
     Seconds are considered
 **/
-export const ManualGINDateTime = '';
+export const ManualGINDateTime = '20210116081236';
