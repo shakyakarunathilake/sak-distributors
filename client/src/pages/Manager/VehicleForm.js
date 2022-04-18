@@ -9,6 +9,9 @@ import style from './VehicleForm.module.scss';
 import StepOne from './VehicleFormStepOne';
 import StepTwo from './VehicleFormStepTwo';
 
+//Development Stage
+import * as ManualTimeSetting from '../DateTIme';
+
 export default function VehicleForm(props) {
 
     const { handleClosePopUp, addOrEdit, vehicleRecords, action } = props;
@@ -31,7 +34,8 @@ export default function VehicleForm(props) {
             ownership: vehicleRecords ? vehicleRecords.ownership : "Company's",
             status: vehicleRecords ? vehicleRecords.status : 'Active',
             addedby: vehicleRecords ? vehicleRecords.addedby : `${firstname} ${lastname} (${employeeid})`,
-            addeddate: vehicleRecords ? vehicleRecords.addeddate : date,
+            // addeddate: vehicleRecords ? vehicleRecords.addeddate : date,
+            addeddate: vehicleRecords ? vehicleRecords.addeddate : ManualTimeSetting.ManualDate,
             vehicleowner: vehicleRecords ? vehicleRecords.vehicleowner : '',
             address: vehicleRecords ? vehicleRecords.address : '',
             title: vehicleRecords ? vehicleRecords.title : '',

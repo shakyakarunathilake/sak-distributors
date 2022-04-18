@@ -11,6 +11,9 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 //SCSS Style
 import style from './DeliveredPaidForm.module.scss';
 
+//Development Stage
+import * as ManualTimeSetting from '../DateTIme';
+
 export default function DeliveredPaidForm(props) {
 
     const { handleClosePopUp, addOrEdit, action, orderRecords } = props;
@@ -35,9 +38,11 @@ export default function DeliveredPaidForm(props) {
         mode: 'all',
         defaultValues: {
             orderno: orderRecords.orderno,
-            deliveredat: dateTime,
+            // deliveredat: dateTime,
+            deliveredat: ManualTimeSetting.ManualDateTime,
             deliveredby: `${firstname} ${lastname} (${employeeid})`,
-            completedat: dateTime,
+            // completedat: dateTime,
+            completedat: ManualTimeSetting.ManualDateTime,
             completedby: `${firstname} ${lastname} (${employeeid})`,
         }
     })

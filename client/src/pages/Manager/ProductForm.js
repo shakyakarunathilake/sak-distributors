@@ -9,6 +9,9 @@ import style from './ProductForm.module.scss';
 import StepOne from './ProductFormStepOne';
 import StepTwo from './ProductFormStepTwo';
 
+//Development Stage
+import * as ManualTimeSetting from '../DateTIme';
+
 export default function ProductsForm(props) {
 
     const { handleClosePopUp, addOrEdit, productRecords, nextId, employeeOptions, action } = props;
@@ -23,7 +26,8 @@ export default function ProductsForm(props) {
         mode: "all",
         defaultValues: {
             addedby: productRecords ? productRecords.addedby : '',
-            addeddate: productRecords ? productRecords.addeddate : date,
+            // addeddate: productRecords ? productRecords.addeddate : date,
+            addeddate: productRecords ? productRecords.addeddate : ManualTimeSetting.ManualDate,
             name: productRecords ? productRecords.name : '',
             productid: productRecords ? productRecords.productid : nextId,
             productimage: productRecords ? productRecords.productimage : '',

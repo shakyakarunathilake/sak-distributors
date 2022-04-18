@@ -11,21 +11,26 @@ import AdvancePaymentStepTwo from './AdvancePaymentFormStepTwo';
 import CompletePaymentStepOne from './CompletePaymentFormStepOne';
 import CompletePaymentStepTwo from './CompletePaymentFormStepTwo';
 
+//Development Stage
+import * as ManualTimeSetting from '../DateTIme';
+
 export default function SupplierPaymentForm(props) {
 
   const { handleClosePopUp, addOrEdit, paymentRecords, action, } = props;
 
-  const today = new Date();
+  // const today = new Date();
 
-  const date = today.getFullYear() + '-' +
-    (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
-    (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+  // const date = today.getFullYear() + '-' +
+  //   (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
+  //   (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
 
-  const time = (today.getHours() > 9 ? today.getHours() : `0${today.getHours()}`) + ":" +
-    (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`) + ":" +
-    (today.getSeconds() > 9 ? today.getSeconds() : `0${today.getSeconds()}`);
+  // const time = (today.getHours() > 9 ? today.getHours() : `0${today.getHours()}`) + ":" +
+  //   (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`) + ":" +
+  //   (today.getSeconds() > 9 ? today.getSeconds() : `0${today.getSeconds()}`);
 
-  const dateTime = date + ' ' + time;
+  // const dateTime = date + ' ' + time;
+
+  const dateTime = ManualTimeSetting.ManualDateTime;
 
   const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
   const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;

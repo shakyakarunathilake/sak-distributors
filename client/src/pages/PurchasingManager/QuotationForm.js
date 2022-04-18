@@ -10,15 +10,20 @@ import style from './QuotationForm.module.scss';
 import StepOne from './QuotationFormStepOne';
 import StepTwo from './QuotationFormStepTwo';
 
+//Development Stage
+import * as ManualTimeSetting from '../DateTIme';
+
 export default function QuotationForm(props) {
 
     const { addOrEdit, setOpenPopup, action, nextQuotationId } = props;
 
-    const today = new Date();
+    // const today = new Date();
 
-    const date = today.getFullYear() + '-' +
-    (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
-    (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+    // const date = today.getFullYear() + '-' +
+    // (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
+    // (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+
+    const date = ManualTimeSetting.ManualDate;
 
     const { formState: { errors, isValid }, handleSubmit, getValues, trigger, reset, control } = useForm({
         mode: "all",

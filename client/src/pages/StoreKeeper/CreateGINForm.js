@@ -9,6 +9,9 @@ import style from './CreateGINForm.module.scss';
 import GINStepOne from './GINStepOne';
 import GINStepTwo from './GINStepTwo';
 
+//Development Stage
+import * as ManualTimeSetting from '../DateTIme';
+
 export default function GINForm(props) {
 
     const { GINRecords, handleClosePopUp, addOrEdit, action, orderRecords } = props;
@@ -21,24 +24,28 @@ export default function GINForm(props) {
     const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
     const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
 
-    const today = new Date();
+    // const today = new Date();
 
-    const date = today.getFullYear() + '-' +
-        (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
-        (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+    // const date = today.getFullYear() + '-' +
+    //     (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
+    //     (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
 
-    const time = (today.getHours() > 9 ? today.getHours() : `0${today.getHours()}`) + ":" +
-        (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`) + ":" +
-        (today.getSeconds() > 9 ? today.getSeconds() : `0${today.getSeconds()}`);
+    // const time = (today.getHours() > 9 ? today.getHours() : `0${today.getHours()}`) + ":" +
+    //     (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`) + ":" +
+    //     (today.getSeconds() > 9 ? today.getSeconds() : `0${today.getSeconds()}`);
 
-    const dateTime = date + ' ' + time;
+    // const dateTime = date + ' ' + time;
 
-    const ginTime = today.getFullYear() +
-        (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) +
-        (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`) +
-        (today.getHours() > 9 ? today.getHours() : `0${today.getHours()}`) +
-        (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`) +
-        (today.getSeconds() > 9 ? today.getSeconds() : `0${today.getSeconds()}`)
+    // const ginTime = today.getFullYear() +
+    //     (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) +
+    //     (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`) +
+    //     (today.getHours() > 9 ? today.getHours() : `0${today.getHours()}`) +
+    //     (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`) +
+    //     (today.getSeconds() > 9 ? today.getSeconds() : `0${today.getSeconds()}`)
+
+    const dateTime = ManualTimeSetting.ManualDateTime;
+
+    const ginTime = ManualTimeSetting.ManualGINDateTime;
 
     const { formState: { isValid, errors }, control, watch, getValues, trigger, setValue, handleSubmit } = useForm({
         mode: "onChange",

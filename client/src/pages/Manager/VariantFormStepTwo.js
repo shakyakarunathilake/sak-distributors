@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { jsPDF } from "jspdf";
 import { Controller } from 'react-hook-form';
 
 //Material UI Components
@@ -29,6 +29,37 @@ export default function VariantFormStepTwo(props) {
         watch,
         file
     } = props;
+
+    function createPDF() {
+
+        console.log("CREATE PDF");
+
+        var source = `${<body>
+                <p id="ignorePDF">don't print this to pdf</p>
+                <div>
+                    <p><font size="3" color="red">print this to pdf</font></p>
+                </div>
+            </body>
+            }`
+        // var specialElementHandlers = {
+        //     '#hidden-element': function (element, renderer) {
+        //         return true;
+        //     }
+        // };
+        var doc = new jsPDF({
+            orientation: 'landscape'
+        });
+        doc.fromHTML(
+            source,
+            15,
+            15,
+            {
+                'width': 180
+            });
+
+        doc.output("dataurlnewwindow");
+
+    }
 
     return (
         <div className={style.container}>

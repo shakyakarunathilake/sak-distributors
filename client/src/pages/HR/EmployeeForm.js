@@ -9,6 +9,9 @@ import style from './EmployeeForm.module.scss';
 import StepOne from './EmployeeFormStepOne';
 import StepTwo from './EmployeeFormStepTwo';
 
+//Development Stage
+import * as ManualTimeSetting from '../DateTIme';
+
 export default function EmployeesForm(props) {
 
     const {
@@ -45,7 +48,8 @@ export default function EmployeesForm(props) {
             lastname: employeeRecords ? employeeRecords.lastname : '',
             email: employeeRecords ? employeeRecords.email : '',
             dob: employeeRecords ? employeeRecords.dob : '',
-            hireddate: employeeRecords ? employeeRecords.hireddate : date,
+            // hireddate: employeeRecords ? employeeRecords.hireddate : date,
+            hireddate: employeeRecords ? employeeRecords.hireddate : ManualTimeSetting.ManualDate,
             address: employeeRecords ? employeeRecords.address : '',
             nic: employeeRecords ? employeeRecords.nic : '',
             gender: employeeRecords ? employeeRecords.gender : '',

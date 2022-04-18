@@ -9,6 +9,9 @@ import style from './CreateGRNForm.module.scss';
 import StepOne from './GRNStepOne';
 import StepTwo from './GRNStepTwo';
 
+//Development Stage
+import * as ManualTimeSetting from '../DateTIme';
+
 export default function GRNForm(props) {
 
     const { GRNRecords, handleClosePopUp, updateGRN, action } = props;
@@ -20,17 +23,19 @@ export default function GRNForm(props) {
     const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
     const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
 
-    const today = new Date();
+    // const today = new Date();
 
-    const date = today.getFullYear() + '-' +
-        (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
-        (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+    // const date = today.getFullYear() + '-' +
+    //     (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
+    //     (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
 
-    const time = (today.getHours() > 9 ? today.getHours() : `0${today.getHours()}`) + ":" +
-        (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`) + ":" +
-        (today.getSeconds() > 9 ? today.getSeconds() : `0${today.getSeconds()}`);
+    // const time = (today.getHours() > 9 ? today.getHours() : `0${today.getHours()}`) + ":" +
+    //     (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`) + ":" +
+    //     (today.getSeconds() > 9 ? today.getSeconds() : `0${today.getSeconds()}`);
 
-    const dateTime = date + ' ' + time;
+    // const dateTime = date + ' ' + time;
+
+    const dateTime = ManualTimeSetting.ManualDateTime;
 
     const { handleSubmit, control, getValues, setValue } = useForm({
         mode: "all",

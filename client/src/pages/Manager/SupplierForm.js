@@ -12,6 +12,9 @@ import NumberWithCommas from '../NumberWithCommas';
 import StepOne from './SupplierFormStepOne';
 import StepTwo from './SupplierFormStepTwo';
 
+//Development Stage
+import * as ManualTimeSetting from '../DateTIme';
+
 export default function SupplierForm(props) {
 
     const { setOpenPopup, addOrEdit, supplierRecords, nextSupId, action } = props;
@@ -37,7 +40,8 @@ export default function SupplierForm(props) {
             title: supplierRecords ? supplierRecords.title : '',
             contactperson: supplierRecords ? supplierRecords.contactperson : '',
             addedby: supplierRecords ? supplierRecords.addedby : `${firstname} ${lastname} (${employeeid})`,
-            addeddate: supplierRecords ? supplierRecords.addeddate : date,
+            // addeddate: supplierRecords ? supplierRecords.addeddate : date,
+            addeddate: supplierRecords ? supplierRecords.addeddate : ManualTimeSetting.ManualDate,
             contactnumber: supplierRecords ? supplierRecords.contactnumber : '',
             email: supplierRecords ? supplierRecords.email : '',
             damagedmissingitems: supplierRecords ? NumberWithCommas(supplierRecords.damagedmissingitems.toFixed(2)) : '',

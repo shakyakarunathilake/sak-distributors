@@ -9,6 +9,9 @@ import style from './CustomerForm.module.scss';
 import StepOne from './CustomerFormStepOne';
 import StepTwo from './CustomerFormStepTwo';
 
+//Development Stage
+import * as ManualTimeSetting from '../DateTIme';
+
 export default function CustomerForm(props) {
 
     const { setOpenPopup, addOrEdit, customerRecords, nextCusId, action } = props;
@@ -34,7 +37,8 @@ export default function CustomerForm(props) {
             firstname: customerRecords ? customerRecords.firstname : '',
             lastname: customerRecords ? customerRecords.lastname : '',
             route: customerRecords ? customerRecords.route : '',
-            addeddate: customerRecords ? customerRecords.addeddate : date,
+            // addeddate: customerRecords ? customerRecords.addeddate : date,
+            addeddate: customerRecords ? customerRecords.addeddate : ManualTimeSetting.ManualDate,
             shippingaddress: customerRecords ? customerRecords.shippingaddress : '',
             billingaddress: customerRecords ? customerRecords.billingaddress : '',
             customercontactnumber: customerRecords ? customerRecords.customercontactnumber : '',

@@ -12,6 +12,9 @@ import StepThree from './StepThree';
 import StepFour from './StepFour';
 import StepFive from './StepFive';
 
+//Development Stage
+import * as ManualTimeSetting from '../DateTIme';
+
 export default function CreateOrder(props) {
 
     const {
@@ -27,23 +30,27 @@ export default function CreateOrder(props) {
     const [data, setData] = useState([]);
     const [formStep, setFormStep] = useState(0);
 
-    const today = new Date();
+    // const today = new Date();
 
-    const date = today.getFullYear() + '-' +
-        (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
-        (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+    // const date = today.getFullYear() + '-' +
+    //     (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
+    //     (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
 
-    const time = (today.getHours() > 9 ? today.getHours() : `0${today.getHours()}`) + ":" +
-        (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`) + ":" +
-        (today.getSeconds() > 9 ? today.getSeconds() : `0${today.getSeconds()}`);
+    // const time = (today.getHours() > 9 ? today.getHours() : `0${today.getHours()}`) + ":" +
+    //     (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`) + ":" +
+    //     (today.getSeconds() > 9 ? today.getSeconds() : `0${today.getSeconds()}`);
 
-    const dateTime = date + 'T' + time;
+    // const dateTime = date + 'T' + time;
 
-    today.setDate(today.getDate() + 3);
+    // today.setDate(today.getDate() + 3);
 
-    const deliveryDate = today.getFullYear() + '-' +
-        (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
-        (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+    // const deliveryDate = today.getFullYear() + '-' +
+    //     (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
+    //     (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+
+    const dateTime = ManualTimeSetting.ManualOrderDate;
+
+    const deliveryDate = ManualTimeSetting.ManualOrderDeliveryDate;
 
     const { watch, reset, trigger, control, setValue, getValues, clearErrors, handleSubmit, formState: { isValid, errors } } = useForm({
         mode: "all",

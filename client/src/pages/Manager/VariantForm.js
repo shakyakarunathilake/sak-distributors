@@ -10,6 +10,9 @@ import style from './VariantForm.module.scss';
 import StepOne from './VariantFormStepOne';
 import StepTwo from './VariantFormStepTwo';
 
+//Development Stage
+import * as ManualTimeSetting from '../DateTIme';
+
 export default function VariantForm(props) {
 
     const {
@@ -55,7 +58,8 @@ export default function VariantForm(props) {
             freeproductname: productRecords ? productRecords.freeproductname : '',
             offercaption: productRecords ? productRecords.variant.offercaption : '',
             variantstatus: productRecords ? productRecords.variant.status : '',
-            variantaddeddate: productRecords ? productRecords.variant.addeddate : date,
+            // variantaddeddate: productRecords ? productRecords.variant.addeddate : date,
+            variantaddeddate: productRecords ? productRecords.variant.addeddate : ManualTimeSetting.ManualDate,
             variantaddedby: productRecords ? productRecords.variant.addedby : '',
         }
     });

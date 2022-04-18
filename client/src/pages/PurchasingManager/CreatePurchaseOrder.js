@@ -9,6 +9,9 @@ import style from './CreatePurchaseOrder.module.scss';
 import StepOne from './PurchaseOrderStepOne';
 import StepTwo from './PurchaseOrderStepTwo';
 
+//Development Stage
+import * as ManualTimeSetting from '../DateTIme';
+
 export default function CreatePurchaseOrder(props) {
 
     const { productOptions, supplierOptions, addOrEdit, handleClosePopUp, poRecords, action } = props;
@@ -23,14 +26,16 @@ export default function CreatePurchaseOrder(props) {
         (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`) + ":" +
         (today.getSeconds() > 9 ? today.getSeconds() : `0${today.getSeconds()}`);
 
-    console.log(today.getHours())
-    const dateTime = date + ' ' + time;
+    // const dateTime = date + ' ' + time;
 
-    const podate = today.getFullYear() +
-        (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) +
-        (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`) +
-        (today.getHours() > 9 ? today.getHours() : `0${today.getHours()}`) +
-        (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`);
+    // const podate = today.getFullYear() +
+    //     (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) +
+    //     (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`) +
+    //     (today.getHours() > 9 ? today.getHours() : `0${today.getHours()}`) +
+    //     (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`);
+
+    const podate = ManualTimeSetting.ManualPurchaseOrderDateTime;
+    const dateTime = ManualTimeSetting.ManualDateTime
 
     const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
     const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
