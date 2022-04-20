@@ -176,9 +176,9 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
                     .exec()
                     .then(result => {
 
-                        console.log("*******************************************************")
+                        console.log("***********************************************************");
 
-                        console.log("ITEM.NAME :", item.name);
+                        console.log("ITEM.NAME :", item.description);
                         console.log("item.salesqtycases :", item.salesqtycases);
                         console.log("item.salesqtypieces :", item.salesqtypieces);
                         console.log("item.freeqtycases :", item.freeqtycases);
@@ -218,7 +218,7 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
                             .findOneAndUpdate(
                                 { productid: item.productid },
                                 {
-                                    $inc: {
+                                    $set: {
                                         'storequantity.salesqtypieces': newstoresalesqtypieces,
                                         'storequantity.salesqtycases': newstoresalesqtycases,
                                         'storequantity.freeqtypieces': newstorefreeqtypieces,

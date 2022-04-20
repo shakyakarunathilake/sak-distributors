@@ -201,7 +201,7 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
                     .exec()
                     .then(result => {
 
-                        console.log("*******************************************************")
+                        console.log("***********************************************************");
 
                         console.log("ITEM.NAME :", item.name);
                         console.log("item.salesqtycases :", item.salesqtycases);
@@ -218,7 +218,6 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
                         console.log("storesalesqtypieces :", storesalesqtypieces);
                         console.log("storefreeqtycases :", storefreeqtycases);
                         console.log("storefreeqtypieces :", storefreeqtypieces);
-
 
                         let newNoOfTotalSalesPieces = (storesalesqtycases * item.piecespercase) + storesalesqtypieces - (item.salesqtycases * item.piecespercase) - item.salesqtypieces;
                         let newNoOfTotalFreePieces = (storefreeqtycases * item.piecespercase) + storefreeqtypieces - (item.freeqtycases * item.piecespercase) - item.freeqtypieces;
@@ -245,10 +244,10 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
 
                         console.log("newstoresalesqtycases :", newstoresalesqtycases);
                         console.log("newstoresalesqtypieces :", newstoresalesqtypieces);
+                        console.log("newstoresalesqtypieces :", newstoresalesqtypieces);
                         console.log("newstorefreeqtycases :", newstorefreeqtycases);
-                        console.log("newstorefreeqtypieces :", newstorefreeqtypieces);
 
-                        console.log("*******************************************************")
+                        console.log("***********************************************************");
 
                         Store
                             .findOneAndUpdate(
