@@ -271,7 +271,11 @@ export default function StepThree(props) {
                                                                     <b> Type: </b>
                                                                     {option.type}
                                                                 </Grid>
-                                                                {option.type === "Promotion" ? <Grid item xs={12}>  <b> Offer Caption: </b> {option.offercaption}  </Grid> : ""}
+                                                                {
+                                                                    option.type !== "General" ?
+                                                                        <Grid item xs={12}>  <b> Offer Caption: </b> {option.offercaption}  </Grid>
+                                                                        : ""
+                                                                }
                                                                 <Grid item xs={12}>
                                                                     <b> MRP: </b> {option.mrp}
                                                                 </Grid>
