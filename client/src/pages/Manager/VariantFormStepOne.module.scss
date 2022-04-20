@@ -93,32 +93,31 @@
     margin: 15px 0;
 }
 
-.rowminicolumns {
+.threecolumns {
     display: grid;
     grid-template-columns: calc(33% - 11px) calc(33% - 11px) calc(33% - 11px);
     grid-column-gap: 20px;
     padding: 10px 0;
 }
 
-.minicolumns {
+.twominionefullcolumns {
     display: grid;
     grid-template-columns: calc(25% - 13px) calc(25% - 13px) calc(50% - 13px);
     grid-column-gap: 20px;
     padding: 10px 0;
 }
 
-.fourminicolumns {
-    display: grid;
-    grid-template-columns: calc(25% - 15px) calc(25% - 15px) calc(25% - 15px) calc(25% - 15px);
-    grid-column-gap: 20px;
-    padding: 10px 0;
-}
-
-.gridrow {
+.twocolumns {
     display: grid;
     grid-template-columns: calc(50% - 10px) calc(50% - 10px);
     grid-column-gap: 20px;
     padding: 10px 0;
+}
+
+.twocolumnswithoutpadding {
+    display: grid;
+    grid-template-columns: calc(50% - 10px) calc(50% - 10px);
+    grid-column-gap: 20px;
 }
 
 .footer {

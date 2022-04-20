@@ -31,7 +31,7 @@ export default function VariantForm(props) {
         (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
         (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
 
-    const { handleSubmit, formState: { errors, isValid }, control, watch, clearErrors, reset, setValue, getValues, trigger } = useForm({
+    const { handleSubmit, formState: { errors, isValid }, control, watch, reset, setValue, getValues, trigger } = useForm({
         mode: "all",
         defaultValues: {
             productid: productRecords ? productRecords.productid : '',
@@ -42,7 +42,7 @@ export default function VariantForm(props) {
             addedby: productRecords ? productRecords.addedby : '',
             productstatus: productRecords ? productRecords.status : '',
             variantid: productRecords ? productRecords.variant.variantid : '',
-            type: productRecords ? productRecords.variant.type : '',
+            type: productRecords ? productRecords.variant.type : 'General',
             piecespercase: productRecords ? productRecords.variant.piecespercase : 24,
             bulkprice: productRecords ? productRecords.variant.bulkprice : '',
             mrp: productRecords ? productRecords.variant.mrp : '',
