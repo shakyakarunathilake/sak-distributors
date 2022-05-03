@@ -32,8 +32,8 @@ router.get("/daily", (req, res, next) => {
         {
             $match: {
                 "orderplacedat": {
-                    $gte: "2021-01-04",
-                    $lte: "2021-01-15"
+                    $gte: "2021-10-04",
+                    $lte: "2021-10-15"
                 }
             }
         },
