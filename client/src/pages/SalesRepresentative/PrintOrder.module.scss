@@ -1,0 +1,60 @@
+@import "../../styles/variables";
+
+.container {
+    display: grid;
+    grid-template-rows: min-content auto min-content;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    .header {
+        .title {
+            display: grid;
+            grid-template-columns: auto min-content;
+            font-size: 1.55em;
+            font-weight: 600;
+            .icon {
+                color: red;
+                &:hover {
+                    transform: scale(1.1);
+                }
+            }
+        }
+    }
+
+    .body {
+        margin: 20px auto;
+        overflow: auto;
+    }
+
+    .footer {
+        display: grid;
+        grid-template-columns: auto min-content;
+        grid-column-gap: 20px;
+        padding: 20px 0px 5px 0px;
+
+        Button {
+            font-size: 1em;
+            height: 40px;
+            padding: $formButtonPadding2;
+            width: max-content;
+        }
+
+        .cancelBtn {
+            text-align: left;
+            Button {
+                background-color: #c2c2c2;
+                color: $inverseFontColor;
+            }
+        }
+
+        .submitBtn {
+            text-align: right;
+            Button {
+                background-color: $primaryMain;
+                color: $inverseFontColor;
+            }
+        }
+    }
+}

@@ -19,6 +19,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import PaymentIcon from '@mui/icons-material/Payment';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import PrintIcon from '@mui/icons-material/Print';
 
 //Connecting to Backend
 import axios from 'axios';
@@ -28,6 +29,7 @@ import ViewOrder from './ViewOrder';
 import EditOrder from './EditOrder';
 import CreateOrder from './CreateOrder';
 import DeliveredPaidForm from '../DeliveryRepresentative/DeliveredPaidForm';
+import PrintOrder from './PrintOrder';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -432,7 +434,15 @@ export default function SalesAndInvoice() {
                                                     openInPopup(rowData.orderno);
                                                 },
                                                 disabled: designation !== "Manager" || rowData.status !== 'Delivered'
-                                            })
+                                            }),
+                                            {
+                                                icon: PrintIcon,
+                                                tooltip: 'Print',
+                                                onClick: (event, rowData) => {
+                                                    setAction('Print');
+                                                    openInPopup(rowData.orderno);
+                                                }
+                                            },
                                         ]}
                                     />
 
@@ -491,6 +501,14 @@ export default function SalesAndInvoice() {
                             orderRecords={orderRecords}
                             handleClosePopUp={handleClosePopUp}
                             addOrEdit={addOrEdit}
+                        />
+                    }
+
+                    {
+                        action === "Print" &&
+                        <PrintOrder
+                            handleClosePopUp={handleClosePopUp}
+                            orderRecords={orderRecords}
                         />
                     }
 
