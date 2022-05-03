@@ -29,6 +29,12 @@ const getDistributorListItems = [
         icon: <ListAltIcon />
     },
     {
+        id: "Manage Employee",
+        title: "Manage Employee",
+        path: "http://localhost:3000/distributor/manage-employee",
+        icon: <PeopleIcon />,
+    },
+    {
         id: "Sales Report",
         title: "Sales Report",
         path: "http://localhost:3000/sales-report",
@@ -49,12 +55,12 @@ const getHRListItems = [
         path: "http://localhost:3000/human-resources/dashboard",
         icon: <DashboardIcon />
     },
-    {
-        id: "Manage Admin",
-        title: "Manage Admin",
-        path: "http://localhost:3000/human-resources/manage-admin",
-        icon: <SupervisorAccountIcon />,
-    },
+    // {
+    //     id: "Manage Admin",
+    //     title: "Manage Admin",
+    //     path: "http://localhost:3000/human-resources/manage-admin",
+    //     icon: <SupervisorAccountIcon />,
+    // },
     {
         id: "Manage Employee",
         title: "Manage Employee",

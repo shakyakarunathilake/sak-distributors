@@ -80,10 +80,11 @@ function App() {
             {/* Distributor */}
             <Route exact path='/distributor/dashboard' component={Dashboard} />
             <Route exact path='/distributor/manage-purchase-orders' component={ManagePurchaseOrder} />
+            <Route exact path='/distributor/manage-employee' component={ManageEmployee} />
 
             {/* Human Resources */}
             <Route exact path='/human-resources/dashboard' component={Dashboard} />
-            <Route exact path='/human-resources/manage-admin' component={ManageAdmin} />
+            {/* <Route exact path='/human-resources/manage-admin' component={ManageAdmin} /> */}
             <Route exact path='/human-resources/manage-employee' component={ManageEmployee} />
 
             {/* Manager */}
