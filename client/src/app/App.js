@@ -70,8 +70,13 @@ const theme = createTheme({
 
 function App() {
 
-  const authStatus = (JSON.parse(sessionStorage.getItem("Auth")).auth_status === "AUTHORIZED");
-  const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
+  let authStatus;
+  let designation;
+
+  if (JSON.parse(sessionStorage.getItem("Auth"))) {
+    authStatus = (JSON.parse(sessionStorage.getItem("Auth")).auth_status === "AUTHORIZED");
+    designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
+  }
 
   return (
     <ThemeProvider theme={theme}>

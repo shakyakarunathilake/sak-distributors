@@ -4,7 +4,7 @@ import React from 'react';
 import { Button } from '@material-ui/core';
 
 //images
-import NotFoundImage from './Page Not Found.png';
+import NotFoundImage from './Page Not Found.jpg';
 
 import style from './NotFound.module.scss';
 
@@ -12,12 +12,16 @@ export default function NotFound() {
 
   return (
     <div className={style.container}>
-      <div className={style.left}>
-        <div className={style.statuscode}>
-          404
-        </div>
+
+      <div className={style.top}>
+        <center>
+          <img src={NotFoundImage} style={{ width: "40%", height: "auto" }} />
+        </center>
+      </div>
+
+      <div className={style.bottom}>
         <div className={style.label}>
-          Not Found
+          Page Not Found
         </div>
         <div className={style.btnDiv}>
           <Button
@@ -30,9 +34,7 @@ export default function NotFound() {
           </Button>
         </div>
       </div>
-      <div className={style.right}>
-        <img src={NotFoundImage} style={{ width: "100%", height: "auto" }} />
-      </div>
+
     </div>
   )
 }
