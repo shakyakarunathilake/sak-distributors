@@ -10,6 +10,7 @@ import MuiAlert from '@mui/material/Alert';
 //Material UI Icons
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import BeenhereIcon from '@mui/icons-material/Beenhere';
+import PrintIcon from '@mui/icons-material/Print';
 
 //Material Table
 import MaterialTable from 'material-table';
@@ -20,6 +21,7 @@ import style from './ManageGRN.module.scss';
 //Pop Up Forms
 import ViewGRNForm from './ViewGRNForm';
 import CreateGRNForm from './CreateGRNForm';
+import PrintGRNForm from './PrintGRNForm';
 
 //Connecting to Backend
 import axios from 'axios';
@@ -234,7 +236,15 @@ export default function ManageGRN() {
                                                 setAction('Edit');
                                                 openInPopup(rowData.grnnumber);
                                             }
-                                        })
+                                        }),
+                                        {
+                                            icon: PrintIcon,
+                                            tooltip: 'View',
+                                            onClick: (event, rowData) => {
+                                                setAction('Print');
+                                                openInPopup(rowData.grnnumber);
+                                            }
+                                        },
                                     ]}
                                 />
 
@@ -267,6 +277,14 @@ export default function ManageGRN() {
                             handleClosePopUp={handleClosePopUp}
                             action={action}
                             updateGRN={updateGRN}
+                        />
+                    }
+
+                    {
+                        action === 'Print' &&
+                        <PrintGRNForm
+                            GRNRecords={GRNRecords}
+                            handleClosePopUp={handleClosePopUp}
                         />
                     }
 
