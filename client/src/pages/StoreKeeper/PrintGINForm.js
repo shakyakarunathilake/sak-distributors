@@ -13,38 +13,35 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import NumberWithCommas from '../NumberWithCommas';
 
 //SCSS Styling
-import style from './PrintGRNForm.module.scss';
+import style from './PrintGINForm.module.scss';
 
-export default function PrintGRNForm(props) {
+export default function PrintGINForm(props) {
 
-    const { GRNRecords, handleClosePopUp } = props;
+    const { GINRecords, handleClosePopUp } = props;
 
     const [data, setData] = useState([]);
 
     const { getValues } = useForm({
-        mode: "all",
+        mode: "onChange",
         defaultValues: {
-            ponumber: GRNRecords.ponumber,
-            grnnumber: GRNRecords.grnnumber,
-            supplier: GRNRecords.supplier,
-            pototal: GRNRecords.pototal,
-            status: GRNRecords.status,
-            givenid: GRNRecords.givenid,
-            createdat: GRNRecords.createdat,
-            createdby: GRNRecords.createdby,
-            damagedmissingitems: GRNRecords.damagedmissingitems,
-            grntotal: GRNRecords.grntotal,
-            customername: "S.A.K Distributors",
-            customeraddress: "No.233, Kiriwallapitiya, Rambukkana, Srilanka",
-            contactnumber: "0352264009",
+            ginnumber: GINRecords.ginnumber,
+            createdat: GINRecords.createdat,
+            createdby: GINRecords.createdby,
+            route: GINRecords.route,
+            total: GINRecords.total,
+            vehicle: GINRecords.vehicle ? GINRecords.vehicle : '',
+            incharge: GINRecords.incharge ? GINRecords.incharge : '',
         }
     });
 
     useEffect(() => {
-        setData(GRNRecords.items);
-    }, [GRNRecords, setData])
+        if (GINRecords != null) {
+            setData([...GINRecords.items]);
+        }
+    }, [setData, GINRecords])
 
     const printPdf = () => {
+
         html2canvas(document.querySelector("#pdf")).then(function (canvas) {
             var imgData = canvas.toDataURL('image/png');
             var imgWidth = 210;
@@ -63,7 +60,7 @@ export default function PrintGRNForm(props) {
                 doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
                 heightLeft -= pageHeight;
             }
-            doc.save(`${getValues('grnnumber')}.pdf`);
+            doc.save(`${getValues('ginnumber')}.pdf`);
         });
 
         // html2canvas(document.querySelector("#pdf")).then(function (canvas) {
@@ -73,19 +70,20 @@ export default function PrintGRNForm(props) {
         //     const pdfWidth = pdf.internal.pageSize.getWidth();
         //     const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
         //     pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
-        //     pdf.save(`${getValues('grnnumber')}.pdf`);
+        //     pdf.save(`${ getValues('ginnumber') }.pdf`);
         // });
 
     };
 
     return (
+
         <div className={style.container}>
 
             <div className={style.header}>
 
                 <div className={style.title}>
                     <div>
-                        Print GRN: {getValues("grnnumber").toUpperCase()}
+                        Print GRN: {getValues("ginnumber").toUpperCase()}
                     </div>
                     <div>
                         <HighlightOffIcon
@@ -103,32 +101,31 @@ export default function PrintGRNForm(props) {
 
                     <b>
                         <center>
-                            {getValues("customername").toUpperCase()} - {getValues("givenid")}
+                            S.A.K DISTRIBUTORS
                             <br />
-                            {getValues("customeraddress").toUpperCase()}
+                            NO.233, KIRIWALLAPITIYA, RAMBUKKANA
                             <br />
-                            {getValues("contactnumber")}
+                            0352264009
                         </center>
                     </b>
-
                     <br />
 
                     <table style={{ width: '210mm', tableLayout: 'fixed' }}>
                         <tr>
-                            <td>SUPPLIER : {getValues("supplier").toUpperCase()}</td>
-                            <td>CREATED AT : {getValues("createdat").toUpperCase()}</td>
+                            <td>GIN NO : {getValues("ginnumber").toUpperCase()}</td>
+                            <td>ROUTE : {getValues("route").toUpperCase()}</td>
                         </tr>
                         <tr>
-                            <td>PO NO : {getValues("ponumber").toUpperCase()}</td>
+                            <td>CREATED AT : {getValues("createdat").toUpperCase()}</td>
                             <td>CREATED BY : {getValues("createdby").toUpperCase()}</td>
                         </tr>
                         <tr>
-                            <td>GRN NO : {getValues("grnnumber").toUpperCase()}</td>
+                            <td>IN CHARGE : {getValues("incharge").toUpperCase()}</td>
+                            <td>VEHICLE : {getValues("vehicle").toUpperCase()}</td>
                         </tr>
                     </table>
 
                     <br />
-
                     <table style={{ width: '210mm', borderStyle: 'dashed', borderWidth: '1px 0px' }}>
                         <tr style={{}}>
                             <td style={{ textAlign: "center", borderBottom: '1px dashed grey', borderRight: '1px dashed grey', padding: '2px' }} rowspan="2">
@@ -136,33 +133,30 @@ export default function PrintGRNForm(props) {
                             </td>
                             <td style={{ textAlign: "center", borderBottom: '1px dashed grey', borderRight: '1px dashed grey', padding: '2px' }} rowspan="2">
                                 PROD. ID
+                                <br />
+                                VAR. ID
                             </td>
                             <td style={{ textAlign: "center", borderBottom: '1px dashed grey', borderRight: '1px dashed grey', padding: '2px' }} rowspan="2">
                                 DESCRIPTION
                             </td>
                             <td style={{ textAlign: "center", borderBottom: '1px dashed grey', borderRight: '1px dashed grey', padding: '2px' }} rowspan="2">
-                                RATE
+                                SELLING PRICE
+                                <br />
+                                (RS.)
+                            </td>
+                            <td style={{ textAlign: "center", borderBottom: '1px dashed grey', borderRight: '1px dashed grey', padding: '2px' }} rowSpan="2">
+                                PIECES PER CASE
                             </td>
                             <td style={{ textAlign: "center", borderBottom: '1px dashed grey', borderRight: '1px dashed grey', padding: '2px' }} colSpan="2">
                                 SALES QTY
                             </td>
                             <td style={{ textAlign: "center", borderBottom: '1px dashed grey', borderRight: '1px dashed grey', padding: '2px' }} colSpan="2">
-                                D. SALES QTY
-                            </td>
-                            <td style={{ textAlign: "center", borderBottom: '1px dashed grey', borderRight: '1px dashed grey', padding: '2px' }} colSpan="2">
                                 FREE QTY
                             </td>
-                            <td style={{ textAlign: "center", borderBottom: '1px dashed grey', borderRight: '1px dashed grey', padding: '2px' }} colSpan="2">
-                                D. FREE QTY
-                            </td>
-                            <td style={{ textAlign: "center", borderBottom: '1px dashed grey', borderRight: '1px dashed grey', padding: '2px' }} colSpan="2">
-                                DAMAGED (PCS)
-                            </td>
                             <td style={{ textAlign: "center", borderBottom: '1px dashed grey', borderRight: '1px dashed grey', padding: '2px' }} rowspan="2">
-                                GRN VALUE
-                            </td>
-                            <td style={{ textAlign: "center", borderBottom: '1px dashed grey', padding: '2px' }} rowspan="2">
-                                PO VALUE
+                                GROSS AMOUNT
+                                <br />
+                                (RS.)
                             </td>
                         </tr>
                         <tr>
@@ -177,24 +171,6 @@ export default function PrintGRNForm(props) {
                             </td>
                             <td style={{ textAlign: "center", borderBottom: '1px dashed grey', borderRight: '1px dashed grey', padding: '2px' }}>
                                 PCS
-                            </td>
-                            <td style={{ textAlign: "center", borderBottom: '1px dashed grey', borderRight: '1px dashed grey', padding: '2px' }}>
-                                CS
-                            </td>
-                            <td style={{ textAlign: "center", borderBottom: '1px dashed grey', borderRight: '1px dashed grey', padding: '2px' }}>
-                                PCS
-                            </td>
-                            <td style={{ textAlign: "center", borderBottom: '1px dashed grey', borderRight: '1px dashed grey', padding: '2px' }}>
-                                CS
-                            </td>
-                            <td style={{ textAlign: "center", borderBottom: '1px dashed grey', borderRight: '1px dashed grey', padding: '2px' }}>
-                                PCS
-                            </td>
-                            <td style={{ textAlign: "center", borderBottom: '1px dashed grey', borderRight: '1px dashed grey', padding: '2px' }}>
-                                FREE
-                            </td>
-                            <td style={{ textAlign: "center", borderBottom: '1px dashed grey', borderRight: '1px dashed grey', padding: '1px' }}>
-                                SALES
                             </td>
                         </tr>
                         {
@@ -204,13 +180,16 @@ export default function PrintGRNForm(props) {
                                         {i + 1}
                                     </td>
                                     <td style={{ textAlign: "left", borderRight: '1px dashed grey', padding: '3px' }}>
-                                        {item.productid}
+                                        {item.productid} {item.variantid}
                                     </td>
                                     <td style={{ textAlign: "left", borderRight: '1px dashed grey', padding: '3px' }}>
-                                        {item.description.toUpperCase()}
+                                        {item.name.toUpperCase()}
                                     </td>
                                     <td style={{ textAlign: "right", borderRight: '1px dashed grey', padding: '3px' }}>
-                                        {NumberWithCommas(item.listprice)}
+                                        {NumberWithCommas(item.sellingprice)}
+                                    </td>
+                                    <td style={{ textAlign: "right", borderRight: '1px dashed grey', padding: '3px' }}>
+                                        {item.piecespercase}
                                     </td>
                                     <td style={{ textAlign: "right", borderRight: '1px dashed grey', padding: '3px' }}>
                                         {item.salesqtycases}
@@ -219,34 +198,13 @@ export default function PrintGRNForm(props) {
                                         {item.salesqtypieces}
                                     </td>
                                     <td style={{ textAlign: "right", borderRight: '1px dashed grey', padding: '3px' }}>
-                                        {item.deliveredsalesqtycases}
-                                    </td>
-                                    <td style={{ textAlign: "right", borderRight: '1px dashed grey', padding: '3px' }}>
-                                        {item.deliveredsalesqtypieces}
-                                    </td>
-                                    <td style={{ textAlign: "right", borderRight: '1px dashed grey', padding: '3px' }}>
                                         {item.freeqtycases}
                                     </td>
                                     <td style={{ textAlign: "right", borderRight: '1px dashed grey', padding: '3px' }}>
                                         {item.freeqtypieces}
                                     </td>
                                     <td style={{ textAlign: "right", borderRight: '1px dashed grey', padding: '3px' }}>
-                                        {item.deliveredfreeqtycases}
-                                    </td>
-                                    <td style={{ textAlign: "right", borderRight: '1px dashed grey', padding: '3px' }}>
-                                        {item.deliveredfreeqtypieces}
-                                    </td>
-                                    <td style={{ textAlign: "right", borderRight: '1px dashed grey', padding: '3px' }}>
-                                        {item.damagedsalesqty}
-                                    </td>
-                                    <td style={{ textAlign: "right", borderRight: '1px dashed grey', padding: '3px' }}>
-                                        {item.damagedfreeqty}
-                                    </td>
-                                    <td style={{ textAlign: "right", borderRight: '1px dashed grey', padding: '3px' }}>
-                                        {NumberWithCommas(item.grnvalue)}
-                                    </td>
-                                    <td style={{ textAlign: "right", padding: '3px' }}>
-                                        {NumberWithCommas(item.value)}
+                                        {NumberWithCommas(item.grossamount)}
                                     </td>
                                 </tr>
                             ))
@@ -257,17 +215,10 @@ export default function PrintGRNForm(props) {
 
                     <table style={{ width: '210mm' }}>
                         <tr>
-                            <td style={{ paddingLeft: "120mm" }}>PURCHASE ORDER TOTAL</td>
-                            <td style={{ textAlign: "right" }}>{NumberWithCommas(getValues("pototal"))}</td>
+                            <td style={{ paddingLeft: "120mm" }}>TOTAL (RS.) </td>
+                            <td style={{ textAlign: "right" }}>{NumberWithCommas(getValues("total"))} </td>
                         </tr>
-                        <tr>
-                            <td style={{ paddingLeft: "120mm" }}>DAMAGED / MISSING ITEMS</td>
-                            <td style={{ textAlign: "right" }}>{NumberWithCommas(getValues("damagedmissingitems"))}</td>
-                        </tr>
-                        <tr>
-                            <td style={{ paddingLeft: "120mm" }}>GRN TOTAL</td>
-                            <td style={{ textAlign: "right" }}>{NumberWithCommas(getValues("grntotal"))}</td>
-                        </tr>
+
                     </table>
 
                 </div>

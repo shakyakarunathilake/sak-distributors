@@ -14,7 +14,7 @@ import Button from '@material-ui/core/Button';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-// import DoneIcon from '@mui/icons-material/Done';
+import PrintIcon from '@mui/icons-material/Print';
 
 //Material Table
 import MaterialTable from 'material-table';
@@ -26,6 +26,7 @@ import style from './ManageGIN.module.scss';
 import ViewGIN from './ViewGINForm';
 import CreateGINForm from './CreateGINForm';
 import DispatchCompleteForm from './DispatchCompleteForm';
+import PrintGINForm from './PrintGINForm';
 
 //Connecting to Backend
 import axios from 'axios';
@@ -368,6 +369,14 @@ export default function ManageGIN() {
                                                     openInPopup(rowData.ginnumber);
                                                 }
                                             }),
+                                            {
+                                                icon: PrintIcon,
+                                                tooltip: 'View',
+                                                onClick: (event, rowData) => {
+                                                    setAction('Print');
+                                                    openInPopup(rowData.ginnumber);
+                                                }
+                                            },
                                         ]}
                                     />
 
@@ -415,6 +424,15 @@ export default function ManageGIN() {
                             vehicleOptions={vehicleOptions}
                         />
                     }
+
+                    {
+                        action === 'Print' &&
+                        <PrintGINForm
+                            GINRecords={GINRecords}
+                            handleClosePopUp={handleClosePopUp}
+                        />
+                    }
+
 
                 </PopUp>
 

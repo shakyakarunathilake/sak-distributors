@@ -22,7 +22,7 @@ export default function PrintOrder(props) {
 
     const [data, setData] = useState([]);
 
-    const { watch, getValues } = useForm({
+    const { getValues } = useForm({
         mode: "all",
         defaultValues: {
             orderno: orderRecords.orderno,
@@ -57,16 +57,36 @@ export default function PrintOrder(props) {
     }, [orderRecords])
 
     const printPdf = () => {
-
         html2canvas(document.querySelector("#pdf")).then(function (canvas) {
-            const imgData = canvas.toDataURL('image/png');
-            const pdf = new jsPDF("p", "pt", "a4");
-            const imgProps = pdf.getImageProperties(imgData);
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-            pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
-            pdf.save(`${getValues('orderno')}.pdf`);
+            var imgData = canvas.toDataURL('image/png');
+            var imgWidth = 210;
+            var pageHeight = 295;
+            var imgHeight = canvas.height * imgWidth / canvas.width;
+            var heightLeft = imgHeight;
+            var doc = new jsPDF('p', 'mm');
+            var position = 0;
+
+            doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+
+            while (heightLeft >= 0) {
+                position = heightLeft - imgHeight;
+                doc.addPage();
+                doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+            }
+            doc.save(`${getValues('orderno')}.pdf`);
         });
+
+        // html2canvas(document.querySelector("#pdf")).then(function (canvas) {
+        //     const imgData = canvas.toDataURL('image/png');
+        //     const pdf = new jsPDF("p", "pt", "a4");
+        //     const imgProps = pdf.getImageProperties(imgData);
+        //     const pdfWidth = pdf.internal.pageSize.getWidth();
+        //     const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        //     pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+        //     pdf.save(`${getValues('orderno')}.pdf`);
+        // });
 
     };
 
@@ -77,7 +97,7 @@ export default function PrintOrder(props) {
 
                 <div className={style.title}>
                     <div>
-                        Print Invoice
+                        Print Invoice : {getValues("orderno").toUpperCase()}
                     </div>
                     <div>
                         <HighlightOffIcon
@@ -99,9 +119,9 @@ export default function PrintOrder(props) {
                             <br />
                             NO.233, KIRIWALLAPITIYA, RAMBUKKANA
                             <br />
-                            {watch("ordercreatedby").toUpperCase()}
+                            {getValues("ordercreatedby").toUpperCase()}
                             <br />
-                            0777159150
+                            0352264009
                         </center>
                     </b>
 
@@ -110,18 +130,18 @@ export default function PrintOrder(props) {
                     <table style={{ width: '210mm', tableLayout: 'fixed' }}>
                         <tr>
                             <td>
-                                INVOICE NO : {watch("orderno").toUpperCase()}
+                                INVOICE NO : {getValues("orderno").toUpperCase()}
                             </td>
                             <td>
-                                CUSTOMER : {watch("storename").toUpperCase()} - {watch("customerid")}
+                                CUSTOMER : {getValues("storename").toUpperCase()} - {getValues("customerid")}
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                ADDRESS : {watch("shippingaddress").toUpperCase()}
+                                ADDRESS : {getValues("shippingaddress").toUpperCase()}
                             </td>
                             <td>
-                                ROUTE : {watch("route").toUpperCase()}
+                                ROUTE : {getValues("route").toUpperCase()}
                             </td>
                         </tr>
 
@@ -135,8 +155,13 @@ export default function PrintOrder(props) {
                             <td style={{ textAlign: "center", borderBottom: '1px dashed grey', borderRight: '1px dashed grey', padding: '3px' }} rowspan="2">
                                 #
                             </td>
-                            <td style={{ textAlign: "center", borderBottom: '1px dashed grey', borderRight: '1px dashed grey', padding: '3px' }} rowspan="2">
-                                ITEM
+                            <td style={{ textAlign: "center", borderBottom: '1px dashed grey', borderRight: '1px dashed grey', padding: '2px' }} rowspan="2">
+                                PROD. ID
+                                <br />
+                                VAR. ID
+                            </td>
+                            <td style={{ textAlign: "center", borderBottom: '1px dashed grey', borderRight: '1px dashed grey', padding: '2px' }} rowspan="2">
+                                DESCRIPTION
                             </td>
                             <td style={{ textAlign: "center", borderBottom: '1px dashed grey', borderRight: '1px dashed grey', padding: '3px' }} rowspan="2">
                                 MRP
@@ -174,7 +199,10 @@ export default function PrintOrder(props) {
                             data.map((item, i) => (
                                 <tr>
                                     <td style={{ textAlign: "left", borderRight: '1px dashed grey', padding: '3px' }}>
-                                        {i}
+                                        {i + 1}
+                                    </td>
+                                    <td style={{ textAlign: "left", borderRight: '1px dashed grey', padding: '3px' }}>
+                                        {item.productid} {item.variantid}
                                     </td>
                                     <td style={{ textAlign: "left", borderRight: '1px dashed grey', padding: '3px' }}>
                                         {item.name.toUpperCase()}
@@ -211,27 +239,27 @@ export default function PrintOrder(props) {
                     <table style={{ width: '210mm' }}>
                         <tr>
                             <td style={{ paddingLeft: "120mm" }}>PREVIOUS CREDIT AMOUNT TO SETTLE</td>
-                            <td style={{ textAlign: "right" }}>{NumberWithCommas(watch("creditamounttosettle"))}</td>
+                            <td style={{ textAlign: "right" }}>{NumberWithCommas(getValues("creditamounttosettle"))}</td>
                         </tr>
                         <tr>
                             <td style={{ paddingLeft: "120mm" }}>CURRENT INVOICE TOTAL</td>
-                            <td style={{ textAlign: "right" }}>{NumberWithCommas(watch("total"))}</td>
+                            <td style={{ textAlign: "right" }}>{NumberWithCommas(getValues("total"))}</td>
                         </tr>
                         <tr>
                             <td style={{ paddingLeft: "120mm" }}>CURRENT INVOICE ADVANCE PAYMENT</td>
-                            <td style={{ textAlign: "right" }}>{NumberWithCommas(watch("advancepayment"))}</td>
+                            <td style={{ textAlign: "right" }}>{NumberWithCommas(getValues("advancepayment"))}</td>
                         </tr>
                         <tr>
                             <td style={{ paddingLeft: "120mm" }}>CURRENT INVOICE CREDIT AMOUNT</td>
-                            <td style={{ textAlign: "right" }}>{NumberWithCommas(watch("currentinvoicecreditamount"))}</td>
+                            <td style={{ textAlign: "right" }}>{NumberWithCommas(getValues("currentinvoicecreditamount"))}</td>
                         </tr>
                         <tr>
                             <td style={{ paddingLeft: "120mm" }}>MINIMUM PAYMENT</td>
-                            <td style={{ textAlign: "right" }}>{NumberWithCommas(watch("minimumpayment"))}</td>
+                            <td style={{ textAlign: "right" }}>{NumberWithCommas(getValues("minimumpayment"))}</td>
                         </tr>
                         <tr>
                             <td style={{ paddingLeft: "120mm" }}>INVOICE SETTLEMENT VALUE</td>
-                            <td style={{ textAlign: "right" }}>{NumberWithCommas(watch("invoicesettlementvalue"))}</td>
+                            <td style={{ textAlign: "right" }}>{NumberWithCommas(getValues("invoicesettlementvalue"))}</td>
                         </tr>
                     </table>
 
