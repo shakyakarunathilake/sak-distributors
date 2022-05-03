@@ -1,26 +1,20 @@
 import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
+import { Tableau20 } from "chartjs-plugin-colorschemes/src/colorschemes/colorschemes.tableau";
+
 export default function DoughnutChart(props) {
 
-    let colors = [];
-
-    while (colors.length < 1000) {
-        colors.push(`rgb(${rand(0, 255)}, ${rand(0, 255)}, ${rand(0, 255)})`);
-    }
-
-    function rand(frm, to) {
-        return (Math.random() * (to - frm)) + frm;
-    }
-
     const { labels, chartData } = props;
+
+    const colorArray = [...Tableau20, ...Tableau20, ...Tableau20, ...Tableau20, ...Tableau20, ...Tableau20, ...Tableau20, ...Tableau20, ...Tableau20]
 
     const data = {
         labels: labels,
         datasets: [{
             data: chartData,
-            backgroundColor: colors,
-            borderColor: colors,
+            backgroundColor: colorArray,
+            borderColor: colorArray,
             borderWidth: 1,
         }],
     };
