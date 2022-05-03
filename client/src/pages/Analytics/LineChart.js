@@ -5,12 +5,21 @@ export default function LineChart(props) {
 
     const { label, labels, chartData, } = props;
 
+    let colors = [];
+
+    while (colors.length < 1000) {
+        colors.push(`rgb(${rand(0, 255)}, ${rand(0, 255)}, ${rand(0, 255)})`);
+    }
+
+    function rand(frm, to) {
+        return (Math.random() * (to - frm)) + frm;
+    }
+
     const options = {
         responsive: true,
         plugins: {
             legend: {
                 position: 'top',
-
             },
             title: {
                 display: true,
@@ -44,8 +53,8 @@ export default function LineChart(props) {
             {
                 label: label.label,
                 data: chartData,
-                borderColor: 'rgb(255, 99, 132)',
-                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                borderColor: colors[0],
+                backgroundColor: colors[0],
                 fill: false
             }
         ]

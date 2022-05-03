@@ -85,8 +85,6 @@ function App() {
           <Switch>
             <Route exact path='/' component={Login} />
 
-            <ProtectedRoute isAuth={authStatus} path='' component={NotFound} />
-
             <ProtectedRoute isAuth={authStatus} path='/dashboard' component={Dashboard} />
             <ProtectedRoute isAuth={authStatus} path='/forgot-password' component={ForgotPassword} />
             <ProtectedRoute isAuth={authStatus} path='/change-password' component={ChangePassword} />
@@ -127,6 +125,8 @@ function App() {
             <ProtectedRoute isAuth={authStatus && designation === "Delivery Representative"} path='/delivery-representative/manage-gin' component={ManageGIN} />
             <ProtectedRoute isAuth={authStatus && designation === "Delivery Representative"} path='/delivery-representative/sales-and-invoice' component={SalesAndInvoice} />
             <ProtectedRoute isAuth={authStatus && designation === "Delivery Representative"} path='/delivery-representative/manage-customers' component={ManageCustomer} />
+
+            <ProtectedRoute isAuth={authStatus} path='' component={NotFound} />
 
           </Switch>
         </BrowserRouter>

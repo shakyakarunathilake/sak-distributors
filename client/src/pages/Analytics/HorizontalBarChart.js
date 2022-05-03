@@ -4,6 +4,16 @@ import { HorizontalBar } from 'react-chartjs-2';
 export default function HorizontalBarChart(props) {
 
     const { label, labels, chartData, } = props;
+    
+    let colors = [];
+
+    while (colors.length < 1000) {
+        colors.push(`rgb(${rand(0, 255)}, ${rand(0, 255)}, ${rand(0, 255)})`);
+    }
+
+    function rand(frm, to) {
+        return (Math.random() * (to - frm)) + frm;
+    }
 
     const options = {
         indexAxis: 'y',
@@ -51,8 +61,8 @@ export default function HorizontalBarChart(props) {
             {
                 label: label.label,
                 data: chartData,
-                borderColor: 'rgb(255, 99, 132)',
-                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                borderColor: colors,
+                backgroundColor: colors,
             }
         ]
     };
