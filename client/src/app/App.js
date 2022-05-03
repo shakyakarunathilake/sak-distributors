@@ -13,7 +13,7 @@ import SalesRepresentativeAnalytics from '../pages/Distributor/SalesRepresentati
 import SalesReport from '../pages/Distributor/SalesReport';
 
 //HR
-import ManageAdmin from '../pages/HR/ManageAdmin';
+// import ManageAdmin from '../pages/HR/ManageAdmin';
 import ManageEmployee from '../pages/HR/ManageEmployee';
 
 //Manager
