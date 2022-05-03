@@ -1,0 +1,45 @@
+@import "../../styles/_variables.scss";
+
+.container {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    background-color: $layoutColor;
+
+    .left {
+        display: grid;
+        grid-template-rows: min-content min-content min-content;
+        margin: auto;
+
+        .statuscode {
+            text-align: center;
+            // color: $primaryDark;
+            font-size: 9em;
+            font-weight: 800;
+        }
+
+        .label {
+            text-align: center;
+            // color: $primaryDark;
+            font-size: 8em;
+            font-weight: 800;
+        }
+
+        .btnDiv {
+            margin: 40px auto;
+
+            Button {
+                font-size: 1em;
+                height: 40px;
+                padding: $formButtonPadding2;
+                background-color: $primaryMain;
+                color: white;
+            }
+        }
+    }
+
+    .right {
+    }
+}

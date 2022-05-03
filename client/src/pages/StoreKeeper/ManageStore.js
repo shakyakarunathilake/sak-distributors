@@ -81,7 +81,7 @@ export default function ManageStore() {
                 })
                 .then(res => {
                     localStorage.setItem(grnnumberginnumber, JSON.stringify(res.data.grn));
-                    window.open(`http://localhost:3000/store-keeper/view-grn-details/${grnnumberginnumber}`, "_blank");
+                    window.open(`http://localhost:3000/storekeeper/view-grn-details/${grnnumberginnumber}`, "_blank");
                 })
                 .catch(err => {
                     console.log(err);
@@ -97,7 +97,7 @@ export default function ManageStore() {
                 })
                 .then(res => {
                     localStorage.setItem(grnnumberginnumber, JSON.stringify(res.data.gin));
-                    window.open(`http://localhost:3000/store-keeper/view-gin-details/${grnnumberginnumber}`, "_blank");
+                    window.open(`http://localhost:3000/storekeeper/view-gin-details/${grnnumberginnumber}`, "_blank");
                 })
                 .catch(err => {
                     console.log(err);

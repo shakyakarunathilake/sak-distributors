@@ -19,7 +19,7 @@ const getDistributorListItems = [
     {
         id: "Dashboard",
         title: "Dashboard",
-        path: "http://localhost:3000/distributor/dashboard",
+        path: "http://localhost:3000/dashboard",
         icon: <DashboardIcon />
     },
     {
@@ -34,18 +34,18 @@ const getDistributorListItems = [
         path: "http://localhost:3000/distributor/manage-employee",
         icon: <PeopleIcon />,
     },
-    {
-        id: "Sales Report",
-        title: "Sales Report",
-        path: "http://localhost:3000/sales-report",
-        icon: <AssessmentIcon />
-    },
-    {
-        id: "Sales Rep. Analytics",
-        title: "Sales Rep. Analytics",
-        path: "http://localhost:3000/sales-representative-analytics",
-        icon: <TimelineIcon />
-    },
+    // {
+    //     id: "Sales Report",
+    //     title: "Sales Report",
+    //     path: "http://localhost:3000/sales-report",
+    //     icon: <AssessmentIcon />
+    // },
+    // {
+    //     id: "Sales Rep. Analytics",
+    //     title: "Sales Rep. Analytics",
+    //     path: "http://localhost:3000/sales-representative-analytics",
+    //     icon: <TimelineIcon />
+    // },
     {
         id: "Sales Analytics",
         title: "Sales Analytics",
@@ -58,7 +58,7 @@ const getHRListItems = [
     {
         id: "Dashboard",
         title: "Dashboard",
-        path: "http://localhost:3000/human-resources/dashboard",
+        path: "http://localhost:3000/dashboard",
         icon: <DashboardIcon />
     },
     // {
@@ -79,7 +79,7 @@ const getManagerListItems = [
     {
         id: "Dashboard",
         title: "Dashboard",
-        path: "http://localhost:3000/manager/dashboard",
+        path: "http://localhost:3000/dashboard",
         icon: <DashboardIcon />
     },
     {
@@ -112,19 +112,19 @@ const getManagerListItems = [
         path: "http://localhost:3000/manager/sales-and-invoice",
         icon: <DescriptionIcon />,
     },
-    {
-        id: "Sales Rep. Analytics",
-        title: "Sales Rep. Analytics",
-        path: "http://localhost:3000/sales-representative-analytics",
-        icon: <TimelineIcon />
-    },
+    // {
+    //     id: "Sales Rep. Analytics",
+    //     title: "Sales Rep. Analytics",
+    //     path: "http://localhost:3000/sales-representative-analytics",
+    //     icon: <TimelineIcon />
+    // },
 ];
 
 const getPurchasingManagerListItems = [
     {
         id: "Dashboard",
         title: "Dashboard",
-        path: "http://localhost:3000/purchasing-manager/dashboard",
+        path: "http://localhost:3000/dashboard",
         icon: <DashboardIcon />
     },
     {
@@ -151,49 +151,49 @@ const getPurchasingManagerListItems = [
         path: "http://localhost:3000/purchasing-manager/manage-supplier-payment",
         icon: <PaymentIcon />
     },
-    {
-        id: "Sales Rep. Analytics",
-        title: "Sales Rep. Analytics",
-        path: "http://localhost:3000/sales-representative-analytics",
-        icon: <TimelineIcon />
-    },
-    {
-        id: "Sales Trend Analytics",
-        title: "Sales Trend Analytics",
-        path: "http://localhost:3000/sales-trend-analytics",
-        icon: <TrendingUpIcon />
-    },
+    // {
+    //     id: "Sales Rep. Analytics",
+    //     title: "Sales Rep. Analytics",
+    //     path: "http://localhost:3000/sales-representative-analytics",
+    //     icon: <TimelineIcon />
+    // },
+    // {
+    //     id: "Sales Trend Analytics",
+    //     title: "Sales Trend Analytics",
+    //     path: "http://localhost:3000/sales-trend-analytics",
+    //     icon: <TrendingUpIcon />
+    // },
 ];
 
 const getStoreKeeperListItems = [
     {
         id: "Dashboard",
         title: "Dashboard",
-        path: "http://localhost:3000/store-keeper/dashboard",
+        path: "http://localhost:3000/dashboard",
         icon: <DashboardIcon />
     },
     {
         id: "Manage Store",
         title: "Manage Store",
-        path: "http://localhost:3000/store-keeper/manage-store",
+        path: "http://localhost:3000/storekeeper/manage-store",
         icon: <StoreIcon />,
     },
     {
         id: "Manage GRN",
         title: "Manage GRN",
-        path: "http://localhost:3000/store-keeper/manage-grn",
+        path: "http://localhost:3000/storekeeper/manage-grn",
         icon: <InsertDriveFileIcon />,
     },
     {
         id: "Manage GIN",
         title: "Manage GIN",
-        path: "http://localhost:3000/store-keeper/manage-gin",
+        path: "http://localhost:3000/storekeeper/manage-gin",
         icon: <InsertDriveFileIcon />,
     },
     {
         id: "Manage Products",
         title: "Manage Products",
-        path: "http://localhost:3000/store-keeper/manage-products",
+        path: "http://localhost:3000/storekeeper/manage-products",
         icon: <AssignmentIcon />,
     },
 ];
@@ -202,7 +202,7 @@ const getSalesRepresentativeListItems = [
     {
         id: "Dashboard",
         title: "Dashboard",
-        path: "http://localhost:3000/sales-representative/dashboard",
+        path: "http://localhost:3000/dashboard",
         icon: <DashboardIcon />
     },
     {
@@ -217,12 +217,12 @@ const getSalesRepresentativeListItems = [
         path: "http://localhost:3000/sales-representative/sales-and-invoice",
         icon: <DescriptionIcon />,
     },
-    {
-        id: "Sales Rep. Analytics",
-        title: "Sales Rep. Analytics",
-        path: "http://localhost:3000/sales-representative-analytics",
-        icon: <TimelineIcon />
-    },
+    // {
+    //     id: "Sales Rep. Analytics",
+    //     title: "Sales Rep. Analytics",
+    //     path: "http://localhost:3000/sales-representative-analytics",
+    //     icon: <TimelineIcon />
+    // },
 
 ];
 
@@ -230,7 +230,7 @@ const getDeliveryRepresentativeListItems = [
     {
         id: "Dashboard",
         title: "Dashboard",
-        path: "http://localhost:3000/delivery-representative/dashboard",
+        path: "http://localhost:3000/dashboard",
         icon: <DashboardIcon />
     },
     {

@@ -5,6 +5,7 @@ import './App.scss';
 
 import Login from '../pages/LoginPage/Login';
 import ForgotPassword from '../pages/ForgotPassword/ForgotPassword';
+import NotFound from '../pages/ErrorPages/NotFound';
 
 //Distributor
 import ChangePassword from '../pages/Distributor/ChangePassword';
@@ -13,7 +14,6 @@ import SalesRepresentativeAnalytics from '../pages/Distributor/SalesRepresentati
 import SalesReport from '../pages/Distributor/SalesReport';
 
 //HR
-// import ManageAdmin from '../pages/HR/ManageAdmin';
 import ManageEmployee from '../pages/HR/ManageEmployee';
 
 //Manager
@@ -36,12 +36,13 @@ import ViewOrderDetails from '../pages/StoreKeeper/ViewOrderDetails';
 import ViewGRNDetails from '../pages/StoreKeeper/ViewGRNDetails';
 import ViewGINDetails from '../pages/StoreKeeper/ViewGINDetails';
 
-
 //Sales Representative
 import SalesAndInvoice from '../pages/SalesRepresentative/SalesAndInvoice';
 
 //Analytics
 import SalesAnalytics from '../pages/Analytics/SalesAnalytics';
+
+import ProtectedRoute from './ProtectedRoute';
 
 const theme = createTheme({
   palette: {
@@ -68,76 +69,80 @@ const theme = createTheme({
 });
 
 function App() {
+
+  const authStatus = (JSON.parse(sessionStorage.getItem("Auth")).auth_status === "AUTHORIZED");
+  const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
+
   return (
     <ThemeProvider theme={theme}>
+
       {
         <BrowserRouter>
-          <Switch>
 
-            {/* Development Stage */}
-            <Route exact path='/sales-analytics' component={SalesAnalytics} />
+          <Switch>
 
             {/* Shared */}
             <Route exact path='/' component={Login} />
-            <Route exact path='/forgot-password' component={ForgotPassword} />
-            <Route exact path='/change-password' component={ChangePassword} />
-            <Route exact path='/sales-report' component={SalesReport} />
-            <Route exact path='/sales-representative-analytics' component={SalesRepresentativeAnalytics} />
-            <Route exact path='/sales-trend-analytics' component={SalesTrendAnalytics} />
+
+            <ProtectedRoute isAuth={authStatus} path='/dashboard' component={Dashboard} />
+            <ProtectedRoute isAuth={authStatus} path='/forgot-password' component={ForgotPassword} />
+            <ProtectedRoute isAuth={authStatus} path='/change-password' component={ChangePassword} />
+            <ProtectedRoute isAuth={authStatus} path='/sales-analytics' component={SalesAnalytics} />
+
+            {/* <ProtectedRoute isAuth={authStatus} path='/sales-report' component={SalesReport} />
+            <ProtectedRoute isAuth={authStatus} path='/sales-representative-analytics' component={SalesRepresentativeAnalytics} />
+            <ProtectedRoute isAuth={authStatus} path='/sales-trend-analytics' component={SalesTrendAnalytics} /> */}
 
             {/* Distributor */}
-            <Route exact path='/distributor/dashboard' component={Dashboard} />
-            <Route exact path='/distributor/manage-purchase-orders' component={ManagePurchaseOrder} />
-            <Route exact path='/distributor/manage-employee' component={ManageEmployee} />
+            <ProtectedRoute isAuth={authStatus && designation === "Distributor"} path='/distributor/manage-purchase-orders' component={ManagePurchaseOrder} />
+            <ProtectedRoute isAuth={authStatus && designation === "Distributor"} path='/distributor/manage-employee' component={ManageEmployee} />
 
             {/* Human Resources */}
-            <Route exact path='/human-resources/dashboard' component={Dashboard} />
-            {/* <Route exact path='/human-resources/manage-admin' component={ManageAdmin} /> */}
-            <Route exact path='/human-resources/manage-employee' component={ManageEmployee} />
+            <ProtectedRoute isAuth={authStatus && designation === "Human Resources"} path='/human-resources/manage-employee' component={ManageEmployee} />
 
             {/* Manager */}
-            <Route exact path='/manager/dashboard' component={Dashboard} />
-            <Route exact path='/manager/manage-suppliers' component={ManageSupplier} />
-            <Route exact path='/manager/manage-products' component={ManageProduct} />
-            <Route exact path='/manager/manage-customers' component={ManageCustomer} />
-            <Route exact path='/manager/sales-and-invoice' component={SalesAndInvoice} />
-            <Route exact path='/manager/manage-vehicles' component={ManageVehicle} />
+            <ProtectedRoute isAuth={authStatus && designation === "Manager"} path='/manager/manage-suppliers' component={ManageSupplier} />
+            <ProtectedRoute isAuth={authStatus && designation === "Manager"} path='/manager/manage-products' component={ManageProduct} />
+            <ProtectedRoute isAuth={authStatus && designation === "Manager"} path='/manager/manage-customers' component={ManageCustomer} />
+            <ProtectedRoute isAuth={authStatus && designation === "Manager"} path='/manager/sales-and-invoice' component={SalesAndInvoice} />
+            <ProtectedRoute isAuth={authStatus && designation === "Manager"} path='/manager/manage-vehicles' component={ManageVehicle} />
 
             {/* Purchasing Manager */}
-            <Route exact path='/purchasing-manager/dashboard' component={Dashboard} />
-            <Route exact path='/purchasing-manager/manage-products' component={ManageProduct} />
-            <Route exact path='/purchasing-manager/manage-purchase-orders' component={ManagePurchaseOrder} />
-            <Route exact path='/purchasing-manager/manage-quotations' component={ManageQuotations} />
-            <Route exact path='/purchasing-manager/manage-supplier-payment' component={ManageSupplierPayment} />
+            <ProtectedRoute isAuth={authStatus && designation === "Purchase Manager"} path='/purchasing-manager/manage-products' component={ManageProduct} />
+            <ProtectedRoute isAuth={authStatus && designation === "Purchase Manager"} path='/purchasing-manager/manage-purchase-orders' component={ManagePurchaseOrder} />
+            <ProtectedRoute isAuth={authStatus && designation === "Purchase Manager"} path='/purchasing-manager/manage-quotations' component={ManageQuotations} />
+            <ProtectedRoute isAuth={authStatus && designation === "Purchase Manager"} path='/purchasing-manager/manage-supplier-payment' component={ManageSupplierPayment} />
 
             {/* Store Keeper */}
-            <Route exact path='/store-keeper/dashboard' component={Dashboard} />
-            <Route exact path='/store-keeper/manage-grn' component={ManageGRN} />
-            <Route exact path='/store-keeper/manage-gin' component={ManageGIN} />
-            <Route exact path='/store-keeper/manage-store' component={ManageStore} />
-            <Route exact path='/store-keeper/manage-products' component={ManageProduct} />
-            <Route exact path='/store-keeper/view-order-details/:ordernumber' component={ViewOrderDetails} />
-            <Route exact path='/store-keeper/view-grn-details/:grnnumberginnumber' component={ViewGRNDetails} />
-            <Route exact path='/store-keeper/view-gin-details/:grnnumberginnumber' component={ViewGINDetails} />
-
-
+            <ProtectedRoute isAuth={authStatus && designation === "Store Keeper"} path='/storekeeper/manage-grn' component={ManageGRN} />
+            <ProtectedRoute isAuth={authStatus && designation === "Store Keeper"} path='/storekeeper/manage-gin' component={ManageGIN} />
+            <ProtectedRoute isAuth={authStatus && designation === "Store Keeper"} path='/storekeeper/manage-store' component={ManageStore} />
+            <ProtectedRoute isAuth={authStatus && designation === "Store Keeper"} path='/storekeeper/manage-products' component={ManageProduct} />
+            <ProtectedRoute isAuth={authStatus && designation === "Store Keeper"} path='/storekeeper/view-order-details/:ordernumber' component={ViewOrderDetails} />
+            <ProtectedRoute isAuth={authStatus && designation === "Store Keeper"} path='/storekeeper/view-grn-details/:grnnumberginnumber' component={ViewGRNDetails} />
+            <ProtectedRoute isAuth={authStatus && designation === "Store Keeper"} path='/storekeeper/view-gin-details/:grnnumberginnumber' component={ViewGINDetails} />
 
             {/* Sales Representative */}
-            <Route exact path='/sales-representative/dashboard' component={Dashboard} />
-            <Route exact path='/sales-representative/manage-customers' component={ManageCustomer} />
-            <Route exact path='/sales-representative/sales-and-invoice' component={SalesAndInvoice} />
+            <ProtectedRoute isAuth={authStatus && designation === "Sales Representative"} path='/sales-representative/manage-customers' component={ManageCustomer} />
+            <ProtectedRoute isAuth={authStatus && designation === "Sales Representative"} path='/sales-representative/sales-and-invoice' component={SalesAndInvoice} />
 
             {/* Delivery Representative */}
-            <Route exact path='/delivery-representative/dashboard' component={Dashboard} />
-            <Route exact path='/delivery-representative/manage-gin' component={ManageGIN} />
-            <Route exact path='/delivery-representative/sales-and-invoice' component={SalesAndInvoice} />
-            <Route exact path='/delivery-representative/manage-customers' component={ManageCustomer} />
+            <ProtectedRoute isAuth={authStatus && designation === "Delivery Representative"} path='/delivery-representative/manage-gin' component={ManageGIN} />
+            <ProtectedRoute isAuth={authStatus && designation === "Delivery Representative"} path='/delivery-representative/sales-and-invoice' component={SalesAndInvoice} />
+            <ProtectedRoute isAuth={authStatus && designation === "Delivery Representative"} path='/delivery-representative/manage-customers' component={ManageCustomer} />
+
+            <ProtectedRoute isAuth={authStatus} path='' component={NotFound} />
 
           </Switch>
+
         </BrowserRouter>
+
       }
+
     </ThemeProvider>
+
   );
+
 }
 
 export default App;

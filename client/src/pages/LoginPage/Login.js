@@ -71,25 +71,7 @@ export default function Login() {
                     setAlert(res.data.message);
                     handleAlert();
                 } else {
-                    const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
-
-                    switch (designation) {
-                        case "Distributor": window.location.replace("http://localhost:3000/distributor/dashboard");
-                            break;
-                        case "Human Resources": window.location.replace("http://localhost:3000/human-resources/dashboard");
-                            break;
-                        case "Manager": window.location.replace("http://localhost:3000/manager/dashboard");
-                            break;
-                        case "Purchasing Manager": window.location.replace("http://localhost:3000/purchasing-manager/dashboard");
-                            break;
-                        case "Store Keeper": window.location.replace("http://localhost:3000/store-keeper/dashboard");
-                            break;
-                        case "Sales Representative": window.location.replace("http://localhost:3000/sales-representative/dashboard");
-                            break;
-                        case "Delivery Representative": window.location.replace("http://localhost:3000/delivery-representative/dashboard");
-                            break;
-                        default: window.location.replace("http://localhost:3000/");
-                    }
+                    window.location.replace("http://localhost:3000/dashboard")
                 }
             })
             .catch(error => {
