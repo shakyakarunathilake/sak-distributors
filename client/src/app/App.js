@@ -40,10 +40,7 @@ import ViewGINDetails from '../pages/StoreKeeper/ViewGINDetails';
 //Sales Representative
 import SalesAndInvoice from '../pages/SalesRepresentative/SalesAndInvoice';
 
-//Development Stage
-import DoughnutChart from '../pages/Analytics/DoughnutChart';
-import VerticalBarChart from '../pages/Analytics/VerticalBarChart';
-import HorizontalBarChart from '../pages/Analytics/HorizontalBarChart';
+//Analytics
 import SalesAnalytics from '../pages/Analytics/SalesAnalytics';
 
 const theme = createTheme({
