@@ -80,45 +80,39 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-
       {
         <BrowserRouter>
-
           <Switch>
-
-            {/* Shared */}
             <Route exact path='/' component={Login} />
+
+            <ProtectedRoute isAuth={authStatus} path='' component={NotFound} />
 
             <ProtectedRoute isAuth={authStatus} path='/dashboard' component={Dashboard} />
             <ProtectedRoute isAuth={authStatus} path='/forgot-password' component={ForgotPassword} />
             <ProtectedRoute isAuth={authStatus} path='/change-password' component={ChangePassword} />
+
             <ProtectedRoute isAuth={authStatus} path='/sales-analytics' component={SalesAnalytics} />
 
             {/* <ProtectedRoute isAuth={authStatus} path='/sales-report' component={SalesReport} />
             <ProtectedRoute isAuth={authStatus} path='/sales-representative-analytics' component={SalesRepresentativeAnalytics} />
             <ProtectedRoute isAuth={authStatus} path='/sales-trend-analytics' component={SalesTrendAnalytics} /> */}
 
-            {/* Distributor */}
             <ProtectedRoute isAuth={authStatus && designation === "Distributor"} path='/distributor/manage-purchase-orders' component={ManagePurchaseOrder} />
             <ProtectedRoute isAuth={authStatus && designation === "Distributor"} path='/distributor/manage-employee' component={ManageEmployee} />
 
-            {/* Human Resources */}
             <ProtectedRoute isAuth={authStatus && designation === "Human Resources"} path='/human-resources/manage-employee' component={ManageEmployee} />
 
-            {/* Manager */}
             <ProtectedRoute isAuth={authStatus && designation === "Manager"} path='/manager/manage-suppliers' component={ManageSupplier} />
             <ProtectedRoute isAuth={authStatus && designation === "Manager"} path='/manager/manage-products' component={ManageProduct} />
             <ProtectedRoute isAuth={authStatus && designation === "Manager"} path='/manager/manage-customers' component={ManageCustomer} />
             <ProtectedRoute isAuth={authStatus && designation === "Manager"} path='/manager/sales-and-invoice' component={SalesAndInvoice} />
             <ProtectedRoute isAuth={authStatus && designation === "Manager"} path='/manager/manage-vehicles' component={ManageVehicle} />
-
-            {/* Purchasing Manager */}
+            
             <ProtectedRoute isAuth={authStatus && designation === "Purchase Manager"} path='/purchasing-manager/manage-products' component={ManageProduct} />
             <ProtectedRoute isAuth={authStatus && designation === "Purchase Manager"} path='/purchasing-manager/manage-purchase-orders' component={ManagePurchaseOrder} />
             <ProtectedRoute isAuth={authStatus && designation === "Purchase Manager"} path='/purchasing-manager/manage-quotations' component={ManageQuotations} />
             <ProtectedRoute isAuth={authStatus && designation === "Purchase Manager"} path='/purchasing-manager/manage-supplier-payment' component={ManageSupplierPayment} />
-
-            {/* Store Keeper */}
+            
             <ProtectedRoute isAuth={authStatus && designation === "Store Keeper"} path='/storekeeper/manage-grn' component={ManageGRN} />
             <ProtectedRoute isAuth={authStatus && designation === "Store Keeper"} path='/storekeeper/manage-gin' component={ManageGIN} />
             <ProtectedRoute isAuth={authStatus && designation === "Store Keeper"} path='/storekeeper/manage-store' component={ManageStore} />
@@ -126,24 +120,17 @@ function App() {
             <ProtectedRoute isAuth={authStatus && designation === "Store Keeper"} path='/storekeeper/view-order-details/:ordernumber' component={ViewOrderDetails} />
             <ProtectedRoute isAuth={authStatus && designation === "Store Keeper"} path='/storekeeper/view-grn-details/:grnnumberginnumber' component={ViewGRNDetails} />
             <ProtectedRoute isAuth={authStatus && designation === "Store Keeper"} path='/storekeeper/view-gin-details/:grnnumberginnumber' component={ViewGINDetails} />
-
-            {/* Sales Representative */}
+            
             <ProtectedRoute isAuth={authStatus && designation === "Sales Representative"} path='/sales-representative/manage-customers' component={ManageCustomer} />
             <ProtectedRoute isAuth={authStatus && designation === "Sales Representative"} path='/sales-representative/sales-and-invoice' component={SalesAndInvoice} />
-
-            {/* Delivery Representative */}
+            
             <ProtectedRoute isAuth={authStatus && designation === "Delivery Representative"} path='/delivery-representative/manage-gin' component={ManageGIN} />
             <ProtectedRoute isAuth={authStatus && designation === "Delivery Representative"} path='/delivery-representative/sales-and-invoice' component={SalesAndInvoice} />
             <ProtectedRoute isAuth={authStatus && designation === "Delivery Representative"} path='/delivery-representative/manage-customers' component={ManageCustomer} />
 
-            <ProtectedRoute isAuth={authStatus} path='' component={NotFound} />
-
           </Switch>
-
         </BrowserRouter>
-
       }
-
     </ThemeProvider>
 
   );
