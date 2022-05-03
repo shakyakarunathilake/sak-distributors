@@ -40,6 +40,12 @@ import ViewGINDetails from '../pages/StoreKeeper/ViewGINDetails';
 //Sales Representative
 import SalesAndInvoice from '../pages/SalesRepresentative/SalesAndInvoice';
 
+//Development Stage
+import DoughnutChart from '../pages/Analytics/DoughnutChart';
+import VerticalBarChart from '../pages/Analytics/VerticalBarChart';
+import HorizontalBarChart from '../pages/Analytics/HorizontalBarChart';
+import SalesAnalytics from '../pages/Analytics/SalesAnalytics';
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -70,6 +76,11 @@ function App() {
       {
         <BrowserRouter>
           <Switch>
+
+            {/* Development Stage */}
+            <Route exact path='/sales-analytics' component={SalesAnalytics} />
+
+            {/* Shared */}
             <Route exact path='/' component={Login} />
             <Route exact path='/forgot-password' component={ForgotPassword} />
             <Route exact path='/change-password' component={ChangePassword} />

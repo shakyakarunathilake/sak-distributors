@@ -46,6 +46,12 @@ const getDistributorListItems = [
         path: "http://localhost:3000/sales-representative-analytics",
         icon: <TimelineIcon />
     },
+    {
+        id: "Sales Analytics",
+        title: "Sales Analytics",
+        path: "http://localhost:3000/sales-analytics",
+        icon: <TimelineIcon />
+    },
 ];
 
 const getHRListItems = [
@@ -133,12 +139,6 @@ const getPurchasingManagerListItems = [
         path: "http://localhost:3000/purchasing-manager/manage-purchase-orders",
         icon: <ListAltIcon />
     },
-    // {
-    //     id: "Create Purchase Order",
-    //     title: "Create Purchase Order",
-    //     path: "http://localhost:3000/purchasing-manager/create-purchase-order",
-    //     icon: <AddCircleIcon />
-    // },
     {
         id: "Manage Quotations",
         title: "Manage Quotations",

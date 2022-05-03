@@ -24,6 +24,11 @@ const storeRoutes = require("./api/routes/store.route");
 const quotationRoutes = require("./api/routes/quotation.route");
 const supplierPaymentRoutes = require("./api/routes/supplierpayment.route");
 const vehicleRoutes = require("./api/routes/vehicle.route");
+const totalSalesRoutes = require("./api/routes/totalsales.route");
+const salesPerCustomerRoutes = require("./api/routes/salespercustomer.route");
+const salesPerRouteRoutes = require("./api/routes/salesperroute.route");
+const salesPerSalesRepresentativeRoutes = require("./api/routes/salespersalesrepresentative.route");
+
 
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -50,40 +55,26 @@ app.use(express.static("uploads"));
 
 app.use("/auth", authRoutes);
 
-// app.use("/password", checkAuth, passwordRoutes);
-// app.use("/employees", checkAuth, employeeRoutes);
-// app.use("/customers", checkAuth, customerRoutes);
-// app.use("/products", checkAuth, productRoutes);
-// app.use("/orders", checkAuth, orderRoutes);
-// app.use("/options", checkAuth, optionRoutes);
-// app.use("/admin", checkAuth, adminRoutes);
-// app.use("/suppliers", checkAuth, supplierRoutes);
-// app.use("/purchaseorder", checkAuth, purchaseOrderRoutes);
-// app.use("/grn", checkAuth, grnRoutes);
-// app.use("/gin", checkAuth, ginRoutes);
-// app.use("/store", checkAuth, storeRoutes);
-// app.use("/metadata", checkAuth, metaDataRoutes);
-// app.use("/quotations", checkAuth, quotationRoutes);
-// app.use("/supplier-payments", checkAuth, supplierPaymentRoutes);
-// app.use("/vehicles", checkAuth, vehicleRoutes);
-
-
 //Development Stage
-app.use("/password", passwordRoutes);
-app.use("/employees", employeeRoutes);
-app.use("/customers", customerRoutes);
-app.use("/products", productRoutes);
-app.use("/orders", orderRoutes);
-app.use("/options", optionRoutes);
-app.use("/admin", adminRoutes);
-app.use("/suppliers", supplierRoutes);
-app.use("/purchaseorder", purchaseOrderRoutes);
-app.use("/grn", grnRoutes);
-app.use("/gin", ginRoutes);
-app.use("/store", storeRoutes);
-app.use("/metadata", metaDataRoutes);
-app.use("/quotations", quotationRoutes);
-app.use("/supplier-payments", supplierPaymentRoutes);
-app.use("/vehicles", vehicleRoutes);
+app.use("/password", checkAuth, passwordRoutes);
+app.use("/employees", checkAuth, employeeRoutes);
+app.use("/customers", checkAuth, customerRoutes);
+app.use("/products", checkAuth, productRoutes);
+app.use("/orders", checkAuth, orderRoutes);
+app.use("/options", checkAuth, optionRoutes);
+app.use("/admin", checkAuth, adminRoutes);
+app.use("/suppliers", checkAuth, supplierRoutes);
+app.use("/purchaseorder", checkAuth, purchaseOrderRoutes);
+app.use("/grn", checkAuth, grnRoutes);
+app.use("/gin", checkAuth, ginRoutes);
+app.use("/store", checkAuth, storeRoutes);
+app.use("/metadata", checkAuth, metaDataRoutes);
+app.use("/quotations", checkAuth, quotationRoutes);
+app.use("/supplier-payments", checkAuth, supplierPaymentRoutes);
+app.use("/vehicles", checkAuth, vehicleRoutes);
+app.use("/total-sales", checkAuth, totalSalesRoutes);
+app.use("/sales-per-customer", checkAuth, salesPerCustomerRoutes);
+app.use("/sales-per-route", checkAuth, salesPerRouteRoutes);
+app.use("/sales-per-sales-representative", checkAuth, salesPerSalesRepresentativeRoutes);
 
 module.exports = app;
