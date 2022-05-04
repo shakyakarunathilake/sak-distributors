@@ -106,10 +106,10 @@ function App() {
             <ProtectedRoute isAuth={authStatus && designation === "Manager"} path='/manager/sales-and-invoice' component={SalesAndInvoice} />
             <ProtectedRoute isAuth={authStatus && designation === "Manager"} path='/manager/manage-vehicles' component={ManageVehicle} />
             
-            <ProtectedRoute isAuth={authStatus && designation === "Purchase Manager"} path='/purchasing-manager/manage-products' component={ManageProduct} />
-            <ProtectedRoute isAuth={authStatus && designation === "Purchase Manager"} path='/purchasing-manager/manage-purchase-orders' component={ManagePurchaseOrder} />
-            <ProtectedRoute isAuth={authStatus && designation === "Purchase Manager"} path='/purchasing-manager/manage-quotations' component={ManageQuotations} />
-            <ProtectedRoute isAuth={authStatus && designation === "Purchase Manager"} path='/purchasing-manager/manage-supplier-payment' component={ManageSupplierPayment} />
+            <ProtectedRoute isAuth={authStatus && designation === "Purchasing Manager"} path='/purchasing-manager/manage-products' component={ManageProduct} />
+            <ProtectedRoute isAuth={authStatus && designation === "Purchasing Manager"} path='/purchasing-manager/manage-purchase-orders' component={ManagePurchaseOrder} />
+            <ProtectedRoute isAuth={authStatus && designation === "Purchasing Manager"} path='/purchasing-manager/manage-quotations' component={ManageQuotations} />
+            <ProtectedRoute isAuth={authStatus && designation === "Purchasing Manager"} path='/purchasing-manager/manage-supplier-payment' component={ManageSupplierPayment} />
             
             <ProtectedRoute isAuth={authStatus && designation === "Store Keeper"} path='/storekeeper/manage-grn' component={ManageGRN} />
             <ProtectedRoute isAuth={authStatus && designation === "Store Keeper"} path='/storekeeper/manage-gin' component={ManageGIN} />
