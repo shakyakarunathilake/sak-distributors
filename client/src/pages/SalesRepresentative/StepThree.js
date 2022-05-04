@@ -240,6 +240,10 @@ export default function StepThree(props) {
                                             hidden: true,
                                         },
                                         {
+                                            field: "offercaption",
+                                            hidden: true,
+                                        },
+                                        {
                                             field: "description",
                                             cellStyle: {
                                                 padding: "10px 5px 10px 7px",
@@ -271,7 +275,13 @@ export default function StepThree(props) {
                                                                     <b> Type: </b>
                                                                     {option.type}
                                                                 </Grid>
-                                                                {option.type === "Promotion" ? <Grid item xs={12}>  <b> Offer Caption: </b> {option.offercaption}  </Grid> : ""}
+                                                                {
+                                                                    option.type === ("Promotion (Free Products)" || "Promotion (Discounts)") ?
+                                                                        <Grid item xs={12}>
+                                                                            <b> Offer Caption: </b> {option.offercaption}
+                                                                        </Grid>
+                                                                        : ""
+                                                                }
                                                                 <Grid item xs={12}>
                                                                     <b> MRP: </b> {option.mrp}
                                                                 </Grid>
