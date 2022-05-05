@@ -31,7 +31,7 @@ export default function VariantForm(props) {
         (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
         (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
 
-    const { handleSubmit, formState: { errors, isValid }, control, watch, clearErrors, reset, setValue, getValues, trigger } = useForm({
+    const { handleSubmit, formState: { errors, isValid }, control, watch, reset, setValue, getValues, trigger } = useForm({
         mode: "all",
         defaultValues: {
             productid: productRecords ? productRecords.productid : '',
@@ -48,11 +48,12 @@ export default function VariantForm(props) {
             mrp: productRecords ? productRecords.variant.mrp : '',
             sellingprice: productRecords ? productRecords.variant.sellingprice : '',
             purchaseprice: productRecords ? productRecords.variant.purchaseprice : '',
-            eligibleqty: productRecords ? productRecords.eligibleqty : '',
-            eligibleqtytype: productRecords ? productRecords.eligibleqtytype : '',
-            freeqty: productRecords ? productRecords.freeqty : '',
-            freeqtytype: productRecords ? productRecords.freeqtytype : '',
-            freeproductname: productRecords ? productRecords.freeproductname : '',
+            eligibleqty: productRecords ? productRecords.variant.eligibleqty : '',
+            eligibleqtytype: productRecords ? productRecords.variant.eligibleqtytype : '',
+            freeqty: productRecords ? productRecords.variant.freeqty : '',
+            freeqtytype: productRecords ? productRecords.variant.freeqtytype : '',
+            discount: productRecords ? productRecords.variant.discount : '',
+            freeproductname: productRecords ? productRecords.variant.freeproductname : '',
             offercaption: productRecords ? productRecords.variant.offercaption : '',
             variantstatus: productRecords ? productRecords.variant.status : '',
             variantaddeddate: productRecords ? productRecords.variant.addeddate : date,
@@ -67,8 +68,22 @@ export default function VariantForm(props) {
     }, [productRecords])
 
     const completeFormStep = () => {
-        if (isValid) {
+        if (isValid === true) {
             setFormStep(x => x + 1);
+
+            if (getValues("type") === "Promotion (Free Products)") {
+                setValue(
+                    "offercaption",
+                    `Buy ${getValues("eligibleqty")} ${getValues("eligibleqtytype").toLowerCase()} and get ${getValues("freeqty")} ${getValues("freeqtytype").toLowerCase()} of ${getValues("freeproductname")}`
+                )
+            }
+
+            if (getValues("type") === "Promotion (Discounts)") {
+                setValue(
+                    "offercaption",
+                    `Buy ${getValues("eligibleqty")} ${getValues("eligibleqtytype").toLowerCase()} and get ${getValues("discount")}% off of ${getValues("freeproductname")}`
+                )
+            }
         } else {
             trigger();
         }
@@ -113,25 +128,59 @@ export default function VariantForm(props) {
             productFormData.append('productid', getValues('productid'));
             productFormData.append("variantid", getValues('variantid'));
             productFormData.append('type', getValues('type'));
-            productFormData.append("offercaption", getValues('offercaption'));
             productFormData.append("piecespercase", getValues('piecespercase'));
             productFormData.append("bulkprice", getValues('bulkprice'));
-            productFormData.append("purchaseprice", getValues('purchaseprice'));
-            productFormData.append("sellingprice", getValues('sellingprice'));
             productFormData.append("mrp", getValues('mrp'));
-            productFormData.append("variantaddedby", getValues('variantaddedby'));
-            productFormData.append("variantaddeddate", getValues('variantaddeddate'));
+            productFormData.append("sellingprice", getValues('sellingprice'));
+            productFormData.append("purchaseprice", getValues('purchaseprice'));
+
+            if (getValues("type") === "Promotion (Free Products)") {
+                productFormData.append("eligibleqty", getValues('eligibleqty'));
+                productFormData.append("eligibleqtytype", getValues('eligibleqtytype'));
+                productFormData.append("freeqty", getValues('freeqty'));
+                productFormData.append("freeqtytype", getValues('freeqtytype'));
+                productFormData.append("freeproductname", getValues('freeproductname'));
+                productFormData.append("offercaption", getValues('offercaption'));
+            }
+
+            if (getValues("type") === "Promotion (Discounts)") {
+                productFormData.append("eligibleqty", getValues('eligibleqty'));
+                productFormData.append("eligibleqtytype", getValues('eligibleqtytype'));
+                productFormData.append("discount", getValues('discount'));
+                productFormData.append("freeproductname", getValues('freeproductname'));
+                productFormData.append("offercaption", getValues('offercaption'));
+            }
+
             productFormData.append("variantstatus", getValues('variantstatus'));
+            productFormData.append("variantaddeddate", getValues('variantaddeddate'));
+            productFormData.append("variantaddedby", getValues('variantaddedby'));
         }
 
         if (action === 'Edit') {
             productFormData.append('type', getValues('type'));
-            productFormData.append("offercaption", getValues('offercaption'));
             productFormData.append("piecespercase", getValues('piecespercase'));
             productFormData.append("bulkprice", getValues('bulkprice'));
-            productFormData.append("purchaseprice", getValues('purchaseprice'));
-            productFormData.append("sellingprice", getValues('sellingprice'));
             productFormData.append("mrp", getValues('mrp'));
+            productFormData.append("sellingprice", getValues('sellingprice'));
+            productFormData.append("purchaseprice", getValues('purchaseprice'));
+
+            if (getValues("type") === "Promotion (Free Products)") {
+                productFormData.append("eligibleqty", getValues('eligibleqty'));
+                productFormData.append("eligibleqtytype", getValues('eligibleqtytype'));
+                productFormData.append("freeqty", getValues('freeqty'));
+                productFormData.append("freeqtytype", getValues('freeqtytype'));
+                productFormData.append("freeproductname", getValues('freeproductname'));
+                productFormData.append("offercaption", getValues('offercaption'));
+            }
+
+            if (getValues("type") === "Promotion (Discounts)") {
+                productFormData.append("eligibleqty", getValues('eligibleqty'));
+                productFormData.append("eligibleqtytype", getValues('eligibleqtytype'));
+                productFormData.append("discount", getValues('discount'));
+                productFormData.append("freeproductname", getValues('freeproductname'));
+                productFormData.append("offercaption", getValues('offercaption'));
+            }
+
             productFormData.append("variantstatus", getValues('variantstatus'));
         }
 
