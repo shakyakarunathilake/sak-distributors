@@ -1,19 +1,20 @@
 //Material UI Icons
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import AssessmentIcon from '@material-ui/icons/Assessment';
+// import AssessmentIcon from '@material-ui/icons/Assessment';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import PersonIcon from '@material-ui/icons/Person';
 import PeopleIcon from '@material-ui/icons/People';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import BusinessIcon from '@material-ui/icons/Business';
-import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
+// import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import PaymentIcon from '@material-ui/icons/Payment';
 import DescriptionIcon from '@material-ui/icons/Description';
-import TrendingUpIcon from '@material-ui/icons/TrendingUp';
+// import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import StoreIcon from '@mui/icons-material/Store';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import DirectionsBusIcon from '@mui/icons-material/DirectionsBus';
+import RouteIcon from '@mui/icons-material/Route';
 
 const getDistributorListItems = [
     {
@@ -105,6 +106,12 @@ const getManagerListItems = [
         title: "Manage Vehicles",
         path: "http://localhost:3000/manager/manage-vehicles",
         icon: <DirectionsBusIcon />,
+    },
+    {
+        id: "Manage Routes",
+        title: "Manage Routes",
+        path: "http://localhost:3000/manager/manage-routes",
+        icon: <RouteIcon />,
     },
     {
         id: "Sales and Invoice",
