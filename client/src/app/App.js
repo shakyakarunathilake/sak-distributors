@@ -10,8 +10,8 @@ import NotFound from '../pages/ErrorPages/NotFound';
 //Distributor
 import ChangePassword from '../pages/Distributor/ChangePassword';
 import Dashboard from '../pages/Distributor/Dashboard';
-import SalesRepresentativeAnalytics from '../pages/Distributor/SalesRepresentativeAnalytics';
-import SalesReport from '../pages/Distributor/SalesReport';
+// import SalesRepresentativeAnalytics from '../pages/Distributor/SalesRepresentativeAnalytics';
+// import SalesReport from '../pages/Distributor/SalesReport';
 
 //HR
 import ManageEmployee from '../pages/HR/ManageEmployee';
@@ -21,11 +21,13 @@ import ManageCustomer from '../pages/Manager/ManageCustomer';
 import ManageProduct from '../pages/Manager/ManageProduct';
 import ManageSupplier from '../pages/Manager/ManageSupplier';
 import ManageVehicle from '../pages/Manager/ManageVehicle';
+import ManageRoute from '../pages/Manager/ManageRoutes';
+
 
 //Purchasing Manager
 import ManagePurchaseOrder from '../pages/PurchasingManager/ManagePurchaseOrder';
 import ManageQuotations from '../pages/PurchasingManager/ManageQuotations';
-import SalesTrendAnalytics from '../pages/PurchasingManager/SalesTrendAnalytics';
+// import SalesTrendAnalytics from '../pages/PurchasingManager/SalesTrendAnalytics';
 import ManageSupplierPayment from '../pages/PurchasingManager/ManageSupplierPayment';
 
 //Store Keeper
@@ -105,12 +107,13 @@ function App() {
             <ProtectedRoute isAuth={authStatus && designation === "Manager"} path='/manager/manage-customers' component={ManageCustomer} />
             <ProtectedRoute isAuth={authStatus && designation === "Manager"} path='/manager/sales-and-invoice' component={SalesAndInvoice} />
             <ProtectedRoute isAuth={authStatus && designation === "Manager"} path='/manager/manage-vehicles' component={ManageVehicle} />
-            
+            <ProtectedRoute isAuth={authStatus && designation === "Manager"} path='/manager/manage-routes' component={ManageRoute} />
+
             <ProtectedRoute isAuth={authStatus && designation === "Purchasing Manager"} path='/purchasing-manager/manage-products' component={ManageProduct} />
             <ProtectedRoute isAuth={authStatus && designation === "Purchasing Manager"} path='/purchasing-manager/manage-purchase-orders' component={ManagePurchaseOrder} />
             <ProtectedRoute isAuth={authStatus && designation === "Purchasing Manager"} path='/purchasing-manager/manage-quotations' component={ManageQuotations} />
             <ProtectedRoute isAuth={authStatus && designation === "Purchasing Manager"} path='/purchasing-manager/manage-supplier-payment' component={ManageSupplierPayment} />
-            
+
             <ProtectedRoute isAuth={authStatus && designation === "Store Keeper"} path='/storekeeper/manage-grn' component={ManageGRN} />
             <ProtectedRoute isAuth={authStatus && designation === "Store Keeper"} path='/storekeeper/manage-gin' component={ManageGIN} />
             <ProtectedRoute isAuth={authStatus && designation === "Store Keeper"} path='/storekeeper/manage-store' component={ManageStore} />
@@ -118,10 +121,10 @@ function App() {
             <ProtectedRoute isAuth={authStatus && designation === "Store Keeper"} path='/storekeeper/view-order-details/:ordernumber' component={ViewOrderDetails} />
             <ProtectedRoute isAuth={authStatus && designation === "Store Keeper"} path='/storekeeper/view-grn-details/:grnnumberginnumber' component={ViewGRNDetails} />
             <ProtectedRoute isAuth={authStatus && designation === "Store Keeper"} path='/storekeeper/view-gin-details/:grnnumberginnumber' component={ViewGINDetails} />
-            
+
             <ProtectedRoute isAuth={authStatus && designation === "Sales Representative"} path='/sales-representative/manage-customers' component={ManageCustomer} />
             <ProtectedRoute isAuth={authStatus && designation === "Sales Representative"} path='/sales-representative/sales-and-invoice' component={SalesAndInvoice} />
-            
+
             <ProtectedRoute isAuth={authStatus && designation === "Delivery Representative"} path='/delivery-representative/manage-gin' component={ManageGIN} />
             <ProtectedRoute isAuth={authStatus && designation === "Delivery Representative"} path='/delivery-representative/sales-and-invoice' component={SalesAndInvoice} />
             <ProtectedRoute isAuth={authStatus && designation === "Delivery Representative"} path='/delivery-representative/manage-customers' component={ManageCustomer} />
