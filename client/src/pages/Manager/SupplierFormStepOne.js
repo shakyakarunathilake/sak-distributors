@@ -40,7 +40,7 @@ export default function SupplierFormStepOne(props) {
                 <div className={style.title}>
 
                     <div>
-                        {action === "Create" && "Create Supplier"}
+                        {action === "Create" && "Add New Supplier"}
                         {action === "Edit" && "Edit Supplier"}
                     </div>
 
@@ -73,7 +73,7 @@ export default function SupplierFormStepOne(props) {
                                 {...field}
                                 fullWidth={true}
                                 placeholder="Ex: S000234"
-                                label="Suplier ID *"
+                                label="Supplier ID *"
                                 size="small"
                                 disabled={true}
                             />

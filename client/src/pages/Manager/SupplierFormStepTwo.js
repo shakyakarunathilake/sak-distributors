@@ -29,7 +29,7 @@ export default function SupplierFormStepTwo(props) {
                 <div className={style.title}>
 
                     <div>
-                        {action === "Create" && "Create Supplier"}
+                        {action === "Create" && "Add New Supplier"}
                         {action === "Edit" && "Edit Supplier"}
                         {action === "View" && "View Supplier"}
 
