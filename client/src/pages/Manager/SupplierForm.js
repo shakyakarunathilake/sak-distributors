@@ -60,21 +60,21 @@ export default function SupplierForm(props) {
 
 
     const onSubmit = () => {
-        const customerFormData = new formData();
+        const supplierFormData = new formData();
 
-        customerFormData.append('supplierid', getValues('supplierid'));
-        customerFormData.append("name", getValues('name'));
-        customerFormData.append("givenid", getValues('givenid'));
-        customerFormData.append('abbreviation', getValues('abbreviation'));
-        customerFormData.append("addedby", getValues('addedby'));
-        customerFormData.append('addeddate', getValues('addeddate'));
-        customerFormData.append("contactnumber", getValues('contactnumber'));
-        customerFormData.append('contactperson', getValues('contactperson'));
-        customerFormData.append('title', getValues('title'));
-        customerFormData.append('address', getValues('address'));
-        customerFormData.append('email', getValues('email'));
+        supplierFormData.append('supplierid', getValues('supplierid'));
+        supplierFormData.append("name", getValues('name'));
+        supplierFormData.append("givenid", getValues('givenid'));
+        supplierFormData.append('abbreviation', getValues('abbreviation'));
+        supplierFormData.append("addedby", getValues('addedby'));
+        supplierFormData.append('addeddate', getValues('addeddate'));
+        supplierFormData.append("contactnumber", getValues('contactnumber'));
+        supplierFormData.append('contactperson', getValues('contactperson'));
+        supplierFormData.append('title', getValues('title'));
+        supplierFormData.append('address', getValues('address'));
+        supplierFormData.append('email', getValues('email'));
 
-        addOrEdit(customerFormData, getValues('supplierid'));
+        addOrEdit(supplierFormData, getValues('supplierid'));
     };
 
     const resetForm = () => {
