@@ -57,7 +57,7 @@ export default function SalesAnalytics() {
             setValue("charttype", "vertical-bar-chart");
             setValue("periodical", "daily");
         }
-    }, [setValue, watch])
+    }, [watch("analytics")])
 
     const renderCharts = () => (
         <>

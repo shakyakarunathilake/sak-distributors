@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const mongoose = require("mongoose");
 
 const { db } = require("../models/product.model");
 
@@ -9,6 +8,7 @@ const Product = require("../models/product.model");
 const Customer = require("../models/customer.model");
 const Supplier = require("../models/supplier.model");
 const Vehicle = require("../models/vehicle.model");
+const Routes = require("../models/routes.model");
 
 //Check whether the endpoint works
 router.get("/", (req, res, next) => {
@@ -140,7 +140,7 @@ router.get("/product-variant-options-for-product", (req, res, next) => {
         } else {
 
             const productVariantOptions = result.map(x =>
-                `${x.productid} ${x.variantid} ${x.name}`
+                `${x.productid}${x.variantid}-${x.name}`
             )
 
             res.status(201).json({
@@ -230,8 +230,14 @@ router.get("/product-options", (req, res, next) => {
                         mrp: variant.mrp,
                         sellingprice: variant.sellingprice,
                         type: variant.type,
-                        offercaption: variant.offercaption,
+                        offercaption: variant.offercaption ? variant.offercaption : "",
                         piecespercase: variant.piecespercase,
+                        eligibleqty: variant.eligibleqty ? variant.eligibleqty : "",
+                        eligibleqtytype: variant.eligibleqtytype ? variant.eligibleqtytype : "",
+                        freeqty: variant.freeqty ? variant.freeqty : "",
+                        freeqtytype: variant.freeqtytype ? variant.freeqtytype : "",
+                        discount: variant.discount ? variant.discount : "",
+                        freeproductname: variant.freeproductname ? variant.freeproductname : "",
                         title: `${product.productid}${variant.variantid}-${product.name}`,
                     })
                 })
@@ -349,6 +355,34 @@ router.get("/vehicle-options-for-gin", (req, res, next) => {
             res.status(201).json({
                 message: "Handeling GET requests to /vehicle-options-for-gin",
                 vehicleOptions: vehicleOptions,
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        })
+})
+
+//Get all route options 
+router.get("/route-options", (req, res, next) => {
+
+    Routes
+        .find()
+        .exec()
+        .then(doc => {
+
+            const candidates = doc.filter(x =>
+                x.status === 'Active'
+            );
+
+            const routeOptions = candidates.map(x => ({
+                title: x.title,
+                id: x.routeid
+            }))
+
+            res.status(201).json({
+                message: "Handeling GET requests to /route-options-for-gin",
+                routeOptions: routeOptions,
             })
         })
         .catch(err => {
