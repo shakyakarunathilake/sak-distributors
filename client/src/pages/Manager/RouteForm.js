@@ -23,7 +23,7 @@ export default function RouteForm(props) {
     const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
     const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
 
-    const { handleSubmit, formState: { errors, isValid }, control, reset, trigger, getValues, watch, setValue } = useForm({
+    const { handleSubmit, formState: { errors, isValid }, control, reset, trigger, getValues, setValue } = useForm({
         mode: "all",
         defaultValues: {
             routeid: routeRecords ? routeRecords.routeid : nextSupId,

@@ -6,7 +6,7 @@ import StepTwo from './RouteFormStepTwo';
 
 export default function ViewRoute(props) {
 
-    const { handleClosePopUp, setAction, routeRecords, action } = props;
+    const { handleClosePopUp, routeRecords, action } = props;
 
     const { handleSubmit, control } = useForm({
         mode: "all",
