@@ -215,7 +215,7 @@ export default function ProductFormStepOne(props) {
                                 render={({ field }) => (
                                     <Select
                                         {...field}
-                                        options={employeeservice.getVariantStatusOptions()}
+                                        options={employeeservice.getStatusOptions()}
                                         error={errors.status ? true : false}
                                         helperText={errors.status && errors.status.message}
                                         size="small"

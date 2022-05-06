@@ -66,13 +66,9 @@ export const getVariantTypeOptions = () => ([
     { id: "vt003", title: "Promotion (Discounts)" },
 ])
 
-export const getVariantStatusOptions = () => ([
-    { id: "vs001", title: "Active" },
-    { id: "vs002", title: "Inactive" },
-])
-export const getProductStatusOptions = () => ([
-    { id: "ps001", title: "Active" },
-    { id: "ps002", title: "Inactive" },
+export const getStatusOptions = () => ([
+    { id: "st001", title: "Active" },
+    { id: "st002", title: "Inactive" },
 ])
 
 export const getCustomerTypeOptions = () => ([

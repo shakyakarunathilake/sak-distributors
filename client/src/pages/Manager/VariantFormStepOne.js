@@ -254,7 +254,7 @@ export default function VariantFormStepOne(props) {
                                 render={({ field }) => (
                                     <Select
                                         {...field}
-                                        options={employeeservice.getProductStatusOptions()}
+                                        options={employeeservice.getStatusOptions()}
                                         size="small"
                                         label="Status *"
                                         disabled={true}
@@ -478,12 +478,6 @@ export default function VariantFormStepOne(props) {
 
                     </div>
 
-
-
-
-
-
-
                     <div className={style.twocolumns}>
 
                         <div>
@@ -672,7 +666,7 @@ export default function VariantFormStepOne(props) {
                                 render={({ field }) => (
                                     <Select
                                         {...field}
-                                        options={employeeservice.getVariantStatusOptions()}
+                                        options={employeeservice.getStatusOptions()}
                                         helperText={errors.variantstatus && errors.variantstatus.message}
                                         error={errors.variantstatus ? true : false}
                                         size="small"
