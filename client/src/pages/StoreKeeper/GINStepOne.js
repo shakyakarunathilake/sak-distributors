@@ -85,6 +85,7 @@ export default function GINStepOne(props) {
         trigger,
         isValid,
         errors,
+        routeOptions
     } = props;
 
     useEffect(() => {
@@ -266,7 +267,7 @@ export default function GINStepOne(props) {
                                             <Select
                                                 {...field}
                                                 size="small"
-                                                options={employeeservice.getRouteOptions()}
+                                                options={routeOptions}
                                                 helperText={errors.route && errors.route.message}
                                                 error={errors.route ? true : false}
                                                 disabled={action === "Edit"}

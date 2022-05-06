@@ -11,7 +11,7 @@ import GINStepTwo from './GINStepTwo';
 
 export default function GINForm(props) {
 
-    const { GINRecords, handleClosePopUp, addOrEdit, action, orderRecords } = props;
+    const { GINRecords, handleClosePopUp, addOrEdit, action, orderRecords, routeOptions } = props;
 
     const [data, setData] = useState([]);
     const [formStep, setFormStep] = useState(0);
@@ -120,6 +120,7 @@ export default function GINForm(props) {
                         trigger={trigger}
                         isValid={isValid}
                         errors={errors}
+                        routeOptions={routeOptions}
                     />
 
                 </section>

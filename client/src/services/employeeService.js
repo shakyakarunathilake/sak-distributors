@@ -43,15 +43,6 @@ export const getCustomerOptions = () => ([
     { id: "c02", title: "One Time Customer" },
 ])
 
-export const getRouteOptions = () => ([
-    { id: "rt001", title: "Rambukkana - Kegalle" },
-    { id: "rt002", title: "Rambukkana - Kurunegala" },
-    { id: "rt003", title: "Rambukkana - Parape" },
-    { id: "rt004", title: "Rambukkana - Mawanella" },
-    { id: "rt005", title: "Rambukkana - Mawathagama" },
-    // { id: "rt006", title: "Rambukkana - Hatharaliyadda" },
-])
-
 export const getSupplierOptions = () => ([
     { id: "s001", title: "Milco Srilanka (Pvt) Ltd" },
     { id: "s002", title: "Wijaya Products" },

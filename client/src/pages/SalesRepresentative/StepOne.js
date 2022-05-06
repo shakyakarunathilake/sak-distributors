@@ -70,7 +70,8 @@ export default function StepOne(props) {
         handleClosePopUp,
         completeFormStep,
         handleCustomerChange,
-        action
+        action,
+        routeOptions
     } = props;
 
     const handleFormValidation = () => {
@@ -372,7 +373,7 @@ export default function StepOne(props) {
                             render={({ field }) => (
                                 <Select
                                     {...field}
-                                    options={employeeservice.getRouteOptions()}
+                                    options={routeOptions}
                                     helperText={errors.route && errors.route.message}
                                     error={errors.route ? true : false}
                                     size="small"

@@ -46,6 +46,7 @@ export default function ManageGIN() {
     const [action, setAction] = useState('');
     const [orderRecords, setOrderRecords] = useState([]);
     const [GINRecords, setGINRecords] = useState(null);
+    const [routeOptions, setRouteOptions] = useState([]);
     const [inChargeOptions, setInChargeOptions] = useState([]);
     const [vehicleOptions, setVehicleOptions] = useState([]);
 
@@ -134,6 +135,21 @@ export default function ManageGIN() {
             .catch(error => {
                 console.log(error)
             })
+    }
+
+    const getRouteOptions = () => {
+        axios
+            .get("http://localhost:8080/options/route-options", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
+            .then(res => {
+                setRouteOptions(res.data.routeOptions);
+            })
+            .catch(err => {
+                console.log(err);
+            });
     }
 
     const getOrderRecords = () => {
@@ -239,6 +255,7 @@ export default function ManageGIN() {
                             onClick={
                                 () => {
                                     getOrderRecords();
+                                    getRouteOptions();
                                     setAction('Create');
                                     setOpenPopup(true);
                                 }
@@ -410,6 +427,7 @@ export default function ManageGIN() {
                             action={action}
                             addOrEdit={addOrEdit}
                             orderRecords={orderRecords}
+                            routeOptions={routeOptions}
                         />
                     }
 

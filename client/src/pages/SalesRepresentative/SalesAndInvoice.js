@@ -44,6 +44,7 @@ export default function SalesAndInvoice() {
     const [records, setRecords] = useState([]);
 
     const [orderRecords, setOrderRecords] = useState({});
+    const [routeOptions, setRouteOptions] = useState([]);
     const [customerOptions, setCustomerOptions] = useState([]);
     const [productOptions, setProductOptions] = useState([]);
     const [action, setAction] = useState('');
@@ -254,6 +255,21 @@ export default function SalesAndInvoice() {
 
     }
 
+    const getRouteOptions = () => {
+        axios
+            .get("http://localhost:8080/options/route-options", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
+            .then(res => {
+                setRouteOptions(res.data.routeOptions);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
     const getCustomerOptions = () => {
         axios
             .get("http://localhost:8080/options/customer-options", {
@@ -307,6 +323,7 @@ export default function SalesAndInvoice() {
                                 () => {
                                     getNextOrderNo();
                                     getCustomerOptions();
+                                    getRouteOptions();
                                     getProductOptions();
                                     setAction('Create');
                                     setOrderRecords(null);
@@ -469,6 +486,7 @@ export default function SalesAndInvoice() {
                             nextOrderNo={nextOrderNo}
                             orderRecords={orderRecords}
                             action={action}
+                            routeOptions={routeOptions}
                         />
                     }
 

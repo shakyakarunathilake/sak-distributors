@@ -27,7 +27,8 @@ export default function CustomerFormStepOne(props) {
         action,
         setOpenPopup,
         resetForm,
-        completeFormStep
+        completeFormStep,
+        routeOptions
     } = props;
 
     return (
@@ -130,7 +131,7 @@ export default function CustomerFormStepOne(props) {
                         render={({ field }) => (
                             <Select
                                 {...field}
-                                options={employeeservice.getRouteOptions()}
+                                options={routeOptions}
                                 helperText={errors.route && errors.route.message}
                                 error={errors.route ? true : false}
                                 size="small"

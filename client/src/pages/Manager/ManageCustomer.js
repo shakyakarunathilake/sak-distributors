@@ -42,6 +42,7 @@ export default function ManageCustomer() {
     const [openPopup, setOpenPopup] = useState(false);
 
     const [nextCusId, setNextCusId] = useState();
+    const [routeOptions, setRouteOptions] = useState([]);
     const [reRender, setReRender] = useState(null);
 
     const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
@@ -139,6 +140,21 @@ export default function ManageCustomer() {
             })
     }
 
+    const getRouteOptions = () => {
+        axios
+            .get("http://localhost:8080/options/route-options", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
+            .then(res => {
+                setRouteOptions(res.data.routeOptions);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
     const getNextCustomerId = () => {
         axios
             .get("http://localhost:8080/customers/get-next-regno", {
@@ -172,6 +188,7 @@ export default function ManageCustomer() {
                             onClick={
                                 () => {
                                     setAction('Create');
+                                    getRouteOptions();
                                     getNextCustomerId();
                                     setCustomerRecords(null);
                                 }
@@ -276,6 +293,7 @@ export default function ManageCustomer() {
                                                 tooltip: 'Edit',
                                                 onClick: (event, rowData) => {
                                                     setAction('Edit');
+                                                    getRouteOptions();
                                                     openInPopup(rowData.customerid);
                                                 }
                                             }
@@ -312,6 +330,7 @@ export default function ManageCustomer() {
                             setOpenPopup={setOpenPopup}
                             nextCusId={nextCusId}
                             action={action}
+                            routeOptions={routeOptions}
                         />
                     }
 

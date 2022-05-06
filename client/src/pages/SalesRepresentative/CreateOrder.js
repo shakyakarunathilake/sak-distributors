@@ -21,7 +21,8 @@ export default function CreateOrder(props) {
         productOptions,
         customerOptions,
         handleClosePopUp,
-        orderRecords
+        orderRecords,
+        routeOptions
     } = props;
 
     const [data, setData] = useState([]);
@@ -178,6 +179,7 @@ export default function CreateOrder(props) {
                         completeFormStep={completeFormStep}
                         handleCustomerChange={handleCustomerChange}
                         action={action}
+                        routeOptions={routeOptions}
                     />
 
                 </section>

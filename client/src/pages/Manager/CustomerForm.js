@@ -11,7 +11,7 @@ import StepTwo from './CustomerFormStepTwo';
 
 export default function CustomerForm(props) {
 
-    const { setOpenPopup, addOrEdit, customerRecords, nextCusId, action } = props;
+    const { setOpenPopup, addOrEdit, customerRecords, routeOptions, nextCusId, action } = props;
 
     const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
     const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
@@ -102,6 +102,7 @@ export default function CustomerForm(props) {
                         action={action}
                         completeFormStep={completeFormStep}
                         resetForm={resetForm}
+                        routeOptions={routeOptions}
                     />
 
                 </section>
