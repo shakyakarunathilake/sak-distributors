@@ -15,7 +15,7 @@ export default function NotAuthorized() {
 
             <div className={style.top}>
                 <center>
-                    <img src={NotAuthorizedImage} style={{ width: "40%", height: "auto" }} />
+                    <img src={NotAuthorizedImage} style={{ width: "40%", height: "auto" }} alt="Not Authorized" />
                 </center>
             </div>
 

@@ -89,7 +89,7 @@ export default function PurchaseOrderStepOne(props) {
         // console.log("PRODUCT ITEM LIST: ", productItemList);
 
         return productItemList;
-    }, [data, watch('supplier'), getValues, productOptions]);
+    }, [data, getValues, productOptions]);
 
     const calculateTotal = () => {
         let total = 0;

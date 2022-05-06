@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { ExcelRenderer } from 'react-excel-renderer';
+// import { ExcelRenderer } from 'react-excel-renderer';
 
 //Form Step
 import StepTwo from './QuotationFormStepTwo';
@@ -12,7 +12,7 @@ export default function ViewPurchaseOrder(props) {
     const [rows, setRows] = useState(null);
     const [cols, setCols] = useState(null);
 
-    const { handleSubmit, control, getValues } = useForm({
+    const { handleSubmit, control } = useForm({
         defaultValues: {
             quotationid: quotationRecords ? quotationRecords.quotationid : '',
             supplier: quotationRecords ? quotationRecords.supplier : '',
@@ -24,8 +24,7 @@ export default function ViewPurchaseOrder(props) {
     });
 
     useEffect(() => {
-        console.log(getValues());
-
+        
         // ExcelRenderer(file, (err, resp) => {
         //     if (err) {
         //         console.log(err);

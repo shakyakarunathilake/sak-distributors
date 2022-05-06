@@ -15,7 +15,7 @@ export default function NotFound() {
 
       <div className={style.top}>
         <center>
-          <img src={NotFoundImage} style={{ width: "40%", height: "auto" }} />
+          <img src={NotFoundImage} style={{ width: "40%", height: "auto" }} alt="Page Not Found" />
         </center>
       </div>
 

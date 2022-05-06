@@ -91,7 +91,7 @@ export default function GINStepOne(props) {
         if (GINRecords === null) {
             getOrderNumbers();
         }
-    }, [watch('route'), GINRecords]);
+    }, [watch, GINRecords]);
 
     const handleChipClick = (ordernumber) => {
         axios
