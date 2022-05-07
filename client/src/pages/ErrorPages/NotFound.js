@@ -4,7 +4,7 @@ import React from 'react';
 import { Button } from '@material-ui/core';
 
 //images
-import NotFoundImage from './Page Not Found.jpg';
+import NotFoundImage from './Page Not Found.png';
 
 import style from './NotFound.module.scss';
 

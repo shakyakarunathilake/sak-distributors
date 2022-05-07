@@ -4,7 +4,7 @@ import React from 'react';
 import { Button } from '@material-ui/core';
 
 //images
-import NotAuthorizedImage from './Not Authorized.jpg';
+import NotAuthorizedImage from './Not Authorized.png';
 
 import style from './NotAuthorized.module.scss';
 
@@ -15,7 +15,7 @@ export default function NotAuthorized() {
 
             <div className={style.top}>
                 <center>
-                    <img src={NotAuthorizedImage} style={{ width: "40%", height: "auto" }} alt="Not Authorized" />
+                    <img src={NotAuthorizedImage} style={{ width: "30%", height: "auto" }} alt="Not Authorized" />
                 </center>
             </div>
 
