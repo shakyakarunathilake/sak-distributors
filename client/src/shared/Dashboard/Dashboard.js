@@ -22,7 +22,6 @@ import user from '../../images/user.svg';
 //SCSS Styles
 import style from './Dashboard.module.scss';
 
-
 const useStyles = makeStyles({
     paper: {
         background: "#20369F",
