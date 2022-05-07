@@ -1,0 +1,7 @@
+@import "../../styles/variables";
+
+.container {
+    width: calc(100vw - 790px);
+    height: auto;
+    display: grid;
+}
