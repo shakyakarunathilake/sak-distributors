@@ -7,7 +7,17 @@ export default function HorizontalBarChart(props) {
 
     const { label, labels, chartData, } = props;
 
-    const colorArray = [...Tableau20, ...Tableau20, ...Tableau20, ...Tableau20, ...Tableau20, ...Tableau20, ...Tableau20, ...Tableau20, ...Tableau20]
+    const colorArray = [
+        ...Tableau20, ...Tableau20,
+        ...Tableau20, ...Tableau20,
+        ...Tableau20, ...Tableau20,
+        ...Tableau20, ...Tableau20,
+        ...Tableau20, ...Tableau20,
+        ...Tableau20, ...Tableau20,
+        ...Tableau20, ...Tableau20,
+        ...Tableau20, ...Tableau20,
+        ...Tableau20, ...Tableau20
+    ]
 
     const options = {
         indexAxis: 'y',
@@ -55,8 +65,7 @@ export default function HorizontalBarChart(props) {
             {
                 label: label.label,
                 data: chartData,
-                borderColor: colorArray,
-                backgroundColor: colorArray,
+                backgroundColor: colorArray.reverse()
             }
         ]
     };

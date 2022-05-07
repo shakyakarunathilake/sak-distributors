@@ -7,14 +7,23 @@ export default function DoughnutChart(props) {
 
     const { labels, chartData } = props;
 
-    const colorArray = [...Tableau20, ...Tableau20, ...Tableau20, ...Tableau20, ...Tableau20, ...Tableau20, ...Tableau20, ...Tableau20, ...Tableau20]
+    const colorArray = [
+        ...Tableau20, ...Tableau20,
+        ...Tableau20, ...Tableau20,
+        ...Tableau20, ...Tableau20,
+        ...Tableau20, ...Tableau20,
+        ...Tableau20, ...Tableau20,
+        ...Tableau20, ...Tableau20,
+        ...Tableau20, ...Tableau20,
+        ...Tableau20, ...Tableau20,
+        ...Tableau20, ...Tableau20
+    ]
 
     const data = {
         labels: labels,
         datasets: [{
             data: chartData,
-            backgroundColor: colorArray,
-            borderColor: colorArray,
+            backgroundColor: colorArray.reverse(),
             borderWidth: 1,
         }],
     };

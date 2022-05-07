@@ -45,8 +45,8 @@ export default function LineChart(props) {
             {
                 label: label.label,
                 data: chartData,
-                borderColor: Tableau20[0],
-                backgroundColor: Tableau20[0],
+                borderColor: Tableau20[14],
+                backgroundColor: Tableau20[14],
                 fill: false
             }
         ]

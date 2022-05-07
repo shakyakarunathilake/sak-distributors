@@ -7,7 +7,17 @@ export default function VerticalBarChar(props) {
 
     const { label, labels, chartData, } = props;
 
-    const colorArray = [...Tableau20, ...Tableau20, ...Tableau20, ...Tableau20, ...Tableau20, ...Tableau20, ...Tableau20, ...Tableau20, ...Tableau20]
+    const colorArray = [
+        ...Tableau20, ...Tableau20,
+        ...Tableau20, ...Tableau20,
+        ...Tableau20, ...Tableau20,
+        ...Tableau20, ...Tableau20,
+        ...Tableau20, ...Tableau20,
+        ...Tableau20, ...Tableau20,
+        ...Tableau20, ...Tableau20,
+        ...Tableau20, ...Tableau20,
+        ...Tableau20, ...Tableau20
+    ]
 
     const options = {
         responsive: true,
@@ -47,7 +57,7 @@ export default function VerticalBarChar(props) {
             {
                 label: label.label,
                 data: chartData,
-                backgroundColor: colorArray,
+                backgroundColor: colorArray.reverse(),
             }
         ]
     };
