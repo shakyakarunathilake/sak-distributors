@@ -20,37 +20,25 @@ const getDistributorListItems = [
     {
         id: "Dashboard",
         title: "Dashboard",
-        path: "http://localhost:3000/dashboard",
+        path: "/distributor/dashboard",
         icon: <DashboardIcon />
     },
     {
         id: "Manage Employee",
         title: "Manage Employee",
-        path: "http://localhost:3000/distributor/manage-employee",
+        path: "/distributor/manage-employee",
         icon: <PeopleIcon />,
     },
     {
         id: "Manage Purchase Order",
         title: "Manage Purchase Order",
-        path: "http://localhost:3000/distributor/manage-purchase-orders",
+        path: "/distributor/manage-purchase-orders",
         icon: <ListAltIcon />
     },
-    // {
-    //     id: "Sales Report",
-    //     title: "Sales Report",
-    //     path: "http://localhost:3000/sales-report",
-    //     icon: <AssessmentIcon />
-    // },
-    // {
-    //     id: "Sales Rep. Analytics",
-    //     title: "Sales Rep. Analytics",
-    //     path: "http://localhost:3000/sales-representative-analytics",
-    //     icon: <TimelineIcon />
-    // },
     {
         id: "Sales Analytics",
         title: "Sales Analytics",
-        path: "http://localhost:3000/sales-analytics",
+        path: "/sales-analytics",
         icon: <TimelineIcon />
     },
 ];
@@ -59,19 +47,19 @@ const getHRListItems = [
     {
         id: "Dashboard",
         title: "Dashboard",
-        path: "http://localhost:3000/dashboard",
+        path: "/human-resources/dashboard",
         icon: <DashboardIcon />
     },
     // {
     //     id: "Manage Admin",
     //     title: "Manage Admin",
-    //     path: "http://localhost:3000/human-resources/manage-admin",
+    //     path: "/human-resources/manage-admin",
     //     icon: <SupervisorAccountIcon />,
     // },
     {
         id: "Manage Employee",
         title: "Manage Employee",
-        path: "http://localhost:3000/human-resources/manage-employee",
+        path: "/human-resources/manage-employee",
         icon: <PeopleIcon />,
     }
 ];
@@ -80,127 +68,110 @@ const getManagerListItems = [
     {
         id: "Dashboard",
         title: "Dashboard",
-        path: "http://localhost:3000/dashboard",
+        path: "/manager/dashboard",
         icon: <DashboardIcon />
     },
     {
         id: "Manage Suppliers",
         title: "Manage Suppliers",
-        path: "http://localhost:3000/manager/manage-suppliers",
+        path: "/manager/manage-suppliers",
         icon: <BusinessIcon />,
     },
     {
         id: "Manage Products",
         title: "Manage Products",
-        path: "http://localhost:3000/manager/manage-products",
+        path: "/manager/manage-products",
         icon: <AssignmentIcon />,
     },
     {
         id: "Manage Customers",
         title: "Manage Customers",
-        path: "http://localhost:3000/manager/manage-customers",
+        path: "/manager/manage-customers",
         icon: <PersonIcon />,
     },
     {
         id: "Manage Vehicles",
         title: "Manage Vehicles",
-        path: "http://localhost:3000/manager/manage-vehicles",
+        path: "/manager/manage-vehicles",
         icon: <DirectionsBusIcon />,
     },
     {
         id: "Manage Routes",
         title: "Manage Routes",
-        path: "http://localhost:3000/manager/manage-routes",
+        path: "/manager/manage-routes",
         icon: <RouteIcon />,
     },
     {
         id: "Sales and Invoice",
         title: "Sales and Invoice",
-        path: "http://localhost:3000/manager/sales-and-invoice",
+        path: "/manager/sales-and-invoice",
         icon: <DescriptionIcon />,
     },
-    // {
-    //     id: "Sales Rep. Analytics",
-    //     title: "Sales Rep. Analytics",
-    //     path: "http://localhost:3000/sales-representative-analytics",
-    //     icon: <TimelineIcon />
-    // },
+
 ];
 
 const getPurchasingManagerListItems = [
     {
         id: "Dashboard",
         title: "Dashboard",
-        path: "http://localhost:3000/dashboard",
+        path: "/purchasing-manager/dashboard",
         icon: <DashboardIcon />
     },
     {
         id: "Manage Products",
         title: "Manage Products",
-        path: "http://localhost:3000/purchasing-manager/manage-products",
+        path: "/purchasing-manager/manage-products",
         icon: <AssignmentIcon />,
     },
     {
         id: "Manage Purchase Order",
         title: "Manage Purchase Order",
-        path: "http://localhost:3000/purchasing-manager/manage-purchase-orders",
+        path: "/purchasing-manager/manage-purchase-orders",
         icon: <ListAltIcon />
     },
     {
         id: "Manage Quotations",
         title: "Manage Quotations",
-        path: "http://localhost:3000/purchasing-manager/manage-quotations",
+        path: "/purchasing-manager/manage-quotations",
         icon: <ListAltIcon />
     },
     {
         id: "Manage Supplier Payment",
         title: "Manage Supplier Payment",
-        path: "http://localhost:3000/purchasing-manager/manage-supplier-payment",
+        path: "/purchasing-manager/manage-supplier-payment",
         icon: <PaymentIcon />
     },
-    // {
-    //     id: "Sales Rep. Analytics",
-    //     title: "Sales Rep. Analytics",
-    //     path: "http://localhost:3000/sales-representative-analytics",
-    //     icon: <TimelineIcon />
-    // },
-    // {
-    //     id: "Sales Trend Analytics",
-    //     title: "Sales Trend Analytics",
-    //     path: "http://localhost:3000/sales-trend-analytics",
-    //     icon: <TrendingUpIcon />
-    // },
 ];
 
 const getStoreKeeperListItems = [
     {
         id: "Dashboard",
         title: "Dashboard",
-        path: "http://localhost:3000/dashboard",
+        path: "/store-keeper/dashboard",
         icon: <DashboardIcon />
     },
     {
         id: "Manage Store",
         title: "Manage Store",
-        path: "http://localhost:3000/storekeeper/manage-store",
+        path: "/store-keeper/manage-store",
         icon: <StoreIcon />,
     },
     {
         id: "Manage GRN",
         title: "Manage GRN",
-        path: "http://localhost:3000/storekeeper/manage-grn",
+        path: "/store-keeper/manage-grn",
         icon: <InsertDriveFileIcon />,
     },
     {
         id: "Manage GIN",
         title: "Manage GIN",
-        path: "http://localhost:3000/storekeeper/manage-gin",
+        path: "/store-keeper/manage-gin",
         icon: <InsertDriveFileIcon />,
     },
     {
         id: "Manage Products",
         title: "Manage Products",
-        path: "http://localhost:3000/storekeeper/manage-products",
+        path: "/store-keeper/manage-products",
         icon: <AssignmentIcon />,
     },
 ];
@@ -209,53 +180,46 @@ const getSalesRepresentativeListItems = [
     {
         id: "Dashboard",
         title: "Dashboard",
-        path: "http://localhost:3000/dashboard",
+        path: "/sales-representative/dashboard",
         icon: <DashboardIcon />
     },
     {
         id: "Manage Customers",
         title: "Manage Customers",
-        path: "http://localhost:3000/sales-representative/manage-customers",
+        path: "/sales-representative/manage-customers",
         icon: <PersonIcon />,
     },
     {
         id: "Sales and Invoice",
         title: "Sales and Invoice",
-        path: "http://localhost:3000/sales-representative/sales-and-invoice",
+        path: "/sales-representative/sales-and-invoice",
         icon: <DescriptionIcon />,
     },
-    // {
-    //     id: "Sales Rep. Analytics",
-    //     title: "Sales Rep. Analytics",
-    //     path: "http://localhost:3000/sales-representative-analytics",
-    //     icon: <TimelineIcon />
-    // },
-
 ];
 
 const getDeliveryRepresentativeListItems = [
     {
         id: "Dashboard",
         title: "Dashboard",
-        path: "http://localhost:3000/dashboard",
+        path: "/delivery-representative/dashboard",
         icon: <DashboardIcon />
     },
     {
         id: "Manage Customers",
         title: "Manage Customers",
-        path: "http://localhost:3000/sales-representative/manage-customers",
+        path: "/delivery-representative/manage-customers",
         icon: <PersonIcon />,
     },
     {
         id: "Manage GIN",
         title: "Manage GIN",
-        path: "http://localhost:3000/delivery-representative/manage-gin",
+        path: "/delivery-representative/manage-gin",
         icon: <InsertDriveFileIcon />,
     },
     {
         id: "Sales and Invoice",
         title: "Sales and Invoice",
-        path: "http://localhost:3000/delivery-representative/sales-and-invoice",
+        path: "/delivery-representative/sales-and-invoice",
         icon: <DescriptionIcon />,
     },
 

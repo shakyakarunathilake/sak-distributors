@@ -1,8 +1,7 @@
 //React 
 import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 
-//Development Stage Imports
-// import Photo from './Photo.jpg';
 import * as drawerListItems from '../../services/drawerListItems';
 
 //Material UI 
@@ -126,7 +125,7 @@ export default function Page(props) {
                         <ListItem
                             button
                             className={classes.listItem}
-                            onClick={() => { window.location.replace(`${listItem.path}`) }}
+                            component={NavLink} exact to={listItem.path}
                             key={listItem.id}
                         >
                             {listItem.icon}

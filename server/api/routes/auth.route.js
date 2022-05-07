@@ -84,6 +84,7 @@ router.post("/signin", (req, res, next) => {
 
             res.status(200).json({
                 auth_status: "AUTHORIZED",
+                pathname: employee[0].designation.replace(/\s+/g, '-').toLowerCase(),
                 employeeid: employee[0].employeeid,
                 designation: employee[0].designation,
                 firstname: employee[0].firstname,

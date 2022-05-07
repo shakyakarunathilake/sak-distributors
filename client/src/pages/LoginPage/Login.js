@@ -71,7 +71,7 @@ export default function Login() {
                     setAlert(res.data.message);
                     handleAlert();
                 } else {
-                    window.location.replace("http://localhost:3000/dashboard")
+                    window.location.replace(`http://localhost:3000/${res.data.pathname}/dashboard`)
                 }
             })
             .catch(error => {
