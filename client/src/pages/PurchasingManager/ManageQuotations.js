@@ -44,6 +44,8 @@ export default function ManageQuotation() {
 
     const [reRender, setReRender] = useState(null);
 
+    const [file, setFile] = useState(null);
+
     const handleAlert = () => {
         setOpen(true);
     };
@@ -100,15 +102,29 @@ export default function ManageQuotation() {
         setOpenPopup(false);
     }
 
+
     const openInPopup = quotationid => {
         axios
             .get(`http://localhost:8080/quotations/xlsx-file/${quotationid}`, {
                 headers: {
                     'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
-                }
+                },
+                responseType: 'blob',
+                timeout: 30000,
             })
             .then(res => {
-                console.log("HEADERS :", res)
+                console.log(res)
+                console.log(typeof res)
+                console.log(res.type)
+
+
+                const myFile = new File([res], '1234.xlsx', {
+                    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                });
+
+                setFile(
+                    myFile
+                )
             })
             .catch(err => {
                 console.log(err);
@@ -272,6 +288,7 @@ export default function ManageQuotation() {
                             quotationRecords={quotationRecords}
                             setOpenPopup={setOpenPopup}
                             action={action}
+                            file={file}
                         />
                     }
 

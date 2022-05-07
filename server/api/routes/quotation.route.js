@@ -158,17 +158,23 @@ router.get("/:quotationid", (req, res, next) => {
 router.get("/xlsx-file/:quotationid", (req, res, next) => {
     const quotationid = req.params.quotationid;
 
-    Quotation
-        .findOne({ "quotationid": quotationid })
-        .exec()
-        .then(doc => {
-            res.attachment(path.resolve(`../../quotations/${doc.quotationfile}`))
-            res.send()
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({ "Error ": err });
-        })
+    console.log(__dirname);
+
+    res.download(__dirname + '\\Q00001.xlsx');
+
+
+
+    // Quotation
+    //     .findOne({ "quotationid": quotationid })
+    //     .exec()
+    //     .then(doc => {
+    //         res.download(`../../quotations/${doc.quotationfile}`)
+
+    //     })
+    //     .catch(err => {
+    //         console.log(err);
+    //         res.status(500).json({ "Error ": err });
+    //     })
 })
 
 module.exports = router;

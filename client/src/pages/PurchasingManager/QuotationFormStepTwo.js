@@ -24,6 +24,9 @@ export default function QuotationFormStepTwo(props) {
         cols,
     } = props;
 
+    console.log(rows)
+    console.log(cols)
+    
     return (
         <div className={style.container}>
 
@@ -192,9 +195,15 @@ export default function QuotationFormStepTwo(props) {
                     }
 
                     {
-                        action === "View" &&
+                        action === "View" && rows !== null &&
                         <div className={style.preview}>
-
+                            <OutTable
+                                data={rows}
+                                columns={cols}
+                                className={style.ExcelTable2007}
+                                tableClassName="ExcelTable2007"
+                                tableHeaderRowClass="heading"
+                            />
                         </div>
                     }
 
