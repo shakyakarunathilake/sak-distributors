@@ -204,63 +204,55 @@ export default function Dashboard(props) {
 
                     <div className={style.columnA}>
 
-                        <div className={style.profile}>
+                        <div className={style.userInfo}>
 
-                            <div className={style.title}>
-                                Your Profile
+                            <div className={style.imageRow}>
+                                <img src={employeedetails.employeeimage ? `http://${employeedetails.employeeimage}` : user} alt="" />
                             </div>
 
-                            <div className={style.userInfo}>
-
-                                <div className={style.imageRow}>
-                                    <img src={employeedetails.employeeimage ? `http://${employeedetails.employeeimage}` : user} alt="" />
-                                </div>
-
-                                <div className={style.infoRow}>
-                                    <div className={style.textDiv}>
-                                        <div className={style.text}>
-                                            <div className={style.boldtext}>
-                                                Emp. ID:
-                                            </div>
-                                            <div className={style.regulartext}>
-                                                {employeedetails.employeeid}
-                                            </div>
+                            <div className={style.infoRow}>
+                                <div className={style.textDiv}>
+                                    <div className={style.text}>
+                                        <div className={style.boldtext}>
+                                            Emp. ID:
                                         </div>
-                                        <div className={style.text}>
-                                            <div className={style.boldtext}>
-                                                Name:
-                                            </div>
-                                            <div className={style.regulartext}>
-                                                {employeedetails.firstname} {employeedetails.lastname}
-                                            </div>
+                                        <div className={style.regulartext}>
+                                            {employeedetails.employeeid}
                                         </div>
-                                        <div className={style.text}>
-                                            <div className={style.boldtext}>
-                                                Email:
-                                            </div>
-                                            <div className={style.regulartext}>
-                                                {employeedetails.email}
-                                            </div>
+                                    </div>
+                                    <div className={style.text}>
+                                        <div className={style.boldtext}>
+                                            Name:
                                         </div>
-                                        <div className={style.text}>
-                                            <div className={style.boldtext}>
-                                                Role:
-                                            </div>
-                                            <div className={style.regulartext}>
-                                                {employeedetails.designation}
-                                            </div>
+                                        <div className={style.regulartext}>
+                                            {employeedetails.firstname} {employeedetails.lastname}
                                         </div>
-                                        <div className={style.text}>
-                                            <div className={style.boldtext}>
-                                                Status:
-                                            </div>
-                                            <div className={style.regulartext}>
-                                                {employeedetails.employeestatus}
-                                            </div>
+                                    </div>
+                                    <div className={style.text}>
+                                        <div className={style.boldtext}>
+                                            Email:
+                                        </div>
+                                        <div className={style.regulartext}>
+                                            {employeedetails.email}
+                                        </div>
+                                    </div>
+                                    <div className={style.text}>
+                                        <div className={style.boldtext}>
+                                            Role:
+                                        </div>
+                                        <div className={style.regulartext}>
+                                            {employeedetails.designation}
+                                        </div>
+                                    </div>
+                                    <div className={style.text}>
+                                        <div className={style.boldtext}>
+                                            Status:
+                                        </div>
+                                        <div className={style.regulartext}>
+                                            {employeedetails.employeestatus}
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
 
                         </div>
