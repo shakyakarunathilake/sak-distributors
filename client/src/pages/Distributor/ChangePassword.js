@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import classnames from 'classnames';
 
 //Shared Components
 import PageTwo from '../../shared/PageTwo/PageTwo';
@@ -30,6 +29,8 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 export default function ChangePassword() {
 
+    const employeedetails = JSON.parse(sessionStorage.getItem("Auth"));
+
     useEffect(() => {
         if (employeedetails.firsttimelogin) {
             setDisabled(true)
@@ -37,11 +38,9 @@ export default function ChangePassword() {
             setType('warning');
             handleAlert();
         }
-    }, [])
+    }, [employeedetails.firsttimelogin])
 
-    const employeedetails = JSON.parse(sessionStorage.getItem("Auth"));
-
-    const { handleSubmit, formState: { errors, isValid }, getValues, trigger, control, reset, watch, clearErrors } = useForm({
+    const { handleSubmit, formState: { errors, isValid }, getValues, trigger, control, reset, watch } = useForm({
         mode: "onSubmit",
         defaultValues: {
             currentpassword: '',

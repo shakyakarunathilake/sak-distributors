@@ -2,9 +2,6 @@ import React, { useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 import AutoSizer from 'react-virtualized-auto-sizer';
 
-//Development Stage
-import * as employeeservice from "../../services/employeeService";
-
 //Shared Components
 import Select from '../../shared/Select/Select';
 
