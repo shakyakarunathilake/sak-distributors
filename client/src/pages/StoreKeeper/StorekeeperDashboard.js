@@ -7,10 +7,14 @@ import Profile from '../../shared/PageTwo/Profile';
 //SCSS Styles
 import style from './StorekeeperDashboard.module.scss';
 
-export default function StorekeeperDashboard(props) {
+export default function StorekeeperDashboard() {
+
+    if (JSON.parse(sessionStorage.getItem("Auth")).firsttimelogin) {
+        window.location.replace("http://localhost:3000/change-password");
+    }
 
     return (
-        <PageTwo>
+        <PageTwo title="Dashboard">
             <div className={style.container}>
 
                 <div className={style.columnA}>

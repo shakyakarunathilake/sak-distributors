@@ -9,8 +9,12 @@ import style from './DistributorDashboard.module.scss';
 
 export default function DistributorDashboard() {
 
+    if (JSON.parse(sessionStorage.getItem("Auth")).firsttimelogin) {
+        window.location.replace("http://localhost:3000/change-password");
+    }
+
     return (
-        <PageTwo>
+        <PageTwo title="Dashboard">
             <div className={style.container}>
 
                 <div className={style.columnA}>
