@@ -142,4 +142,5 @@ router.post("/forgot-password", (req, res, next) => {
             });
         })
 });
+
 module.exports = router;
