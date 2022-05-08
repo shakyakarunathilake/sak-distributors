@@ -9,6 +9,10 @@ import style from './SalesRepresentativeDashboard.module.scss';
 
 export default function SalesRepresentativeDashboard() {
 
+    if (JSON.parse(sessionStorage.getItem("Auth")).firsttimelogin) {
+        window.location.replace("http://localhost:3000/change-password");
+    }
+    
     return (
         <TabletPageTwo>
             <div className={style.container}>
