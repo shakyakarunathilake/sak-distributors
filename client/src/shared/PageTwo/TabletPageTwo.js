@@ -74,27 +74,8 @@ const useStyles = makeStyles({
     drawerFooter: {
         bottom: "0",
         position: "absolute",
-        borderTop: '0.1px solid #c2c2c2'
-    },
-
-    footerDiv: {
-        display: "flex",
-        boxSizing: "border-box",
-        borderRadius: "18px",
-        color: "white",
-        fontSize: 16,
-        margin: "8px 10px",
-        width: 280,
-        padding: "8px 16px",
-
-        '&:hover': {
-            background: "#4255AA",
-            fontSize: 17,
-            transitionDuration: "0.3s",
-        },
-    },
-    footerIcon: {
-        marginRight: "15px",
+        borderTop: '0.1px solid #c2c2c2',
+        color: "white"
     },
 });
 
@@ -152,25 +133,29 @@ export default function TabletPageTwo(props) {
 
                 <div className={classes.drawerFooter}>
 
-                    <div
-                        className={classes.footerDiv}
-                        onClick={() => { window.location.replace("http://localhost:3000/change-password") }}
+                    <ListItem
+                        button
+                        className={classes.listItem}
+                        activeClassName={classes.active}
+                        component={NavLink} exact to={"/change-password"}
                     >
-                        <div className={classes.footerIconDiv}>
-                            <LockIcon className={classes.footerIcon} />
-                        </div>
-                        Change Password
-                    </div>
+                        <LockIcon />
+                        <span className={classes.listTitle}>
+                            Change Password
+                        </span>
+                    </ListItem>
 
-                    <div
-                        className={classes.footerDiv}
-                        onClick={() => { window.location.replace("http://localhost:3000/") }}
+                    <ListItem
+                        button
+                        className={classes.listItem}
+                        activeClassName={classes.active}
+                        component={NavLink} exact to={"/"}
                     >
-                        <div className={classes.footerIconDiv}>
-                            <ExitToAppIcon className={classes.footerIcon} />
-                        </div>
-                        Log Out
-                    </div>
+                        <ExitToAppIcon />
+                        <span className={classes.listTitle}>
+                            Log Out
+                        </span>
+                    </ListItem>
 
                 </div>
 
