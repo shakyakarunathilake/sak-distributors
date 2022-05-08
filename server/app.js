@@ -56,7 +56,6 @@ app.use(express.static("uploads"));
 
 app.use("/auth", authRoutes);
 
-//Development Stage
 app.use("/password", checkAuth, passwordRoutes);
 app.use("/employees", checkAuth, employeeRoutes);
 app.use("/customers", checkAuth, customerRoutes);
