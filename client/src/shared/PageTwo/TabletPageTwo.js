@@ -16,12 +16,8 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 import LockIcon from '@material-ui/icons/Lock';
 
-//images
-import user from '../../images/user.svg';
-
 //SCSS Styles
-import style from './TabletDashboard.module.scss';
-
+import style from './TabletPageTwo.module.scss';
 
 const useStyles = makeStyles({
     paper: {
@@ -102,7 +98,7 @@ const useStyles = makeStyles({
     },
 });
 
-export default function TabletDashboard(props) {
+export default function TabletPageTwo(props) {
 
     const classes = useStyles();
 
@@ -202,68 +198,7 @@ export default function TabletDashboard(props) {
 
                 <div className={style.pageContent}>
 
-                    <div className={style.rowA}>
-
-                        <div className={style.userInfo}>
-
-                            <div className={style.imgCol}>
-                                <img src={employeedetails.employeeimage ? `http://${employeedetails.employeeimage}` : user} alt="" />
-                            </div>
-
-                            <div className={style.infoCol}>
-                                <div className={style.textDiv}>
-                                    <div className={style.text}>
-                                        <div className={style.boldtext}>
-                                            Emp. ID:
-                                        </div>
-                                        <div className={style.regulartext}>
-                                            {employeedetails.employeeid}
-                                        </div>
-                                    </div>
-                                    <div className={style.text}>
-                                        <div className={style.boldtext}>
-                                            Name:
-                                        </div>
-                                        <div className={style.regulartext}>
-                                            {employeedetails.firstname} {employeedetails.lastname}
-                                        </div>
-                                    </div>
-                                    <div className={style.text}>
-                                        <div className={style.boldtext}>
-                                            Email:
-                                        </div>
-                                        <div className={style.regulartext}>
-                                            {employeedetails.email}
-                                        </div>
-                                    </div>
-                                    <div className={style.text}>
-                                        <div className={style.boldtext}>
-                                            Role:
-                                        </div>
-                                        <div className={style.regulartext}>
-                                            {employeedetails.designation}
-                                        </div>
-                                    </div>
-                                    <div className={style.text}>
-                                        <div className={style.boldtext}>
-                                            Status:
-                                        </div>
-                                        <div className={style.regulartext}>
-                                            {employeedetails.employeestatus}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div className={style.rowB}>
-
-                        {props.children}
-
-                    </div>
+                    {props.children}
 
                 </div>
 

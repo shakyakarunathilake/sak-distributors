@@ -16,11 +16,8 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 import LockIcon from '@material-ui/icons/Lock';
 
-//images
-import user from '../../images/user.svg';
-
 //SCSS Styles
-import style from './Dashboard.module.scss';
+import style from './PageTwo.module.scss';
 
 const useStyles = makeStyles({
     paper: {
@@ -101,7 +98,7 @@ const useStyles = makeStyles({
     },
 });
 
-export default function Dashboard(props) {
+export default function PageTwo(props) {
 
     const classes = useStyles();
 
@@ -201,68 +198,7 @@ export default function Dashboard(props) {
 
                 <div className={style.pageContent}>
 
-                    <div className={style.columnA}>
-
-                        <div className={style.userInfo}>
-
-                            <div className={style.imageRow}>
-                                <img src={employeedetails.employeeimage ? `http://${employeedetails.employeeimage}` : user} alt="" />
-                            </div>
-
-                            <div className={style.infoRow}>
-                                <div className={style.textDiv}>
-                                    <div className={style.text}>
-                                        <div className={style.boldtext}>
-                                            Emp. ID:
-                                        </div>
-                                        <div className={style.regulartext}>
-                                            {employeedetails.employeeid}
-                                        </div>
-                                    </div>
-                                    <div className={style.text}>
-                                        <div className={style.boldtext}>
-                                            Name:
-                                        </div>
-                                        <div className={style.regulartext}>
-                                            {employeedetails.firstname} {employeedetails.lastname}
-                                        </div>
-                                    </div>
-                                    <div className={style.text}>
-                                        <div className={style.boldtext}>
-                                            Email:
-                                        </div>
-                                        <div className={style.regulartext}>
-                                            {employeedetails.email}
-                                        </div>
-                                    </div>
-                                    <div className={style.text}>
-                                        <div className={style.boldtext}>
-                                            Role:
-                                        </div>
-                                        <div className={style.regulartext}>
-                                            {employeedetails.designation}
-                                        </div>
-                                    </div>
-                                    <div className={style.text}>
-                                        <div className={style.boldtext}>
-                                            Status:
-                                        </div>
-                                        <div className={style.regulartext}>
-                                            {employeedetails.employeestatus}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div className={style.columnB}>
-
-                        {props.children}
-
-                    </div>
+                    {props.children}
 
                 </div>
 

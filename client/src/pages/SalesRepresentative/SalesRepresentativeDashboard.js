@@ -1,7 +1,8 @@
 import React from 'react';
 
 //Shared Components
-import TabletDashboard from '../../shared/Dashboard/TabletDashboard';
+import TabletPageTwo from '../../shared/PageTwo/TabletPageTwo';
+import TabletProfile from '../../shared/PageTwo/TabletProfile';
 
 //SCSS Styles
 import style from './SalesRepresentativeDashboard.module.scss';
@@ -9,8 +10,18 @@ import style from './SalesRepresentativeDashboard.module.scss';
 export default function SalesRepresentativeDashboard() {
 
     return (
-        <TabletDashboard>
+        <TabletPageTwo>
+            <div className={style.container}>
 
-        </TabletDashboard>
+                <div className={style.rowA}>
+                    <TabletProfile />
+                </div>
+
+                <div className={style.rowB}>
+
+
+                </div>
+            </div>
+        </TabletPageTwo>
     )
 }

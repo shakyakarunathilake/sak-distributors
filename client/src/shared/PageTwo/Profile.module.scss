@@ -1,0 +1,45 @@
+@import "../../styles/variables";
+
+.container {
+    background-color: $paperColor;
+    border-radius: 8px;
+    height: min-content;
+    width: 350px;
+    padding: 25px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    display: grid;
+    grid-template-rows: min-content min-content;
+    grid-row-gap: 20px;
+
+    .imageRow {
+        height: min-content;
+        display: flex;
+        justify-content: center;
+        margin: 0 0 20px 0;
+
+        img {
+            width: 250px;
+            border-radius: 100%;
+        }
+    }
+
+    .infoRow {
+        .textDiv {
+            display: grid;
+            justify-content: center;
+            .text {
+                display: grid;
+                grid-template-columns: 80px max-content;
+                margin: 4px;
+
+                .boldtext {
+                    font-size: 1em;
+                    font-weight: 600;
+                }
+                .regulartext {
+                    font-size: 1em;
+                }
+            }
+        }
+    }
+}

@@ -1,16 +1,27 @@
 import React from 'react';
 
 //Shared Components
-import Dashboard from '../../shared/Dashboard/Dashboard';
+import PageTwo from '../../shared/PageTwo/PageTwo';
+import Profile from '../../shared/PageTwo/Profile';
 
 //SCSS Styles
 import style from './DistributorDashboard.module.scss';
 
-export default function DistributorDashboard(props) {
+export default function DistributorDashboard() {
 
     return (
-        <Dashboard>
+        <PageTwo>
+            <div className={style.container}>
 
-        </Dashboard>
+                <div className={style.columnA}>
+                    <Profile />
+                </div>
+
+                <div className={style.columnB}>
+
+
+                </div>
+            </div>
+        </PageTwo>
     )
 };
