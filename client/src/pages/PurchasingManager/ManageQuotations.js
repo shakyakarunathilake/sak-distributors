@@ -105,44 +105,34 @@ export default function ManageQuotation() {
 
     const openInPopup = quotationid => {
         axios
-            .get(`http://localhost:8080/quotations/xlsx-file/${quotationid}`, {
-                headers: {
-                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
-                },
-                responseType: 'blob',
-                timeout: 30000,
-            })
-            .then(res => {
-                console.log(res)
-                console.log(typeof res)
-                console.log(res.type)
-
-
-                const myFile = new File([res], '1234.xlsx', {
-                    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                });
-
-                setFile(
-                    myFile
-                )
-            })
-            .catch(err => {
-                console.log(err);
-            })
-
-        axios
             .get(`http://localhost:8080/quotations/${quotationid}`, {
                 headers: {
                     'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
                 }
             })
             .then(res => {
+
                 setQuotationRecords(res.data.quotation);
-                setOpenPopup(true);
+
+                axios
+                    .get(`http://localhost:8080/quotations/xlsx-file/${quotationid}`, {
+                        headers: {
+                            'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                        },
+                        responseType: 'blob',
+                    })
+                    .then(res => {
+                        setFile(res.data)
+                        setOpenPopup(true);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
             })
             .catch(err => {
                 console.log(err);
             })
+
     }
 
     const getNextQuotationId = () => {
