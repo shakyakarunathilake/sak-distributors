@@ -74,6 +74,7 @@ export default function StepThree(props) {
     const addActionRef = useRef();
 
     const getProductItemList = useMemo(() => {
+
         const selectedDescriptions = data.map(x => x.description);
         const productItemList = productOptions.filter(x => selectedDescriptions.indexOf(x.title) === -1);
         return productItemList;
@@ -244,6 +245,10 @@ export default function StepThree(props) {
                                             hidden: true,
                                         },
                                         {
+                                            field: "offerdetails",
+                                            hidden: true,
+                                        },
+                                        {
                                             field: "description",
                                             cellStyle: {
                                                 padding: "10px 5px 10px 7px",
@@ -276,7 +281,7 @@ export default function StepThree(props) {
                                                                     {option.type}
                                                                 </Grid>
                                                                 {
-                                                                    option.type === ("Promotion (Free Products)" || "Promotion (Discounts)") ?
+                                                                    (option.type === "Promotion (Free Products)") || (option.type === "Promotion (Discounts)") ?
                                                                         <Grid item xs={12}>
                                                                             <b> Offer Caption: </b> {option.offercaption}
                                                                         </Grid>
@@ -303,10 +308,19 @@ export default function StepThree(props) {
                                                             data.productid = option.productid;
                                                             data.variantid = option.variantid;
                                                             data.name = option.name;
+                                                            data.offercaption = option.offercaption ? option.offercaption : "";
+                                                            data.offerdetails = {
+                                                                "type": option.type,
+                                                                "eligibleqty": option.eligibleqty,
+                                                                "eligibleqtytype": option.eligibleqtytype,
+                                                                "freeqty": option.freeqty,
+                                                                "freeqtytype": option.freeqtytype,
+                                                                "discount": option.discount,
+                                                                "freeproductname": option.freeproductname
+                                                            };
                                                             data.sellingprice = parseInt(option.sellingprice).toFixed(2);
                                                             data.piecespercase = option.piecespercase;
                                                             data.mrp = parseInt(option.mrp).toFixed(2);
-                                                            console.log(data)
                                                             props.onRowDataChange(data);
                                                         }
                                                     }}
@@ -472,10 +486,140 @@ export default function StepThree(props) {
                                     editable={{
                                         onRowAdd: newData =>
                                             new Promise((resolve, reject) => {
-                                                setTimeout(() => {
-                                                    setData([newData, ...data]);
 
-                                                    resolve();
+                                                setTimeout(() => {
+
+                                                    if (newData.offercaption) {
+
+                                                        let noofcases = parseInt(newData.salesqtycases);
+                                                        let noofpieces = parseInt(newData.salesqtypieces) + noofcases * newData.piecespercase;
+
+                                                        if (newData.offerdetails.type === "Promotion (Free Products)") {
+                                                            if (newData.offerdetails.eligibleqtytype === "Cases" && newData.offerdetails.eligibleqty <= noofcases) {
+
+                                                                let times = Math.floor(noofcases / newData.offerdetails.eligibleqty);
+                                                                let totalfreeqty = times * newData.offerdetails.freeqty;
+
+                                                                const offerData = {
+                                                                    description: newData.offerdetails.freeproductname,
+                                                                    freeqtycases: newData.offerdetails.freeqtytype === "Cases" ? totalfreeqty : 0,
+                                                                    freeqtypieces: newData.offerdetails.freeqtytype === "Pieces" ? totalfreeqty : 0,
+                                                                    grossamount: "0.00",
+                                                                    mrp: "0.00",
+                                                                    name: newData.offerdetails.freeproductname.substring(newData.offerdetails.freeproductname.indexOf('-') + 1),
+                                                                    offercaption: "",
+                                                                    offerdetails: {},
+                                                                    piecespercase: newData.freeproductpiecespercase,
+                                                                    productid: newData.offerdetails.freeproductname.substr(0, 7),
+                                                                    salesqtycases: 0,
+                                                                    salesqtypieces: 0,
+                                                                    sellingprice: "0.00",
+                                                                    variantid: newData.offerdetails.freeproductname.substring(7, newData.offerdetails.freeproductname.indexOf('-')),
+                                                                }
+
+                                                                setData([newData, offerData, ...data]);
+
+                                                            } else if (newData.offerdetails.eligibleqtytype === "Pieces" && newData.offerdetails.eligibleqty <= noofpieces) {
+
+                                                                let times = Math.floor(noofpieces / newData.offerdetails.eligibleqty);
+                                                                let totalfreeqty = times * newData.offerdetails.freeqty;
+
+                                                                const offerData = {
+                                                                    description: newData.offerdetails.freeproductname,
+                                                                    freeqtycases: newData.offerdetails.freeqtytype === "Cases" ? totalfreeqty : 0,
+                                                                    freeqtypieces: newData.offerdetails.freeqtytype === "Pieces" ? totalfreeqty : 0,
+                                                                    grossamount: "0.00",
+                                                                    mrp: "0.00",
+                                                                    name: newData.offerdetails.freeproductname.substring(newData.offerdetails.freeproductname.indexOf('-') + 1),
+                                                                    offercaption: "",
+                                                                    offerdetails: {},
+                                                                    piecespercase: newData.freeproductpiecespercase,
+                                                                    productid: newData.offerdetails.freeproductname.substr(0, 7),
+                                                                    salesqtycases: 0,
+                                                                    salesqtypieces: 0,
+                                                                    sellingprice: "0.00",
+                                                                    variantid: newData.offerdetails.freeproductname.substring(7, newData.offerdetails.freeproductname.indexOf('-')),
+                                                                }
+
+                                                                setData([newData, offerData, ...data]);
+
+                                                            } else {
+                                                                setData([newData, ...data]);
+                                                            }
+                                                        } else if (newData.offerdetails.type === "Promotion (Discounts)") {
+
+                                                            if (newData.offerdetails.eligibleqtytype === "Cases" && newData.offerdetails.eligibleqty <= noofcases) {
+
+                                                                let totaleligibleqty = Math.floor(noofcases / newData.offerdetails.eligibleqty) * newData.offerdetails.eligibleqty;
+
+                                                                let discount = newData.piecespercase * ((parseInt(newData.sellingprice) / 100) * newData.offerdetails.discount) * totaleligibleqty;
+                                                                let finalgrossamount = parseInt(newData.grossamount) - discount;
+                                                                let finalgrossamountstring = finalgrossamount.toFixed(2);
+
+                                                                const discountData = {
+                                                                    description: newData.description,
+                                                                    freeqtycases: newData.freeqtycases,
+                                                                    freeqtypieces: newData.freeqtypieces,
+                                                                    grossamount: finalgrossamountstring,
+                                                                    mrp: newData.mrp,
+                                                                    name: newData.name,
+                                                                    offercaption: newData.offercaption,
+                                                                    offerdetails: newData.offerdetails,
+                                                                    piecespercase: newData.piecespercase,
+                                                                    productid: newData.productid,
+                                                                    salesqtycases: newData.salesqtycases,
+                                                                    salesqtypieces: newData.salesqtypieces,
+                                                                    sellingprice: newData.sellingprice,
+                                                                    variantid: newData.variantid,
+                                                                }
+
+                                                                setData([discountData, ...data]);
+                                                            } else if (newData.offerdetails.eligibleqtytype === "Pieces" && newData.offerdetails.eligibleqty <= noofpieces) {
+
+                                                                console.log("newData: ", newData);
+
+                                                                let totaleligibleqty = Math.floor(noofpieces / newData.offerdetails.eligibleqty) * newData.offerdetails.eligibleqty;
+
+                                                                console.log("totaleligibleqty: ", totaleligibleqty)
+
+                                                                let discount = newData.piecespercase * ((parseInt(newData.sellingprice) / 100) * newData.offerdetails.discount) * totaleligibleqty;
+
+                                                                console.log("discount: ", discount);
+                                                                console.log("newData.grossamount: ", newData.grossamount);
+
+                                                                let finalgrossamount = parseInt(newData.grossamount) - discount;
+                                                                let finalgrossamountstring = finalgrossamount.toFixed(2);
+
+                                                                const discountData = {
+                                                                    description: newData.description,
+                                                                    freeqtycases: newData.freeqtycases,
+                                                                    freeqtypieces: newData.freeqtypieces,
+                                                                    grossamount: finalgrossamountstring,
+                                                                    mrp: newData.mrp,
+                                                                    name: newData.name,
+                                                                    offercaption: newData.offercaption,
+                                                                    offerdetails: newData.offerdetails,
+                                                                    piecespercase: newData.piecespercase,
+                                                                    productid: newData.productid,
+                                                                    salesqtycases: newData.salesqtycases,
+                                                                    salesqtypieces: newData.salesqtypieces,
+                                                                    sellingprice: newData.sellingprice,
+                                                                    variantid: newData.variantid,
+                                                                }
+
+                                                                setData([discountData, ...data]);
+                                                            }
+
+                                                        }
+
+                                                        resolve();
+
+                                                    } else {
+
+                                                        setData([newData, ...data]);
+                                                        resolve();
+
+                                                    }
                                                 }, 1)
                                             }),
                                         onRowUpdate: (newData, oldData) =>
