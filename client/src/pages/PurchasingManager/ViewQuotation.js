@@ -34,11 +34,11 @@ export default function ViewPurchaseOrder(props) {
             else {
                 setCols(resp.cols);
                 setRows(resp.rows);
-             
+
             }
         });
 
-    }, []);
+    }, [file]);
 
     const onSubmit = () => {
         setOpenPopup()
