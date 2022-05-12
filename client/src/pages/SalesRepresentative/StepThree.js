@@ -576,16 +576,9 @@ export default function StepThree(props) {
                                                                 setData([discountData, ...data]);
                                                             } else if (newData.offerdetails.eligibleqtytype === "Pieces" && newData.offerdetails.eligibleqty <= noofpieces) {
 
-                                                                console.log("newData: ", newData);
-
                                                                 let totaleligibleqty = Math.floor(noofpieces / newData.offerdetails.eligibleqty) * newData.offerdetails.eligibleqty;
 
-                                                                console.log("totaleligibleqty: ", totaleligibleqty)
-
-                                                                let discount = newData.piecespercase * ((parseInt(newData.sellingprice) / 100) * newData.offerdetails.discount) * totaleligibleqty;
-
-                                                                console.log("discount: ", discount);
-                                                                console.log("newData.grossamount: ", newData.grossamount);
+                                                                let discount = ((parseInt(newData.sellingprice) / 100) * newData.offerdetails.discount) * totaleligibleqty;
 
                                                                 let finalgrossamount = parseInt(newData.grossamount) - discount;
                                                                 let finalgrossamountstring = finalgrossamount.toFixed(2);
