@@ -9,7 +9,7 @@ const Quotation = require("../models/quotation.model");
 
 const storage = multer.diskStorage({
     destination: function (req, file, callback) {
-        callback(null, './quotations');
+        callback(null, './api/routes/quotations');
     },
     filename: function (req, file, callback) {
         callback(null, req.body.quotationid + ".xlsx");
@@ -156,25 +156,21 @@ router.get("/:quotationid", (req, res, next) => {
 })
 
 router.get("/xlsx-file/:quotationid", (req, res, next) => {
+
     const quotationid = req.params.quotationid;
 
-    console.log(__dirname);
+    var options = {
+        root: path.join(__dirname)
+    };
 
-    res.download(__dirname + '\\Q00001.xlsx');
+    res.sendFile(`/quotations/${quotationid}.xlsx`, options, function (err) {
+        if (err) {
+            next(err);
+        } else {
+            console.log('Sent:', `${quotationid}.xlsx`);
+        }
+    });
 
-
-
-    // Quotation
-    //     .findOne({ "quotationid": quotationid })
-    //     .exec()
-    //     .then(doc => {
-    //         res.download(`../../quotations/${doc.quotationfile}`)
-
-    //     })
-    //     .catch(err => {
-    //         console.log(err);
-    //         res.status(500).json({ "Error ": err });
-    //     })
 })
 
 module.exports = router;
