@@ -6,4 +6,11 @@
     grid-column-gap: 20px;
     padding: 20px;
     height: calc(100% - 40px);
+
+    .columnB {
+        display: grid;
+        grid-row-gap: 20px;
+        height: calc(100vh - 126px);
+        overflow: auto;
+    }
 }
