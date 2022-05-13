@@ -44,6 +44,8 @@ export default function ManageQuotation() {
 
     const [reRender, setReRender] = useState(null);
 
+    const [file, setFile] = useState(null);
+
     const handleAlert = () => {
         setOpen(true);
     };
@@ -100,20 +102,8 @@ export default function ManageQuotation() {
         setOpenPopup(false);
     }
 
-    const openInPopup = quotationid => {
-        axios
-            .get(`http://localhost:8080/quotations/xlsx-file/${quotationid}`, {
-                headers: {
-                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
-                }
-            })
-            .then(res => {
-                console.log("HEADERS :", res)
-            })
-            .catch(err => {
-                console.log(err);
-            })
 
+    const openInPopup = quotationid => {
         axios
             .get(`http://localhost:8080/quotations/${quotationid}`, {
                 headers: {
@@ -121,12 +111,28 @@ export default function ManageQuotation() {
                 }
             })
             .then(res => {
+
                 setQuotationRecords(res.data.quotation);
-                setOpenPopup(true);
+
+                axios
+                    .get(`http://localhost:8080/quotations/xlsx-file/${quotationid}`, {
+                        headers: {
+                            'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                        },
+                        responseType: 'blob',
+                    })
+                    .then(res => {
+                        setFile(res.data)
+                        setOpenPopup(true);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
             })
             .catch(err => {
                 console.log(err);
             })
+
     }
 
     const getNextQuotationId = () => {
@@ -272,6 +278,7 @@ export default function ManageQuotation() {
                             quotationRecords={quotationRecords}
                             setOpenPopup={setOpenPopup}
                             action={action}
+                            file={file}
                         />
                     }
 

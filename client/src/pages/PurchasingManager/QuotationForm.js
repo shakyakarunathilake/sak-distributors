@@ -17,8 +17,8 @@ export default function QuotationForm(props) {
     const today = new Date();
 
     const date = today.getFullYear() + '-' +
-    (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
-    (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+        (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
+        (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
 
     const { formState: { errors, isValid }, handleSubmit, getValues, trigger, reset, control } = useForm({
         mode: "all",
@@ -38,6 +38,8 @@ export default function QuotationForm(props) {
 
     const handleFileChange = async (e) => {
         const file = e.target.files[0];
+
+        console.log(file)
 
         ExcelRenderer(file, (err, resp) => {
             if (err) {
