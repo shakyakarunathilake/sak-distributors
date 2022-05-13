@@ -19,8 +19,8 @@ export default function StorekeeperDashboard() {
     }
 
     let endpoints = [
-        "http://localhost:8080/dashboard/awaiting-grn",
-        "http://localhost:8080/dashboard/no-of-customer-orders",
+        "http://localhost:8080/metadata/awaiting-grn",
+        "http://localhost:8080/metadata/no-of-customer-orders",
     ]
 
     const [customerOrders, setCustomerOrders] = useState([]);

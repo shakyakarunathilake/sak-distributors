@@ -29,7 +29,6 @@ const totalSalesRoutes = require("./api/routes/totalsales.route");
 const salesPerCustomerRoutes = require("./api/routes/salespercustomer.route");
 const salesPerRouteRoutes = require("./api/routes/salesperroute.route");
 const salesPerSalesRepresentativeRoutes = require("./api/routes/salespersalesrepresentative.route");
-const dashboardRoutes = require("./api/routes/dashboard.route");
 
 
 app.use(morgan("dev"));
@@ -57,7 +56,6 @@ app.use(express.static("uploads"));
 
 app.use("/auth", authRoutes);
 
-app.use("/dashboard", checkAuth, dashboardRoutes);
 app.use("/password", checkAuth, passwordRoutes);
 app.use("/employees", checkAuth, employeeRoutes);
 app.use("/customers", checkAuth, customerRoutes);

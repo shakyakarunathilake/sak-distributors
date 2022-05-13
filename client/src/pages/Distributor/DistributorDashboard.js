@@ -18,7 +18,7 @@ export default function DistributorDashboard() {
     }
 
     let endpoints = [
-        "http://localhost:8080/dashboard/purchase-orders-to-be-approved",
+        "http://localhost:8080/metadata/purchase-orders-to-be-approved",
     ]
 
     const [purchaseOrders, setPurchaseOrders] = useState([]);

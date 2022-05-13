@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 //Shared Components
 import TabletPageTwo from '../../shared/PageTwo/TabletPageTwo';
@@ -17,15 +17,16 @@ export default function SalesRepresentativeDashboard() {
         window.location.replace("http://localhost:3000/change-password");
     }
 
+    const [promotions, setPromotions] = useState([]);
+
     useEffect(() => {
         axios
-            .get(`http://localhost:8080/dashboard/promotions`, {
+            .get(`http://localhost:8080/metadata/promotions`, {
                 headers: {
                     'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
                 }
             })
-            .then(res => {
-            })
+            .then(res => setPromotions(res.data.promotions))
             .catch(error => {
                 console.log(error)
             })
@@ -40,7 +41,9 @@ export default function SalesRepresentativeDashboard() {
                 </div>
 
                 <div className={style.rowB}>
-                    <Promotions />
+                    <Promotions
+                        promotions={promotions}
+                    />
                 </div>
             </div>
         </TabletPageTwo>
