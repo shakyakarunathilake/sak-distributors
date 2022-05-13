@@ -62,10 +62,10 @@ export default function AwaitingGRN(props) {
                                     key={row.name}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
-                                    <TableCell component="th" scope="row">{row.ponumber} </TableCell>
-                                    <TableCell>{row.grnnumber}</TableCell>
-                                    <TableCell sx={{ color: "#2196F3", fontWeight: 700 }}>{row.status}</TableCell>
-                                    <TableCell>
+                                    <TableCell component="th" scope="row" sx={{ padding: "8px" }}>{row.ponumber} </TableCell>
+                                    <TableCell sx={{ padding: "8px" }}>{row.grnnumber}</TableCell>
+                                    <TableCell sx={{ color: "#2196F3", fontWeight: 700, padding: "8px" }}>{row.status}</TableCell>
+                                    <TableCell sx={{ padding: "8px" }}>
                                         <IconButton>
                                             <VisibilityIcon
                                                 className={style.icon}

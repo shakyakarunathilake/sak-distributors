@@ -62,10 +62,10 @@ export default function CustomerOrders(props) {
                                     key={row.name}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
-                                    <TableCell component="th" scope="row">{row.orderno} </TableCell>
-                                    <TableCell>{row.route}</TableCell>
-                                    <TableCell sx={{ color: "#2196F3", fontWeight: 700 }}>{row.status}</TableCell>
-                                    <TableCell>
+                                    <TableCell component="th" scope="row" sx={{ padding: "8px" }}>{row.orderno} </TableCell>
+                                    <TableCell sx={{ padding: "8px" }}>{row.route}</TableCell>
+                                    <TableCell sx={{ color: "#2196F3", fontWeight: 700, padding: "8px" }}>{row.status}</TableCell>
+                                    <TableCell sx={{ padding: "8px" }}>
                                         <IconButton>
                                             <VisibilityIcon
                                                 className={style.icon}
