@@ -1,17 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 //Shared Components
 import PageTwo from '../../shared/PageTwo/PageTwo';
 import Profile from '../../shared/PageTwo/Profile';
+import PurchaseOrdersToBeApproved from '../DashboardPaper/PurchaseOrdersToBeApproved';
 
 //SCSS Styles
 import style from './DistributorDashboard.module.scss';
+
+//Connecting to backend
+import axios from 'axios';
 
 export default function DistributorDashboard() {
 
     if (JSON.parse(sessionStorage.getItem("Auth")).firsttimelogin) {
         window.location.replace("http://localhost:3000/change-password");
     }
+
+    let endpoints = [
+        "http://localhost:8080/dashboard/purchase-orders-to-be-approved",
+    ]
+
+    const [purchaseOrders, setPurchaseOrders] = useState([]);
+
+    useEffect(() => {
+        axios
+            .all(endpoints.map((endpoint) => axios.get(endpoint, { headers: { 'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken } })))
+            .then(
+                axios.spread((...responses) => {
+                    setPurchaseOrders(responses[0].data.purchaseorderstobeapproved)
+                })
+            )
+            .catch(error => {
+                console.log(error)
+            })
+    }, [])
 
     return (
         <PageTwo title="Dashboard">
@@ -22,8 +45,9 @@ export default function DistributorDashboard() {
                 </div>
 
                 <div className={style.columnB}>
-
-
+                    <PurchaseOrdersToBeApproved
+                        purchaseOrders={purchaseOrders}
+                    />
                 </div>
             </div>
         </PageTwo>
