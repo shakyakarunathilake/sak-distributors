@@ -7,6 +7,10 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import IconButton from '@mui/material/IconButton';
+
+//MUI Icons
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 //SCSS style
 import style from './PurchaseOrdersToBeApproved.module.scss';
@@ -37,10 +41,17 @@ export default function PurchaseOrdersToBeApproved(props) {
                                     key={row.ponumber}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
-                                    <TableCell component="th" scope="row">{row.ponumber} </TableCell>
-                                    <TableCell>{row.createdat}</TableCell>
-                                    <TableCell>{row.createdby}</TableCell>
-                                    <TableCell></TableCell>
+                                    <TableCell component="th" scope="row" sx={{ padding: "8px" }}>{row.ponumber} </TableCell>
+                                    <TableCell sx={{ padding: "8px" }}>{row.createdat}</TableCell>
+                                    <TableCell sx={{ padding: "8px" }}>{row.createdby}</TableCell>
+                                    <TableCell sx={{ padding: "8px" }}>
+                                        <IconButton>
+                                            <NavigateNextIcon
+                                                className={style.icon}
+                                                onClick={() => window.location.replace("/distributor/manage-purchase-orders")}
+                                            />
+                                        </IconButton>
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
