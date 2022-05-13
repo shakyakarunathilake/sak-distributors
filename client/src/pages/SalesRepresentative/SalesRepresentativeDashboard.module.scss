@@ -5,4 +5,11 @@
     grid-template-rows: min-content auto;
     grid-row-gap: 20px;
     padding: 20px;
+    height: calc(100vh - 146px);
+    overflow: auto;
+
+    .rowB {
+        display: grid;
+        grid-row-gap: 20px;
+    }
 }
