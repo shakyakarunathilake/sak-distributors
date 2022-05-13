@@ -6,6 +6,8 @@ const multer = require("multer");
 
 const Product = require("../models/product.model");
 const Store = require("../models/store.model");
+const MetaData = require("../models/metadata.model");
+
 
 const storage = multer.diskStorage({
     destination: function (req, file, callback) {
@@ -189,8 +191,6 @@ router.post("/create-product", uploads.single("productimage"), (req, res, next) 
 //Create new product variant
 router.post("/add-new-variant/:productid", uploads.single("productimage"), (req, res, next) => {
 
-    console.log("FormData: ", req.body);
-
     Product
         .findOneAndUpdate(
             { "productid": req.params.productid },
@@ -217,9 +217,41 @@ router.post("/add-new-variant/:productid", uploads.single("productimage"), (req,
                     }
                 }
             },
-            { upsert: true }
+            { new: true, upsert: true }
         )
         .exec()
+        .then(doc => {
+
+            console.log(doc);
+
+            MetaData
+                .findOneAndUpdate(
+                    {},
+                    {
+                        $push: {
+                            'promotions': {
+                                'productid': doc.productid,
+                                'name': doc.name,
+                                'productstatus': doc.status,
+                                'productimage': doc.productimage,
+                                'variantid': doc.variants[doc.variants.length - 1].variantid,
+                                'variantstatus': doc.variants[doc.variants.length - 1].status,
+                                'offercaption': doc.variants[doc.variants.length - 1].offercaption
+                            },
+                        },
+                    },
+                    { upsert: true, new: true }
+                )
+                .exec()
+                .then(
+                    console.log("META DATA ADDED")
+                )
+                .catch(error => {
+                    console.log("META DATA ERROR: ", error)
+                })
+
+            return doc;
+        })
         .then(doc =>
             res.status(200).json({
                 message: "Handling POST requests to /products/add-new-variant/:productid , VARIANT SAVED",
@@ -316,10 +348,6 @@ router.get("/:productid/:variantid", (req, res, next) => {
                 }
             }
 
-            console.log("Document: ", doc);
-            console.log("Product: ", product);
-            console.log("Variant: ", variant);
-
             res.status(200).json({
                 message: "Handeling GET requests to /:productid",
                 product: product
@@ -348,6 +376,30 @@ router.post("/update-by-id/:productid", uploads.single("productimage"), (req, re
             { new: true, upsert: true }
         )
         .exec()
+        .then(doc => {
+
+            MetaData
+                .findOneAndUpdate(
+                    { 'promotions.productid': doc.productid },
+                    {
+                        $set: {
+                            'promotions.$.name': doc.name,
+                            'promotions.$.productstatus': doc.status,
+                            'promotions.$.productimage': doc.productimage,
+                        },
+                    },
+                    { upsert: true, new: true }
+                )
+                .exec()
+                .then(doc =>
+                    console.log("META DATA ADDED")
+                )
+                .catch(error => {
+                    console.log("META DATA ERROR: ", error)
+                })
+
+            return doc;
+        })
         .then(doc => {
 
             Store
@@ -420,13 +472,42 @@ router.post("/update-by-id/:productid/:variantid", uploads.single("productimage"
             { upsert: true, new: true }
         )
         .exec()
-        .then(doc =>
+        .then(doc => {
+
+            const variant = doc.variants.filter(x => x.variantid === req.params.variantid)
+            
+            if (variant.type !== "General") {
+
+                MetaData
+                    .findOneAndUpdate(
+                        { 'promotions.productid': req.params.productid, 'promotions.variantid': req.params.variantid },
+                        {
+                            $set: {
+                                'promotions.$.variantstatus': variant[0].status,
+                                'promotions.$.offercaption': variant[0].offercaption
+                            },
+                        },
+                        { new: true }
+                    )
+                    .exec()
+                    .then(
+                        console.log("META DATA ADDED")
+                    )
+                    .catch(error => {
+                        console.log("META DATA ERROR: ", error)
+                    })
+            }
+
+            return doc;
+        })
+        .then(doc => {
+
             res.status(200).json({
                 message: "Handling POST requests to /products/update-by-id/:productid, PRODUCT UPDATED",
                 type: 'success',
                 alert: `${doc.name} (${doc.productid}) : ${req.params.variantid} Updated`,
             })
-        )
+        })
         .catch(err => {
             res.status(200).json({
                 type: 'error',
