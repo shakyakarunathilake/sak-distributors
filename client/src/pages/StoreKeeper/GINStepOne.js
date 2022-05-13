@@ -100,7 +100,7 @@ export default function GINStepOne(props) {
             })
             .then(res => {
                 localStorage.setItem(ordernumber, JSON.stringify(res.data.order));
-                window.open(`http://localhost:3000/storekeeper/view-order-details/${ordernumber}`, "_blank");
+                window.open(`http://localhost:3000/store-keeper/view-order-details/${ordernumber}`, "_blank");
             })
             .catch(err => {
                 console.log(err);
