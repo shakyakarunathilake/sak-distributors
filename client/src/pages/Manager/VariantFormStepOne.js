@@ -461,7 +461,7 @@ export default function VariantFormStepOne(props) {
                                                 {...params}
                                                 error={errors.freeproductname ? true : false}
                                                 helperText={errors.freeproductname && errors.freeproductname.message}
-                                                label="Product"
+                                                label="Promotion Product"
                                                 variant="outlined"
                                                 size="small"
                                             />
