@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 //MUI Components
 import Table from '@mui/material/Table';
@@ -46,10 +47,11 @@ export default function PurchaseOrdersToBeApproved(props) {
                                     <TableCell sx={{ padding: "8px" }}>{row.createdby}</TableCell>
                                     <TableCell sx={{ padding: "8px" }}>
                                         <IconButton>
-                                            <NavigateNextIcon
-                                                className={style.icon}
-                                                onClick={() => window.location.replace("/distributor/manage-purchase-orders")}
-                                            />
+                                            <Link to="/distributor/manage-purchase-orders">
+                                                <NavigateNextIcon
+                                                    className={style.icon}
+                                                />
+                                            </Link>
                                         </IconButton>
                                     </TableCell>
                                 </TableRow>
