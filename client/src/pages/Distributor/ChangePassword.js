@@ -15,7 +15,6 @@ import MuiAlert from '@mui/material/Alert';
 //Material UI Icons
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import InfoIcon from '@mui/icons-material/Info';
 
 //SCSS Style
 import style from './ChangePassword.module.scss';
@@ -44,14 +43,12 @@ export default function ChangePassword() {
         mode: "onSubmit",
         defaultValues: {
             currentpassword: '',
-            confirmcurrentpassword: '',
             newpassword: '',
             confirmpassword: '',
         }
     });
 
     const [currentPasswordShown, setCurrentPasswordShown] = useState(false);
-    const [confirmCurrentPasswordShown, setConfirmCurrentPasswordShown] = useState(false);
     const [newPasswordShown, setNewPasswordShown] = useState(false);
     const [confirmPasswordShown, setConfirmPasswordShown] = useState(false);
     const [open, setOpen] = React.useState(false);
@@ -61,10 +58,6 @@ export default function ChangePassword() {
 
     const toggleCurrentPasswordVisiblity = () => {
         setCurrentPasswordShown(currentPasswordShown ? false : true);
-    };
-
-    const toggleConfirmCurrentPasswordVisiblity = () => {
-        setConfirmCurrentPasswordShown(confirmCurrentPasswordShown ? false : true);
     };
 
     const toggleNewPasswordVisiblity = () => {
@@ -144,7 +137,9 @@ export default function ChangePassword() {
             >
 
                 <div className={style.redFont}>
-                    <InfoIcon className={style.icon} /> The password should contain minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character.
+                    The password should contain minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character.
+                    <br />
+                    The fields with "*" are required.
                 </div>
 
                 <div className={style.body}>
@@ -176,41 +171,6 @@ export default function ChangePassword() {
                                                         edge="end"
                                                     >
                                                         {currentPasswordShown ? <Visibility /> : <VisibilityOff />}
-                                                    </IconButton>
-                                                </InputAdornment>
-                                            ),
-                                        }}
-                                    />
-                                )}
-                            />
-                        </div>
-
-                        <div className={style.textfield}>
-                            <Controller
-                                name={"confirmcurrentpassword"}
-                                control={control}
-                                rules={{
-                                    required: { value: true, message: "Required *" },
-                                    validate: value => value === watch("currentpassword") || "Password mismatch"
-                                }}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        className={style.field}
-                                        helperText={errors.confirmcurrentpassword && errors.confirmcurrentpassword.message}
-                                        error={errors.confirmcurrentpassword ? true : false}
-                                        label="Confirm Current Password *"
-                                        fullWidth={true}
-                                        type={confirmCurrentPasswordShown ? "text" : "password"}
-                                        InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    <IconButton
-                                                        color="inherit"
-                                                        onClick={toggleConfirmCurrentPasswordVisiblity}
-                                                        edge="end"
-                                                    >
-                                                        {confirmCurrentPasswordShown ? <Visibility /> : <VisibilityOff />}
                                                     </IconButton>
                                                 </InputAdornment>
                                             ),
@@ -258,6 +218,10 @@ export default function ChangePassword() {
                                 )}
                             />
                         </div>
+
+                    </div>
+
+                    <div className={style.row}>
 
                         <div className={style.textfield}>
                             <Controller
