@@ -88,11 +88,7 @@ export default function Page(props) {
 
     const [state, setState] = useState();
 
-    const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
-    const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
-    const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
-    const email = JSON.parse(sessionStorage.getItem("Auth")).email;
-    const employeeimage = JSON.parse(sessionStorage.getItem("Auth")).employeeimage;
+    const employeedetails = JSON.parse(sessionStorage.getItem("Auth"));
 
     //Toggle Drawer Function
     const toggleDrawer = (open) => (event) => {
@@ -107,7 +103,7 @@ export default function Page(props) {
         <div onClick={toggleDrawer(false)} className={classes.list}>
             <List>
                 {
-                    drawerListItems.drawerListItems(designation).map((listItem) => (
+                    drawerListItems.drawerListItems(employeedetails.designation).map((listItem) => (
                         <ListItem
                             button
                             className={classes.listItem}
@@ -136,10 +132,10 @@ export default function Page(props) {
 
                 <div className={classes.userInfo}>
 
-                    <Avatar alt={firstname} className={classes.avatar} src={`http://${employeeimage}`} />
-                    <div className={classes.designation}>{designation}</div>
-                    <div className={classes.name}>{firstname} {lastname}</div>
-                    <div className={classes.email}>{email}</div>
+                    <Avatar alt={employeedetails.firstname} className={classes.avatar} src={`http://${employeedetails.employeeimage}`} />
+                    <div className={classes.designation}>{employeedetails.designation}</div>
+                    <div className={classes.name}>{employeedetails.firstname} {employeedetails.lastname}</div>
+                    <div className={classes.email}>{employeedetails.email}</div>
 
                 </div>
 
@@ -197,7 +193,7 @@ export default function Page(props) {
                 </div>
 
                 <div className={style.avatarDiv}>
-                    <Avatar alt={firstname} className={style.avatar} src={`http://${employeeimage}`} />
+                    <Avatar alt={employeedetails.firstname} className={style.avatar} src={`http://${employeedetails.employeeimage}`} />
                 </div>
 
             </div>
