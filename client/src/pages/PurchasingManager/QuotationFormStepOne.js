@@ -199,7 +199,7 @@ export default function QuotationFormStepOne(props) {
                           field.onChange(e.target.files[0]);
                           handleFileChange(e);
                         }}
-                        accept=".xlsx"
+                        accept=".xlsx, .xls"
                       />
                     )}
                     control={control}
