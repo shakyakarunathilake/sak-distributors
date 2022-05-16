@@ -75,7 +75,8 @@ export default function PurchaseOrderStepOne(props) {
         control,
         errors,
         podate,
-        dateTime
+        dateTime,
+        quotationOptions
     } = props;
 
     const addActionRef = useRef();
@@ -621,7 +622,9 @@ export default function PurchaseOrderStepOne(props) {
                     variant="middle"
                 />
 
-                <Quotations />
+                <Quotations
+                    quotationOptions={quotationOptions}
+                />
 
             </div >
 

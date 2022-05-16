@@ -26,7 +26,7 @@ router.get("/", (req, res, next) => {
 });
 
 //Get all table quotation data
-router.get("/get-all-quotations-table-data", (req, res, next) => {
+router.get("/get-all-quotation-table-data", (req, res, next) => {
 
     Quotation
         .find()
@@ -41,10 +41,8 @@ router.get("/get-all-quotations-table-data", (req, res, next) => {
                 "enddate": x.enddate,
             }))
 
-            console.log("TBODY: ", tbody);
-
             res.status(200).json({
-                message: "Handeling GET requests to /get-all-quotations-table-data",
+                message: "Handeling GET requests to /get-all-quotation-table-data",
                 tbody: tbody,
                 defaultkey: 0,
             });
@@ -124,6 +122,36 @@ router.post("/create-quotation", quotations.single('quotationfile'), (req, res, 
         })
 });
 
+//Get active quotation data
+router.get("/get-all-active-quotation-data", (req, res, next) => {
+
+    const today = new Date();
+
+    const date = today.getFullYear() + '-' +
+        (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
+        (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
+
+    Quotation
+        .find({ "issuingdate": { $lte: date }, "enddate": { $gte: date } })
+        .exec()
+        .then(doc => {
+
+            const quotationOptions = doc.slice(0).reverse().map(x => ({
+                "id": x.quotationid,
+                "title": `${x.quotationid} ( ${x.supplier} )`,
+            }))
+
+            res.status(200).json({
+                message: "Handeling GET requests to /get-all-active-quotation-data",
+                quotationOptions: quotationOptions,
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        });
+});
+
 //Get quotation by quotationid
 router.get("/:quotationid", (req, res, next) => {
     const quotationid = req.params.quotationid;
@@ -146,8 +174,6 @@ router.get("/:quotationid", (req, res, next) => {
                 quotation: quotation
             });
 
-            next()
-
         })
         .catch(err => {
             console.log(err);
@@ -165,7 +191,7 @@ router.get("/xlsx-file/:quotationid", (req, res, next) => {
 
     res.sendFile(`/quotations/${quotationid}.xlsx`, options, function (err) {
         if (err) {
-            next(err);
+            console.log(err);
         } else {
             console.log('Sent:', `${quotationid}.xlsx`);
         }

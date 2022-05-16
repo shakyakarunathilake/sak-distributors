@@ -59,7 +59,7 @@ export default function ManageQuotation() {
 
     useEffect(() => {
         axios
-            .get("http://localhost:8080/quotations/get-all-quotations-table-data", {
+            .get("http://localhost:8080/quotations/get-all-quotation-table-data", {
                 headers: {
                     'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
                 }

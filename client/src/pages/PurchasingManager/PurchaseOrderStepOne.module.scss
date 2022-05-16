@@ -31,7 +31,7 @@
         display: grid;
         grid-template-columns: calc(60% - 20px) min-content calc(40% - 20px);
         text-align: right;
-        margin: 20px 0 0 0;
+        margin: 10px 0 0 0;
 
         .purchaseOrder {
             max-width: inherit;
@@ -45,7 +45,7 @@
                 Button {
                     padding: 0 25px;
                     font-size: 1em;
-                    height: 40px;
+                    height: 36.27px;
                     white-space: nowrap;
                 }
             }

@@ -11,7 +11,15 @@ import StepTwo from './PurchaseOrderStepTwo';
 
 export default function CreatePurchaseOrder(props) {
 
-    const { productOptions, supplierOptions, addOrEdit, handleClosePopUp, poRecords, action } = props;
+    const {
+        productOptions,
+        supplierOptions,
+        addOrEdit,
+        handleClosePopUp,
+        poRecords,
+        action,
+        quotationOptions
+    } = props;
 
     const today = new Date();
 
@@ -156,6 +164,7 @@ export default function CreatePurchaseOrder(props) {
                         watch={watch}
                         dateTime={dateTime}
                         action={action}
+                        quotationOptions={quotationOptions}
                     />
 
                 </section>

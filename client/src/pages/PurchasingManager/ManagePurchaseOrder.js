@@ -42,8 +42,15 @@ export default function ManagePurchaseOrder() {
     const [poRecords, setPORecords] = useState();
     const [supplierOptions, setSupplierOptions] = useState([]);
     const [productOptions, setProductOptions] = useState([]);
+    const [quotationOptions, setQuotationOptions] = useState([]);
 
     const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
+
+    let endPoints = [
+        "http://localhost:8080/options/supplier-options-for-purchase-order",
+        "http://localhost:8080/options/product-options-for-purchase-order",
+        "http://localhost:8080/quotations/get-all-active-quotation-data"
+    ]
 
     const handleAlert = () => {
         setOpen(true);
@@ -74,31 +81,19 @@ export default function ManagePurchaseOrder() {
 
     const getOptions = () => {
         axios
-            .get("http://localhost:8080/options/supplier-options-for-purchase-order", {
-                headers: {
-                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
-                }
-            })
-            .then(res => {
-                setSupplierOptions(res.data.supplierOptions);
-            })
+            .all(endPoints.map((endpoint) =>
+                axios
+                    .get(endpoint, { headers: { 'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken } })
+            ))
+            .then(
+                axios.spread((...responses) => {
+                    setSupplierOptions(responses[0].data.supplierOptions);
+                    setProductOptions(responses[1].data.productOptions);
+                    setQuotationOptions(responses[2].data.quotationOptions);
+                }))
             .catch(err => {
                 console.log(err);
             })
-
-        axios
-            .get("http://localhost:8080/options/product-options-for-purchase-order", {
-                headers: {
-                    Authorization: JSON.parse(sessionStorage.getItem("Auth")).accessToken
-                }
-            })
-            .then(res => {
-                setProductOptions(res.data.productOptions);
-            })
-            .catch(err => {
-                console.log(err);
-            })
-
     }
 
     const addOrEdit = (purchaseorder, ponumber) => {
@@ -382,6 +377,7 @@ export default function ManagePurchaseOrder() {
                         supplierOptions={supplierOptions}
                         poRecords={poRecords}
                         action={action}
+                        quotationOptions={quotationOptions}
                     />
                 }
 
