@@ -5,7 +5,7 @@ const router = express.Router();
 //Checks whether the endpoint works
 router.get("/", (req, res, next) => {
     res.status(200).json({
-        message: "Handeling GET requests to /get-total-sales"
+        message: "Handeling GET requests to /total-sales"
     });
 });
 
@@ -32,8 +32,8 @@ router.get("/daily", (req, res, next) => {
         {
             $match: {
                 "orderplacedat": {
-                    $gte: "2021-10-01",
-                    $lte: "2021-10-15"
+                    $gte: "2022-04-17",
+                    $lte: "2022-04-30"
                 }
             }
         },
@@ -75,7 +75,6 @@ router.get("/daily", (req, res, next) => {
                 date: {
                     $dateFromParts: {
                         'year': "$_id.year",
-                        'month': "$_id.month",
                         'day': "$_id.day",
                     }
                 },
@@ -84,7 +83,7 @@ router.get("/daily", (req, res, next) => {
         },
         {
             $sort: {
-                Date: 1
+                date: 1
             }
         }
     ];
@@ -258,7 +257,7 @@ router.get("/weekly", (req, res, next) => {
             }
 
             res.status(201).json({
-                message: "Handeling GET requests to /get-total-sales/weekly",
+                message: "Handeling GET requests to /total-sales/weekly",
                 labels: labels,
                 chartData: chartData,
                 label: label
@@ -392,7 +391,7 @@ router.get("/monthly", (req, res, next) => {
             }
 
             res.status(201).json({
-                message: "Handeling GET requests to /get-total-sales/monthly",
+                message: "Handeling GET requests to /total-sales/monthly",
                 labels: labels,
                 chartData: chartData,
                 label: label
@@ -495,7 +494,7 @@ router.get("/annually", (req, res, next) => {
             }
 
             res.status(201).json({
-                message: "Handeling GET requests to /get-total-sales/annually",
+                message: "Handeling GET requests to /total-sales/annually",
                 labels: labels,
                 chartData: chartData,
                 label: label
