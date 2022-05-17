@@ -111,7 +111,7 @@ export default function PrintOrder(props) {
 
             <div className={style.body} >
 
-                <div style={{ width: '210mm', minHeight: '297mm', padding: "10px", fontSize: '0.8em' }} id="pdf" >
+                <div style={{ width: '210mm', minHeight: 'min-content', padding: "10px", fontSize: '0.8em' }} id="pdf" >
 
                     <b>
                         <center>
