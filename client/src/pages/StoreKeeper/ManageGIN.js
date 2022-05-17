@@ -293,7 +293,7 @@ export default function ManageGIN() {
                                                 title: "GIN",
                                                 field: "ginnumber",
                                                 cellStyle: {
-                                                    width: "15%",
+                                                    width: designation === "Delivery Representative" ? "32.3%" : "15%",
                                                     textAlign: 'left'
                                                 },
                                                 render: rowData => {
@@ -306,13 +306,14 @@ export default function ManageGIN() {
                                                 title: "Route",
                                                 field: "route",
                                                 cellStyle: {
-                                                    width: "20%",
+                                                    width: designation === "Delivery Representative" ? "32.3%" : "20%",
                                                     textAlign: 'left'
                                                 },
                                             },
                                             {
                                                 title: "In Charge",
                                                 field: "incharge",
+                                                hidden: designation === "Delivery Representative",
                                                 cellStyle: {
                                                     width: "25%",
                                                     textAlign: 'left'
@@ -322,7 +323,7 @@ export default function ManageGIN() {
                                                 title: "Status",
                                                 field: "status",
                                                 cellStyle: {
-                                                    width: "15%",
+                                                    width: designation === "Delivery Representative" ? "32.3%" : "15%",
                                                     textAlign: 'left'
                                                 },
                                                 render: rowData => {
@@ -340,6 +341,7 @@ export default function ManageGIN() {
                                             {
                                                 title: "Created by",
                                                 field: "createdby",
+                                                hidden: designation === "Delivery Representative",
                                                 cellStyle: {
                                                     width: "17%",
                                                     textAlign: 'left'

@@ -354,7 +354,7 @@ export default function SalesAndInvoice() {
                                                 title: "Order ID",
                                                 field: "orderno",
                                                 cellStyle: {
-                                                    width: "25%",
+                                                    width: designation !== "Manager" ? "25%" :"15%",
                                                     textAlign: 'left'
                                                 },
                                                 render: rowData => {
@@ -364,10 +364,19 @@ export default function SalesAndInvoice() {
                                                 }
                                             },
                                             {
-                                                title: "Customer Name",
+                                                title: "Store Name",
                                                 field: "storename",
                                                 cellStyle: {
-                                                    width: "50%",
+                                                    width: designation !== "Manager" ? "50%" : "25%",
+                                                    textAlign: 'left'
+                                                },
+                                            },
+                                            {
+                                                title: "Customer Type",
+                                                field: "customertype",
+                                                hidden: designation !== "Manager",
+                                                cellStyle: {
+                                                    width: "15%",
                                                     textAlign: 'left'
                                                 },
                                             },
@@ -375,7 +384,7 @@ export default function SalesAndInvoice() {
                                                 title: "Status",
                                                 field: "status",
                                                 cellStyle: {
-                                                    width: "25%",
+                                                    width: designation !== "Manager" ? "25%" : "10%",
                                                     textAlign: 'left'
                                                 },
                                                 render: rowData => {
@@ -392,6 +401,15 @@ export default function SalesAndInvoice() {
 
                                                     )
                                                 }
+                                            },
+                                            {
+                                                title: "Created by",
+                                                field: "ordercreatedby",
+                                                hidden: designation !== "Manager",
+                                                cellStyle: {
+                                                    width: "25%",
+                                                    textAlign: 'left'
+                                                },
                                             },
                                         ]}
                                         data={records}
