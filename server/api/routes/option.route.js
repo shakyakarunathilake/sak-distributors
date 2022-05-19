@@ -144,7 +144,7 @@ router.get("/product-variant-options-for-product", (req, res, next) => {
             )
 
             res.status(201).json({
-                message: "Handeling GET requests to /get-total-sales",
+                message: "Handeling GET requests to /product-variant-options-for-product",
                 productVariantOptions: productVariantOptions,
             })
         }
@@ -168,7 +168,7 @@ router.get("/employee-options-for-product", (req, res, next) => {
             }))
 
             res.status(201).json({
-                message: "Handeling GET requests to /employee-options",
+                message: "Handeling GET requests to /employee-options-for-product",
                 employeeOptions: employeeOptions,
             })
         })
@@ -381,8 +381,33 @@ router.get("/route-options", (req, res, next) => {
             }))
 
             res.status(201).json({
-                message: "Handeling GET requests to /route-options-for-gin",
+                message: "Handeling GET requests to /route-options",
                 routeOptions: routeOptions,
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        })
+})
+
+
+//Get all supplier options 
+router.get("/supplier-options", (req, res, next) => {
+
+    Supplier
+        .find()
+        .exec()
+        .then(doc => {
+
+            const supplierOptions = doc.map(x => ({
+                title: x.name,
+                id: x.supplierid
+            }))
+
+            res.status(201).json({
+                message: "Handeling GET requests to /supplier-options",
+                supplierOptions: supplierOptions,
             })
         })
         .catch(err => {
