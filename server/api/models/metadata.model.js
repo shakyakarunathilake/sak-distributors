@@ -24,6 +24,13 @@ const metaDataSchema = mongoose.Schema({
         orderno: { type: String, required: false },
         route: { type: String, required: false },
         status: { type: String, required: false },
+        incharge: { type: String, required: false },
+    }],
+    gin: [{
+        ginnumber: { type: String, required: false },
+        status: { type: String, required: false },
+        createdby: { type: String, required: false },
+        incharge: { type: String, required: false },
     }],
     promotions: [{
         productid: { type: String, required: false },
