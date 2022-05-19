@@ -19,8 +19,8 @@ export default function StorekeeperDashboard() {
     }
 
     let endpoints = [
-        "http://localhost:8080/metadata/awaiting-grn",
-        "http://localhost:8080/metadata/no-of-customer-orders",
+        "http://localhost:8080/metadata/grn-meta-data",
+        "http://localhost:8080/metadata/customer-orders-meta-data",
     ]
 
     const [customerOrders, setCustomerOrders] = useState([]);
@@ -31,8 +31,8 @@ export default function StorekeeperDashboard() {
             .all(endpoints.map((endpoint) => axios.get(endpoint, { headers: { 'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken } })))
             .then(
                 axios.spread((...responses) => {
-                    setGrn(responses[0].data.noofawaitinggrn)
-                    setCustomerOrders(responses[1].data.noofcustomerorders)
+                    setGrn(responses[0].data.grnMetaData)
+                    setCustomerOrders(responses[1].data.customerOrdersMetaData)
                 })
             )
             .catch(error => {
@@ -50,13 +50,19 @@ export default function StorekeeperDashboard() {
 
                 <div className={style.columnB}>
 
-                    <AwaitingGRN
-                        grn={grn}
-                    />
+                    {
+                        grn.length !== 0 &&
+                        <AwaitingGRN
+                            grn={grn}
+                        />
+                    }
 
-                    <CustomerOrders
-                        customerOrders={customerOrders}
-                    />
+                    {
+                        customerOrders.length !== 0 &&
+                        <CustomerOrders
+                            customerOrders={customerOrders}
+                        />
+                    }
 
                 </div>
 
