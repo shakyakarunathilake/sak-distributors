@@ -147,8 +147,8 @@ router.get("/weekly", (req, res, next) => {
         {
             $match: {
                 "orderplacedat": {
-                    $gte: "2021-10-01",
-                    $lte: "2021-10-15"
+                    $gte: "2022-04-17",
+                    $lte: "2022-04-30"
                 }
             }
         },
@@ -286,8 +286,8 @@ router.get("/monthly", (req, res, next) => {
         {
             $match: {
                 "orderplacedat": {
-                    $gte: "2021-10-01",
-                    $lte: "2022-10-01"
+                    $gte: "2021-04-30",
+                    $lte: "2022-04-30"
                 }
             }
         },
