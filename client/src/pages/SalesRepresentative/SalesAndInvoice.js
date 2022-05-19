@@ -393,7 +393,7 @@ export default function SalesAndInvoice() {
                                                             <p style={{ padding: "0", margin: "0", color: "#5E01AE", fontWeight: "700" }}>{rowData.status}</p>
                                                             : rowData.status === 'Processing' ?
                                                                 <p style={{ padding: "0", margin: "0", color: "#2196F3", fontWeight: "700" }}>{rowData.status}</p>
-                                                                : rowData.status === 'Shipping' ?
+                                                                : rowData.status === 'Dispatched' ?
                                                                     <p style={{ padding: "0", margin: "0", color: "#eed202", fontWeight: "700" }}>{rowData.status}</p>
                                                                     : rowData.status === 'Delivered' ?
                                                                         <p style={{ padding: "0", margin: "0", color: "#FF8400", fontWeight: "700" }}>{rowData.status}</p>
