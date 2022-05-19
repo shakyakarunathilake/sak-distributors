@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 //MUI Components
 import Table from '@mui/material/Table';
@@ -10,33 +11,15 @@ import TableRow from '@mui/material/TableRow';
 import IconButton from '@mui/material/IconButton';
 
 //MUI Icons
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 //SCSS style
 import style from './AwaitingGRN.module.scss';
 
-//Axios
-import axios from 'axios';
 
 export default function AwaitingGRN(props) {
 
-    const handleClick = (grnnumber) => {
 
-        axios
-            .get(`http://localhost:8080/grn/${grnnumber}`, {
-                headers: {
-                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
-                }
-            })
-            .then(res => {
-                localStorage.setItem(grnnumber, JSON.stringify(res.data.grn));
-                window.open(`http://localhost:3000/store-keeper/view-grn-details/${grnnumber}`, "_blank");
-            })
-            .catch(err => {
-                console.log(err);
-            })
-
-    }
 
     return (
         <div className={style.container}>
@@ -67,10 +50,11 @@ export default function AwaitingGRN(props) {
                                     <TableCell sx={{ color: "#2196F3", fontWeight: 700, padding: "8px" }}>{row.status}</TableCell>
                                     <TableCell sx={{ padding: "8px" }}>
                                         <IconButton>
-                                            <VisibilityIcon
-                                                className={style.icon}
-                                                onClick={() => handleClick(row.grnnumber)}
-                                            />
+                                            <Link to="/store-keeper/manage-grn">
+                                                <NavigateNextIcon
+                                                    className={style.icon}
+                                                />
+                                            </Link>
                                         </IconButton>
                                     </TableCell>
                                 </TableRow>
