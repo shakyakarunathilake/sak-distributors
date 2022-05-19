@@ -67,7 +67,7 @@ router.get("/get-next-orderno/:employeeid", (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(500).json({
                 "Error": err
             });
@@ -122,7 +122,8 @@ router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
                             'customerOrders': {
                                 'orderno': result.orderno,
                                 'route': result.route,
-                                'status': result.status
+                                'status': result.status,
+                                'incharge': ''
                             },
                         },
                     },
@@ -240,11 +241,11 @@ router.post("/update-by-id/:orderno", formDataBody.fields([]), (req, res, next) 
             });
         })
         .catch(err => {
+            console.log("ERROR: ", err);
             res.status(200).json({
                 type: 'error',
                 alert: `Something went wrong. Could not update order`,
             });
-            console.log(err);
         });
 });
 
@@ -264,6 +265,29 @@ router.post("/approve-delivery/:orderno", formDataBody.fields([]), (req, res, ne
             { new: true, upsert: false }
         )
         .exec()
+        .then(doc => {
+
+            MetaData
+                .findOneAndUpdate(
+                    { 'customerOrders.orderno': doc.orderno },
+                    {
+                        $set: {
+                            'customerOrders.$.status': doc.status
+                        }
+                    },
+                    { upsert: true }
+                )
+                .exec()
+                .then(
+                    console.log("**** META DATA ADDED ****")
+                )
+                .catch(err => {
+                    console.log("**** META DATA ERROR ****")
+                    console.log(err);
+                });
+
+            return doc;
+        })
         .then(doc => {
 
             console.log("**** ORDER STATUS UPDATED ****")
@@ -296,6 +320,31 @@ router.post("/approve-delivery/:orderno", formDataBody.fields([]), (req, res, ne
                                 { new: true, upsert: false }
                             )
                             .exec()
+                            .then(doc => {
+
+                                MetaData
+                                    .findOneAndUpdate(
+                                        {},
+                                        {
+                                            $pull: {
+                                                'gin': {
+                                                    'ginnumber': doc.ginnumber
+                                                }
+                                            }
+                                        },
+                                        { upsert: true }
+                                    )
+                                    .exec()
+                                    .then(
+                                        console.log("**** META DATA ADDED ****")
+                                    )
+                                    .catch(err => {
+                                        console.log("**** META DATA ERROR ****")
+                                        console.log(err);
+                                    });
+
+                                return doc;
+                            })
                             .then(
                                 console.log("**** GIN STATUS SET TO COMPLETE ****")
                             )
@@ -322,11 +371,11 @@ router.post("/approve-delivery/:orderno", formDataBody.fields([]), (req, res, ne
             });
         })
         .catch(err => {
+            console.log("ERROR: ", err);
             res.status(200).json({
                 type: 'error',
                 alert: `Something went wrong. Could not update order`,
             });
-            console.log(err);
         })
 
 })
@@ -348,6 +397,31 @@ router.post("/approve-complete/:orderno", formDataBody.fields([]), (req, res, ne
         )
         .exec()
         .then(doc => {
+
+            MetaData
+                .findOneAndUpdate(
+                    {},
+                    {
+                        $pull: {
+                            'customerOrders': {
+                                'orderno': doc.orderno
+                            }
+                        }
+                    },
+                    { upsert: true }
+                )
+                .exec()
+                .then(
+                    console.log("**** META DATA ADDED ****")
+                )
+                .catch(err => {
+                    console.log("**** META DATA ERROR ****")
+                    console.log(err);
+                });
+
+            return doc;
+        })
+        .then(doc => {
             res.status(200).json({
                 message: "Handling POST requests to /orders/approve-complete/:orderno, ORDER STATUS CHANGED TO COMPLETE",
                 type: 'success',
@@ -355,11 +429,11 @@ router.post("/approve-complete/:orderno", formDataBody.fields([]), (req, res, ne
             });
         })
         .catch(err => {
+            console.log("ERROR: ", err);
             res.status(200).json({
                 type: 'error',
                 alert: `Something went wrong. Could not update order`,
             });
-            console.log(err);
         })
 
 });
@@ -387,7 +461,7 @@ router.get("/get-all-sales-and-invoice-table-data", (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(500).json({ "Error": err });
         })
 });
@@ -411,7 +485,7 @@ router.get("/get-all-sales-and-invoice-table-data-for-sales-representative/:empl
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(500).json({ "Error": err });
         })
 });
@@ -435,7 +509,7 @@ router.get("/get-all-sales-and-invoice-table-data-for-delivery-representative/:e
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(500).json({ "Error": err });
         })
 });
@@ -463,7 +537,7 @@ router.get("/get-order-records", (req, res, next) => {
         })
         .catch(error => {
 
-            console.log(error);
+            console.log("ERROR: ", err);
 
             res.status(500).json({
                 "Error": error
@@ -512,7 +586,7 @@ router.get("/:orderno", (req, res, next) => {
             })
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(500).json({ "Error": err });
         })
 
