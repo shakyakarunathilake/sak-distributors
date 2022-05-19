@@ -42,7 +42,7 @@ router.get("/get-all-grn-table-data", (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(500).json({ "Error": err });
         })
 
@@ -77,7 +77,7 @@ router.get("/:grnnumber", (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(500).json({ "Error": err });
         })
 })
@@ -158,7 +158,7 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
                     console.log("******** SUPPLIER PAYMENT ADDED ********")
                 )
                 .catch(err => {
-                    console.log(err);
+                    console.log("ERROR: ", err);
                     res.status(200).json({
                         type: 'error',
                         alert: `Something went wrong. Could not update relevant supplier payment`,
@@ -176,23 +176,10 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
                     .exec()
                     .then(result => {
 
-                        console.log("***********************************************************");
-
-                        console.log("ITEM.NAME :", item.description);
-                        console.log("item.salesqtycases :", item.salesqtycases);
-                        console.log("item.salesqtypieces :", item.salesqtypieces);
-                        console.log("item.freeqtycases :", item.freeqtycases);
-                        console.log("item.freeqtypieces :", item.freeqtypieces);
-
                         let storesalesqtypieces = result.storequantity.salesqtypieces;
                         let storesalesqtycases = result.storequantity.salesqtycases;
                         let storefreeqtypieces = result.storequantity.freeqtypieces;
                         let storefreeqtycases = result.storequantity.freeqtycases;
-
-                        console.log("storesalesqtycases :", storesalesqtycases);
-                        console.log("storesalesqtypieces :", storesalesqtypieces);
-                        console.log("storefreeqtycases :", storefreeqtycases);
-                        console.log("storefreeqtypieces :", storefreeqtypieces);
 
                         let newNoOfTotalSalesPieces = (storesalesqtycases * item.piecespercase) + storesalesqtypieces + (item.deliveredsalesqtycases * item.piecespercase) + item.deliveredsalesqtypieces - item.damagedsalesqty;
                         let newNoOfTotalFreePieces = (storefreeqtycases * item.piecespercase) + storefreeqtypieces + (item.deliveredfreeqtycases * item.piecespercase) + item.deliveredfreeqtypieces - item.damagedfreeqty;
@@ -201,13 +188,6 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
                         let newstoresalesqtycases = Math.floor(newNoOfTotalSalesPieces / item.piecespercase);
                         let newstorefreeqtypieces = newNoOfTotalFreePieces % item.piecespercase;
                         let newstorefreeqtycases = Math.floor(newNoOfTotalFreePieces / item.piecespercase);
-
-                        console.log("newstoresalesqtypieces :", newstoresalesqtypieces);
-                        console.log("newstoresalesqtycases :", newstoresalesqtycases);
-                        console.log("newstorefreeqtypieces :", newstorefreeqtypieces);
-                        console.log("newstorefreeqtycases :", newstorefreeqtycases);
-
-                        console.log("***********************************************************");
 
                         Store
                             .findOneAndUpdate(
@@ -241,12 +221,12 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
                                 console.log("******** ITEMS ADDED TO STORE ********")
                             )
                             .catch(err => {
-                                console.log(err);
+                                console.log("ERROR: ", err);
                             })
 
                     })
                     .catch(err =>
-                        console.log(err)
+                        console.log("ERROR: ", err)
                     )
 
             })
@@ -337,7 +317,7 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
             })
         )
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(200).json({
                 type: 'error',
                 alert: `Something went wrong. Could not update GRN`,
