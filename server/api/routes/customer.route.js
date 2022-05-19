@@ -31,8 +31,6 @@ router.get("/get-next-regno", (req, res, next) => {
         .exec()
         .then(doc => {
 
-            console.log(doc)
-            
             let postfix = "00001";
 
             if (doc.length && doc.length > 0) {
@@ -48,7 +46,7 @@ router.get("/get-next-regno", (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(500).json({ "Error": err });
         })
 
@@ -91,11 +89,11 @@ router.post("/create-customer", formDataBody.fields([]), (req, res, next) => {
             });
         })
         .catch(err => {
+            console.log("Error: ", err)
             res.status(200).json({
                 type: 'error',
                 alert: `Something went wrong. Could not add customer`,
             });
-            console.log("Error: ", err)
         })
 });
 
@@ -112,15 +110,13 @@ router.get("/get-all-basic-customer-data", (req, res, next) => {
                 "route": x.route,
             }))
 
-            console.log("Customer Info: ", customerinfo);
-
             res.status(201).json({
                 message: "Handeling GET requests to /get-all-basic-customer-info",
                 customerinfo: customerinfo
             })
         })
         .catch(err => {
-            console.log(err);
+            console.log("Error: ", err)
             res.status(500).json({ "Error": err });
         })
 });
@@ -139,6 +135,7 @@ router.get("/get-all-customer-table-data", (req, res, next) => {
                 "customername": x.title + " " + x.firstname + " " + x.lastname,
                 "shippingaddress": x.shippingaddress,
                 "contactnumber": x.storecontactnumber,
+                "route": x.route
             }))
 
             res.status(201).json({
@@ -147,7 +144,7 @@ router.get("/get-all-customer-table-data", (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("Error: ", err)
             res.status(500).json({ "Error": err });
         })
 })
@@ -188,14 +185,13 @@ router.get("/:customerid", (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("Error: ", err)
             res.status(500).json({ "Error": err });
         })
 })
 
 //Update customer data by Customer ID
 router.post("/update-by-id/:customerid", formDataBody.fields([]), (req, res, next) => {
-    console.log("UPDATE: ", req.body);
 
     Customer
         .findOneAndUpdate({ customerid: req.params.customerid }, req.body, { new: true })
@@ -208,11 +204,11 @@ router.post("/update-by-id/:customerid", formDataBody.fields([]), (req, res, nex
             });
         })
         .catch(err => {
+            console.log("Error: ", err)
             res.status(200).json({
                 type: 'error',
                 alert: `Something went wrong. Could not update customer`,
             });
-            console.log(err);
         });
 });
 
