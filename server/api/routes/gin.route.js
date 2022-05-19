@@ -39,7 +39,7 @@ router.get("/get-all-gin-table-data", (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("Error: ", err)
             res.status(500).json({ "Error": err });
         })
 
@@ -68,7 +68,7 @@ router.get("/get-all-gin-table-data/:employee", (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("Error: ", err)
             res.status(500).json({ "Error": err });
         })
 
@@ -88,15 +88,13 @@ router.get("/:ginnumber", (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("Error: ", err)
             res.status(500).json({ "Error": err });
         })
 })
 
 //Create GIN
 router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
-
-    // console.log("REQUEST: ", req.body);
 
     const items = JSON.parse(req.body.items);
     const ordernumbers = JSON.parse(req.body.ordernumbers);
@@ -115,13 +113,9 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
         vehicle: ''
     })
 
-    // console.log("GIN: ", gin);
-
     gin
         .save()
         .then(doc => {
-
-            // console.log("GIN :", doc);
 
             doc.ordernumbers.map(order => {
 
@@ -154,21 +148,17 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
         })
         .then(doc => {
 
-            // console.log("METADATA :", doc);
-
             doc.ordernumbers.map(order => {
 
                 MetaData
                     .findOneAndUpdate(
-                        {},
+                        { 'customerOrders.orderno': order.ordernumber },
                         {
-                            $pull: {
-                                'customerOrders': {
-                                    'orderno': order.ordernumber
-                                }
+                            $set: {
+                                'customerOrders.$.status': doc.status
                             }
                         },
-                        { new: true, upsert: true }
+                        { upsert: true }
                     )
                     .exec()
                     .then(
@@ -184,7 +174,33 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
         })
         .then(doc => {
 
-            // console.log("STORE :", doc);
+            MetaData
+                .findOneAndUpdate(
+                    {},
+                    {
+                        $push: {
+                            'gin': {
+                                'ginnumber': doc.ginnumber,
+                                'status': doc.status,
+                                'createdby': doc.createdby,
+                                'incharge': ''
+                            }
+                        }
+                    },
+                    { upsert: true }
+                )
+                .exec()
+                .then(
+                    console.log("******** META DATA ADDED ********")
+                )
+                .catch(err => {
+                    console.log("******** META DATA ERROR!!!!! ********");
+                    console.log(err);
+                });
+
+            return doc;
+        })
+        .then(doc => {
 
             doc.items.map((item, i) => {
 
@@ -193,23 +209,10 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
                     .exec()
                     .then(result => {
 
-                        console.log("***********************************************************");
-
-                        console.log("ITEM.NAME :", item.name);
-                        console.log("item.salesqtycases :", item.salesqtycases);
-                        console.log("item.salesqtypieces :", item.salesqtypieces);
-                        console.log("item.freeqtycases :", item.freeqtycases);
-                        console.log("item.freeqtypieces :", item.freeqtypieces);
-
                         let storesalesqtypieces = result.storequantity.salesqtypieces;
                         let storesalesqtycases = result.storequantity.salesqtycases;
                         let storefreeqtypieces = result.storequantity.freeqtypieces;
                         let storefreeqtycases = result.storequantity.freeqtycases;
-
-                        console.log("storesalesqtycases :", storesalesqtycases);
-                        console.log("storesalesqtypieces :", storesalesqtypieces);
-                        console.log("storefreeqtycases :", storefreeqtycases);
-                        console.log("storefreeqtypieces :", storefreeqtypieces);
 
                         let newNoOfTotalSalesPieces = (storesalesqtycases * item.piecespercase) + storesalesqtypieces - (item.salesqtycases * item.piecespercase) - item.salesqtypieces;
                         let newNoOfTotalFreePieces = (storefreeqtycases * item.piecespercase) + storefreeqtypieces - (item.freeqtycases * item.piecespercase) - item.freeqtypieces;
@@ -230,13 +233,6 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
                         } else {
                             newstorefreeqtycases = Math.ceil(newNoOfTotalFreePieces / item.piecespercase);
                         }
-
-                        console.log("newstoresalesqtypieces :", newstoresalesqtypieces);
-                        console.log("newstoresalesqtycases :", newstoresalesqtycases);
-                        console.log("newstorefreeqtypieces :", newstorefreeqtypieces);
-                        console.log("newstorefreeqtycases :", newstorefreeqtycases);
-
-                        console.log("***********************************************************");
 
                         Store
                             .findOneAndUpdate(
@@ -266,13 +262,14 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
                             .exec()
                             .then()
                             .catch(err =>
-                                console.log(err)
+                                console.log("Error: ", err)
                             )
 
                     })
-                    .catch(err =>
-                        console.log(err)
-                    )
+                    .catch(err => {
+                        console.log("******** STORE UPDATE ERROR!!!!! ********");
+                        console.log(err);
+                    })
             })
 
             return doc;
@@ -287,7 +284,8 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
         )
         .catch(err => {
 
-            console.log("CREATE GIN ERROR: ", err);
+            console.log("******** CREATE GIN ERROR!!!!! ********");
+            console.log(err);
 
             res.status(200).json({
                 type: 'error',
@@ -298,8 +296,6 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
 
 //Approve dispatch GIN by GIN Number
 router.post("/approve-dispatch/:ginnumber", formDataBody.fields([]), (req, res, next) => {
-
-    console.log(req.body);
 
     GIN
         .findOneAndUpdate(
@@ -336,14 +332,63 @@ router.post("/approve-dispatch/:ginnumber", formDataBody.fields([]), (req, res, 
                         console.log("**** UPDATED ORDER STATUS OF ORDER NUMBER ****")
                     )
                     .catch(err => {
+                        console.log("Error: ", err)
                         res.status(200).json({
                             type: 'error',
                             alert: `Something went wrong. Could not update status of relevant orders`,
                         });
-                        console.log(err);
                     });
 
             });
+
+            return doc;
+        })
+        .then(doc => {
+
+            MetaData
+                .findOneAndUpdate(
+                    { 'gin.ginnumber': doc.ginnumber },
+                    {
+                        $set: {
+                            'gin.$.status': doc.status,
+                            'gin.$.incharge': doc.incharge
+                        }
+                    },
+                    { upsert: true }
+                )
+                .exec()
+                .then(
+                    console.log("******** META DATA ADDED ********")
+                )
+                .catch(err => {
+                    console.log("Error: ", err)
+                });
+
+            return doc;
+        })
+        .then(doc => {
+
+            doc.ordernumbers.map(order => {
+
+                MetaData
+                    .findOneAndUpdate(
+                        { 'customerOrders.orderno': order.ordernumber },
+                        {
+                            $set: {
+                                'customerOrders.$.status': doc.status,
+                                'customerOrders.$.incharge': doc.incharge
+                            }
+                        },
+                        { upsert: true }
+                    )
+                    .exec()
+                    .then(
+                        console.log("**** META DATA ADDED ****")
+                    )
+                    .catch(err => {
+                        console.log("Error: ", err)
+                    });
+            })
 
             return doc;
         })
@@ -359,7 +404,7 @@ router.post("/approve-dispatch/:ginnumber", formDataBody.fields([]), (req, res, 
                 type: 'error',
                 alert: `Something went wrong. Could not update GIN`,
             });
-            console.log(err);
+            console.log("Error: ", err)
         });
 });
 
