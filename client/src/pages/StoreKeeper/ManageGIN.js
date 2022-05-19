@@ -332,7 +332,7 @@ export default function ManageGIN() {
                                                             <p style={{ padding: "0", margin: "0", color: 'red', fontWeight: "700" }}>{rowData.status}</p>
                                                             : rowData.status === 'Processing' ?
                                                                 <p style={{ padding: "0", margin: "0", color: "#2196F3", fontWeight: "700" }}>{rowData.status}</p>
-                                                                : rowData.status === 'Shipping' ?
+                                                                : rowData.status === 'Dispatched' ?
                                                                     <p style={{ padding: "0", margin: "0", color: "#FF8400", fontWeight: "700" }}>{rowData.status}</p>
                                                                     : <p style={{ padding: "0", margin: "0", color: "#4caf50", fontWeight: "700" }}>{rowData.status}</p>
                                                     )
