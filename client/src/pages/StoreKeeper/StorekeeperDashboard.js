@@ -5,6 +5,7 @@ import PageTwo from '../../shared/PageTwo/PageTwo';
 import Profile from '../../shared/PageTwo/Profile';
 import CustomerOrders from '../DashboardPaper/CustomerOrders';
 import AwaitingGRN from '../DashboardPaper/AwaitingGRN';
+import ProcessingGIN from '../DashboardPaper/ProcessingGIN';
 
 //SCSS Styles
 import style from './StorekeeperDashboard.module.scss';
@@ -18,13 +19,17 @@ export default function StorekeeperDashboard() {
         window.location.replace("http://localhost:3000/change-password");
     }
 
+    const employeedetails = JSON.parse(sessionStorage.getItem("Auth"));
+
     let endpoints = [
         "http://localhost:8080/metadata/grn-meta-data",
-        "http://localhost:8080/metadata/customer-orders-meta-data",
+        "http://localhost:8080/metadata/pending-customer-orders-meta-data",
+        "http://localhost:8080/metadata/processing-gin-meta-data",
     ]
 
     const [customerOrders, setCustomerOrders] = useState([]);
     const [grn, setGrn] = useState([]);
+    const [gin, setGin] = useState([]);
 
     useEffect(() => {
         axios
@@ -33,6 +38,7 @@ export default function StorekeeperDashboard() {
                 axios.spread((...responses) => {
                     setGrn(responses[0].data.grnMetaData)
                     setCustomerOrders(responses[1].data.customerOrdersMetaData)
+                    setGin(responses[2].data.ginMetaData)
                 })
             )
             .catch(error => {
@@ -61,6 +67,14 @@ export default function StorekeeperDashboard() {
                         customerOrders.length !== 0 &&
                         <CustomerOrders
                             customerOrders={customerOrders}
+                            employeedetails={employeedetails}
+                        />
+                    }
+
+                    {
+                        gin.length !== 0 &&
+                        <ProcessingGIN
+                            gin={gin}
                         />
                     }
 
