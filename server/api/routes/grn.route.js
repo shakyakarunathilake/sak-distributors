@@ -208,7 +208,7 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
                         console.log("newstorefreeqtycases :", newstorefreeqtycases);
 
                         console.log("***********************************************************");
-                        
+
                         Store
                             .findOneAndUpdate(
                                 { productid: item.productid },
@@ -288,7 +288,7 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
                     {},
                     {
                         $pull: {
-                            'noofawaitinggrn': {
+                            'grn': {
                                 'ponumber': doc.ponumber
                             }
                         }
@@ -302,11 +302,31 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
                 .catch(err => {
                     console.log("******** META DATA ERROR!!!!! ********");
                     console.log(err);
+                });
 
-                    res.status(200).json({
-                        type: 'error',
-                        alert: `Something went wrong. Could not update Meta Data `,
-                    })
+            return doc;
+        })
+        .then(doc => {
+
+            MetaData
+                .findOneAndUpdate(
+                    { 'supplierPayments.ponumber': doc.ponumber },
+                    {
+                        $set: {
+                            'supplierPayments': {
+                                'supplierPayments.$.status': 'Payment To Be Complete'
+                            }
+                        }
+                    },
+                    { upsert: true }
+                )
+                .exec()
+                .then(
+                    console.log("******** META DATA ADDED ********")
+                )
+                .catch(err => {
+                    console.log("******** META DATA ERROR!!!!! ********");
+                    console.log(err);
                 });
 
             return doc;

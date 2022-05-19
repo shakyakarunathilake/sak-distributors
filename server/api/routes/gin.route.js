@@ -163,7 +163,7 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
                         {},
                         {
                             $pull: {
-                                'noofcustomerorders': {
+                                'customerOrders': {
                                     'orderno': order.ordernumber
                                 }
                             }
@@ -175,11 +175,8 @@ router.post("/create-gin", formDataBody.fields([]), (req, res, next) => {
                         console.log("**** META DATA ADDED ****")
                     )
                     .catch(err => {
+                        console.log("**** META DATA ERROR ****")
                         console.log(err);
-                        res.status(200).json({
-                            type: 'error',
-                            alert: `Something went wrong. Could not update Meta Data `,
-                        })
                     });
             })
 

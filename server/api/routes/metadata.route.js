@@ -10,15 +10,15 @@ router.get("/", (req, res, next) => {
     });
 });
 
-router.get("/promotions", (req, res, next) => {
+router.get("/promotions-meta-data", (req, res, next) => {
 
     MetaData
         .find()
         .exec()
         .then(doc => {
             res.status(201).json({
-                message: "Handeling GET requests to /promotions",
-                promotions: doc[0].promotions
+                message: "Handeling GET requests to /promotions-meta-data",
+                promotionsMetaData: doc[0].promotions
             })
         })
         .catch(err => {
@@ -27,15 +27,15 @@ router.get("/promotions", (req, res, next) => {
         })
 });
 
-router.get("/awaiting-grn", (req, res, next) => {
+router.get("/grn-meta-data", (req, res, next) => {
 
     MetaData
         .find()
         .exec()
         .then(doc => {
             res.status(201).json({
-                message: "Handeling GET requests to /awaiting-grn",
-                noofawaitinggrn: doc[0].noofawaitinggrn
+                message: "Handeling GET requests to /grn-meta-data",
+                grnMetaData: doc[0].grn
             })
         })
         .catch(err => {
@@ -44,7 +44,7 @@ router.get("/awaiting-grn", (req, res, next) => {
         })
 });
 
-router.get("/no-of-customer-orders", (req, res, next) => {
+router.get("/customer-orders-meta-data", (req, res, next) => {
 
     MetaData
         .find()
@@ -52,8 +52,8 @@ router.get("/no-of-customer-orders", (req, res, next) => {
         .then(doc => {
 
             res.status(201).json({
-                message: "Handeling GET requests to /no-of-customer-orders",
-                noofcustomerorders: doc[0].noofcustomerorders
+                message: "Handeling GET requests to /customer-orders-meta-data",
+                customerOrdersMetaData: doc[0].customerOrders
             })
         })
         .catch(err => {
@@ -62,15 +62,35 @@ router.get("/no-of-customer-orders", (req, res, next) => {
         })
 });
 
-router.get("/purchase-orders-to-be-approved", (req, res, next) => {
+router.get("/purchase-orders-meta-data", (req, res, next) => {
 
     MetaData
         .find()
         .exec()
         .then(doc => {
             res.status(201).json({
-                message: "Handeling GET requests to /purchase-orders-to-be-approved",
-                purchaseorderstobeapproved: doc[0].noofpurchaseordertobeapproved
+                message: "Handeling GET requests to /purchase-orders-meta-data",
+                purchaseOrdersMetaData: doc[0].purchaseOrders
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ "Error": err });
+        })
+});
+
+router.get("/supplier-payments-meta-data", (req, res, next) => {
+
+    MetaData
+        .find()
+        .exec()
+        .then(doc => {
+
+            const supplierPayments = doc[0].supplierPayments.filter(x => x.status !== "Advance Payment Paid")
+
+            res.status(201).json({
+                message: "Handeling GET requests to /supplier-payments-meta-data",
+                supplierPaymentsMetaData: supplierPayments
             })
         })
         .catch(err => {

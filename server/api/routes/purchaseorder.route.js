@@ -125,8 +125,9 @@ router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) =
                     {},
                     {
                         $push: {
-                            'noofpurchaseordertobeapproved': {
+                            'purchaseOrders': {
                                 'ponumber': result.ponumber,
+                                'status': result.purchaseOrders,
                                 'createdat': result.createdat,
                                 'createdby': result.createdby
                             },
@@ -280,15 +281,22 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
                     {},
                     {
                         $push: {
-                            'noofawaitinggrn': {
+                            'grn': {
                                 'ponumber': result.ponumber,
                                 'grnnumber': `GRN-${result.ponumber}`,
-                                'status': result.status,
+                                'status': "Pending",
+                                'createdat': result.createdat,
+                                'createdby': result.createdby
+                            },
+                            'supplierPayments': {
+                                'ponumber': result.ponumber,
+                                'grnnumber': `GRN-${result.ponumber}`,
+                                'status': 'Advance Payment To Be Paid',
                             }
                         },
                         $pull: {
-                            'noofpurchaseordertobeapproved': {
-                                'ponumber': result.ponumber
+                            'purchaseOrders': {
+                                'ponumber': result.ponumber,
                             }
                         }
                     },
