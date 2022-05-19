@@ -77,7 +77,8 @@ export default function VariantFormStepOne(props) {
         productOptions,
         productVariantOptions,
         resetForm,
-        watch
+        watch,
+        supplierOptions
     } = props;
 
     return (
@@ -188,7 +189,7 @@ export default function VariantFormStepOne(props) {
                             render={({ field }) => (
                                 <Select
                                     {...field}
-                                    options={employeeservice.getSupplierOptions()}
+                                    options={supplierOptions || []}
                                     size="small"
                                     label="Supplier *"
                                     disabled={true}
