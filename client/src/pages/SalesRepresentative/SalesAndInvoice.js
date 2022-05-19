@@ -53,10 +53,14 @@ export default function SalesAndInvoice() {
     const [nextOrderNo, setNextOrderNo] = useState();
     const [reRender, setReRender] = useState(null);
 
-    const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
-    const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
-    const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
-    const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
+    const employeedetails = JSON.parse(sessionStorage.getItem("Auth"));
+
+    let endPoints = [
+        `http://localhost:8080/orders/get-next-orderno/${employeedetails.employeeid}`,
+        "http://localhost:8080/options/route-options",
+        "http://localhost:8080/options/customer-options",
+        "http://localhost:8080/options/product-options"
+    ]
 
     const handleAlert = () => {
         setOpen(true);
@@ -70,7 +74,7 @@ export default function SalesAndInvoice() {
     };
 
     useEffect(() => {
-        if (designation === "Manager") {
+        if (employeedetails.designation === "Manager") {
             axios
                 .get(`http://localhost:8080/orders/get-all-sales-and-invoice-table-data`, {
                     headers: {
@@ -87,9 +91,9 @@ export default function SalesAndInvoice() {
                 })
         }
 
-        if (designation === "Sales Representative") {
+        if (employeedetails.designation === "Sales Representative") {
             axios
-                .get(`http://localhost:8080/orders/get-all-sales-and-invoice-table-data-for-sales-representative/${firstname} ${lastname} (${employeeid})`, {
+                .get(`http://localhost:8080/orders/get-all-sales-and-invoice-table-data-for-sales-representative/${employeedetails.firstname} ${employeedetails.lastname} (${employeedetails.employeeid})`, {
                     headers: {
                         'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
                     }
@@ -104,9 +108,9 @@ export default function SalesAndInvoice() {
                 })
         }
 
-        if (designation === "Delivery Representative") {
+        if (employeedetails.designation === "Delivery Representative") {
             axios
-                .get(`http://localhost:8080/orders/get-all-sales-and-invoice-table-data-for-delivery-representative/${firstname} ${lastname} (${employeeid})`, {
+                .get(`http://localhost:8080/orders/get-all-sales-and-invoice-table-data-for-delivery-representative/${employeedetails.firstname} ${employeedetails.lastname} (${employeedetails.employeeid})`, {
                     headers: {
                         'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
                     }
@@ -121,7 +125,7 @@ export default function SalesAndInvoice() {
                 })
         }
 
-    }, [reRender, firstname, lastname, designation, employeeid]);
+    }, [reRender]);
 
     const handleClosePopUp = () => {
         setOpenPopup(false)
@@ -215,6 +219,24 @@ export default function SalesAndInvoice() {
         setAction('');
     }
 
+    const getOptions = () => {
+        axios
+            .all(endPoints.map((endpoint) =>
+                axios
+                    .get(endpoint, { headers: { 'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken } })
+            ))
+            .then(
+                axios.spread((...responses) => {
+                    setNextOrderNo(responses[0].data.nextorderno);
+                    setRouteOptions(responses[1].data.routeOptions);
+                    setCustomerOptions(responses[2].data.customeroptions);
+                    setProductOptions(responses[3].data.productoptions);
+                }))
+            .catch(err => {
+                console.log(err);
+            })
+    }
+
     const openInPopup = orderno => {
         axios
             .get(`http://localhost:8080/orders/${orderno}`, {
@@ -224,85 +246,14 @@ export default function SalesAndInvoice() {
             })
             .then(res => {
                 setOrderRecords(res.data.order);
-
                 if (action !== 'View') {
-                    getCustomerOptions();
-                    getProductOptions();
-                    setTimeout(setOpenPopupTrue, 500);
-                } else {
-                    setTimeout(setOpenPopupTrue, 500);
+                    getOptions();
                 }
+                setTimeout(setOpenPopup(true), 500);
             })
             .catch(err => {
                 console.log(err);
             })
-
-    }
-
-    const getNextOrderNo = () => {
-        axios
-            .get(`http://localhost:8080/orders/get-next-orderno/${employeeid}`, {
-                headers: {
-                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
-                }
-            })
-            .then(res => {
-                setNextOrderNo(res.data.nextorderno);
-            })
-            .catch(err => {
-                console.log(err);
-            });
-
-    }
-
-    const getRouteOptions = () => {
-        axios
-            .get("http://localhost:8080/options/route-options", {
-                headers: {
-                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
-                }
-            })
-            .then(res => {
-                setRouteOptions(res.data.routeOptions);
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    }
-
-    const getCustomerOptions = () => {
-        axios
-            .get("http://localhost:8080/options/customer-options", {
-                headers: {
-                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
-                }
-            })
-            .then(res => {
-                setCustomerOptions(res.data.customeroptions)
-            })
-            .catch(err => {
-                console.log(err);
-            })
-    }
-
-    const getProductOptions = () => {
-        axios
-            .get("http://localhost:8080/options/product-options", {
-                headers: {
-                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
-                }
-            })
-            .then(res => {
-                setProductOptions(res.data.productoptions);
-            })
-            .catch(err => {
-                console.log(err);
-            })
-
-    }
-
-    const setOpenPopupTrue = () => {
-        setOpenPopup(true)
     }
 
     return (
@@ -311,7 +262,7 @@ export default function SalesAndInvoice() {
             <div className={style.container}>
 
                 {
-                    designation === 'Sales Representative' &&
+                    employeedetails.designation === 'Sales Representative' &&
                     <div className={style.actionRow}>
 
                         <Button
@@ -321,13 +272,10 @@ export default function SalesAndInvoice() {
                             variant="contained"
                             onClick={
                                 () => {
-                                    getNextOrderNo();
-                                    getCustomerOptions();
-                                    getRouteOptions();
-                                    getProductOptions();
+                                    getOptions();
                                     setAction('Create');
                                     setOrderRecords(null);
-                                    setTimeout(setOpenPopupTrue, 500);
+                                    setTimeout(setOpenPopup(true), 500);
                                 }
                             }
                         >
@@ -338,7 +286,7 @@ export default function SalesAndInvoice() {
                     </div>
                 }
 
-                <div className={designation === "Sales Representative" ? style.pagecontent1 : style.pagecontent2}>
+                <div className={employeedetails.designation === "Sales Representative" ? style.pagecontent1 : style.pagecontent2}>
 
                     <AutoSizer>
                         {({ height, width }) => {
@@ -354,7 +302,7 @@ export default function SalesAndInvoice() {
                                                 title: "Order ID",
                                                 field: "orderno",
                                                 cellStyle: {
-                                                    width: designation !== "Manager" ? "25%" :"15%",
+                                                    width: employeedetails.designation !== "Manager" ? "25%" : "15%",
                                                     textAlign: 'left'
                                                 },
                                                 render: rowData => {
@@ -367,14 +315,14 @@ export default function SalesAndInvoice() {
                                                 title: "Store Name",
                                                 field: "storename",
                                                 cellStyle: {
-                                                    width: designation !== "Manager" ? "50%" : "25%",
+                                                    width: employeedetails.designation !== "Manager" ? "50%" : "25%",
                                                     textAlign: 'left'
                                                 },
                                             },
                                             {
                                                 title: "Customer Type",
                                                 field: "customertype",
-                                                hidden: designation !== "Manager",
+                                                hidden: employeedetails.designation !== "Manager",
                                                 cellStyle: {
                                                     width: "15%",
                                                     textAlign: 'left'
@@ -384,7 +332,7 @@ export default function SalesAndInvoice() {
                                                 title: "Status",
                                                 field: "status",
                                                 cellStyle: {
-                                                    width: designation !== "Manager" ? "25%" : "10%",
+                                                    width: employeedetails.designation !== "Manager" ? "25%" : "10%",
                                                     textAlign: 'left'
                                                 },
                                                 render: rowData => {
@@ -405,7 +353,7 @@ export default function SalesAndInvoice() {
                                             {
                                                 title: "Created by",
                                                 field: "ordercreatedby",
-                                                hidden: designation !== "Manager",
+                                                hidden: employeedetails.designation !== "Manager",
                                                 cellStyle: {
                                                     width: "25%",
                                                     textAlign: 'left'
@@ -446,7 +394,6 @@ export default function SalesAndInvoice() {
                                                 icon: 'edit',
                                                 tooltip: 'Edit',
                                                 onClick: (event, rowData) => {
-                                                    getProductOptions();
                                                     setAction('Edit');
                                                     openInPopup(rowData.orderno);
                                                 },
@@ -459,7 +406,7 @@ export default function SalesAndInvoice() {
                                                     setAction('Delivered');
                                                     openInPopup(rowData.orderno);
                                                 },
-                                                disabled: designation !== "Delivery Representative" || rowData.status === 'Delivered' || rowData.status === 'Paid'
+                                                disabled: employeedetails.designation !== "Delivery Representative" || rowData.status === 'Delivered' || rowData.status === 'Paid'
                                             }),
                                             rowData => ({
                                                 icon: PaymentIcon,
@@ -468,7 +415,7 @@ export default function SalesAndInvoice() {
                                                     setAction('Paid');
                                                     openInPopup(rowData.orderno);
                                                 },
-                                                disabled: designation !== "Manager" || rowData.status !== 'Delivered'
+                                                disabled: employeedetails.designation !== "Manager" || rowData.status !== 'Delivered'
                                             }),
                                             {
                                                 icon: PrintIcon,
@@ -491,7 +438,7 @@ export default function SalesAndInvoice() {
                 <PopUp
                     openPopup={openPopup}
                     setOpenPopup={setOpenPopup}
-                    fullScreen={(action === "Delivered") || (designation === 'Manager') ? false : true}
+                    fullScreen={(action === "Delivered") || (employeedetails.designation === 'Manager') ? false : true}
                 >
 
                     {
