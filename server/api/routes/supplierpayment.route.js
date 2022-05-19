@@ -5,6 +5,7 @@ const multer = require("multer");
 
 const SupplierPayment = require("../models/supplierpayment.model");
 const Supplier = require("../models/supplier.model");
+const MetaData = require("../models/metadata.model");
 
 const formDataBody = multer();
 
@@ -103,11 +104,34 @@ router.post("/advance-payment-complete/:ponumber", formDataBody.fields([]), (req
             { new: true, upsert: true }
         )
         .exec()
-        .then(doc =>
+        .then(result => {
+
+            MetaData
+                .findOneAndUpdate(
+                    { 'supplierPayments.ponumber': result.ponumber },
+                    {
+                        $set: {
+                            'supplierPayments.$.status': 'Advance Payment Paid',
+                        },
+                    },
+                    { new: true, upsert: true }
+                )
+                .exec()
+                .then(
+                    console.log("******** ADVANCE PAYMENT PAID METADATA ADDED ********")
+                )
+                .catch(err => {
+                    console.log("********  ADVANCE PAYMENT PAID METADATA ERROR ********")
+                    console.log(err)
+                })
+
+            return result;
+        })
+        .then(result =>
             res.status(200).json({
                 message: "Handling POST requests to /supplier-payments/update-by-ponumber/:ponumber, SUPPLIER PAYMENT UPDATED",
                 type: 'success',
-                alert: `Supplier payment for ${doc.ponumber} updated`,
+                alert: `Supplier payment for ${result.ponumber} updated`,
             })
         )
         .catch(err => {
@@ -155,6 +179,31 @@ router.post("/payment-complete/:ponumber", formDataBody.fields([]), (req, res, n
                 )
                 .catch(err => {
                     console.log("******** COULDN'T UPDATE SUPPLIER DAMAGED MISSING ITEMS REFUND ********");
+                    console.log(err);
+                });
+
+            return doc;
+        })
+        .then(doc => {
+
+            MetaData
+                .findOneAndUpdate(
+                    {},
+                    {
+                        $pull: {
+                            'supplierPayments': {
+                                'ponumber': doc.ponumber
+                            }
+                        },
+                    },
+                    { upsert: true }
+                )
+                .exec()
+                .then(
+                    console.log("******** META DATA ADDED ********")
+                )
+                .catch(err => {
+                    console.log("******** META DATA ERROR!!!!! ********");
                     console.log(err);
                 });
 

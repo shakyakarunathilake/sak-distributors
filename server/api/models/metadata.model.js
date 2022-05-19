@@ -2,17 +2,25 @@ const mongoose = require("mongoose");
 
 const metaDataSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    noofpurchaseordertobeapproved: [{
+    purchaseOrders: [{
         ponumber: { type: String, required: false },
+        status: { type: String, required: false },
         createdat: { type: String, required: false },
         createdby: { type: String, required: false },
     }],
-    noofawaitinggrn: [{
+    grn: [{
+        ponumber: { type: String, required: false },
+        grnnumber: { type: String, required: false },
+        status: { type: String, required: false },
+        createdat: { type: String, required: false },
+        createdby: { type: String, required: false },
+    }],
+    supplierPayments: [{
         ponumber: { type: String, required: false },
         grnnumber: { type: String, required: false },
         status: { type: String, required: false },
     }],
-    noofcustomerorders: [{
+    customerOrders: [{
         orderno: { type: String, required: false },
         route: { type: String, required: false },
         status: { type: String, required: false },

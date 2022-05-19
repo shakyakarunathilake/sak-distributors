@@ -21,12 +21,12 @@ export default function SalesRepresentativeDashboard() {
 
     useEffect(() => {
         axios
-            .get(`http://localhost:8080/metadata/promotions`, {
+            .get(`http://localhost:8080/metadata/promotions-meta-data`, {
                 headers: {
                     'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
                 }
             })
-            .then(res => setPromotions(res.data.promotions))
+            .then(res => setPromotions(res.data.promotionsMetaData))
             .catch(error => {
                 console.log(error)
             })
@@ -41,9 +41,14 @@ export default function SalesRepresentativeDashboard() {
                 </div>
 
                 <div className={style.rowB}>
-                    <Promotions
-                        promotions={promotions}
-                    />
+
+                    {
+                        promotions.length !== 0 &&
+                        <Promotions
+                            promotions={promotions}
+                        />
+                    }
+
                 </div>
             </div>
         </TabletPageTwo>

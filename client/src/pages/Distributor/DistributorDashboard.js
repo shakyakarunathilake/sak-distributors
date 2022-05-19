@@ -18,7 +18,7 @@ export default function DistributorDashboard() {
     }
 
     let endpoints = [
-        "http://localhost:8080/metadata/purchase-orders-to-be-approved",
+        "http://localhost:8080/metadata/purchase-orders-meta-data",
     ]
 
     const [purchaseOrders, setPurchaseOrders] = useState([]);
@@ -28,7 +28,7 @@ export default function DistributorDashboard() {
             .all(endpoints.map((endpoint) => axios.get(endpoint, { headers: { 'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken } })))
             .then(
                 axios.spread((...responses) => {
-                    setPurchaseOrders(responses[0].data.purchaseorderstobeapproved)
+                    setPurchaseOrders(responses[0].data.purchaseOrdersMetaData)
                 })
             )
             .catch(error => {
@@ -45,9 +45,14 @@ export default function DistributorDashboard() {
                 </div>
 
                 <div className={style.columnB}>
-                    <PurchaseOrdersToBeApproved
-                        purchaseOrders={purchaseOrders}
-                    />
+
+                    {
+                        purchaseOrders.length !== 0 &&
+                        < PurchaseOrdersToBeApproved
+                            purchaseOrders={purchaseOrders}
+                        />
+                    }
+
                 </div>
             </div>
         </PageTwo>

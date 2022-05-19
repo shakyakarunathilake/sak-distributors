@@ -119,7 +119,7 @@ router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
                     {},
                     {
                         $push: {
-                            'noofcustomerorders': {
+                            'customerOrders': {
                                 'orderno': result.orderno,
                                 'route': result.route,
                                 'status': result.status
@@ -130,17 +130,12 @@ router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
                 )
                 .exec()
                 .then(
-                    console.log("META DATA ADDED")
+                    console.log("******** META DATA ADDED ********")
                 )
-                .catch(error => {
-
-                    console.log("META DATA ERROR: ", error)
-
-                    res.status(200).json({
-                        type: 'error',
-                        alert: error,
-                    });
-                })
+                .catch(err => {
+                    console.log("******** META DATA ERROR!!!!! ********");
+                    console.log(err);
+                });
 
             return result;
         })
