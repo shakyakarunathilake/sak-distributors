@@ -11,7 +11,7 @@ import StepTwo from './ProductFormStepTwo';
 
 export default function ProductsForm(props) {
 
-    const { handleClosePopUp, addOrEdit, productRecords, nextId, employeeOptions, action, supplierOptions } = props;
+    const { handleClosePopUp, addOrEdit, productRecords, nextId, employeeOptions, action } = props;
 
     const today = new Date();
 
@@ -108,7 +108,6 @@ export default function ProductsForm(props) {
                         handleImageChange={handleImageChange}
                         resetForm={resetForm}
                         employeeOptions={employeeOptions}
-                        supplierOptions={supplierOptions}
                     />
 
                 </section>

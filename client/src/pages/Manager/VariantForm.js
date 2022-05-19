@@ -19,8 +19,7 @@ export default function VariantForm(props) {
         action,
         employeeOptions,
         productRecords,
-        productVariantOptions,
-        supplierOptions
+        productVariantOptions
     } = props;
 
     const [file, setFile] = useState("");
@@ -35,8 +34,8 @@ export default function VariantForm(props) {
     const { handleSubmit, formState: { errors, isValid }, control, watch, reset, setValue, getValues, trigger } = useForm({
         mode: "all",
         defaultValues: {
-            productid: productRecords ? productRecords.productid : undefined,
-            name: productRecords ? productRecords.name : '',
+            productid: productRecords ? productRecords.productid : '',
+            name: productRecords ? productRecords.name : undefined,
             supplier: productRecords ? productRecords.supplier : '',
             productimage: productRecords ? productRecords.productimage : '',
             addeddate: productRecords ? productRecords.addeddate : '',
@@ -49,13 +48,13 @@ export default function VariantForm(props) {
             mrp: productRecords ? productRecords.variant.mrp : '',
             sellingprice: productRecords ? productRecords.variant.sellingprice : '',
             purchaseprice: productRecords ? productRecords.variant.purchaseprice : '',
-            eligibleqty: productRecords ? (productRecords.variant.eligibleqty ? productRecords.variant.eligibleqty : '') : '',
-            eligibleqtytype: productRecords ? (productRecords.variant.eligibleqtytype ? productRecords.variant.eligibleqtytype : '') : '',
-            freeqty: productRecords ? (productRecords.variant.freeqty ? productRecords.variant.freeqty : '') : '',
-            freeqtytype: productRecords ? (productRecords.variant.freeqtytype ? productRecords.variant.freeqtytype : '') : '',
-            discount: productRecords ? (productRecords.variant.discount ? productRecords.variant.discount : '') : '',
-            freeproductname: productRecords ? (productRecords.variant.freeproductname ? productRecords.variant.freeproductname : '') : '',
-            offercaption: productRecords ? (productRecords.variant.offercaption ? productRecords.variant.offercaption : '') : '',
+            eligibleqty: productRecords ? productRecords.variant.eligibleqty : '',
+            eligibleqtytype: productRecords ? productRecords.variant.eligibleqtytype : '',
+            freeqty: productRecords ? productRecords.variant.freeqty : '',
+            freeqtytype: productRecords ? productRecords.variant.freeqtytype : '',
+            discount: productRecords ? productRecords.variant.discount : '',
+            freeproductname: productRecords ? productRecords.variant.freeproductname : '',
+            offercaption: productRecords ? productRecords.variant.offercaption : '',
             variantstatus: productRecords ? productRecords.variant.status : '',
             variantaddeddate: productRecords ? productRecords.variant.addeddate : date,
             variantaddedby: productRecords ? productRecords.variant.addedby : '',
@@ -213,7 +212,6 @@ export default function VariantForm(props) {
                         productVariantOptions={productVariantOptions}
                         resetForm={resetForm}
                         watch={watch}
-                        supplierOptions={supplierOptions}
                     />
 
                 </section>

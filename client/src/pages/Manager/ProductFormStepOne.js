@@ -33,7 +33,6 @@ export default function ProductFormStepOne(props) {
         handleImageChange,
         resetForm,
         employeeOptions,
-        supplierOptions
     } = props;
 
     return (
@@ -169,7 +168,7 @@ export default function ProductFormStepOne(props) {
                             render={({ field }) => (
                                 <Select
                                     {...field}
-                                    options={supplierOptions || []}
+                                    options={employeeservice.getSupplierOptions()}
                                     error={errors.supplier ? true : false}
                                     helperText={errors.supplier && errors.supplier.message}
                                     size="small"

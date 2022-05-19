@@ -43,7 +43,6 @@ export default function ManageProduct() {
     const [productVariantOptions, setProductVariantOptions] = useState(null);
     const [employeeOptions, setEmployeeOptions] = useState(null);
     const [productRecords, setProductRecords] = useState(null);
-    const [supplierOptions, setSupplierOptions] = useState(null);
 
     const [action, setAction] = useState('');
     const [formType, setFormType] = useState('');
@@ -54,19 +53,6 @@ export default function ManageProduct() {
     const [reRender, setReRender] = useState(null);
 
     const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
-
-    let productEndPoints = [
-        "http://localhost:8080/products/get-next-productid",
-        "http://localhost:8080/options/supplier-options",
-        "http://localhost:8080/options/employee-options-for-product"
-    ]
-
-    let productVariantEndPoints = [
-        "http://localhost:8080/options/supplier-options",
-        "http://localhost:8080/options/product-options-for-product",
-        "http://localhost:8080/options/product-variant-options-for-product",
-        "http://localhost:8080/options/employee-options-for-product"
-    ]
 
     const handleAlert = () => {
         setOpen(true);
@@ -227,40 +213,65 @@ export default function ManageProduct() {
         }
     }
 
-    const getOptionsForProduct = () => {
+    const getProductVariantOptions = () => {
         axios
-            .all(productEndPoints.map((endpoint) =>
-                axios
-                    .get(endpoint, { headers: { 'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken } })
-            ))
-            .then(
-                axios.spread((...responses) => {
-                    setNextId(responses[0].data.nextproductid);
-                    setSupplierOptions(responses[1].data.supplierOptions)
-                    setEmployeeOptions(responses[2].data.employeeOptions)
-                    setOpenPopup(true);
-                }))
+            .get("http://localhost:8080/options/product-variant-options-for-product", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
+            .then(res => {
+                setProductVariantOptions(res.data.productVariantOptions);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
+    const getProductOptions = () => {
+        axios
+            .get("http://localhost:8080/options/product-options-for-product", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
+            .then(res => {
+                setProductOptions(res.data.productOptions);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
+    const getEmployeeOptions = () => {
+        axios
+            .get("http://localhost:8080/options/employee-options-for-product", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
+            .then(res => {
+                setEmployeeOptions(res.data.employeeOptions);
+                setOpenPopup(true);
+            })
             .catch(err => {
                 console.log(err);
             })
     }
 
-    const getOptionsForVariant = () => {
+    const getNextProductId = () => {
         axios
-            .all(productVariantEndPoints.map((endpoint) =>
-                axios
-                    .get(endpoint, { headers: { 'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken } })
-            ))
-            .then(
-                axios.spread((...responses) => {
-                    setSupplierOptions(responses[0].data.supplierOptions)
-                    setProductOptions(responses[1].data.productOptions)
-                    setProductVariantOptions(responses[2].data.productVariantOptions)
-                    setEmployeeOptions(responses[3].data.employeeOptions)
-                }))
+            .get("http://localhost:8080/products/get-next-productid", {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
+            .then(res => {
+                setNextId(res.data.nextproductid);
+            })
             .catch(err => {
                 console.log(err);
-            })
+            });
     }
 
     const handleClosePopUp = () => {
@@ -288,8 +299,9 @@ export default function ManageProduct() {
                                 () => {
                                     setAction('Create');
                                     setFormType('Variant')
-                                    getOptionsForVariant()
-                                    setOpenPopup(true);
+                                    getProductVariantOptions();
+                                    getProductOptions();
+                                    getEmployeeOptions();
                                 }
                             }
                         >
@@ -302,9 +314,11 @@ export default function ManageProduct() {
                             size="medium"
                             variant="contained"
                             onClick={() => {
+                                setProductRecords(null);
+                                getNextProductId();
                                 setAction('Create');
                                 setFormType('Product');
-                                getOptionsForProduct();
+                                getEmployeeOptions();
                             }}
                         >
                             <AddCircleIcon className={style.icon} />
@@ -437,8 +451,9 @@ export default function ManageProduct() {
                                 tooltip: 'Edit',
                                 onClick: (event, rowData) => {
                                     setAction('Edit');
-                                    getOptionsForVariant()
                                     openInPopup(rowData.productid, rowData.variantid);
+                                    getProductVariantOptions();
+                                    getEmployeeOptions();
                                 }
                             }
                         ]}
@@ -469,7 +484,6 @@ export default function ManageProduct() {
                             handleClosePopUp={handleClosePopUp}
                             nextId={nextId}
                             action={action}
-                            supplierOptions={supplierOptions}
                         />
                     }
 
@@ -492,7 +506,6 @@ export default function ManageProduct() {
                             employeeOptions={employeeOptions}
                             handleClosePopUp={handleClosePopUp}
                             action={action}
-                            supplierOptions={supplierOptions}
                         />
                     }
 
