@@ -313,9 +313,7 @@ router.post("/update-by-grnnumber/:grnnumber", formDataBody.fields([]), (req, re
                     { 'supplierPayments.ponumber': doc.ponumber },
                     {
                         $set: {
-                            'supplierPayments': {
-                                'supplierPayments.$.status': 'Payment To Be Complete'
-                            }
+                            'supplierPayments.$.status': 'Payment To Be Complete'
                         }
                     },
                     { upsert: true }
