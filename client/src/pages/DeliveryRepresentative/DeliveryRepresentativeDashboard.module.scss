@@ -9,7 +9,8 @@
     overflow: auto;
 
     .rowB {
-        display: grid;
+        display: flex;
+        flex-direction: column;
         grid-row-gap: 20px;
     }
 }
