@@ -45,7 +45,7 @@ export default function ManageCustomer() {
     const [routeOptions, setRouteOptions] = useState([]);
     const [reRender, setReRender] = useState(null);
 
-    const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
+    const employeedetails = JSON.parse(sessionStorage.getItem("Auth"));
 
     const handleAlert = () => {
         setOpen(true);
@@ -177,7 +177,7 @@ export default function ManageCustomer() {
             <div className={style.container}>
 
                 {
-                    (designation === 'Sales Representative' || designation === 'Delivery Representative') &&
+                    (employeedetails.designation === 'Sales Representative' || employeedetails.designation === 'Delivery Representative') &&
                     <div className={style.actionRow}>
 
                         <Button
@@ -201,13 +201,13 @@ export default function ManageCustomer() {
                     </div>
                 }
 
-                <div className={designation === "Manager" ? style.pagecontent1 : style.pagecontent2}>
+                <div className={employeedetails.designation === "Manager" ? style.pagecontent1 : style.pagecontent2}>
 
                     <AutoSizer>
                         {({ height, width }) => {
                             let value = 0;
 
-                            if (designation === 'Sales Representative' || designation === 'Delivery Representative') {
+                            if (employeedetails.designation === 'Sales Representative' || employeedetails.designation === 'Delivery Representative') {
                                 value = (height - 199.28) / 60;
                             } else {
                                 value = (height - 199.28) / 48;
@@ -224,7 +224,7 @@ export default function ManageCustomer() {
                                                 title: "Customer ID",
                                                 field: "customerid",
                                                 cellStyle: {
-                                                    width: "13%",
+                                                    width: employeedetails.designation !== "Manager" ? "13%" : "10%",
                                                     textAlign: 'left'
                                                 },
                                                 render: rowData => {
@@ -237,7 +237,7 @@ export default function ManageCustomer() {
                                                 title: "Store Name",
                                                 field: "storename",
                                                 cellStyle: {
-                                                    width: "42%",
+                                                    width: employeedetails.designation !== "Manager" ? "42%" : "30%",
                                                     textAlign: 'left'
                                                 }
                                             },
@@ -245,7 +245,16 @@ export default function ManageCustomer() {
                                                 title: "Customer Name",
                                                 field: "customername",
                                                 cellStyle: {
-                                                    width: "35%",
+                                                    width: employeedetails.designation !== "Manager" ? "35%" : "30%",
+                                                    textAlign: 'left'
+                                                }
+                                            },
+                                            {
+                                                title: "Route",
+                                                field: "route",
+                                                hidden: employeedetails.designation !== "Manager",
+                                                cellStyle: {
+                                                    width: "20%",
                                                     textAlign: 'left'
                                                 }
                                             },
@@ -253,7 +262,7 @@ export default function ManageCustomer() {
                                                 title: "Contact No.",
                                                 field: "contactnumber",
                                                 cellStyle: {
-                                                    width: "10%",
+                                                    width: employeedetails.designation !== "Manager" ? "10%" : "10%",
                                                     textAlign: 'left'
                                                 }
                                             },
