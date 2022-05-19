@@ -37,7 +37,7 @@ router.get("/get-all-vehicle-table-data", (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("Error: ", err);
             res.status(500).json({ "Error": err });
         })
 })
@@ -74,11 +74,11 @@ router.post("/add-vehicle", formDataBody.fields([]), (req, res, next) => {
             });
         })
         .catch(err => {
+            console.log("Error: ", err);
             res.status(200).json({
                 type: 'error',
                 alert: `Something went wrong. Could not add vehicle`,
             });
-            console.log("Error: ", err)
         })
 });
 
@@ -112,7 +112,7 @@ router.get("/:licenseplatenumber", (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("Error: ", err);
             res.status(500).json({ "Error": err });
         })
 })
@@ -135,11 +135,11 @@ router.post("/update-by-licenseplatenumber/:licenseplatenumber", formDataBody.fi
             });
         })
         .catch(err => {
+            console.log("Error: ", err);
             res.status(200).json({
                 type: 'error',
                 alert: `Something went wrong. Could not update vehicle`,
             });
-            console.log(err);
         });
 });
 

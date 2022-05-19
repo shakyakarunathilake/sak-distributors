@@ -66,7 +66,7 @@ router.get("/get-all-store-table-data", (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("Error: ", err);
             res.status(500).json({ "Error": err });
         })
 })

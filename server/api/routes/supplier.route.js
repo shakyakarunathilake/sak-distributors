@@ -47,7 +47,7 @@ router.get("/get-next-regno", (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("Error: ", err);
             res.status(500).json({ "Error": err });
         })
 
@@ -55,9 +55,6 @@ router.get("/get-next-regno", (req, res, next) => {
 
 //Create a supplier
 router.post("/create-supplier", formDataBody.fields([]), (req, res, next) => {
-
-    console.log("Body: ", req.body);
-    console.log("Added Date: ", req.body.addeddate);
 
     const addeddate = new Date(req.body.addeddate).toISOString().split('T')[0];
 
@@ -88,11 +85,11 @@ router.post("/create-supplier", formDataBody.fields([]), (req, res, next) => {
             });
         })
         .catch(err => {
+            console.log("Error: ", err);
             res.status(200).json({
                 type: 'error',
                 alert: `Something went wrong. Could not add supplier`,
             });
-            console.log("Error: ", err)
         })
 });
 
@@ -120,7 +117,7 @@ router.get("/get-all-supplier-table-data", (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("Error: ", err)
             res.status(500).json({ "Error": err });
         })
 })
@@ -155,7 +152,7 @@ router.get("/:supplierid", (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("Error: ", err)
             res.status(500).json({ "Error": err });
         })
 })
@@ -175,11 +172,11 @@ router.post("/update-by-id/:supplierid", formDataBody.fields([]), (req, res, nex
             });
         })
         .catch(err => {
+            console.log("Error: ", err)
             res.status(200).json({
                 type: 'error',
                 alert: `Something went wrong. Could not update supplier`,
             });
-            console.log(err);
         });
 });
 

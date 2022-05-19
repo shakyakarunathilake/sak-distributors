@@ -19,7 +19,7 @@ router.post("/change-password/", (req, res, next) => {
 
             bcrypt.compare(`${req.body.currentpassword}`, employee[0].password, function (err, isMatch) {
                 if (err) {
-                    console.log(err);
+                    console.log("ERROR: ", err);
                 } else if (!isMatch) {
                     return res.status(200).json({
                         type: "error",
@@ -28,7 +28,7 @@ router.post("/change-password/", (req, res, next) => {
                 } else {
                     bcrypt.hash(newpassword.toString(), 10, (err, hash) => {
                         if (err) {
-                            console.log(err);
+                            console.log("ERROR: ", err);
                         } else {
                             Employee
                                 .findOneAndUpdate(
@@ -54,7 +54,7 @@ router.post("/change-password/", (req, res, next) => {
                                     });
                                 })
                                 .catch(err => {
-                                    console.log(err);
+                                    console.log("ERROR: ", err);
                                     res.status(500).json({
                                         type: "error",
                                         message: "Server Error"
@@ -66,7 +66,7 @@ router.post("/change-password/", (req, res, next) => {
             })
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(500).json({
                 type: "error",
                 message: "Server Error",

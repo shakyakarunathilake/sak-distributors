@@ -36,15 +36,13 @@ router.get("/get-all-purchaseorder-table-data", (req, res, next) => {
                 status: x.status,
             }))
 
-            console.log("PURCHASE ORDER: ", purchaseorder);
-
             res.status(201).json({
                 message: "Handeling GET requests to /get-all-purchaseorder-table-data",
                 purchaseorder: purchaseorder,
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(500).json({ "Error": err });
         })
 
@@ -84,7 +82,7 @@ router.get("/:ponumber", (req, res, next) => {
             })
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(500).json({ "Error": err });
         })
 
@@ -140,7 +138,7 @@ router.post("/create-purchaseorder", formDataBody.fields([]), (req, res, next) =
                     console.log("******** CREATE PURCHASE ORDER METADATA ADDED ********");
                 })
                 .catch(err => {
-                    console.log(err);
+                    console.log("ERROR: ", err);
                     res.status(500).json({ "Error": err });
                 })
 
@@ -190,11 +188,11 @@ router.post("/update-by-ponumber/:ponumber", formDataBody.fields([]), (req, res,
             })
         )
         .catch(err => {
+            console.log("ERROR: ", err);
             res.status(200).json({
                 type: 'error',
                 alert: `Something went wrong. Could not update purchase order`,
             });
-            console.log(err);
         });
 })
 
@@ -341,11 +339,11 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
                     console.log("******** SUPPLIER PAYMENT ADDED ********")
                 )
                 .catch(err => {
+                    console.log("ERROR: ", err);
                     res.status(200).json({
                         type: 'error',
                         alert: `Something went wrong. Could not add supplier payment`,
                     });
-                    console.log("Error: ", err)
                 })
 
             return result;
@@ -358,11 +356,11 @@ router.post("/approve-by-ponumber/:ponumber", formDataBody.fields([]), (req, res
             })
         )
         .catch(err => {
+            console.log("Error: ", err)
             res.status(200).json({
                 type: 'error',
                 alert: `Something went wrong. Could not approve purchase order`,
             });
-            console.log(err);
         });
 })
 

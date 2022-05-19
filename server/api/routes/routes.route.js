@@ -17,9 +17,6 @@ router.get("/", (req, res, next) => {
 //Create a route
 router.post("/add-route", formDataBody.fields([]), (req, res, next) => {
 
-    console.log("Body: ", req.body);
-    console.log("Added Date: ", req.body.addeddate);
-
     const addeddate = new Date(req.body.addeddate).toISOString().split('T')[0];
 
     const route = new Routes({
@@ -44,11 +41,11 @@ router.post("/add-route", formDataBody.fields([]), (req, res, next) => {
             });
         })
         .catch(err => {
+            console.log("Error: ", err)
             res.status(200).json({
                 type: 'error',
                 alert: `Something went wrong. Could not add route`,
             });
-            console.log("Error: ", err)
         })
 });
 
@@ -74,7 +71,7 @@ router.get("/get-all-route-table-data", (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("Error: ", err)
             res.status(500).json({ "Error": err });
         })
 })
@@ -105,7 +102,7 @@ router.get("/:routeid", (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("Error: ", err)
             res.status(500).json({ "Error": err });
         })
 })
@@ -128,11 +125,11 @@ router.post("/update-by-id/:routeid", formDataBody.fields([]), (req, res, next) 
             });
         })
         .catch(err => {
+            console.log("Error: ", err)
             res.status(200).json({
                 type: 'error',
                 alert: `Something went wrong. Could not update route`,
             });
-            console.log(err);
         });
 });
 

@@ -39,7 +39,7 @@ router.get("/get-all-supplier-payments-table-data", (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("Error: ", err);
             res.status(500).json({ "Error": err });
         });
 });
@@ -79,7 +79,7 @@ router.get("/:ponumber", (req, res, next) => {
 
         })
         .catch(err => {
-            console.log(err);
+            console.log("Error: ", err);
             res.status(500).json({ "Error ": err });
         })
 })
@@ -135,7 +135,7 @@ router.post("/advance-payment-complete/:ponumber", formDataBody.fields([]), (req
             })
         )
         .catch(err => {
-            console.log(err);
+            console.log("Error: ", err);
             res.status(200).json({
                 type: 'error',
                 alert: `Something went wrong. Could not update supplier payment`,
@@ -217,7 +217,7 @@ router.post("/payment-complete/:ponumber", formDataBody.fields([]), (req, res, n
             })
         )
         .catch(err => {
-            console.log(err);
+            console.log("Error: ", err);
             res.status(200).json({
                 type: 'error',
                 alert: `Something went wrong. Could not update supplier payment`,

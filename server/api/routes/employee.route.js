@@ -59,7 +59,7 @@ router.get("/get-next-regno", (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("Error: ", err)
             res.status(500).json({ "Error": err });
         })
 
@@ -81,12 +81,9 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
             firstpassword = nic.substring(8, 12) + "-" + dob;
         }
 
-        console.log("****FIRST PASSWORD****")
-        console.log(firstpassword)
-
         bcrypt.hash(firstpassword, 10, (err, hash) => {
             if (err) {
-                console.log(err);
+                console.log("Error: ", err)
             } else {
                 const employee = new Employee({
                     _id: new mongoose.Types.ObjectId(),
@@ -130,11 +127,11 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
                         });
                     })
                     .catch(err => {
+                        console.log("Error: ", err)
                         res.status(200).json({
                             type: 'error',
                             alert: `Something went wrong. Could not add employee`,
                         });
-                        console.log(err)
                     })
             };
         });
@@ -173,11 +170,11 @@ router.post("/create-employee", uploads.single('employeeimage'), (req, res, next
                 });
             })
             .catch(err => {
+                console.log("Error: ", err)
                 res.status(200).json({
                     type: 'error',
                     alert: `Something went wrong. Could not add employee`,
                 });
-                console.log(err)
             })
     }
 });
@@ -207,7 +204,7 @@ router.get("/get-all-employees-table-data", (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("Error: ", err)
             res.status(500).json({ "Error": err });
         });
 });
@@ -249,7 +246,7 @@ router.get("/:employeeid", (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("Error: ", err)
             res.status(500).json({ "Error": err });
         });
 });
@@ -296,11 +293,11 @@ router.post("/update-by-id/:employeeid", uploads.single('employeeimage'), (req, 
             });
         })
         .catch(err => {
+            console.log("Error: ", err)
             res.status(200).json({
                 type: 'error',
                 alert: `Something went wrong. Could not update employee`,
             });
-            console.log(err);
         });
 });
 

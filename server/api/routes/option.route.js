@@ -39,7 +39,7 @@ router.get("/product-options-for-purchase-order", (req, res, next) => {
             })
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(500).json({ "Error": err });
         })
 })
@@ -65,7 +65,7 @@ router.get("/supplier-options-for-purchase-order", (req, res, next) => {
             })
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(500).json({ "Error": err });
         })
 })
@@ -101,7 +101,7 @@ router.get("/product-options-for-product", (req, res, next) => {
             })
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(500).json({ "Error": err });
         })
 })
@@ -173,7 +173,7 @@ router.get("/employee-options-for-product", (req, res, next) => {
             })
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(500).json({ "Error": err });
         })
 })
@@ -201,7 +201,7 @@ router.get("/employee-options-for-admin", (req, res, next) => {
             })
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(500).json({ "Error": err });
         })
 })
@@ -249,7 +249,7 @@ router.get("/product-options", (req, res, next) => {
             })
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(500).json({ "Error": err });
         })
 })
@@ -302,7 +302,7 @@ router.get("/customer-options", (req, res, next) => {
             })
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(500).json({ "Error": err });
         })
 })
@@ -330,7 +330,7 @@ router.get("/employee-options-for-gin", (req, res, next) => {
             })
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(500).json({ "Error": err });
         })
 })
@@ -358,7 +358,7 @@ router.get("/vehicle-options-for-gin", (req, res, next) => {
             })
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(500).json({ "Error": err });
         })
 })
@@ -386,7 +386,7 @@ router.get("/route-options", (req, res, next) => {
             })
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(500).json({ "Error": err });
         })
 })
@@ -411,7 +411,7 @@ router.get("/supplier-options", (req, res, next) => {
             })
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(500).json({ "Error": err });
         })
 })

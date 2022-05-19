@@ -143,9 +143,6 @@ router.get("/weekly", (req, res, next) => {
         (lastDateTwoWeeksBack.getMonth() > 9 ? lastDateTwoWeeksBack.getMonth() + 1 : `0${lastDateTwoWeeksBack.getMonth() + 1}`) + '-' +
         (lastDateTwoWeeksBack.getDate() > 9 ? lastDateTwoWeeksBack.getDate() : `0${lastDateTwoWeeksBack.getDate()}`);
 
-    console.log("firstDate: ", firstDate);
-    console.log("lastDate: ", lastDate);
-
     var pipeline = [
         {
             $match: {
@@ -243,8 +240,6 @@ router.get("/weekly", (req, res, next) => {
             const labels = [];
             const chartData = [];
 
-            console.log(result)
-
             result.forEach((element) => {
                 labels.push(element.startDate + " to " + element.endDate)
                 chartData.push(element.totalValue)
@@ -286,9 +281,6 @@ router.get("/monthly", (req, res, next) => {
         lastDateTwoWeeksBack.getFullYear() + '-' +
         (lastDateTwoWeeksBack.getMonth() > 9 ? lastDateTwoWeeksBack.getMonth() + 1 : `0${lastDateTwoWeeksBack.getMonth() + 1}`) + '-' +
         (lastDateTwoWeeksBack.getDate() > 9 ? lastDateTwoWeeksBack.getDate() : `0${lastDateTwoWeeksBack.getDate()}`);
-
-    console.log("firstDate: ", firstDate);
-    console.log("lastDate: ", lastDate);
 
     var pipeline = [
         {
@@ -376,8 +368,6 @@ router.get("/monthly", (req, res, next) => {
 
             const labels = [];
             const chartData = [];
-
-            console.log(result)
 
             result.forEach((element) => {
                 labels.push(element.month + " " + element.year)
@@ -479,8 +469,6 @@ router.get("/annually", (req, res, next) => {
 
             const labels = [];
             const chartData = [];
-
-            console.log(result)
 
             result.forEach((element) => {
                 labels.push(element.year)

@@ -74,7 +74,7 @@ router.get("/get-all-product-table-data", (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(500).json({ "Error": err });
         })
 })
@@ -111,7 +111,7 @@ router.get("/get-next-productid", (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(500).json({ "Error": err });
         })
 
@@ -180,11 +180,11 @@ router.post("/create-product", uploads.single("productimage"), (req, res, next) 
 
         )
         .catch(err => {
+            console.log("Error: ", err)
             res.status(200).json({
                 type: 'error',
                 alert: `Something went wrong. Could not add product`
             });
-            console.log("Error: ", err)
         })
 });
 
@@ -222,8 +222,6 @@ router.post("/add-new-variant/:productid", uploads.single("productimage"), (req,
         .exec()
         .then(doc => {
 
-            console.log(doc);
-
             MetaData
                 .findOneAndUpdate(
                     {},
@@ -260,11 +258,11 @@ router.post("/add-new-variant/:productid", uploads.single("productimage"), (req,
             })
         )
         .catch(err => {
+            console.log("ERROR: ", err);
             res.status(200).json({
                 type: 'error',
                 alert: `Something went wrong. Could not update product`,
             });
-            console.log(err);
         });
 });
 
@@ -293,7 +291,7 @@ router.get("/:productid", (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(500).json({ "Error ": err });
         })
 })
@@ -354,7 +352,7 @@ router.get("/:productid/:variantid", (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(500).json({ "Error ": err });
         })
 })
@@ -437,11 +435,11 @@ router.post("/update-by-id/:productid", uploads.single("productimage"), (req, re
             })
         )
         .catch(err => {
+            console.log("ERROR: ", err);
             res.status(200).json({
                 type: 'error',
                 alert: `Something went wrong. Could not update product`,
             });
-            console.log(err);
         });
 });
 
@@ -475,7 +473,7 @@ router.post("/update-by-id/:productid/:variantid", uploads.single("productimage"
         .then(doc => {
 
             const variant = doc.variants.filter(x => x.variantid === req.params.variantid)
-            
+
             if (variant.type !== "General") {
 
                 MetaData
@@ -509,11 +507,11 @@ router.post("/update-by-id/:productid/:variantid", uploads.single("productimage"
             })
         })
         .catch(err => {
+            console.log("ERROR: ", err);
             res.status(200).json({
                 type: 'error',
                 alert: `Something went wrong. Could not update product`,
             });
-            console.log(err);
         });
 });
 

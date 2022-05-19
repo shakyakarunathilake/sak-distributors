@@ -12,11 +12,9 @@ const Employee = require("../models/employee.model");
 function changePassword(details) {
     const newpassword = details.onetimepassword;
 
-    console.log("DETAILS: ", details);
-
     bcrypt.hash(newpassword.toString(), 10, (err, hash) => {
         if (err) {
-            console.log(err);
+            console.log("ERROR: ", err);
         } else {
             Employee
                 .findOneAndUpdate(
@@ -40,7 +38,7 @@ function changePassword(details) {
 
                 )
                 .catch(err => {
-                    console.log(err);
+                    console.log("ERROR: ", err);
                 });
         }
     });
@@ -100,8 +98,7 @@ router.post("/signin", (req, res, next) => {
             });
         })
         .catch(err => {
-
-            console.log("Invalid Employee Id"); //Development Stage
+            console.log("ERROR: ", err);
 
             return res.status(200).json({
                 accessToken: null,
@@ -134,7 +131,8 @@ router.post("/forgot-password", (req, res, next) => {
 
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
+            
             res.status(500).json({
                 type: "error",
                 message: "Server Error",

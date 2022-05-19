@@ -48,7 +48,7 @@ router.get("/get-all-quotation-table-data", (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("Error: ", err)
             res.status(500).json({ "Error": err });
         });
 });
@@ -85,7 +85,7 @@ router.get("/get-next-quotationid", (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("Error: ", err)
             res.status(500).json({ "Error": err });
         })
 
@@ -114,11 +114,11 @@ router.post("/create-quotation", quotations.single('quotationfile'), (req, res, 
             });
         })
         .catch(err => {
+            console.log("Error: ", err)
             res.status(200).json({
                 type: 'error',
                 alert: `Something went wrong. Could not add quotation`,
             });
-            console.log("Error: ", err)
         })
 });
 
@@ -147,7 +147,7 @@ router.get("/get-all-active-quotation-data", (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            console.log("Error: ", err)
             res.status(500).json({ "Error": err });
         });
 });
@@ -176,7 +176,7 @@ router.get("/:quotationid", (req, res, next) => {
 
         })
         .catch(err => {
-            console.log(err);
+            console.log("Error: ", err)
             res.status(500).json({ "Error ": err });
         })
 })
@@ -191,7 +191,7 @@ router.get("/xlsx-file/:quotationid", (req, res, next) => {
 
     res.sendFile(`/quotations/${quotationid}.xlsx`, options, function (err) {
         if (err) {
-            console.log(err);
+            console.log("Error: ", err)
         } else {
             console.log('Sent:', `${quotationid}.xlsx`);
         }
