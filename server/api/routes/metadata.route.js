@@ -22,7 +22,7 @@ router.get("/promotions-meta-data", (req, res, next) => {
             })
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(500).json({ "Error": err });
         })
 });
@@ -39,25 +39,107 @@ router.get("/grn-meta-data", (req, res, next) => {
             })
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(500).json({ "Error": err });
         })
 });
 
-router.get("/customer-orders-meta-data", (req, res, next) => {
+router.get("/processing-gin-meta-data", (req, res, next) => {
 
     MetaData
         .find()
         .exec()
         .then(doc => {
 
+            let processingGIN = doc[0].gin.filter(x => x.status === "Processing");
+
             res.status(201).json({
-                message: "Handeling GET requests to /customer-orders-meta-data",
-                customerOrdersMetaData: doc[0].customerOrders
+                message: "Handeling GET requests to /processing-gin-meta-data",
+                ginMetaData: processingGIN
             })
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
+            res.status(500).json({ "Error": err });
+        })
+});
+
+router.get("/dispatched-gin-meta-data/:employeeid", (req, res, next) => {
+
+    MetaData
+        .find()
+        .exec()
+        .then(doc => {
+
+            let dispatchedGIN = doc[0].gin.filter(x => x.incharge.includes(req.params.employeeid) && x.status === "Dispatched");
+
+            res.status(201).json({
+                message: "Handeling GET requests to /dispatched-gin-meta-data/:employeeid",
+                ginMetaData: dispatchedGIN
+            })
+        })
+        .catch(err => {
+            console.log("ERROR: ", err);
+            res.status(500).json({ "Error": err });
+        })
+});
+
+router.get("/pending-customer-orders-meta-data", (req, res, next) => {
+
+    MetaData
+        .find()
+        .exec()
+        .then(doc => {
+
+            let pendingCustomerOrders = doc[0].customerOrders.filter(x => x.status === "Pending");
+
+            res.status(201).json({
+                message: "Handeling GET requests to /pending-customer-orders-meta-data",
+                customerOrdersMetaData: pendingCustomerOrders
+            })
+        })
+        .catch(err => {
+            console.log("ERROR: ", err);
+            res.status(500).json({ "Error": err });
+        })
+});
+
+router.get("/dispatched-customer-orders-meta-data/:employeeid", (req, res, next) => {
+
+    MetaData
+        .find()
+        .exec()
+        .then(doc => {
+
+            let dispatchedCustomerOrders = doc[0].customerOrders.filter(x => x.incharge.includes(req.params.employeeid) && x.status === "Dispatched");
+
+            res.status(201).json({
+                message: "Handeling GET requests to /dispatched-customer-orders-meta-data/:employeeid",
+                customerOrdersMetaData: dispatchedCustomerOrders
+            })
+        })
+        .catch(err => {
+            console.log("ERROR: ", err);
+            res.status(500).json({ "Error": err });
+        })
+});
+
+router.get("/delivered-customer-orders-meta-data", (req, res, next) => {
+
+    MetaData
+        .find()
+        .exec()
+        .then(doc => {
+
+            let deliveredCustomerOrders = doc[0].customerOrders.filter(x => x.status === "Delivered");
+
+            res.status(201).json({
+                message: "Handeling GET requests to /delivered-customer-orders-meta-data",
+                customerOrdersMetaData: deliveredCustomerOrders
+            })
+        })
+        .catch(err => {
+            console.log("ERROR: ", err);
             res.status(500).json({ "Error": err });
         })
 });
@@ -74,7 +156,7 @@ router.get("/purchase-orders-meta-data", (req, res, next) => {
             })
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(500).json({ "Error": err });
         })
 });
@@ -94,7 +176,7 @@ router.get("/supplier-payments-meta-data", (req, res, next) => {
             })
         })
         .catch(err => {
-            console.log(err);
+            console.log("ERROR: ", err);
             res.status(500).json({ "Error": err });
         })
 });
