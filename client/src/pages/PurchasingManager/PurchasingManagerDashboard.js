@@ -17,8 +17,11 @@ export default function PurchasingManagerDashboard(props) {
         window.location.replace("http://localhost:3000/change-password");
     }
 
+    const employeedetails = JSON.parse(sessionStorage.getItem("Auth"));
+
     let endpoints = [
         "http://localhost:8080/metadata/supplier-payments-meta-data",
+        `http://localhost:8080/metadata/notifications/${employeedetails.designation.replace(/\s+/g, '-').toLowerCase()}/${employeedetails.employeeid}`
     ]
 
     const [supplierPayments, setSupplierPayments] = useState([]);
@@ -29,6 +32,7 @@ export default function PurchasingManagerDashboard(props) {
             .then(
                 axios.spread((...responses) => {
                     setSupplierPayments(responses[0].data.supplierPaymentsMetaData)
+                    sessionStorage.setItem("Notification", JSON.stringify(responses[1].data.notifications))
                 })
             )
             .catch(error => {

@@ -17,8 +17,11 @@ export default function DistributorDashboard() {
         window.location.replace("http://localhost:3000/change-password");
     }
 
+    const employeedetails = JSON.parse(sessionStorage.getItem("Auth"));
+
     let endpoints = [
         "http://localhost:8080/metadata/purchase-orders-meta-data",
+        `http://localhost:8080/metadata/notifications/${employeedetails.designation.replace(/\s+/g, '-').toLowerCase()}/${employeedetails.employeeid}`
     ]
 
     const [purchaseOrders, setPurchaseOrders] = useState([]);
@@ -29,12 +32,14 @@ export default function DistributorDashboard() {
             .then(
                 axios.spread((...responses) => {
                     setPurchaseOrders(responses[0].data.purchaseOrdersMetaData)
+                    sessionStorage.setItem("Notification", JSON.stringify(responses[1].data.notifications))
                 })
             )
             .catch(error => {
                 console.log(error)
             })
     }, [])
+
 
     return (
         <PageTwo title="Dashboard">

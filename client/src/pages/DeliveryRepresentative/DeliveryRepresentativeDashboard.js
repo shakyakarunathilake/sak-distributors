@@ -23,6 +23,7 @@ export default function DeliveryRepresentativeDashboard() {
     let endpoints = [
         `http://localhost:8080/metadata/dispatched-gin-meta-data/${employeedetails.employeeid}`,
         `http://localhost:8080/metadata/dispatched-customer-orders-meta-data/${employeedetails.employeeid}`,
+        `http://localhost:8080/metadata/notifications/${employeedetails.designation.replace(/\s+/g, '-').toLowerCase()}/${employeedetails.employeeid}`
     ]
 
     const [gin, setGin] = useState([]);
@@ -35,6 +36,7 @@ export default function DeliveryRepresentativeDashboard() {
                 axios.spread((...responses) => {
                     setGin(responses[0].data.ginMetaData)
                     setCustomerOrders(responses[1].data.customerOrdersMetaData)
+                    sessionStorage.setItem("Notification", JSON.stringify(responses[2].data.notifications))
                 })
             )
             .catch(error => {

@@ -25,6 +25,7 @@ export default function StorekeeperDashboard() {
         "http://localhost:8080/metadata/grn-meta-data",
         "http://localhost:8080/metadata/pending-customer-orders-meta-data",
         "http://localhost:8080/metadata/processing-gin-meta-data",
+        `http://localhost:8080/metadata/notifications/${employeedetails.designation.replace(/\s+/g, '-').toLowerCase()}/${employeedetails.employeeid}`
     ]
 
     const [customerOrders, setCustomerOrders] = useState([]);
@@ -39,6 +40,7 @@ export default function StorekeeperDashboard() {
                     setGrn(responses[0].data.grnMetaData)
                     setCustomerOrders(responses[1].data.customerOrdersMetaData)
                     setGin(responses[2].data.ginMetaData)
+                    sessionStorage.setItem("Notification", JSON.stringify(responses[3].data.notifications))
                 })
             )
             .catch(error => {

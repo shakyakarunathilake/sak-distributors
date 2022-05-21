@@ -1,7 +1,9 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
+//Shared
 import * as drawerListItems from '../../services/drawerListItems';
+import BasicMenu from '../Menu/BasicMenu';
 
 //Material UI Components
 import Avatar from '@material-ui/core/Avatar';
@@ -9,7 +11,8 @@ import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import { makeStyles } from '@material-ui/core/styles';
-import Tooltip from '@mui/material/Tooltip';
+import Badge from '@mui/material/Badge';
+import IconButton from '@mui/material/IconButton';
 
 //Material UI Icons
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -84,6 +87,20 @@ export default function PageTwo(props) {
     const classes = useStyles();
 
     const employeedetails = JSON.parse(sessionStorage.getItem("Auth"));
+    const notifications = JSON.parse(sessionStorage.getItem("Notification"));
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const open = Boolean(anchorEl);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
 
     //Drawer List Items
     const list = () => (
@@ -167,9 +184,21 @@ export default function PageTwo(props) {
                     </div>
 
                     <div className={style.iconDiv}>
-                        <Tooltip title="Notifications" arrow>
-                            <NotificationsNoneIcon className={style.icon} />
-                        </Tooltip>
+                        <IconButton
+                            id="basic-button"
+                            onClick={handleClick}
+                        >
+                            <Badge badgeContent={notifications.length} color="error">
+                                <NotificationsNoneIcon className={style.icon} />
+                            </Badge>
+                        </IconButton>
+                        <BasicMenu
+                            anchorEl={anchorEl}
+                            open={notifications.length === 0 ? false : open}
+                            handleClose={handleClose}
+                            notifications={notifications}
+                            designation={employeedetails.designation}
+                        />
                     </div>
 
                     <div className={style.avatarDiv}>

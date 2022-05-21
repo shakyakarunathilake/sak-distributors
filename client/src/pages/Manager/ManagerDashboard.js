@@ -21,6 +21,7 @@ export default function ManagerDashboard() {
 
     let endpoints = [
         "http://localhost:8080/metadata/delivered-customer-orders-meta-data",
+        `http://localhost:8080/metadata/notifications/${employeedetails.designation.replace(/\s+/g, '-').toLowerCase()}/${employeedetails.employeeid}`
     ]
 
     const [customerOrders, setCustomerOrders] = useState([]);
@@ -31,6 +32,7 @@ export default function ManagerDashboard() {
             .then(
                 axios.spread((...responses) => {
                     setCustomerOrders(responses[0].data.customerOrdersMetaData)
+                    sessionStorage.setItem("Notification", JSON.stringify(responses[1].data.notifications))
                 })
             )
             .catch(error => {

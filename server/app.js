@@ -68,7 +68,7 @@ app.use("/purchaseorder", checkAuth, purchaseOrderRoutes);
 app.use("/grn", checkAuth, grnRoutes);
 app.use("/gin", checkAuth, ginRoutes);
 app.use("/store", checkAuth, storeRoutes);
-app.use("/metadata", checkAuth, metaDataRoutes);
+// app.use("/metadata", checkAuth, metaDataRoutes);
 app.use("/quotations", checkAuth, quotationRoutes);
 app.use("/supplier-payments", checkAuth, supplierPaymentRoutes);
 app.use("/vehicles", checkAuth, vehicleRoutes);
@@ -77,5 +77,7 @@ app.use("/total-sales", checkAuth, totalSalesRoutes);
 app.use("/sales-per-customer", checkAuth, salesPerCustomerRoutes);
 app.use("/sales-per-route", checkAuth, salesPerRouteRoutes);
 app.use("/sales-per-sales-representative", checkAuth, salesPerSalesRepresentativeRoutes);
+
+app.use("/metadata",  metaDataRoutes);
 
 module.exports = app;

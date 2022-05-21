@@ -19,14 +19,22 @@ export default function SalesRepresentativeDashboard() {
 
     const [promotions, setPromotions] = useState([]);
 
+    const employeedetails = JSON.parse(sessionStorage.getItem("Auth"));
+
+    let endpoints = [
+        "http://localhost:8080/metadata/promotions-meta-data",
+        `http://localhost:8080/metadata/notifications/${employeedetails.designation.replace(/\s+/g, '-').toLowerCase()}/${employeedetails.employeeid}`
+    ]
+
     useEffect(() => {
         axios
-            .get(`http://localhost:8080/metadata/promotions-meta-data`, {
-                headers: {
-                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
-                }
-            })
-            .then(res => setPromotions(res.data.promotionsMetaData))
+            .all(endpoints.map((endpoint) => axios.get(endpoint, { headers: { 'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken } })))
+            .then(
+                axios.spread((...responses) => {
+                    setPromotions(responses[0].data.promotionsMetaData)
+                    sessionStorage.setItem("Notification", JSON.stringify(responses[1].data.notifications))
+                })
+            )
             .catch(error => {
                 console.log(error)
             })

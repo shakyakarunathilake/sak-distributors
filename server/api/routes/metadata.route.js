@@ -181,4 +181,48 @@ router.get("/supplier-payments-meta-data", (req, res, next) => {
         })
 });
 
+router.get("/notifications/:designation/:employeeid", (req, res, next) => {
+
+    const designation = req.params.designation;
+    const employeeid = req.params.employeeid;
+
+    MetaData
+        .find()
+        .exec()
+        .then(doc => {
+
+            let notifications = [];
+
+            if (designation === "distributor") {
+                notifications.push(...doc[0].purchaseOrders)
+
+            } else if (designation === "manager") {
+                notifications.push(...doc[0].customerOrders.filter(x => x.status === "Delivered"))
+
+            } else if (designation === "purchasing-manager") {
+                notifications.push(...doc[0].supplierPayments.filter(x => x.status !== "Advance Payment Paid"))
+
+            } else if (designation === "store-keeper") {
+                notifications.push(...doc[0].grn)
+                notifications.push(...doc[0].customerOrders.filter(x => x.status === "Pending"))
+                notifications.push(...doc[0].gin.filter(x => x.status === "Processing"))
+
+            } else if (designation === "delivery-representative") {
+                notifications.push(...doc[0].gin.filter(x => x.incharge.includes(employeeid) && x.status === "Dispatched"))
+                notifications.push(...doc[0].customerOrders.filter(x => x.incharge.includes(employeeid) && x.status === "Dispatched"))
+
+            }
+
+            res.status(201).json({
+                message: "Handeling GET requests to /notifications/:designation/:employeeid",
+                notifications: notifications
+            })
+        })
+        .catch(err => {
+            console.log("ERROR: ", err);
+            res.status(500).json({ "Error": err });
+        })
+});
+
+
 module.exports = router;
