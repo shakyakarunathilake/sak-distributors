@@ -184,6 +184,12 @@ export default function ManagePurchaseOrder() {
             })
     }
 
+    let status = {
+        "Waiting For Approval": 1,
+        "Pending": 2,
+        "Delivered": 3,
+    }
+
     return (
         <Page title="Manage Purchase Order">
             <div className={style.container}>
@@ -292,7 +298,7 @@ export default function ManagePurchaseOrder() {
                                                 }
                                             },
                                         ]}
-                                        data={records}
+                                        data={records.sort((a, b) => status[a.status] - status[b.status])}
                                         options={{
                                             pageSize: pageSize,
                                             pageSizeOptions: [],

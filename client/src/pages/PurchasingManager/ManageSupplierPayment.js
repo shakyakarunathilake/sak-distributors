@@ -137,6 +137,13 @@ export default function ManageSupplierPayment() {
         setOpenPopup(false)
     }
 
+    let status = {
+        "Advance Payment To Be Paid": 1,
+        "Advance Payment Paid": 2,
+        "Payment To Be Complete": 3,
+        "Payment Complete": 4,
+    }
+
     return (
         <Page title="Manage Supplier Payments">
 
@@ -214,7 +221,7 @@ export default function ManageSupplierPayment() {
                                             }
                                         },
                                     ]}
-                                    data={records}
+                                    data={records.sort((a, b) => status[a.status] - status[b.status])}
                                     options={{
                                         pageSize: pageSize,
                                         pageSizeOptions: [],

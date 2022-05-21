@@ -41,7 +41,7 @@ export default function ManageGIN() {
     const [open, setOpen] = React.useState(false);
     const [alert, setAlert] = React.useState();
 
-    const [tableRecords, setTableRecords] = useState([]);
+    const [records, setRecords] = useState([]);
 
     const [action, setAction] = useState('');
     const [orderRecords, setOrderRecords] = useState([]);
@@ -53,10 +53,7 @@ export default function ManageGIN() {
     const [openPopup, setOpenPopup] = useState(false);
     const [reRender, setReRender] = useState(null);
 
-    const firstname = JSON.parse(sessionStorage.getItem("Auth")).firstname;
-    const lastname = JSON.parse(sessionStorage.getItem("Auth")).lastname;
-    const employeeid = JSON.parse(sessionStorage.getItem("Auth")).employeeid;
-    const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
+    const employeedetails = JSON.parse(sessionStorage.getItem("Auth"));
 
     const handleAlert = () => {
         setOpen(true);
@@ -76,16 +73,16 @@ export default function ManageGIN() {
     }
 
     useEffect(() => {
-        if (designation === 'Delivery Representative') {
+        if (employeedetails.designation === 'Delivery Representative') {
             axios
-                .get(`http://localhost:8080/gin/get-all-gin-table-data/${firstname} ${lastname} (${employeeid})`, {
+                .get(`http://localhost:8080/gin/get-all-gin-table-data/${employeedetails.firstname} ${employeedetails.lastname} (${employeedetails.employeeid})`, {
                     headers: {
                         'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
                     }
                 })
                 .then(res => {
                     sessionStorage.setItem("GINTableData", JSON.stringify(res.data));
-                    setTableRecords(res.data.tbody);
+                    setRecords(res.data.tbody);
                     setReRender(null);
                 })
                 .catch(error => {
@@ -100,14 +97,14 @@ export default function ManageGIN() {
                 })
                 .then(res => {
                     sessionStorage.setItem("GINTableData", JSON.stringify(res.data));
-                    setTableRecords(res.data.tbody);
+                    setRecords(res.data.tbody);
                     setReRender(null);
                 })
                 .catch(error => {
                     console.log(error)
                 })
         }
-    }, [reRender, firstname, lastname, designation, employeeid]);
+    }, [reRender]);
 
     const getInChargeVehicleOptions = () => {
         axios
@@ -238,13 +235,20 @@ export default function ManageGIN() {
         handleClosePopUp();
     }
 
+    let status = {
+        "Pending": 1,
+        "Processing": 2,
+        "Dispatched": 3,
+        "Complete": 4,
+    }
+
     return (
         <Page title="Manage GIN">
 
             <div className={style.container}>
 
                 {
-                    designation !== 'Delivery Representative' &&
+                    employeedetails.designation !== 'Delivery Representative' &&
 
                     <div className={style.actionRow}>
                         <Button
@@ -268,7 +272,7 @@ export default function ManageGIN() {
                     </div>
                 }
 
-                <div className={designation === "Store Keeper" ? style.pagecontent1 : style.pagecontent2}>
+                <div className={employeedetails.designation === "Store Keeper" ? style.pagecontent1 : style.pagecontent2}>
 
                     <AutoSizer>
                         {({ height, width }) => {
@@ -293,7 +297,7 @@ export default function ManageGIN() {
                                                 title: "GIN",
                                                 field: "ginnumber",
                                                 cellStyle: {
-                                                    width: designation === "Delivery Representative" ? "32.3%" : "15%",
+                                                    width: employeedetails.designation === "Delivery Representative" ? "32.3%" : "15%",
                                                     textAlign: 'left'
                                                 },
                                                 render: rowData => {
@@ -306,14 +310,14 @@ export default function ManageGIN() {
                                                 title: "Route",
                                                 field: "route",
                                                 cellStyle: {
-                                                    width: designation === "Delivery Representative" ? "32.3%" : "20%",
+                                                    width: employeedetails.designation === "Delivery Representative" ? "32.3%" : "20%",
                                                     textAlign: 'left'
                                                 },
                                             },
                                             {
                                                 title: "In Charge",
                                                 field: "incharge",
-                                                hidden: designation === "Delivery Representative",
+                                                hidden: employeedetails.designation === "Delivery Representative",
                                                 cellStyle: {
                                                     width: "25%",
                                                     textAlign: 'left'
@@ -323,7 +327,7 @@ export default function ManageGIN() {
                                                 title: "Status",
                                                 field: "status",
                                                 cellStyle: {
-                                                    width: designation === "Delivery Representative" ? "32.3%" : "15%",
+                                                    width: employeedetails.designation === "Delivery Representative" ? "32.3%" : "15%",
                                                     textAlign: 'left'
                                                 },
                                                 render: rowData => {
@@ -341,14 +345,14 @@ export default function ManageGIN() {
                                             {
                                                 title: "Created by",
                                                 field: "createdby",
-                                                hidden: designation === "Delivery Representative",
+                                                hidden: employeedetails.designation === "Delivery Representative",
                                                 cellStyle: {
                                                     width: "17%",
                                                     textAlign: 'left'
                                                 },
                                             },
                                         ]}
-                                        data={tableRecords}
+                                        data={records.sort((a, b) => status[a.status] - status[b.status])}
                                         options={{
                                             pageSize: pageSize,
                                             pageSizeOptions: [],
@@ -379,7 +383,7 @@ export default function ManageGIN() {
                                                 }
                                             },
                                             (rowData) => ({
-                                                disabled: rowData.status !== 'Processing' || designation === "Delivery Representative",
+                                                disabled: rowData.status !== 'Processing' || employeedetails.designation === "Delivery Representative",
                                                 icon: LocalShippingIcon,
                                                 tooltip: 'Dispatch',
                                                 onClick: (event, rowData) => {

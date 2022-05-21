@@ -119,6 +119,11 @@ export default function ManageGRN() {
         handleClosePopUp();
     }
 
+    let status = {
+        "Pending": 1,
+        "Delivered": 2,
+    }
+
     return (
         <Page title="Manage GRN">
 
@@ -198,7 +203,7 @@ export default function ManageGRN() {
                                             }
                                         },
                                     ]}
-                                    data={records}
+                                    data={records.sort((a, b) => status[a.status] - status[b.status])}
                                     options={{
                                         pageSize: pageSize,
                                         pageSizeOptions: [],

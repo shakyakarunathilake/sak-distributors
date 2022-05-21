@@ -516,6 +516,7 @@ export default function StepThree(props) {
                                         maxBodyHeight: bodyHeight,
                                         addRowPosition: "first",
                                         toolbar: true,
+                                        filtering: true,
                                         search: false,
                                         actionsColumnIndex: -1,
                                         headerStyle: {

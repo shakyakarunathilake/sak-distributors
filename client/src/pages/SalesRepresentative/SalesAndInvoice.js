@@ -256,6 +256,14 @@ export default function SalesAndInvoice() {
             })
     }
 
+    let status = {
+        "Pending": 1,
+        "Processing": 2,
+        "Dispatched": 3,
+        "Delivered": 4,
+        "Paid": 5
+    }
+
     return (
         <Page title="Sales and Invoice">
 
@@ -360,8 +368,9 @@ export default function SalesAndInvoice() {
                                                 },
                                             },
                                         ]}
-                                        data={records}
+                                        data={records.sort((a, b) => status[a.status] - status[b.status])}
                                         options={{
+                                            sorting: true,
                                             pageSize: pageSize,
                                             pageSizeOptions: [],
                                             paging: true,
@@ -397,7 +406,7 @@ export default function SalesAndInvoice() {
                                                     setAction('Edit');
                                                     openInPopup(rowData.orderno);
                                                 },
-                                                disabled: rowData.status !== 'Pending'
+                                                disabled: employeedetails.designation === "Manager" || rowData.status !== 'Pending'
                                             }),
                                             rowData => ({
                                                 icon: LocalShippingIcon,
