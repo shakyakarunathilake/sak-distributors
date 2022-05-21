@@ -12,19 +12,43 @@ import IconButton from '@mui/material/IconButton';
 
 //MUI Icons
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 //SCSS style
 import style from './CustomerOrders.module.scss';
+
+//Axios
+import axios from 'axios';
 
 export default function CustomerOrders(props) {
 
     const { employeedetails } = props;
 
+    const handleClick = (orderno) => {
+
+        axios
+            .get(`http://localhost:8080/orders/${orderno}`, {
+                headers: {
+                    'authorization': JSON.parse(sessionStorage.getItem("Auth")).accessToken
+                }
+            })
+            .then(res => {
+                localStorage.setItem(orderno, JSON.stringify(res.data.order));
+                window.open(`http://localhost:3000/store-keeper/view-order-details/${orderno}`, "_blank");
+            })
+            .catch(err => {
+                console.log(err);
+            })
+
+    }
+
     return (
         <div className={style.container}>
 
             <div className={style.head}>
-                Pending Invoices
+                {employeedetails.designation === "Store Keeper" && "Pending Invoices"}
+                {employeedetails.designation === "Delivery Representative" && "Dispatched Orders"}
+                {employeedetails.designation === "Manager" && "Delivered Orders"}
             </div>
 
             <div className={style.body}>
@@ -60,13 +84,23 @@ export default function CustomerOrders(props) {
                                         }
                                     </TableCell>
                                     <TableCell sx={{ padding: "8px" }}>
+
                                         <IconButton>
-                                            <Link to={`/${employeedetails.designation.replace(/\s+/g, '-').toLowerCase()}/sales-and-invoice`} >
-                                                <NavigateNextIcon
-                                                    className={style.icon}
-                                                />
-                                            </Link>
+                                            {
+                                                employeedetails.designation !== "Store Keeper" ?
+                                                    <Link to={`/${employeedetails.designation.replace(/\s+/g, '-').toLowerCase()}/sales-and-invoice`} >
+                                                        <NavigateNextIcon
+                                                            className={style.icon}
+                                                        />
+                                                    </Link>
+                                                    :
+                                                    <VisibilityIcon
+                                                        className={style.icon}
+                                                        onClick={() => handleClick(row.orderno)}
+                                                    />
+                                            }
                                         </IconButton>
+
                                     </TableCell>
                                 </TableRow>
                             ))}
