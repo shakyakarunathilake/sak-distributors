@@ -97,6 +97,7 @@ export default function CreateOrder(props) {
     }, [data, setValue])
 
     const completeFormStep = () => {
+        console.log(data);
         setFormStep(x => x + 1);
     }
 

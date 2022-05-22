@@ -75,7 +75,7 @@ export default function StepThree(props) {
 
     const getProductItemList = useMemo(() => {
 
-        const selectedDescriptions = data.map(x => x.description);
+        // const selectedDescriptions = data.map(x => x.description);
         const productItemList = productOptions.filter(x => {
             let exist = false;
             data.forEach(y => {
@@ -317,6 +317,7 @@ export default function StepThree(props) {
                                                             props.onChange(option.title)
                                                             let data = { ...props.rowData };
                                                             data.description = option.title;
+                                                            data.promotiondescription = "";
                                                             data.productid = option.productid;
                                                             data.variantid = option.variantid;
                                                             data.name = option.name;
@@ -328,7 +329,8 @@ export default function StepThree(props) {
                                                                 "freeqty": option.freeqty,
                                                                 "freeqtytype": option.freeqtytype,
                                                                 "discount": option.discount,
-                                                                "freeproductname": option.freeproductname
+                                                                "freeproductname": option.freeproductname,
+                                                                "freeproductpiecespercase": option.freeproductpiecespercase
                                                             };
                                                             data.sellingprice = parseInt(option.sellingprice).toFixed(2);
                                                             data.piecespercase = option.piecespercase;
@@ -498,8 +500,6 @@ export default function StepThree(props) {
                                     editable={{
                                         isEditable: rowData => !rowData.promotiondescription,
                                         isDeletable: rowData => !rowData.promotiondescription,
-                                        // isEditHidden: rowData => rowData.promotiondescription,
-                                        // isDeleteHidden: rowData => rowData.promotiondescription,
                                         onRowAdd: newData =>
                                             new Promise((resolve, reject) => {
 
@@ -526,7 +526,7 @@ export default function StepThree(props) {
                                                                     name: newData.offerdetails.freeproductname.substring(newData.offerdetails.freeproductname.indexOf('-') + 1),
                                                                     offercaption: "",
                                                                     offerdetails: {},
-                                                                    piecespercase: newData.freeproductpiecespercase,
+                                                                    piecespercase: newData.offerdetails.freeproductpiecespercase,
                                                                     productid: newData.offerdetails.freeproductname.substr(0, 7),
                                                                     salesqtycases: 0,
                                                                     salesqtypieces: 0,
@@ -551,7 +551,7 @@ export default function StepThree(props) {
                                                                     name: newData.offerdetails.freeproductname.substring(newData.offerdetails.freeproductname.indexOf('-') + 1),
                                                                     offercaption: "",
                                                                     offerdetails: {},
-                                                                    piecespercase: newData.freeproductpiecespercase,
+                                                                    piecespercase: newData.offerdetails.freeproductpiecespercase,
                                                                     productid: newData.offerdetails.freeproductname.substr(0, 7),
                                                                     salesqtycases: 0,
                                                                     salesqtypieces: 0,
@@ -671,7 +671,7 @@ export default function StepThree(props) {
                                                                             name: newData.offerdetails.freeproductname.substring(newData.offerdetails.freeproductname.indexOf('-') + 1),
                                                                             offercaption: "",
                                                                             offerdetails: {},
-                                                                            piecespercase: newData.freeproductpiecespercase,
+                                                                            piecespercase: newData.offerdetails.freeproductpiecespercase,
                                                                             productid: newData.offerdetails.freeproductname.substr(0, 7),
                                                                             salesqtycases: 0,
                                                                             salesqtypieces: 0,
@@ -715,7 +715,7 @@ export default function StepThree(props) {
                                                                             name: newData.offerdetails.freeproductname.substring(newData.offerdetails.freeproductname.indexOf('-') + 1),
                                                                             offercaption: "",
                                                                             offerdetails: {},
-                                                                            piecespercase: newData.freeproductpiecespercase,
+                                                                            piecespercase: newData.offerdetails.freeproductpiecespercase,
                                                                             productid: newData.offerdetails.freeproductname.substr(0, 7),
                                                                             salesqtycases: 0,
                                                                             salesqtypieces: 0,
@@ -761,7 +761,7 @@ export default function StepThree(props) {
                                                                             name: newData.offerdetails.freeproductname.substring(newData.offerdetails.freeproductname.indexOf('-') + 1),
                                                                             offercaption: "",
                                                                             offerdetails: {},
-                                                                            piecespercase: newData.freeproductpiecespercase,
+                                                                            piecespercase: newData.offerdetails.freeproductpiecespercase,
                                                                             productid: newData.offerdetails.freeproductname.substr(0, 7),
                                                                             salesqtycases: 0,
                                                                             salesqtypieces: 0,
@@ -803,7 +803,7 @@ export default function StepThree(props) {
                                                                             name: newData.offerdetails.freeproductname.substring(newData.offerdetails.freeproductname.indexOf('-') + 1),
                                                                             offercaption: "",
                                                                             offerdetails: {},
-                                                                            piecespercase: newData.freeproductpiecespercase,
+                                                                            piecespercase: newData.offerdetails.freeproductpiecespercase,
                                                                             productid: newData.offerdetails.freeproductname.substr(0, 7),
                                                                             salesqtycases: 0,
                                                                             salesqtypieces: 0,
@@ -989,7 +989,7 @@ export default function StepThree(props) {
                                         },
                                         rowStyle: rowData => ({
                                             fontSize: "0.8em",
-                                            backgroundColor: rowData.promotiondescription ? '#bcebd7' : '#ffffff'
+                                            backgroundColor: rowData.promotiondescription ? '#acd1af' : '#ffffff'
                                         })
                                     }}
                                 />
