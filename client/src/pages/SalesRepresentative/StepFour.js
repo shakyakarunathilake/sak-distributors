@@ -66,6 +66,8 @@ export default function StepFour(props) {
 
     const classes = useStyles();
 
+    console.log(data);
+
     return (
         <div className={style.four}>
 
@@ -189,7 +191,19 @@ export default function StepFour(props) {
                                             hidden: true,
                                         },
                                         {
+                                            field: "promotiondescription",
+                                            hidden: true,
+                                        },
+                                        {
                                             field: "name",
+                                            hidden: true,
+                                        },
+                                        {
+                                            field: "offercaption",
+                                            hidden: true,
+                                        },
+                                        {
+                                            field: "offerdetails",
                                             hidden: true,
                                         },
                                         {
@@ -276,7 +290,6 @@ export default function StepFour(props) {
                                         maxBodyHeight: bodyHeight,
                                         paging: true,
                                         toolbar: false,
-                                        filter: true,
                                         search: false,
                                         headerStyle: {
                                             position: "sticky",
@@ -284,7 +297,7 @@ export default function StepFour(props) {
                                         },
                                         rowStyle: rowData => ({
                                             fontSize: "0.8em",
-                                            backgroundColor: (rowData.tableData.id % 2 === 1) ? '#ebebeb' : '#ffffff'
+                                            backgroundColor: rowData.promotiondescription ? '#acd1af' : '#ffffff'
                                         })
                                     }}
                                 />
