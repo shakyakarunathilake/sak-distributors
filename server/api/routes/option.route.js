@@ -218,6 +218,19 @@ router.get("/product-options", (req, res, next) => {
 
             const data = doc.filter(x => x.status === "Active");
 
+            const getPiecesPerCases = (name) => {
+
+                const relevantProduct = data.filter(x =>
+                    x.productid === name.substring(0, 7)
+                )
+
+                const relevantVariant = relevantProduct[0].variants.filter(x =>
+                    x.variantid === name.substring(7, name.indexOf('-'))
+                )
+
+                return relevantVariant[0].piecespercase;
+            }
+
             data.map(product => {
 
                 const activeVariants = product.variants.filter(x => x.status === "Active");
@@ -230,15 +243,16 @@ router.get("/product-options", (req, res, next) => {
                         mrp: variant.mrp,
                         sellingprice: variant.sellingprice,
                         type: variant.type,
-                        offercaption: variant.offercaption ? variant.offercaption : "",
+                        offercaption: variant.offercaption,
                         piecespercase: variant.piecespercase,
-                        eligibleqty: variant.eligibleqty ? variant.eligibleqty : "",
-                        eligibleqtytype: variant.eligibleqtytype ? variant.eligibleqtytype : "",
-                        freeqty: variant.freeqty ? variant.freeqty : "",
-                        freeqtytype: variant.freeqtytype ? variant.freeqtytype : "",
-                        discount: variant.discount ? variant.discount : "",
-                        freeproductname: variant.freeproductname ? variant.freeproductname : "",
+                        eligibleqty: variant.eligibleqty,
+                        eligibleqtytype: variant.eligibleqtytype,
+                        freeqty: variant.freeqty,
+                        freeqtytype: variant.freeqtytype,
+                        discount: variant.discount,
+                        freeproductname: variant.freeproductname,
                         title: `${product.productid}${variant.variantid}-${product.name}`,
+                        freeproductpiecespercase: variant.freeproductname && getPiecesPerCases(variant.freeproductname)
                     })
                 })
             })
