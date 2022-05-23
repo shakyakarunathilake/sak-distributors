@@ -308,6 +308,27 @@ export default function StepTwo(props) {
                     watch('customertype') === "Registered Customer" &&
                     <div className={style.row}>
                         <div className={style.boldText}>
+                            Loyalty points as credits
+                        </div>
+                        <div className={style.customerData}>
+                            <Controller
+                                name={"loyaltypointsincash"}
+                                control={control}
+                                render={({ field: { value } }) => (
+                                    <Typography className={style.input}>
+                                        Rs {NumberWithCommas(value)}
+                                    </Typography>
+                                )}
+                            />
+                        </div>
+                    </div>
+
+                }
+
+                {
+                    watch('customertype') === "Registered Customer" &&
+                    <div className={style.row}>
+                        <div className={style.boldText}>
                             Credit amount to settle
                         </div>
                         <div className={style.customerData}>
@@ -338,28 +359,6 @@ export default function StepTwo(props) {
                                 render={({ field: { value } }) => (
                                     <Typography className={style.input}>
                                         {value === true ? 'Yes' : 'No'}
-                                    </Typography>
-                                )}
-                            />
-                        </div>
-                    </div>
-
-                }
-
-
-                {
-                    watch('customertype') === "Registered Customer" &&
-                    <div className={style.row}>
-                        <div className={style.boldText}>
-                            Maximum Credit Amount allowed
-                        </div>
-                        <div className={style.customerData}>
-                            <Controller
-                                name={"maximumcreditamount"}
-                                control={control}
-                                render={({ field: { value } }) => (
-                                    <Typography className={style.input}>
-                                        Rs {NumberWithCommas(value)}
                                     </Typography>
                                 )}
                             />
