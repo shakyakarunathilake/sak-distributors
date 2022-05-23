@@ -66,8 +66,6 @@ export default function StepFour(props) {
 
     const classes = useStyles();
 
-    console.log(data);
-
     return (
         <div className={style.four}>
 
