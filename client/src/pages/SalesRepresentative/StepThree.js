@@ -451,37 +451,39 @@ export default function StepThree(props) {
                                         {
                                             field: "freeqtycases",
                                             type: 'numeric',
+                                            editable: 'never',
                                             initialEditValue: 0,
                                             cellStyle: {
                                                 width: '7%',
                                                 padding: "10px 5px 10px 7px",
                                                 textAlign: 'right'
                                             },
-                                            validate: (rowData) =>
-                                                rowData.freeqtycases === undefined
-                                                    ? { isValid: false, helperText: 'Required *' }
-                                                    : rowData.freeqtycases === ''
-                                                        ? { isValid: false, helperText: 'Required *' }
-                                                        : true
+                                            // validate: (rowData) =>
+                                            //     rowData.freeqtycases === undefined
+                                            //         ? { isValid: false, helperText: 'Required *' }
+                                            //         : rowData.freeqtycases === ''
+                                            //             ? { isValid: false, helperText: 'Required *' }
+                                            //             : true
 
                                         },
                                         {
                                             field: "freeqtypieces",
                                             type: 'numeric',
+                                            editable: 'never',
                                             initialEditValue: 0,
                                             cellStyle: {
                                                 width: '7%',
                                                 padding: "10px 5px 10px 7px",
                                                 textAlign: 'right'
                                             },
-                                            validate: (rowData) =>
-                                                rowData.freeqtypieces === undefined
-                                                    ? { isValid: false, helperText: 'Required *' }
-                                                    : rowData.freeqtypieces === ''
-                                                        ? { isValid: false, helperText: 'Required *' }
-                                                        : rowData.freeqtypieces > 23
-                                                            ? { isValid: false, helperText: 'Invalid *' }
-                                                            : true
+                                            // validate: (rowData) =>
+                                            //     rowData.freeqtypieces === undefined
+                                            //         ? { isValid: false, helperText: 'Required *' }
+                                            //         : rowData.freeqtypieces === ''
+                                            //             ? { isValid: false, helperText: 'Required *' }
+                                            //             : rowData.freeqtypieces > 23
+                                            //                 ? { isValid: false, helperText: 'Invalid *' }
+                                            //                 : true
 
                                         },
                                         {
