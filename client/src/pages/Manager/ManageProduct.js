@@ -362,18 +362,10 @@ export default function ManageProduct() {
                                 }
                             },
                             {
-                                title: "Purchase Price",
-                                field: "purchaseprice",
-                                cellStyle: {
-                                    width: "8%",
-                                    textAlign: 'left'
-                                }
-                            },
-                            {
                                 title: "Type",
                                 field: "type",
                                 cellStyle: {
-                                    width: "8%",
+                                    width: "12%",
                                     textAlign: 'left'
                                 }
                             },
@@ -381,7 +373,7 @@ export default function ManageProduct() {
                                 title: "Offer Caption",
                                 field: "offercaption",
                                 cellStyle: {
-                                    width: "24%",
+                                    width: "28%",
                                     textAlign: 'left'
                                 }
                             },
