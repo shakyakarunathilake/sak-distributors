@@ -186,11 +186,11 @@ export default function Page(props) {
                     {props.title}
                 </div>
 
-                <div className={style.iconDiv}>
+                {/* <div className={style.iconDiv}>
                     <Tooltip title="Notifications" arrow>
                         <NotificationsNoneIcon className={style.icon} />
                     </Tooltip>
-                </div>
+                </div> */}
 
                 <div className={style.avatarDiv}>
                     <Avatar alt={employeedetails.firstname} className={style.avatar} src={`http://${employeedetails.employeeimage}`} />
