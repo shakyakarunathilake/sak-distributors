@@ -42,7 +42,8 @@ export default function CreateOrder(props) {
             eligibilityforcredit: orderRecords.eligibilityforcredit,
             maximumcreditamount: orderRecords.maximumcreditamount,
             currentinvoicecreditamount: orderRecords.currentinvoicecreditamount,
-            invoicesettlementvalue: orderRecords.invoicesettlementvalue
+            invoicesettlementvalue: orderRecords.invoicesettlementvalue,
+            loyaltypointsincash: parseInt(orderRecords.loyaltypoints * 100).toFixed(2),
         }
     });
 
