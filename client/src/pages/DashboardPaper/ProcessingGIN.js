@@ -39,7 +39,7 @@ export default function ProcessingGIN(props) {
                         <TableBody>
                             {props.gin.map((row) => (
                                 <TableRow
-                                    key={row.name}
+                                    key={row.ginnumber}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
                                     <TableCell sx={{ padding: "8px" }}>{row.ginnumber}</TableCell>
