@@ -41,6 +41,8 @@ export default function SalesAnalytics() {
         }
     });
 
+    const analytics = watch("analytics");
+
     useEffect(() => {
         if (watch("analytics") === "total-sales") {
             setValue("charttype", "line-chart");
@@ -57,7 +59,7 @@ export default function SalesAnalytics() {
             setValue("charttype", "vertical-bar-chart");
             setValue("periodical", "daily");
         }
-    }, [watch("analytics")])
+    }, [analytics, setValue, watch])
 
     const renderCharts = () => (
         <>
