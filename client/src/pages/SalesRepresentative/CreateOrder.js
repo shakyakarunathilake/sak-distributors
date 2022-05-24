@@ -14,6 +14,8 @@ import StepFive from './StepFive';
 
 export default function CreateOrder(props) {
 
+    console.log(props)
+
     const {
         action,
         addOrEdit,
@@ -61,16 +63,16 @@ export default function CreateOrder(props) {
             route: '',
             ordercreatedby: `${JSON.parse(sessionStorage.getItem("Auth")).firstname} ${JSON.parse(sessionStorage.getItem("Auth")).lastname} (${JSON.parse(sessionStorage.getItem("Auth")).employeeid})`,
             shippingaddress: '',
-            total: 0.00,
+            total: 0,
             status: '',
-            loyaltypoints: 0.00,
-            minimumpayment: 0.00,
-            advancepayment: 0.00,
-            creditamounttosettle: 0.00,
+            loyaltypoints: 0,
+            minimumpayment: 0,
+            advancepayment: 0,
+            creditamounttosettle: 0,
             eligibilityforcredit: 'No',
-            maximumcreditamount: 0.00,
-            currentinvoicecreditamount: 0.00,
-            invoicesettlementvalue: 0.00
+            maximumcreditamount: 0,
+            currentinvoicecreditamount: 0,
+            invoicesettlementvalue: 0,
         }
     });
 

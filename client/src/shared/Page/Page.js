@@ -15,7 +15,6 @@ import Tooltip from '@mui/material/Tooltip';
 //Material UI Icons
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import MenuIcon from '@material-ui/icons/Menu';
-import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 import LockIcon from '@material-ui/icons/Lock';
 
 //SCSS Styles

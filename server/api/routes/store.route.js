@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const mongoose = require("mongoose");
 
 const Store = require("../models/store.model");
+const { db } = require("../models/store.model");
 
 
 //Check whether the endpoint works
@@ -71,6 +71,71 @@ router.get("/get-all-store-table-data", (req, res, next) => {
         })
 })
 
+//Get all missing product details
+router.get("/get-all-missing-product-details", (req, res, next) => {
+
+    var pipeline = [
+        {
+            $project: {
+                _id: false,
+                productid: true,
+                name: true,
+                storecasequantity: {
+                    $add: [
+                        '$storequantity.salesqtycases',
+                        '$storequantity.freeqtycases'
+                    ]
+                },
+                storepiecesquantity: {
+                    $add: [
+                        '$storequantity.salesqtypieces',
+                        '$storequantity.freeqtypieces'
+                    ]
+                },
+            }
+        },
+        {
+            $match: {
+                storecasequantity: { $lte: 6 },
+            }
+        },
+        {
+            $lookup: {
+                from: "products",
+                localField: "productid",
+                foreignField: "productid",
+                as: "productdetails"
+            }
+        },
+        {
+            $project: {
+                productid: true,
+                name: true,
+                storecasequantity: true,
+                storepiecesquantity: true,
+                supplier: { $arrayElemAt: ['$productdetails.supplier', 0] },
+                productimage: { $arrayElemAt: ['$productdetails.productimage', 0] }
+            }
+        }
+    ]
+
+    const doc = db.collection('stores').aggregate(pipeline);
+
+    doc.toArray((error, result) => {
+
+        if (error) {
+            return res.status(500).send(error);
+
+        } else {
+            res.status(201).json({
+                message: "Handeling GET requests to /get-all-missing-product-details",
+                missingProducts: result
+            })
+            
+        }
+
+    });
+})
 
 
 

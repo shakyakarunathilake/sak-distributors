@@ -16,9 +16,6 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 //SCSS style
 import style from './ProcessingGIN.module.scss';
 
-//Axios
-import axios from 'axios';
-
 export default function ProcessingGIN(props) {
 
     return (
