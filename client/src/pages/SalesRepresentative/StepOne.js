@@ -121,7 +121,7 @@ export default function StepOne(props) {
                                     fullWidth={true}
                                     error={errors.orderno ? true : false}
                                     helperText={errors.orderno && errors.orderno.message}
-                                    placeholder="Ex: ON00006211126001"
+                                    placeholder="Ex: E0000620220522001"
                                     margin="dense"
                                 />
                             )}
