@@ -125,7 +125,7 @@ export default function SalesAndInvoice() {
                 })
         }
 
-    }, [reRender]);
+    }, [reRender, employeedetails]);
 
     const handleClosePopUp = () => {
         setOpenPopup(false)
@@ -445,13 +445,13 @@ export default function SalesAndInvoice() {
                 </div>
 
                 <PopUp
-                    openPopup={openPopup}
+                    openPopup={action === "Create" ? nextOrderNo && openPopup : openPopup}
                     setOpenPopup={setOpenPopup}
                     fullScreen={(action === "Delivered") || (employeedetails.designation === 'Manager') ? false : true}
                 >
 
                     {
-                        action === "Create" &&
+                        action === "Create" && nextOrderNo &&
                         <CreateOrder
                             handleClosePopUp={handleClosePopUp}
                             addOrEdit={addOrEdit}
