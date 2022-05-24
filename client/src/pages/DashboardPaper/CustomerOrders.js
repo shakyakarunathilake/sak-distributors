@@ -63,9 +63,9 @@ export default function CustomerOrders(props) {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {props.customerOrders.map((row) => (
+                            {props.customerOrders.map(row => (
                                 <TableRow
-                                    key={row.name}
+                                    key={row.orderno}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
                                     <TableCell component="th" scope="row" sx={{ padding: "8px" }}>{row.orderno} </TableCell>

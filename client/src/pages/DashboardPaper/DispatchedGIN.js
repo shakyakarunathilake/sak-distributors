@@ -37,9 +37,9 @@ export default function DispatchedGIN(props) {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {props.gin.map((row) => (
+                            {props.gin.map(row => (
                                 <TableRow
-                                    key={row.name}
+                                    key={row.ginnumber}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
                                     <TableCell sx={{ padding: "8px" }}>{row.ginnumber}</TableCell>
