@@ -14,8 +14,6 @@ import StepFive from './StepFive';
 
 export default function CreateOrder(props) {
 
-    console.log(props)
-
     const {
         action,
         addOrEdit,
