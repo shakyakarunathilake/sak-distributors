@@ -85,21 +85,20 @@ export default function CustomerOrders(props) {
                                     </TableCell>
                                     <TableCell sx={{ padding: "8px" }}>
 
-                                        <IconButton>
-                                            {
-                                                employeedetails.designation !== "Store Keeper" ?
+                                        {
+                                            employeedetails.designation !== "Store Keeper" ?
+                                                <IconButton>
                                                     <Link to={`/${employeedetails.designation.replace(/\s+/g, '-').toLowerCase()}/sales-and-invoice`} >
                                                         <NavigateNextIcon
                                                             className={style.icon}
                                                         />
                                                     </Link>
-                                                    :
-                                                    <VisibilityIcon
-                                                        className={style.icon}
-                                                        onClick={() => handleClick(row.orderno)}
-                                                    />
-                                            }
-                                        </IconButton>
+                                                </IconButton>
+                                                :
+                                                <IconButton onClick={() => handleClick(row.orderno)}>
+                                                    <VisibilityIcon className={style.icon} />
+                                                </IconButton>
+                                        }
 
                                     </TableCell>
                                 </TableRow>
