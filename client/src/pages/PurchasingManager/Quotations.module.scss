@@ -2,13 +2,13 @@
 
 .container {
     display: grid;
-    grid-template-rows: min-content min-content auto;
+    grid-template-rows: min-content auto;
 
     .quotationHeader {
         display: grid;
         grid-template-columns: min-content auto;
         grid-column-gap: 10%;
-        margin: 25px 0 10px 0;
+        margin: 20px 0 0 0;
 
         .title {
             font-size: 1.3em;
@@ -32,8 +32,8 @@
     }
 
     .quotationTable {
-        margin: 10px;
+        margin: auto 10px 0 10px;
         overflow: auto;
-        height: calc(100vh - 362.27px);
+        height: calc(100vh - 357.266px);
     }
 }

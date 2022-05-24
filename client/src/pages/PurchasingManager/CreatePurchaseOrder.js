@@ -18,6 +18,7 @@ export default function CreatePurchaseOrder(props) {
         handleClosePopUp,
         poRecords,
         action,
+        missingProducts,
         quotationOptions
     } = props;
 
@@ -31,7 +32,6 @@ export default function CreatePurchaseOrder(props) {
         (today.getMinutes() > 9 ? today.getMinutes() : `0${today.getMinutes()}`) + ":" +
         (today.getSeconds() > 9 ? today.getSeconds() : `0${today.getSeconds()}`);
 
-    console.log(today.getHours())
     const dateTime = date + ' ' + time;
 
     const podate = today.getFullYear() +
@@ -165,6 +165,7 @@ export default function CreatePurchaseOrder(props) {
                         dateTime={dateTime}
                         action={action}
                         quotationOptions={quotationOptions}
+                        missingProducts={missingProducts}
                     />
 
                 </section>

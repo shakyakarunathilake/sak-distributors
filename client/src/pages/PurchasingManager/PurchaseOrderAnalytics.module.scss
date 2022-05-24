@@ -18,7 +18,7 @@
 
     .card {
         display: grid;
-        grid-template-columns: 20% 50% 30%;
+        grid-template-columns: 20% 60% 20%;
         background-color: #f0f0f0;
         border-radius: 20px;
         height: 100px;
@@ -36,24 +36,25 @@
         }
 
         .itemDetails {
+            display: grid;
+            grid-row-gap: 6px;
             margin: auto 0;
             font-weight: 700;
+            font-size: 0.9em;
+            text-align: left;
 
             .productid {
-                text-align: left;
                 color: $primaryMain;
-                font-size: 0.9em;
-                margin-bottom: 6px;
             }
 
             .name {
-                font-size: 0.8em;
-                text-align: left;
                 color: $secondaryDark;
             }
         }
 
         .statistics {
+            display: grid;
+            grid-row-gap: 6px;
             text-align: center;
             margin: auto 0;
             font-weight: 700;
@@ -61,7 +62,6 @@
 
             .redText {
                 font-size: 0.8em;
-                margin-bottom: 6px;
             }
         }
     }

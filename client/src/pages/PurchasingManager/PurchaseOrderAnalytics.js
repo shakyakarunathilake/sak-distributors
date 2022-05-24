@@ -1,58 +1,90 @@
-import React from 'react';
-
-//Development Stage
-import itemImg from '../../images/itemImg.png'
+import React, { useState } from 'react';
 
 //Material UI Icons
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 
+//Material Components
+import IconButton from '@mui/material/IconButton';
+
 //SCSS styles
 import style from './PurchaseOrderAnalytics.module.scss';
 
-export default function PurchaseOrderAnalytics() {
+export default function PurchaseOrderAnalytics(props) {
+
+    const {
+        getMissingProductItemList,
+    } = props;
+
+
+    const [formStep, setFormStep] = useState(0);
+
+    const nextProduct = () => {
+        setFormStep(x => x + 1);
+    }
+
+    const previousProduct = () => {
+        setFormStep(x => x - 1);
+    }
+
     return (
         <div className={style.container}>
 
-            <div>
-                <ArrowLeftIcon className={style.arrow} />
-            </div>
+            <IconButton
+                onClick={previousProduct}
+                disabled={formStep === 0}
+            >
+                <ArrowLeftIcon
+                    className={style.arrow}
+                />
+            </IconButton>
 
             <div className={style.card}>
 
                 <div className={style.imageDiv}>
-                    <img src={itemImg} alt="" />
+                    <img src={`http://${getMissingProductItemList[formStep].productimage}`} alt={getMissingProductItemList[formStep].productid} />
                 </div>
 
                 <div className={style.itemDetails}>
 
                     <div className={style.productid}>
-                        SWAD-P44893
+                        {getMissingProductItemList[formStep].productid}
                     </div>
 
-                    <div className={style.name}>
-                        RANI SANDAL GEL BAR - WITH SANDAL & HONEY SOAP - 70G
+                    <div className={style.text}>
+                        {getMissingProductItemList[formStep].name}
+                    </div>
+
+                    <div className={style.text}>
+                        {getMissingProductItemList[formStep].supplier}
                     </div>
 
                 </div>
 
                 <div className={style.statistics}>
                     <div className={style.redText}>
-                        IN NEXT 10 DAYS
+                        IN STOCK
                     </div>
                     <div className={style.redText}>
-                        65 CASES
+                        {getMissingProductItemList[formStep].storecasequantity} &nbsp;
+                        {getMissingProductItemList[formStep].storecasequantity <= 1 && getMissingProductItemList[formStep].storecasequantity >= -1 ? "CASE" : "CASES"}
                     </div>
                     <div className={style.redText}>
-                        5 PIECES
+                        {getMissingProductItemList[formStep].storepiecesquantity} &nbsp;
+                        {getMissingProductItemList[formStep].storepiecesquantity <= 1 && getMissingProductItemList[formStep].storepiecesquantity >= -1 ? "PIECE" : "PIECES"}
                     </div>
                 </div>
 
             </div>
 
-            <div>
-                <ArrowRightIcon className={style.arrow} />
-            </div>
+            <IconButton
+                disabled={formStep === getMissingProductItemList.length - 1}
+                onClick={nextProduct}
+            >
+                <ArrowRightIcon
+                    className={style.arrow}
+                />
+            </IconButton>
 
         </div>
     )

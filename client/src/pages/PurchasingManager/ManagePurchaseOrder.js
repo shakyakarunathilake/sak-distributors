@@ -43,13 +43,15 @@ export default function ManagePurchaseOrder() {
     const [supplierOptions, setSupplierOptions] = useState([]);
     const [productOptions, setProductOptions] = useState([]);
     const [quotationOptions, setQuotationOptions] = useState([]);
+    const [missingProducts, setMissingProducts] = useState([]);
 
     const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
 
     let endPoints = [
         "http://localhost:8080/options/supplier-options-for-purchase-order",
         "http://localhost:8080/options/product-options-for-purchase-order",
-        "http://localhost:8080/quotations/get-all-active-quotation-data"
+        "http://localhost:8080/quotations/get-all-active-quotation-data",
+        "http://localhost:8080/store/get-all-missing-product-details"
     ]
 
     const handleAlert = () => {
@@ -80,6 +82,8 @@ export default function ManagePurchaseOrder() {
     }, [reRender])
 
     const getOptions = () => {
+
+        console.log(action)
         axios
             .all(endPoints.map((endpoint) =>
                 axios
@@ -90,6 +94,7 @@ export default function ManagePurchaseOrder() {
                     setSupplierOptions(responses[0].data.supplierOptions);
                     setProductOptions(responses[1].data.productOptions);
                     setQuotationOptions(responses[2].data.quotationOptions);
+                    setMissingProducts(responses[3].data.missingProducts);
                 }))
             .catch(err => {
                 console.log(err);
@@ -204,9 +209,9 @@ export default function ManagePurchaseOrder() {
                         onClick={
                             () => {
                                 setAction('Create');
-                                getOptions();
-                                setOpenPopup(true);
                                 setPORecords(null);
+                                getOptions();
+                                setOpenPopup(true)
                             }
                         }
                     >
@@ -384,6 +389,7 @@ export default function ManagePurchaseOrder() {
                         poRecords={poRecords}
                         action={action}
                         quotationOptions={quotationOptions}
+                        missingProducts={missingProducts}
                     />
                 }
 

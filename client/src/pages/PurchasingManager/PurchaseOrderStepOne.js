@@ -24,6 +24,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 //Dialog Content
 import Quotations from './Quotations';
+import PurchaseOrderAnalytics from './PurchaseOrderAnalytics';
 
 //Material Table
 import MaterialTable, { MTableAction, MTableToolbar, MTableEditRow } from 'material-table';
@@ -76,7 +77,8 @@ export default function PurchaseOrderStepOne(props) {
         errors,
         podate,
         dateTime,
-        quotationOptions
+        quotationOptions,
+        missingProducts,
     } = props;
 
     const addActionRef = useRef();
@@ -90,7 +92,20 @@ export default function PurchaseOrderStepOne(props) {
         // console.log("PRODUCT ITEM LIST: ", productItemList);
 
         return productItemList;
-    }, [data, getValues, watch('supplier'), productOptions]);
+    }, [data, getValues, watch("supplier"), productOptions]);
+
+    const getMissingProductItemList = useMemo(() => {
+
+        let missingProductItemList = [];
+
+        if (getValues('supplier')) {
+            missingProductItemList = missingProducts.filter(x => x.supplier === getValues('supplier'));
+        } else {
+            missingProductItemList = missingProducts;
+        }
+
+        return missingProductItemList;
+    }, [data, getValues, watch("supplier"), missingProducts]);
 
     const calculateTotal = () => {
         let total = 0;
@@ -255,17 +270,17 @@ export default function PurchaseOrderStepOne(props) {
                                             Header: props => (
                                                 <TableHead {...props} style={{ position: 'sticky', top: '0', zIndex: 99999 }}>
                                                     <TableRow className={classes.row1}>
-                                                        <TableCell width="38%" padding="none" rowSpan={2}>
+                                                        <TableCell width="31%" padding="none" rowSpan={2}>
                                                             <div style={{ padding: '0 10px' }}>
                                                                 Description
                                                             </div>
                                                         </TableCell>
-                                                        <TableCell width="10%" padding="none" rowSpan={2} align="center">
+                                                        <TableCell width="9%" padding="none" rowSpan={2} align="center">
                                                             <div style={{ padding: '0 10px' }}>
                                                                 Pieces per case
                                                             </div>
                                                         </TableCell>
-                                                        <TableCell width="10%" padding="none" rowSpan={2} align="center">
+                                                        <TableCell width="9%" padding="none" rowSpan={2} align="center">
                                                             <div style={{ padding: '0 10px' }}>
                                                                 List Price (Rs.)
                                                             </div>
@@ -276,12 +291,12 @@ export default function PurchaseOrderStepOne(props) {
                                                         <TableCell padding="none" colSpan={2} align="center">
                                                             Free Qty.
                                                         </TableCell>
-                                                        <TableCell width="14%" padding="none" rowSpan={2} align="center">
+                                                        <TableCell width="13%" padding="none" rowSpan={2} align="center">
                                                             <div style={{ padding: '0 10px' }}>
                                                                 Value (Rs.)
                                                             </div>
                                                         </TableCell>
-                                                        <TableCell padding="none" rowSpan={2} align="center">
+                                                        <TableCell padding="none" width="10%" rowSpan={2} align="center">
                                                             Action
                                                         </TableCell>
                                                     </TableRow>
@@ -300,11 +315,10 @@ export default function PurchaseOrderStepOne(props) {
                                                 hidden: true,
                                             },
                                             {
-                                                title: "Description",
                                                 field: "description",
                                                 cellStyle: {
                                                     padding: "10px 5px 10px 7px",
-                                                    width: '38%',
+                                                    width: '31%',
                                                     textAlign: 'left'
                                                 },
                                                 editComponent: props => (
@@ -344,13 +358,12 @@ export default function PurchaseOrderStepOne(props) {
 
                                             },
                                             {
-                                                title: "Pieces Per Cases",
                                                 field: "piecespercase",
                                                 type: 'numeric',
                                                 initialEditValue: 24,
                                                 cellStyle: {
                                                     padding: "10px 5px 10px 7px",
-                                                    width: '10%',
+                                                    width: '9%',
                                                     textAlign: 'right'
                                                 },
                                                 editComponent: props =>
@@ -382,11 +395,10 @@ export default function PurchaseOrderStepOne(props) {
                                             },
                                             {
                                                 field: "listprice",
-                                                title: '55.00',
                                                 type: 'numeric',
                                                 cellStyle: {
                                                     padding: "10px 5px 10px 7px",
-                                                    width: '10%',
+                                                    width: '9%',
                                                     textAlign: 'right'
                                                 },
                                                 editComponent: props =>
@@ -406,7 +418,7 @@ export default function PurchaseOrderStepOne(props) {
                                                         error={props.error}
                                                         variant="standard"
                                                         value={props.value}
-                                                        placeholder='9'
+                                                        placeholder='55.00'
                                                     />
                                                 ,
                                                 validate: (rowData) =>
@@ -419,7 +431,6 @@ export default function PurchaseOrderStepOne(props) {
 
                                             },
                                             {
-                                                title: "Sales Cs",
                                                 field: "salesqtycases",
                                                 type: 'numeric',
                                                 cellStyle: {
@@ -496,8 +507,8 @@ export default function PurchaseOrderStepOne(props) {
 
                                             },
                                             {
-                                                title: "9",
                                                 field: "freeqtycases",
+                                                title: "9",
                                                 type: 'numeric',
                                                 initialEditValue: 0,
                                                 cellStyle: {
@@ -514,8 +525,8 @@ export default function PurchaseOrderStepOne(props) {
 
                                             },
                                             {
-                                                title: "9",
                                                 field: "freeqtypieces",
+                                                title: "9",
                                                 type: 'numeric',
                                                 initialEditValue: 0,
                                                 cellStyle: {
@@ -534,12 +545,12 @@ export default function PurchaseOrderStepOne(props) {
 
                                             },
                                             {
-                                                title: "9999.99",
                                                 field: "value",
+                                                title: "9999.99",
                                                 type: 'numeric',
                                                 render: rowData => rowData.value ? NumberWithCommas(rowData.value.toFixed(2)) : '',
                                                 cellStyle: {
-                                                    width: '14%',
+                                                    width: '13%',
                                                     textAlign: 'right'
                                                 },
                                                 editable: 'never',
@@ -622,9 +633,20 @@ export default function PurchaseOrderStepOne(props) {
                     variant="middle"
                 />
 
-                <Quotations
-                    quotationOptions={quotationOptions}
-                />
+                <div className={style.quotations}>
+
+                    {
+                        getMissingProductItemList.length > 0 &&
+                        <PurchaseOrderAnalytics
+                            getMissingProductItemList={getMissingProductItemList}
+                        />
+                    }
+
+                    <Quotations
+                        quotationOptions={quotationOptions}
+                    />
+
+                </div>
 
             </div >
 

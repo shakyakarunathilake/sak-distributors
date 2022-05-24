@@ -13,20 +13,19 @@ import { Button } from '@material-ui/core';
 //SCSS styles
 import style from './Quotations.module.scss';
 
-//Components
-import PurchaseOrderAnalytics from './PurchaseOrderAnalytics';
-
 //Connection to backend
 import axios from 'axios';
 
 export default function Quotations(props) {
 
-    const { quotationOptions } = props;
+    const {
+        quotationOptions
+    } = props;
 
     const [rows, setRows] = useState(null);
     const [cols, setCols] = useState(null);
 
-    const { handleSubmit, control, formState: { errors, isValid }, getValues, trigger } = useForm({
+    const { control, formState: { errors, isValid }, getValues, trigger } = useForm({
         mode: "all",
         defaultValues: {
             quotation: '',
@@ -85,18 +84,13 @@ export default function Quotations(props) {
 
         <div className={style.container}>
 
-            <PurchaseOrderAnalytics />
-
             <div className={style.quotationHeader}>
 
                 <div className={style.title}>
                     Quotations
                 </div>
 
-                <form
-                    className={style.quotationSelect}
-                    onSubmit={handleSubmit(onSubmit)}
-                >
+                <div className={style.quotationSelect} >
 
                     <Controller
                         render={({ field }) => (
@@ -106,7 +100,6 @@ export default function Quotations(props) {
                                 error={errors.quotation ? true : false}
                                 helperText={errors.quotation && errors.quotation.message}
                                 size="small"
-                                label="Quotation *"
                             />
                         )}
                         control={control}
@@ -122,7 +115,7 @@ export default function Quotations(props) {
                         Fetch Quotation
                     </Button>
 
-                </form>
+                </div>
 
             </div>
 
