@@ -36,6 +36,8 @@ export default function ManagerDashboard() {
             .catch(error => {
                 console.log(error)
             })
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 
