@@ -3,7 +3,6 @@ import { Controller } from 'react-hook-form';
 
 //Material UI Components
 import { Button } from '@material-ui/core';
-import { Typography } from '@material-ui/core';
 import { InputAdornment } from '@material-ui/core';
 import Tooltip from '@mui/material/Tooltip';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
