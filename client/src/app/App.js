@@ -69,7 +69,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: '"Roboto", "Poppins", sans-serif',
+    fontFamily: '"Poppins", sans-serif',
     fontSize: 12
   },
 });
