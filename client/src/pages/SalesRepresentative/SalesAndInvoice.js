@@ -125,7 +125,7 @@ export default function SalesAndInvoice() {
                 })
         }
 
-    }, [reRender, employeedetails]);
+    }, [reRender]);
 
     const handleClosePopUp = () => {
         setOpenPopup(false)
