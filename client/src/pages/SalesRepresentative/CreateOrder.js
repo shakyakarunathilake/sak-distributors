@@ -68,10 +68,10 @@ export default function CreateOrder(props) {
             advancepayment: 0,
             creditamounttosettle: 0,
             eligibilityforcredit: 'No',
-            maximumcreditamount: 0.00,
-            currentinvoicecreditamount: 0.00,
-            invoicesettlementvalue: 0.00,
-            loyaltypointsincash: 0.00,
+            maximumcreditamount: 0,
+            currentinvoicecreditamount: 0,
+            invoicesettlementvalue: 0,
+            loyaltypointsincash: 0,
         }
     });
 
