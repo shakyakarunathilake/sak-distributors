@@ -5,145 +5,121 @@
     grid-template-rows: min-content auto min-content;
     box-sizing: border-box;
     width: 870px;
-    min-height: 719px;
-}
+    height: 487.5px;
 
-.title {
-    display: grid;
-    grid-template-columns: auto min-content;
-    font-size: 1.55em;
-    font-weight: 600;
-    .icon {
-        color: red;
-        &:hover {
-            transform: scale(1.1);
+    .title {
+        display: grid;
+        grid-template-columns: auto min-content;
+        font-size: 1.55em;
+        font-weight: 600;
+        .icon {
+            color: red;
+            &:hover {
+                transform: scale(1.1);
+            }
         }
     }
-}
 
-.step {
-    margin: 5px 0 0 0;
-    color: $primaryLight;
-    font-size: 0.75em;
-}
-
-.body {
-    display: grid;
-    grid-template-columns: min-content auto;
-    grid-column-gap: 20px;
-}
-
-.columnA {
-    display: grid;
-    grid-template-rows: min-content min-content min-content auto;
-}
-
-.image {
-    border-radius: 50%;
-    color: #6d6d6d;
-    padding: 20px 10px;
-    // position: relative;
-}
-
-.imgWrapper {
-    height: 260px;
-    width: 260px;
-    border-radius: 50%;
-    overflow: hidden;
-
-    img {
-        height: 260px;
-        width: 260px;
-        object-fit: contained;
+    .step {
+        margin: 5px 0 0 0;
+        color: $primaryLight;
+        font-size: 0.75em;
     }
-}
 
-.productId {
-    margin-top: 10px;
-    font-size: 1em;
-    text-align: center;
-}
-
-.input {
-    border: none;
-    border-color: transparent;
-    text-align: center;
-    font-size: 1em;
-    font-weight: 600;
-
-    &:disabled {
-        background: #ffffff;
+    .body {
+        display: grid;
+        grid-template-columns: min-content auto;
+        grid-column-gap: 20px;
     }
-}
 
-.columnB {
-    margin: auto 0;
-}
+    .columnA {
+        display: grid;
+        grid-template-rows: min-content min-content min-content auto;
+    }
 
-.redFont {
-    color: red;
-    font-size: 0.7em;
-}
+    .image {
+        border-radius: 50%;
+        color: #6d6d6d;
+        padding: 30px 10px;
+        // position: relative;
+    }
 
-.row {
-    padding: 10px 0;
-}
+    .imgWrapper {
+        height: 220px;
+        width: 220px;
+        border-radius: 50%;
+        overflow: hidden;
 
-.dividerDiv {
-    margin: 15px 0;
-}
+        img {
+            height: 220px;
+            width: 220px;
+            object-fit: contained;
+        }
+    }
 
-.threecolumns {
-    display: grid;
-    grid-template-columns: calc(33% - 11px) calc(33% - 11px) calc(33% - 11px);
-    grid-column-gap: 20px;
-    padding: 10px 0;
-}
-
-.twominionefullcolumns {
-    display: grid;
-    grid-template-columns: calc(25% - 13px) calc(25% - 13px) calc(50% - 13px);
-    grid-column-gap: 20px;
-    padding: 10px 0;
-}
-
-.twocolumns {
-    display: grid;
-    grid-template-columns: calc(50% - 10px) calc(50% - 10px);
-    grid-column-gap: 20px;
-    padding: 10px 0;
-}
-
-.twocolumnswithoutpadding {
-    display: grid;
-    grid-template-columns: calc(50% - 10px) calc(50% - 10px);
-    grid-column-gap: 20px;
-}
-
-.footer {
-    display: grid;
-    grid-template-columns: auto auto;
-    padding: 20px 0px 5px 0px;
-
-    Button {
+    .productId {
+        margin-top: 10px;
         font-size: 1em;
-        height: 40px;
-        padding: $formButtonPadding2;
+        text-align: center;
     }
 
-    .backBtn {
-        text-align: left;
-        Button {
-            background-color: #c2c2c2;
-            color: $inverseFontColor;
+    .input {
+        border: none;
+        border-color: transparent;
+        text-align: center;
+        font-size: 1em;
+        font-weight: 600;
+
+        &:disabled {
+            background: #ffffff;
         }
     }
 
-    .doneBtn {
-        text-align: right;
+    .columnB {
+        margin: auto 0;
+    }
+
+    .redFont {
+        color: red;
+        font-size: 0.7em;
+    }
+
+    .row {
+        margin: 5px 0 0 0;
+        height: 56.26px;
+    }
+
+    .twocolumns {
+        display: grid;
+        grid-template-columns: calc(50% - 10px) calc(50% - 10px);
+        grid-column-gap: 20px;
+    }
+
+    .footer {
+        display: grid;
+        grid-template-columns: auto auto;
+        padding: 20px 0px 5px 0px;
+
         Button {
-            background-color: $primaryMain;
-            color: $inverseFontColor;
+            font-size: 1em;
+            height: 40px;
+            padding: $formButtonPadding2;
+        }
+
+        .backBtn {
+            text-align: left;
+            Button {
+                background-color: #c2c2c2;
+                color: $inverseFontColor;
+            }
+        }
+
+        .doneBtn {
+            text-align: right;
+            Button {
+                background-color: $primaryMain;
+                color: $inverseFontColor;
+            }
         }
     }
 }

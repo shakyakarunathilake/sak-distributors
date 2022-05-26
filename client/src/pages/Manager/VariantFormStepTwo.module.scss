@@ -5,7 +5,7 @@
     grid-template-rows: min-content auto min-content;
     box-sizing: border-box;
     width: 870px;
-    min-height: 719px;
+    height: 487.5px;
 
     .header {
         .title {
@@ -40,18 +40,18 @@
             .image {
                 border-radius: 50%;
                 color: #6d6d6d;
-                padding: 20px 10px;
+                padding: 30px 10px;
                 // position: relative;
 
                 .imgWrapper {
-                    height: 260px;
-                    width: 260px;
+                    height: 220px;
+                    width: 220px;
                     border-radius: 50%;
                     overflow: hidden;
 
                     img {
-                        height: 260px;
-                        width: 260px;
+                        height: 220px;
+                        width: 220px;
                         object-fit: contained;
                     }
                 }

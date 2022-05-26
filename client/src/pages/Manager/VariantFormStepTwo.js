@@ -12,9 +12,6 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 //Default Image
 import product from '../../images/product.svg';
 
-//Shared functions 
-import NumberWithCommas from '../NumberWithCommas';
-
 //SCSS Styles
 import style from './VariantFormStepTwo.module.scss';
 
@@ -23,10 +20,9 @@ export default function VariantFormStepTwo(props) {
     const {
         control,
         handleClosePopUp,
-        onSubmit,
         action,
         backFormStep,
-        watch,
+        completeFormStep,
         file
     } = props;
 
@@ -38,7 +34,6 @@ export default function VariantFormStepTwo(props) {
                 <div className={style.title}>
                     <div>
                         {action === "Create" && "Create Product Variant"}
-                        {action === "Edit" && "Edit Product Variant"}
                         {action === "View" && "View Product Variant"}
                     </div>
                     <div>
@@ -49,12 +44,11 @@ export default function VariantFormStepTwo(props) {
                     </div>
                 </div>
 
-                {
-                    action !== "View" &&
-                    <div className={style.step}>
-                        Step 2 of 2
-                    </div>
-                }
+
+                <div className={style.step}>
+                    {action === "View" && "Step 1 of 2"}
+                    {action === "Create" && "Step 2 of 4"}
+                </div>
 
             </div>
 
@@ -102,7 +96,7 @@ export default function VariantFormStepTwo(props) {
                                 control={control}
                                 render={({ field: { value } }) => (
                                     <Typography className={style.input}>
-                                        {value}
+                                        {action !== "View" ? value.name : value}
                                     </Typography>
                                 )}
                             />
@@ -211,162 +205,6 @@ export default function VariantFormStepTwo(props) {
                         </div>
                     </div>
 
-                    {
-                        watch('type') !== "General" &&
-                        <div className={style.row}>
-                            <div className={style.boldText}>
-                                Offer Caption
-                            </div>
-                            <div className={style.productData}>
-                                <Controller
-                                    name={"offercaption"}
-                                    control={control}
-                                    render={({ field: { value } }) => (
-                                        <Typography className={style.input}>
-                                            {value}
-                                        </Typography>
-                                    )}
-                                />
-                            </div>
-                        </div>
-                    }
-
-                    <div className={style.row}>
-                        <div className={style.boldText}>
-                            Status
-                        </div>
-                        <div className={style.productData}>
-                            <Controller
-                                name={"variantstatus"}
-                                control={control}
-                                render={({ field: { value } }) => (
-                                    <Typography className={style.input}>
-                                        {value}
-                                    </Typography>
-                                )}
-                            />
-                        </div>
-                    </div>
-
-                    <div className={style.row}>
-                        <div className={style.boldText}>
-                            Pieces/Case
-                        </div>
-                        <div className={style.productData}>
-                            <Controller
-                                name={"piecespercase"}
-                                control={control}
-                                render={({ field: { value } }) => (
-                                    <Typography className={style.input}>
-                                        {value}
-                                    </Typography>
-                                )}
-                            />
-                        </div>
-                    </div>
-
-                    <div className={style.row}>
-                        <div className={style.boldText}>
-                            Bulk Price
-                        </div>
-                        <div className={style.productData}>
-                            <Controller
-                                name={"bulkprice"}
-                                control={control}
-                                render={({ field: { value } }) => (
-                                    <Typography className={style.input}>
-                                        Rs. {NumberWithCommas(value)}
-                                    </Typography>
-                                )}
-                            />
-                        </div>
-                    </div>
-
-                    <div className={style.row}>
-                        <div className={style.boldText}>
-                            Purchase Price
-                        </div>
-                        <div className={style.productData}>
-                            <Controller
-                                name={"purchaseprice"}
-                                control={control}
-                                render={({ field: { value } }) => (
-                                    <Typography className={style.input}>
-                                        Rs. {NumberWithCommas(value)}
-                                    </Typography>
-                                )}
-                            />
-                        </div>
-                    </div>
-
-                    <div className={style.row}>
-                        <div className={style.boldText}>
-                            Selling Price
-                        </div>
-                        <div className={style.productData}>
-                            <Controller
-                                name={"sellingprice"}
-                                control={control}
-                                render={({ field: { value } }) => (
-                                    <Typography className={style.input}>
-                                        Rs. {NumberWithCommas(value)}
-                                    </Typography>
-                                )}
-                            />
-                        </div>
-                    </div>
-
-                    <div className={style.row}>
-                        <div className={style.boldText}>
-                            MRP
-                        </div>
-                        <div className={style.productData}>
-                            <Controller
-                                name={"mrp"}
-                                control={control}
-                                render={({ field: { value } }) => (
-                                    <Typography className={style.input}>
-                                        Rs. {NumberWithCommas(value)}
-                                    </Typography>
-                                )}
-                            />
-                        </div>
-                    </div>
-
-                    <div className={style.row}>
-                        <div className={style.boldText}>
-                            Added By
-                        </div>
-                        <div className={style.productData}>
-                            <Controller
-                                name={"variantaddedby"}
-                                control={control}
-                                render={({ field: { value } }) => (
-                                    <Typography className={style.input}>
-                                        {value}
-                                    </Typography>
-                                )}
-                            />
-                        </div>
-                    </div>
-
-                    <div className={style.row}>
-                        <div className={style.boldText}>
-                            Added Date
-                        </div>
-                        <div className={style.productData}>
-                            <Controller
-                                name={"variantaddeddate"}
-                                control={control}
-                                render={({ field: { value } }) => (
-                                    <Typography className={style.input}>
-                                        {value}
-                                    </Typography>
-                                )}
-                            />
-                        </div>
-                    </div>
-
                 </div>
 
             </div>
@@ -375,7 +213,7 @@ export default function VariantFormStepTwo(props) {
 
                 <div className={style.backBtn}>
                     {
-                        action !== "View" &&
+                        action === "Create" &&
                         <Button
                             onClick={backFormStep}
                             variant="contained"
@@ -387,12 +225,11 @@ export default function VariantFormStepTwo(props) {
 
                 <div className={style.doneBtn}>
                     <Button
-                        onClick={onSubmit}
+                        onClick={completeFormStep}
                         variant="contained"
                     >
-                        {action === "Create" && "Confirm & Submit"}
-                        {action === "Edit" && "Confirm & Submit"}
-                        {action === "View" && "Done"}
+                        {action === "Create" && "Confrim & Next"}
+                        {action !== "Create" && "Next"}
                     </Button>
                 </div>
 

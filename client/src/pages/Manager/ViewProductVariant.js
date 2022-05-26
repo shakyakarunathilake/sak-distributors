@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 //Steps 
 import StepTwo from './VariantFormStepTwo';
+import StepFour from './VariantFormStepFour';
+
+//Styles
+import style from './VariantForm.module.scss';
 
 export default function ViewProductVariant(props) {
 
@@ -31,20 +35,57 @@ export default function ViewProductVariant(props) {
         }
     });
 
+    const [formStep, setFormStep] = useState(0);
+
+    const completeFormStep = () => {
+        setFormStep(x => x + 1);
+    }
+
+    const backFormStep = () => {
+        setFormStep(x => x - 1);
+    }
+
     const onSubmit = () => {
         handleClosePopUp();
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form
+            className={style.container}
+            onSubmit={handleSubmit(onSubmit)}
+        >
 
-            <StepTwo
-                action={action}
-                handleClosePopUp={handleClosePopUp}
-                control={control}
-                onSubmit={onSubmit}
-                watch={watch}
-            />
+
+            {
+                formStep >= 0 &&
+                <section className={formStep === 0 ? style.visible : style.hidden}>
+
+                    <StepTwo
+                        control={control}
+                        handleClosePopUp={handleClosePopUp}
+                        action={action}
+                        backFormStep={backFormStep}
+                        completeFormStep={completeFormStep}
+                    />
+
+                </section >
+            }
+
+            {
+                formStep >= 1 &&
+                <section className={formStep === 1 ? style.visible : style.hidden}>
+
+                    <StepFour
+                        control={control}
+                        handleClosePopUp={handleClosePopUp}
+                        action={action}
+                        backFormStep={backFormStep}
+                        onSubmit={onSubmit}
+                        watch={watch}
+                    />
+
+                </section >
+            }
 
         </form >
     )

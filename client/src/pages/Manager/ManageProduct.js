@@ -484,7 +484,6 @@ export default function ManageProduct() {
                             employeeOptions={employeeOptions}
                             handleClosePopUp={handleClosePopUp}
                             action={action}
-                            supplierOptions={supplierOptions}
                         />
                     }
 
