@@ -19,7 +19,7 @@
         background: #ffffff;
         border-radius: 10px;
         justify-content: center;
-        height: 600px;
+        height: 581px;
         width: 500px;
 
         .top {
@@ -27,18 +27,18 @@
             grid-template-rows: min-content min-content min-content min-content min-content;
 
             .logo {
-                margin: 50px auto 20px auto;
+                margin: 50px auto 15px auto;
             }
 
             .heading {
                 font-size: 1.2em;
                 font-weight: 600;
-                // margin: 30px 6px 10px 7px;
-                margin: 30px auto 20px auto;
+                margin: 25px auto;
             }
 
             .textfield {
-                margin: 10px 0;
+                margin: 10px 0 0 0;
+                height: 75.27px;
 
                 .field {
                     width: 400px;
@@ -46,7 +46,7 @@
             }
 
             .div {
-                margin: 20px auto;
+                margin: 12px auto 20px auto;
 
                 .forgotPassword {
                     font-size: 0.8em;
@@ -65,7 +65,7 @@
         .copyright {
             color: $secondaryFontColor;
             font-size: 0.8em;
-            margin-bottom: 20px;
+            margin: 5px auto 20px auto;
             text-align: center;
         }
     }
