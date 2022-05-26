@@ -102,13 +102,65 @@ export default function VariantFormStepThree(props) {
             <div className={style.body}>
 
                 <div className={style.redFont}>
-                    The fields with "*" are required
+                    The fields with "*" are required.
                 </div>
 
-                {
-                    watch("type") !== "General" &&
-                    <div className={style.twominionefullcolumns}>
+                <div className={style.twominionefullcolumns}>
 
+                    <div className={style.row}>
+
+                        <Controller
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth={true}
+                                    helperText={errors.eligibleqty && errors.eligibleqty.message}
+                                    error={errors.eligibleqty ? true : false}
+                                    placeholder="9"
+                                    size="small"
+                                    label="Eligible Qty *"
+                                    disabled={watch("type") === "General"}
+                                />
+                            )}
+                            name={"eligibleqty"}
+                            control={control}
+                            rules={{
+                                required: { value: watch("type") !== "General", message: "Required *" },
+                                pattern: { value: /^[0-9]*$/, message: "Invalid" }
+                            }}
+                        />
+
+                    </div>
+
+                    <div className={style.row}>
+
+                        <Controller
+                            render={({ field }) => (
+                                <Select
+                                    {...field}
+                                    options={[
+                                        { id: "pcs", title: "Pieces" },
+                                        { id: "cases", title: "Cases" }
+                                    ]}
+                                    helperText={errors.eligibleqtytype && errors.eligibleqtytype.message}
+                                    error={errors.eligibleqtytype ? true : false}
+                                    size="small"
+                                    label="Pcs / Cases *"
+                                    disabled={watch("type") === "General"}
+                                />
+                            )}
+                            name={"eligibleqtytype"}
+                            control={control}
+                            rules={{
+                                required: { value: watch("type") !== "General", message: "Required *" },
+                            }}
+                        />
+
+                    </div>
+
+
+                    {
+                        watch("type") === "Promotion (Discounts)" &&
                         <div className={style.row}>
 
                             <Controller
@@ -116,53 +168,30 @@ export default function VariantFormStepThree(props) {
                                     <TextField
                                         {...field}
                                         fullWidth={true}
-                                        helperText={errors.eligibleqty && errors.eligibleqty.message}
-                                        error={errors.eligibleqty ? true : false}
+                                        helperText={errors.discount && errors.discount.message}
+                                        error={errors.discount ? true : false}
                                         placeholder="9"
                                         size="small"
-                                        label="Eligible Qty *"
-                                        disabled={watch("type") === "General"}
+                                        label="Discount *"
+                                        disabled={watch("type") !== "Promotion (Discounts)"}
                                     />
                                 )}
-                                name={"eligibleqty"}
+                                name={"discount"}
                                 control={control}
                                 rules={{
-                                    required: { value: watch("type") !== "General", message: "Required *" },
+                                    required: { value: watch("type") === "Promotion (Discounts)", message: "Required *" },
                                     pattern: { value: /^[0-9]*$/, message: "Invalid" }
                                 }}
                             />
 
                         </div>
 
-                        <div className={style.row}>
+                    }
 
-                            <Controller
-                                render={({ field }) => (
-                                    <Select
-                                        {...field}
-                                        options={[
-                                            { id: "pcs", title: "Pieces" },
-                                            { id: "cases", title: "Cases" }
-                                        ]}
-                                        helperText={errors.eligibleqtytype && errors.eligibleqtytype.message}
-                                        error={errors.eligibleqtytype ? true : false}
-                                        size="small"
-                                        label="Pcs / Cases *"
-                                        disabled={watch("type") === "General"}
-                                    />
-                                )}
-                                name={"eligibleqtytype"}
-                                control={control}
-                                rules={{
-                                    required: { value: watch("type") !== "General", message: "Required *" },
-                                }}
-                            />
+                    {
+                        watch("type") !== "Promotion (Discounts)" &&
+                        <div className={style.twocolumns}>
 
-                        </div>
-
-
-                        {
-                            watch("type") === "Promotion (Discounts)" &&
                             <div className={style.row}>
 
                                 <Controller
@@ -170,122 +199,88 @@ export default function VariantFormStepThree(props) {
                                         <TextField
                                             {...field}
                                             fullWidth={true}
-                                            helperText={errors.discount && errors.discount.message}
-                                            error={errors.discount ? true : false}
+                                            helperText={errors.freeqty && errors.freeqty.message}
+                                            error={errors.freeqty ? true : false}
                                             placeholder="9"
                                             size="small"
-                                            label="Discount *"
-                                            disabled={watch("type") !== "Promotion (Discounts)"}
+                                            label="Free Qty *"
+                                            disabled={watch("type") !== "Promotion (Free Products)"}
                                         />
                                     )}
-                                    name={"discount"}
+                                    name={"freeqty"}
                                     control={control}
                                     rules={{
-                                        required: { value: watch("type") === "Promotion (Discounts)", message: "Required *" },
+                                        required: { value: watch("type") === "Promotion (Free Products)", message: "Required *" },
                                         pattern: { value: /^[0-9]*$/, message: "Invalid" }
                                     }}
                                 />
-
                             </div>
 
-                        }
-
-                        {
-                            watch("type") !== "Promotion (Discounts)" &&
-                            <div className={style.twocolumns}>
-
-                                <div className={style.row}>
-
-                                    <Controller
-                                        render={({ field }) => (
-                                            <TextField
-                                                {...field}
-                                                fullWidth={true}
-                                                helperText={errors.freeqty && errors.freeqty.message}
-                                                error={errors.freeqty ? true : false}
-                                                placeholder="9"
-                                                size="small"
-                                                label="Free Qty *"
-                                                disabled={watch("type") !== "Promotion (Free Products)"}
-                                            />
-                                        )}
-                                        name={"freeqty"}
-                                        control={control}
-                                        rules={{
-                                            required: { value: watch("type") === "Promotion (Free Products)", message: "Required *" },
-                                            pattern: { value: /^[0-9]*$/, message: "Invalid" }
-                                        }}
-                                    />
-                                </div>
-
-                                <div className={style.row}>
-                                    <Controller
-                                        render={({ field }) => (
-                                            <Select
-                                                {...field}
-                                                options={[
-                                                    { id: "pcs", title: "Pieces" },
-                                                    { id: "cases", title: "Cases" }
-                                                ]}
-                                                helperText={errors.freeqtytype && errors.freeqtytype.message}
-                                                error={errors.freeqtytype ? true : false}
-                                                size="small"
-                                                label="Pcs / Cases *"
-                                                disabled={watch("type") !== "Promotion (Free Products)"}
-                                            />
-                                        )}
-                                        name={"freeqtytype"}
-                                        control={control}
-                                        rules={{
-                                            required: { value: watch("type") === "Promotion (Free Products)", message: "Required *" },
-                                        }}
-                                    />
-                                </div>
-
+                            <div className={style.row}>
+                                <Controller
+                                    render={({ field }) => (
+                                        <Select
+                                            {...field}
+                                            options={[
+                                                { id: "pcs", title: "Pieces" },
+                                                { id: "cases", title: "Cases" }
+                                            ]}
+                                            helperText={errors.freeqtytype && errors.freeqtytype.message}
+                                            error={errors.freeqtytype ? true : false}
+                                            size="small"
+                                            label="Pcs / Cases *"
+                                            disabled={watch("type") !== "Promotion (Free Products)"}
+                                        />
+                                    )}
+                                    name={"freeqtytype"}
+                                    control={control}
+                                    rules={{
+                                        required: { value: watch("type") === "Promotion (Free Products)", message: "Required *" },
+                                    }}
+                                />
                             </div>
-                        }
 
-                    </div>
-                }
+                        </div>
+                    }
 
-                {
-                    watch("type") !== "General" &&
-                    <div className={style.row}>
+                </div>
 
-                        <ThemeProvider theme={theme}>
-                            <Controller
-                                render={({ field }) => (
-                                    <Autocomplete
-                                        {...field}
-                                        fullWidth
-                                        options={productVariantOptions}
-                                        getOptionLabel={(option) => option}
-                                        isOptionEqualToValue={(option, value) => option === value}
-                                        renderInput={(params) => (
-                                            <MuiTextField
-                                                {...params}
-                                                error={errors.freeproductname ? true : false}
-                                                helperText={errors.freeproductname && errors.freeproductname.message}
-                                                label="Promotion Product *"
-                                                variant="outlined"
-                                                size="small"
-                                            />
-                                        )}
-                                        onChange={(e, option) => {
-                                            field.onChange(option)
-                                        }}
-                                    />
-                                )}
-                                name={"freeproductname"}
-                                control={control}
-                                rules={{
-                                    required: { value: watch("type") !== "General", message: "Required *" },
-                                }}
-                            />
-                        </ThemeProvider>
+                <div className={style.row}>
 
-                    </div>
-                }
+                    <ThemeProvider theme={theme}>
+                        <Controller
+                            render={({ field }) => (
+                                <Autocomplete
+                                    {...field}
+                                    fullWidth
+                                    options={productVariantOptions}
+                                    getOptionLabel={(option) => option}
+                                    isOptionEqualToValue={(option, value) => option === value}
+                                    onChange={(e, option) => {
+                                        field.onChange(option)
+                                    }}
+                                    disabled={watch("type") === "General"}
+                                    renderInput={(params) => (
+                                        <MuiTextField
+                                            {...params}
+                                            error={errors.freeproductname ? true : false}
+                                            helperText={errors.freeproductname && errors.freeproductname.message}
+                                            label="Promotion Product *"
+                                            variant="outlined"
+                                            size="small"
+                                        />
+                                    )}
+                                />
+                            )}
+                            name={"freeproductname"}
+                            control={control}
+                            rules={{
+                                required: { value: watch("type") !== "General", message: "Required *" },
+                            }}
+                        />
+                    </ThemeProvider>
+
+                </div>
 
 
                 <div className={style.twocolumns}>
@@ -301,7 +296,7 @@ export default function VariantFormStepThree(props) {
                                     error={errors.piecespercase ? true : false}
                                     placeholder="24"
                                     size="small"
-                                    label="Pieces/Case *"
+                                    label="Pieces per Case *"
                                 />
                             )}
                             name={"piecespercase"}
@@ -325,7 +320,7 @@ export default function VariantFormStepThree(props) {
                                     error={errors.bulkprice ? true : false}
                                     placeholder="999.99"
                                     size="small"
-                                    label="Bulk Price *"
+                                    label="Case Price *"
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment position="start">
