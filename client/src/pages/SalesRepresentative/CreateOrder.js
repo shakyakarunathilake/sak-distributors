@@ -68,9 +68,10 @@ export default function CreateOrder(props) {
             advancepayment: 0,
             creditamounttosettle: 0,
             eligibilityforcredit: 'No',
-            maximumcreditamount: 0,
-            currentinvoicecreditamount: 0,
-            invoicesettlementvalue: 0,
+            maximumcreditamount: 0.00,
+            currentinvoicecreditamount: 0.00,
+            invoicesettlementvalue: 0.00,
+            loyaltypointsincash: 0.00,
         }
     });
 
@@ -119,7 +120,7 @@ export default function CreateOrder(props) {
             setValue("creditamounttosettle", option.creditamounttosettle);
             setValue("loyaltypoints", option.loyaltypoints);
             setValue("eligibilityforcredit", option.eligibilityforcredit);
-            setValue("maximumcreditamount", option.maximumcreditamount);
+            setValue("loyaltypointsincash", parseInt(option.loyaltypoints * 100).toFixed(2));
             clearErrors();
         }
     }

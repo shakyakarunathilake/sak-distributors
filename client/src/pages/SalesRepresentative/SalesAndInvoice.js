@@ -231,6 +231,7 @@ export default function SalesAndInvoice() {
                     setRouteOptions(responses[1].data.routeOptions);
                     setCustomerOptions(responses[2].data.customeroptions);
                     setProductOptions(responses[3].data.productoptions);
+                    setTimeout(setOpenPopup(true), 500);
                 }))
             .catch(err => {
                 console.log(err);
@@ -248,8 +249,9 @@ export default function SalesAndInvoice() {
                 setOrderRecords(res.data.order);
                 if (action !== 'View') {
                     getOptions();
+                } else {
+                    setTimeout(setOpenPopup(true), 500);
                 }
-                setTimeout(setOpenPopup(true), 500);
             })
             .catch(err => {
                 console.log(err);
@@ -283,7 +285,6 @@ export default function SalesAndInvoice() {
                                     getOptions();
                                     setAction('Create');
                                     setOrderRecords(null);
-                                    setTimeout(setOpenPopup(true), 500);
                                 }
                             }
                         >

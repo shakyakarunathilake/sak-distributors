@@ -7,6 +7,9 @@ const Order = require("../models/order.model");
 const Customer = require("../models/customer.model");
 const MetaData = require("../models/metadata.model");
 const GIN = require("../models/gin.model");
+const LoyaltyPoints = require("../models/loyaltypoints.model");
+
+const { earnedLoyaltyPoints, spentLoyaltyPoints } = require("../services/loyaltyPointService");
 
 const formDataBody = multer();
 
@@ -142,26 +145,84 @@ router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
         })
         .then(result => {
 
-            if (result.customertype === "Registered Customer" && result.currentinvoicecreditamount !== 0.00) {
+            if (result.customertype === "Registered Customer" && parseInt(result.currentinvoicecreditamount) !== 0) {
 
                 Customer
                     .findOneAndUpdate(
                         { customerid: result.customerid },
-                        { 'creditamounttosettle': parseInt(result.currentinvoicecreditamount) },
+                        {
+                            $set: {
+                                'creditamounttosettle': result.currentinvoicecreditamount,
+                            },
+                            $inc: {
+                                'loyaltypoints': -spentLoyaltyPoints(result.currentinvoicecreditamount)
+                            }
+                        },
                         { new: true }
                     )
                     .exec()
-                    .then(result => {
+                    .then(
                         console.log("CUSTOMER CREDIT AMOUNT TO SETTLE UPDATED ")
-                    })
+                    )
                     .catch(error => {
-
                         console.log("CUSTOMER ERROR: ", error)
+                    });
+            }
 
-                        res.status(200).json({
-                            type: 'error',
-                            alert: error,
-                        });
+            return result;
+        })
+        .then(result => {
+
+            if (result.customertype === "Registered Customer" && parseInt(result.currentinvoicecreditamount) === 0) {
+
+                LoyaltyPoints
+                    .findOneAndUpdate(
+                        { customerid: result.customerid },
+                        {
+                            $push: {
+                                'loyaltypoints': {
+                                    'orderno': result.orderno,
+                                    'noOfPoints': earnedLoyaltyPoints(result.total),
+                                    'status': 'Not Approved',
+                                }
+                            },
+                        },
+                        { new: true, upsert: true }
+                    )
+                    .exec()
+                    .then(
+                        console.log("LOYALTY POINTS UPDATED ")
+                    )
+                    .catch(error => {
+                        console.log("LOYALTY POINTS ERROR: ", error)
+                    });
+
+            }
+            else if (result.customertype === "Registered Customer" && parseInt(result.currentinvoicecreditamount) !== 0) {
+
+                LoyaltyPoints
+                    .findOneAndUpdate(
+                        { customerid: result.customerid },
+                        {
+                            $push: {
+                                'loyaltypoints': {
+                                    'orderno': result.orderno,
+                                    'noOfPoints': spentLoyaltyPoints(result.currentinvoicecreditamount),
+                                    'status': 'Deducted',
+                                }
+                            },
+                            $inc: {
+                                'totalLoyaltyPoints': -spentLoyaltyPoints(result.currentinvoicecreditamount)
+                            }
+                        },
+                        { new: true, upsert: true }
+                    )
+                    .exec()
+                    .then(
+                        console.log("LOYALTY POINTS DEDUCTED ")
+                    )
+                    .catch(error => {
+                        console.log("LOYALTY POINTS ERROR: ", error)
                     });
             }
 
@@ -188,7 +249,6 @@ router.post("/create-order", formDataBody.fields([]), (req, res, next) => {
 
 //Get order details by order number
 router.post("/update-by-id/:orderno", formDataBody.fields([]), (req, res, next) => {
-    console.log("UPDATE:", req.body);
 
     const items = JSON.parse(req.body.items);
 
@@ -208,12 +268,15 @@ router.post("/update-by-id/:orderno", formDataBody.fields([]), (req, res, next) 
         .exec()
         .then(result => {
 
-            if (result.customertype === "Registered Customer" && result.currentinvoicecreditamount !== 0.00) {
+            if (result.customertype === "Registered Customer" && parseInt(result.currentinvoicecreditamount) !== 0) {
 
                 Customer
                     .findOneAndUpdate(
                         { customerid: result.customerid },
-                        { 'creditamounttosettle': result.currentinvoicecreditamount },
+                        {
+                            'creditamounttosettle': result.currentinvoicecreditamount,
+                            'loyaltypoints': result.loyaltypoints - spentLoyaltyPoints(result.currentinvoicecreditamount)
+                        },
                         { new: true }
                     )
                     .exec()
@@ -221,13 +284,76 @@ router.post("/update-by-id/:orderno", formDataBody.fields([]), (req, res, next) 
                         console.log("CUSTOMER UPDATED: ", result)
                     })
                     .catch(error => {
-
                         console.log("CUSTOMER ERROR: ", error)
+                    });
 
-                        res.status(200).json({
-                            type: 'error',
-                            alert: error,
-                        });
+            } else if (result.customertype === "Registered Customer" && parseInt(result.currentinvoicecreditamount) === 0) {
+
+                Customer
+                    .findOneAndUpdate(
+                        { customerid: result.customerid },
+                        {
+                            'creditamounttosettle': result.currentinvoicecreditamount,
+                            'loyaltypoints': result.loyaltypoints
+                        },
+                        { new: true }
+                    )
+                    .exec()
+                    .then(result => {
+                        console.log("CUSTOMER UPDATED: ", result)
+                    })
+                    .catch(error => {
+                        console.log("CUSTOMER ERROR: ", error)
+                    });
+            }
+
+            return result;
+        })
+        .then(result => {
+
+            if (result.customertype === "Registered Customer" && parseInt(result.currentinvoicecreditamount) === 0) {
+
+                LoyaltyPoints
+                    .findOneAndUpdate(
+                        { "customerid": result.customerid, "loyaltypoints.orderno": result.orderno },
+                        {
+                            $set: {
+                                'loyaltypoints.$.noOfPoints': earnedLoyaltyPoints(result.total),
+                                'loyaltypoints.$.status': 'Not Approved',
+                                'totalLoyaltyPoints': result.loyaltypoints + earnedLoyaltyPoints(result.currentinvoicecreditamount)
+                            }
+                        },
+                        { new: true }
+                    )
+                    .exec()
+                    .then(
+                        console.log("LOYALTY POINTS UPDATED ")
+                    )
+                    .catch(error => {
+                        console.log("LOYALTY POINTS ERROR: ", error)
+                    });
+
+            }
+            else if (result.customertype === "Registered Customer" && parseInt(result.currentinvoicecreditamount) !== 0) {
+
+                LoyaltyPoints
+                    .findOneAndUpdate(
+                        { "customerid": result.customerid, "loyaltypoints.orderno": result.orderno },
+                        {
+                            $set: {
+                                'loyaltypoints.$.noOfPoints': spentLoyaltyPoints(result.currentinvoicecreditamount),
+                                'loyaltypoints.$.status': 'Deducted',
+                                'totalLoyaltyPoints': result.loyaltypoints - spentLoyaltyPoints(result.currentinvoicecreditamount)
+                            },
+                        },
+                        { new: true }
+                    )
+                    .exec()
+                    .then(
+                        console.log("LOYALTY POINTS DEDUCTED ")
+                    )
+                    .catch(error => {
+                        console.log("LOYALTY POINTS ERROR: ", error)
                     });
             }
 
@@ -420,6 +546,64 @@ router.post("/approve-complete/:orderno", formDataBody.fields([]), (req, res, ne
                 });
 
             return doc;
+        })
+        .then(result => {
+
+            if (result.customertype === "Registered Customer") {
+
+                let noOfPoints = earnedLoyaltyPoints(result.total);
+
+                LoyaltyPoints
+                    .findOneAndUpdate(
+                        { "customerid": result.customerid, "loyaltypoints.orderno": result.orderno },
+                        {
+                            $set: {
+                                'loyaltypoints.$.status': 'Approved',
+                            },
+                            $inc: {
+                                'totalLoyaltyPoints': noOfPoints
+                            }
+                        },
+                        { new: true }
+                    )
+                    .exec()
+                    .then(
+                        console.log("LOYALTY POINTS UPDATED ")
+                    )
+                    .catch(error => {
+                        console.log("LOYALTY POINTS ERROR: ", error)
+                    });
+            }
+
+            return result;
+        })
+        .then(result => {
+
+            if (result.customertype === "Registered Customer") {
+
+                let noOfPoints = earnedLoyaltyPoints(result.total);
+
+                Customer
+                    .findOneAndUpdate(
+                        { "customerid": result.customerid },
+                        {
+                            $inc: {
+                                "loyaltypoints": noOfPoints
+                            }
+                        },
+                        { new: true }
+                    )
+                    .exec()
+                    .then(
+                        console.log("LOYALTY POINTS IN CUSTOMER UPDATED ")
+                    )
+                    .catch(error => {
+                        console.log("LOYALTY POINTS IN CUSTOMER ERROR: ", error)
+                    });
+            }
+
+            return result;
+
         })
         .then(doc => {
             res.status(200).json({
