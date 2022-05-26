@@ -9,8 +9,10 @@ import style from './VariantForm.module.scss';
 //Steps 
 import StepOne from './VariantFormStepOne';
 import StepTwo from './VariantFormStepTwo';
+import StepThree from './VariantFormStepThree';
+import StepFour from './VariantFormStepFour';
 
-export default function VariantForm(props) {
+export default function CreateVariantForm(props) {
 
     const {
         handleClosePopUp,
@@ -20,7 +22,6 @@ export default function VariantForm(props) {
         employeeOptions,
         productRecords,
         productVariantOptions,
-        supplierOptions
     } = props;
 
     const [file, setFile] = useState("");
@@ -32,18 +33,21 @@ export default function VariantForm(props) {
         (today.getMonth() > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`) + '-' +
         (today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`);
 
-    const { handleSubmit, formState: { errors, isValid }, control, watch, reset, setValue, getValues, trigger } = useForm({
+    const { handleSubmit, formState: { errors }, control, watch, reset, setValue, getValues, trigger, clearErrors } = useForm({
         mode: "all",
         defaultValues: {
             productid: productRecords ? productRecords.productid : '',
-            name: productRecords ? productRecords.name : undefined,
+            name: productRecords ? {
+                name: productRecords.name
+            }
+                : null,
             supplier: productRecords ? productRecords.supplier : '',
             productimage: productRecords ? productRecords.productimage : '',
             addeddate: productRecords ? productRecords.addeddate : '',
             addedby: productRecords ? productRecords.addedby : '',
             productstatus: productRecords ? productRecords.status : '',
             variantid: productRecords ? productRecords.variant.variantid : '',
-            type: productRecords ? productRecords.variant.type : 'General',
+            type: productRecords ? productRecords.variant.type : '',
             piecespercase: productRecords ? productRecords.variant.piecespercase : 24,
             bulkprice: productRecords ? productRecords.variant.bulkprice : '',
             mrp: productRecords ? productRecords.variant.mrp : '',
@@ -54,7 +58,10 @@ export default function VariantForm(props) {
             freeqty: productRecords ? (productRecords.variant.freeqty ? productRecords.variant.freeqty : '') : '',
             freeqtytype: productRecords ? (productRecords.variant.freeqtytype ? productRecords.variant.freeqtytype : '') : '',
             discount: productRecords ? (productRecords.variant.discount ? productRecords.variant.discount : '') : '',
-            freeproductname: productRecords ? (productRecords.variant.freeproductname ? productRecords.variant.freeproductname : '') : '',
+            freeproductname: productRecords ? (
+                productRecords.variant.freeproductname ?
+                    productRecords.variant.freeproductname : null
+            ) : null,
             offercaption: productRecords ? (productRecords.variant.offercaption ? productRecords.variant.offercaption : '') : '',
             variantstatus: productRecords ? productRecords.variant.status : '',
             variantaddeddate: productRecords ? productRecords.variant.addeddate : date,
@@ -68,23 +75,120 @@ export default function VariantForm(props) {
         }
     }, [productRecords])
 
-    const completeFormStep = () => {
+    const completeFormStep = async () => {
+        let isValid = false;
+
+        switch (formStep) {
+            case 0:
+                isValid = await trigger([
+                    "productid",
+                    "name",
+                    "supplier",
+                    "productimage",
+                    "addeddate",
+                    "addedby",
+                    "variantid",
+                    "productstatus",
+                    "type"
+                ]);
+                break;
+
+            case 2:
+                switch (watch("type")) {
+                    case "Promotion (Free Products)":
+                        isValid = await trigger([
+                            "piecespercase",
+                            "bulkprice",
+                            "mrp",
+                            "sellingprice",
+                            "purchaseprice",
+                            "eligibleqty",
+                            "eligibleqtytype",
+                            "freeqty",
+                            "freeqtytype",
+                            "freeproductname",
+                            "offercaption",
+                            "variantstatus",
+                            "variantaddeddate",
+                            "variantaddedby"
+                        ]);
+                        break;
+                    case "Promotion (Discounts)":
+                        isValid = await trigger([
+                            "piecespercase",
+                            "bulkprice",
+                            "mrp",
+                            "sellingprice",
+                            "purchaseprice",
+                            "eligibleqty",
+                            "eligibleqtytype",
+                            "freeproductname",
+                            "discount",
+                            "offercaption",
+                            "variantstatus",
+                            "variantaddeddate",
+                            "variantaddedby"
+                        ])
+                        break;
+                    default:
+                        isValid = await trigger([
+                            "piecespercase",
+                            "bulkprice",
+                            "mrp",
+                            "sellingprice",
+                            "purchaseprice",
+                            "variantstatus",
+                            "variantaddeddate",
+                            "variantaddedby",
+                        ]);
+                        break;
+                }
+                break;
+            default:
+                isValid = true;
+                break;
+        }
+
         if (isValid === true) {
-            setFormStep(x => x + 1);
 
-            if (getValues("type") === "Promotion (Free Products)") {
-                setValue(
-                    "offercaption",
-                    `Buy ${getValues("eligibleqty")} ${getValues("eligibleqtytype").toLowerCase()} and get ${getValues("freeqty")} ${getValues("freeqtytype").toLowerCase()} of ${getValues("freeproductname")}`
-                )
+            switch (true) {
+                case (action === "Create" && formStep === 2):
+                    if (getValues("type") === "Promotion (Free Products)") {
+                        setValue(
+                            "offercaption",
+                            `Buy ${getValues("eligibleqty")} ${getValues("eligibleqtytype").toLowerCase()} and get ${getValues("freeqty")} ${getValues("freeqtytype").toLowerCase()} of ${getValues("freeproductname")}`
+                        )
+                    }
+
+                    if (getValues("type") === "Promotion (Discounts)") {
+                        setValue(
+                            "offercaption",
+                            `Buy ${getValues("eligibleqty")} ${getValues("eligibleqtytype").toLowerCase()} and get ${getValues("discount")}% off of ${getValues("freeproductname")}`
+                        )
+                    }
+                    setFormStep(x => x + 1);
+                    break;
+                case (action === "Edit" && formStep === 0):
+                    if (getValues("type") === "Promotion (Free Products)") {
+                        setValue(
+                            "offercaption",
+                            `Buy ${getValues("eligibleqty")} ${getValues("eligibleqtytype").toLowerCase()} and get ${getValues("freeqty")} ${getValues("freeqtytype").toLowerCase()} of ${getValues("freeproductname")}`
+                        )
+                    }
+
+                    if (getValues("type") === "Promotion (Discounts)") {
+                        setValue(
+                            "offercaption",
+                            `Buy ${getValues("eligibleqty")} ${getValues("eligibleqtytype").toLowerCase()} and get ${getValues("discount")}% off of ${getValues("freeproductname")}`
+                        )
+                    }
+                    setFormStep(x => x + 1);
+                    break;
+                default:
+                    setFormStep(x => x + 1);
+                    break;
             }
 
-            if (getValues("type") === "Promotion (Discounts)") {
-                setValue(
-                    "offercaption",
-                    `Buy ${getValues("eligibleqty")} ${getValues("eligibleqtytype").toLowerCase()} and get ${getValues("discount")}% off of ${getValues("freeproductname")}`
-                )
-            }
         } else {
             trigger();
         }
@@ -98,27 +202,50 @@ export default function VariantForm(props) {
         if (option) {
             setFile(`http://${option.productimage}`);
             setValue("productid", option.productid);
-            setValue("name", option.name);
+            // setValue("name", option.name);
             setValue("supplier", option.supplier);
             setValue("productimage", option.productimage);
             setValue("addeddate", option.addeddate);
             setValue("addedby", option.addedby);
             setValue("variantid", option.variantid);
             setValue("productstatus", option.status);
-            // clearErrors();
+            clearErrors();
         }
     }
 
-    const handleFreeProductNameChange = (event, option) => {
-        if (option) {
-            setValue("freeproductname", option);
-            // clearErrors("freeproductname");
-        }
-    }
-
-    const resetForm = () => {
+    const stepOneResetForm = () => {
         setFile("");
-        reset();
+        reset({
+            productid: "",
+            name: null,
+            supplier: "",
+            productimage: "",
+            addeddate: "",
+            addedby: "",
+            variantid: "",
+            productstatus: "",
+            type: "General"
+        });
+    }
+
+    const stepThreeClearError = () => {
+        clearErrors([
+            "piecespercase",
+            "bulkprice",
+            "mrp",
+            "sellingprice",
+            "purchaseprice",
+            "eligibleqty",
+            "eligibleqtytype",
+            "freeqty",
+            "freeqtytype",
+            "freeproductname",
+            "discount",
+            "offercaption",
+            "variantstatus",
+            "variantaddeddate",
+            "variantaddedby"
+        ]);
     }
 
     const onSubmit = () => {
@@ -196,7 +323,7 @@ export default function VariantForm(props) {
         >
 
             {
-                formStep >= 0 &&
+                action === "Create" && formStep >= 0 &&
                 <section className={formStep === 0 ? style.visible : style.hidden}>
 
                     <StepOne
@@ -204,31 +331,99 @@ export default function VariantForm(props) {
                         control={control}
                         file={file}
                         completeFormStep={completeFormStep}
-                        action={action}
                         handleClosePopUp={handleClosePopUp}
-                        employeeOptions={employeeOptions}
                         handleProductChange={handleProductChange}
-                        handleFreeProductNameChange={handleFreeProductNameChange}
                         productOptions={productOptions}
-                        productVariantOptions={productVariantOptions}
-                        resetForm={resetForm}
-                        watch={watch}
-                        supplierOptions={supplierOptions}        
+                        stepOneResetForm={stepOneResetForm}
                     />
 
                 </section>
             }
 
             {
-                formStep >= 1 &&
+                action === "Create" && formStep >= 1 &&
                 <section className={formStep === 1 ? style.visible : style.hidden}>
 
                     <StepTwo
+                        control={control}
+                        handleClosePopUp={handleClosePopUp}
+                        action={action}
+                        backFormStep={backFormStep}
+                        completeFormStep={completeFormStep}
+                        file={file}
+                    />
+
+                </section >
+            }
+
+            {
+                action === "Create" && formStep >= 2 &&
+                <section className={formStep === 2 ? style.visible : style.hidden}>
+
+                    <StepThree
+                        errors={errors}
+                        control={control}
+                        completeFormStep={completeFormStep}
+                        backFormStep={backFormStep}
                         action={action}
                         handleClosePopUp={handleClosePopUp}
+                        employeeOptions={employeeOptions}
+                        productVariantOptions={productVariantOptions}
+                        stepThreeClearError={stepThreeClearError}
+                        watch={watch}
+
+                    />
+
+                </section >
+            }
+
+            {
+                action === "Create" && formStep >= 3 &&
+                <section className={formStep === 3 ? style.visible : style.hidden}>
+
+                    <StepFour
                         control={control}
+                        handleClosePopUp={handleClosePopUp}
+                        action={action}
                         backFormStep={backFormStep}
-                        file={file}
+                        onSubmit={onSubmit}
+                        watch={watch}
+                    />
+
+                </section >
+            }
+
+
+            {
+                action === "Edit" && formStep >= 0 &&
+                <section className={formStep === 0 ? style.visible : style.hidden}>
+
+                    <StepThree
+                        errors={errors}
+                        control={control}
+                        completeFormStep={completeFormStep}
+                        backFormStep={backFormStep}
+                        action={action}
+                        handleClosePopUp={handleClosePopUp}
+                        employeeOptions={employeeOptions}
+                        productVariantOptions={productVariantOptions}
+                        stepThreeClearError={stepThreeClearError}
+                        watch={watch}
+
+                    />
+
+                </section >
+            }
+
+            {
+                action === "Edit" && formStep >= 1 &&
+                <section className={formStep === 1 ? style.visible : style.hidden}>
+
+                    <StepFour
+                        control={control}
+                        handleClosePopUp={handleClosePopUp}
+                        action={action}
+                        backFormStep={backFormStep}
                         onSubmit={onSubmit}
                         watch={watch}
                     />
