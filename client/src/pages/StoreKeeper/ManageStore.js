@@ -62,7 +62,6 @@ export default function ManageStore() {
                 }
             })
             .then(res => {
-                sessionStorage.setItem("StoreTableData", JSON.stringify(res.data));
                 setData(res.data.tbody);
             })
             .catch(error => {
