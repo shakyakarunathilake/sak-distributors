@@ -50,6 +50,7 @@ export default function CreateOrder(props) {
         mode: "all",
         defaultValues: {
             orderno: nextOrderNo,
+            customer: null,
             contactnumber: '',
             customertype: 'Registered Customer',
             customerid: '',
@@ -111,7 +112,6 @@ export default function CreateOrder(props) {
 
     const handleCustomerChange = (event, option) => {
         if (option) {
-            setValue("customer", option.title);
             setValue("customerid", option.id);
             setValue("storename", option.storename);
             setValue("shippingaddress", option.shippingaddress);

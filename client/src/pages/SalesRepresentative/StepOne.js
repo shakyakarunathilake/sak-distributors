@@ -257,10 +257,11 @@ export default function StepOne(props) {
                                 <Controller
                                     render={({ field }) => (
                                         <Autocomplete
-                                            options={customerOptions || []}
+                                            {...field}
                                             fullWidth
+                                            options={customerOptions}
                                             getOptionLabel={(option) => option.title}
-                                            onChange={handleCustomerChange}
+                                            isOptionEqualToValue={(option, value) => option.title === value.title}
                                             renderInput={(params) => (
                                                 <MuiTextField
                                                     {...params}
@@ -271,6 +272,10 @@ export default function StepOne(props) {
                                                     margin="dense"
                                                 />
                                             )}
+                                            onChange={(e, option) => {
+                                                handleCustomerChange(e, option)
+                                                field.onChange(option)
+                                            }}
                                         />
                                     )}
                                     name={"customer"}
