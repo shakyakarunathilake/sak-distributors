@@ -90,8 +90,8 @@ function App() {
         <BrowserRouter>
           <Switch>
             <Route exact path='/' component={Login} />
+            <Route exact path='/forgot-password' component={ForgotPassword} />
 
-            <ProtectedRoute isAuth={authStatus} path='/forgot-password' component={ForgotPassword} />
             <ProtectedRoute isAuth={authStatus} path='/change-password' component={ChangePassword} />
 
             <ProtectedRoute isAuth={authStatus} path='/sales-analytics' component={SalesAnalytics} />
