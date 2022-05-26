@@ -93,7 +93,7 @@ export default function VariantFormStepFour(props) {
 
                 <div className={style.row}>
                     <div className={style.boldText}>
-                        Pieces/Case
+                        Pieces per Case
                     </div>
                     <div className={style.productData}>
                         <Controller
@@ -110,7 +110,7 @@ export default function VariantFormStepFour(props) {
 
                 <div className={style.row}>
                     <div className={style.boldText}>
-                        Bulk Price
+                        Case Price
                     </div>
                     <div className={style.productData}>
                         <Controller
