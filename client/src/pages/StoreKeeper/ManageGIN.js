@@ -104,7 +104,7 @@ export default function ManageGIN() {
                     console.log(error)
                 })
         }
-    }, [reRender, employeedetails]);
+    }, [reRender]);
 
     const getInChargeVehicleOptions = () => {
         axios
