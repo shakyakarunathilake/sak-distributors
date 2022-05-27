@@ -92,10 +92,21 @@ export default function PageTwo(props) {
                         <ListItem
                             button
                             className={classes.listItem}
-                            activeClassName={classes.active}
                             component={NavLink} exact to={listItem.path}
                             key={listItem.id}
-                            disabled={props.disabled}
+                        >
+                            {listItem.icon}
+                            <span className={classes.listTitle}>{listItem.title}</span>
+                        </ListItem>
+                    ))
+                }
+                {
+                    drawerListItems.analyticListItems(employeedetails.analyticprivileges).map((listItem) => (
+                        <ListItem
+                            button
+                            className={classes.listItem}
+                            component={NavLink} exact to={listItem.path}
+                            key={listItem.id}
                         >
                             {listItem.icon}
                             <span className={classes.listTitle}>{listItem.title}</span>

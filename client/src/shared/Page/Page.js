@@ -114,6 +114,19 @@ export default function Page(props) {
                         </ListItem>
                     ))
                 }
+                {
+                    drawerListItems.analyticListItems(employeedetails.analyticprivileges).map((listItem) => (
+                        <ListItem
+                            button
+                            className={classes.listItem}
+                            component={NavLink} exact to={listItem.path}
+                            key={listItem.id}
+                        >
+                            {listItem.icon}
+                            <span className={classes.listTitle}>{listItem.title}</span>
+                        </ListItem>
+                    ))
+                }
             </List>
         </div>
     );

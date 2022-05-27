@@ -16,6 +16,15 @@ import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import DirectionsBusIcon from '@mui/icons-material/DirectionsBus';
 import RouteIcon from '@mui/icons-material/Route';
 
+const getAnalyticListItems = [
+    {
+        id: "Sales Analytics",
+        title: "Sales Analytics",
+        path: "/sales-analytics",
+        icon: <TimelineIcon />
+    },
+]
+
 const getDistributorListItems = [
     {
         id: "Dashboard",
@@ -34,12 +43,6 @@ const getDistributorListItems = [
         title: "Manage Purchase Order",
         path: "/distributor/manage-purchase-orders",
         icon: <ListAltIcon />
-    },
-    {
-        id: "Sales Analytics",
-        title: "Sales Analytics",
-        path: "/sales-analytics",
-        icon: <TimelineIcon />
     },
 ];
 
@@ -246,5 +249,13 @@ export function drawerListItems(designation) {
     }
     if (designation === "Delivery Representative") {
         return (getDeliveryRepresentativeListItems)
+    }
+}
+
+export function analyticListItems(analyticprivileges) {
+    if (analyticprivileges) {
+        return (getAnalyticListItems)
+    } else {
+        return []
     }
 }
