@@ -41,7 +41,7 @@ export default function StepFive(props) {
         if (action !== "View") {
             calculatePayments();
         }
-    }, [])
+    }, []) //eslint-disable-line react-hooks/exhaustive-deps
 
     const [open, setOpen] = useState(false);
 

@@ -102,7 +102,7 @@ export default function ManageGIN() {
                     console.log(error)
                 })
         }
-    }, [reRender]);
+    }, [reRender]); //eslint-disable-line react-hooks/exhaustive-deps
 
     const getInChargeVehicleOptions = () => {
         axios

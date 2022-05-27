@@ -122,7 +122,7 @@ export default function SalesAndInvoice() {
                 })
         }
 
-    }, [reRender]);
+    }, [reRender]); //eslint-disable-line react-hooks/exhaustive-deps
 
     const handleClosePopUp = () => {
         setOpenPopup(false)

@@ -89,7 +89,7 @@ export default function GINStepOne(props) {
         if (GINRecords === null) {
             getOrderNumbers();
         }
-    }, [watch('route'), GINRecords]);
+    }, [watch('route'), GINRecords]); //eslint-disable-line react-hooks/exhaustive-deps
 
     const handleChipClick = (ordernumber) => {
         axios
@@ -190,7 +190,7 @@ export default function GINStepOne(props) {
         if (isValid) {
             completeFormStep();
         }
-    }
+    } 
 
     return (
         <div className={style.container}>

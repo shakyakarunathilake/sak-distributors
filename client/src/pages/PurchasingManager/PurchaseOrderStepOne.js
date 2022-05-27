@@ -92,7 +92,7 @@ export default function PurchaseOrderStepOne(props) {
         // console.log("PRODUCT ITEM LIST: ", productItemList);
 
         return productItemList;
-    }, [data, getValues, watch("supplier"), productOptions]);
+    }, [data, getValues, watch("supplier"), productOptions]); //eslint-disable-line react-hooks/exhaustive-deps
 
     const getMissingProductItemList = useMemo(() => {
 
@@ -105,7 +105,7 @@ export default function PurchaseOrderStepOne(props) {
         }
 
         return missingProductItemList;
-    }, [data, getValues, watch("supplier"), missingProducts]);
+    }, [data, getValues, watch("supplier"), missingProducts]); //eslint-disable-line react-hooks/exhaustive-deps
 
     const calculateTotal = () => {
         let total = 0;
