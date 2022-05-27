@@ -545,7 +545,7 @@ export default function StepThree(props) {
 
                                                                 const offerData = {
                                                                     description: newData.offerdetails.freeproductname,
-                                                                    promotiondescription: '',
+                                                                    promotiondescription: newData.description,
                                                                     freeqtycases: newData.offerdetails.freeqtytype === "Cases" ? totalfreeqty : 0,
                                                                     freeqtypieces: newData.offerdetails.freeqtytype === "Pieces" ? totalfreeqty : 0,
                                                                     grossamount: "0.00",
@@ -709,7 +709,7 @@ export default function StepThree(props) {
 
                                                                         const newOfferData = {
                                                                             description: newData.offerdetails.freeproductname,
-                                                                            promotiondescription: '',
+                                                                            promotiondescription: newData.description,
                                                                             freeqtycases: newData.offerdetails.freeqtytype === "Cases" ? totalfreeqty : 0,
                                                                             freeqtypieces: newData.offerdetails.freeqtytype === "Pieces" ? totalfreeqty : 0,
                                                                             grossamount: "0.00",
@@ -797,7 +797,7 @@ export default function StepThree(props) {
 
                                                                         const newOfferData = {
                                                                             description: newData.offerdetails.freeproductname,
-                                                                            promotiondescription: '',
+                                                                            promotiondescription: newData.description,
                                                                             freeqtycases: newData.offerdetails.freeqtytype === "Cases" ? totalfreeqty : 0,
                                                                             freeqtypieces: newData.offerdetails.freeqtytype === "Pieces" ? totalfreeqty : 0,
                                                                             grossamount: "0.00",
