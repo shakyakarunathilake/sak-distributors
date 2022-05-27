@@ -69,7 +69,6 @@ export default function ManageGRN() {
                 }
             })
             .then(res => {
-                sessionStorage.setItem("GRNTableData", JSON.stringify(res.data));
                 setRecords(res.data.tbody);
                 setReRender(null);
             })

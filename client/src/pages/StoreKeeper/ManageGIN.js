@@ -81,7 +81,6 @@ export default function ManageGIN() {
                     }
                 })
                 .then(res => {
-                    sessionStorage.setItem("GINTableData", JSON.stringify(res.data));
                     setRecords(res.data.tbody);
                     setReRender(null);
                 })
@@ -96,7 +95,6 @@ export default function ManageGIN() {
                     }
                 })
                 .then(res => {
-                    sessionStorage.setItem("GINTableData", JSON.stringify(res.data));
                     setRecords(res.data.tbody);
                     setReRender(null);
                 })
