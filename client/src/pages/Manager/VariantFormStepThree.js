@@ -259,13 +259,13 @@ export default function VariantFormStepThree(props) {
                                     onChange={(e, option) => {
                                         field.onChange(option)
                                     }}
-                                    disabled={watch("type") === "General"}
+                                    disabled={watch("type") !== "Promotion (Free Products)"}
                                     renderInput={(params) => (
                                         <MuiTextField
                                             {...params}
                                             error={errors.freeproductname ? true : false}
                                             helperText={errors.freeproductname && errors.freeproductname.message}
-                                            label="Promotion Product *"
+                                            label="Free Product Name *"
                                             variant="outlined"
                                             size="small"
                                         />
@@ -275,7 +275,7 @@ export default function VariantFormStepThree(props) {
                             name={"freeproductname"}
                             control={control}
                             rules={{
-                                required: { value: watch("type") !== "General", message: "Required *" },
+                                required: { value: watch("type") === "Promotion (Free Products)", message: "Required *" },
                             }}
                         />
                     </ThemeProvider>
