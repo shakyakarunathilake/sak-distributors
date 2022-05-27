@@ -78,9 +78,11 @@ function App() {
 
   let authStatus;
   let designation;
+  let analyticPrivilege;
 
   if (JSON.parse(sessionStorage.getItem("Auth"))) {
     authStatus = (JSON.parse(sessionStorage.getItem("Auth")).auth_status === "AUTHORIZED");
+    analyticPrivilege = (JSON.parse(sessionStorage.getItem("Auth")).analyticprivileges === true);
     designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
   }
 
@@ -93,8 +95,7 @@ function App() {
             <Route exact path='/forgot-password' component={ForgotPassword} />
 
             <ProtectedRoute isAuth={authStatus} path='/change-password' component={ChangePassword} />
-
-            <ProtectedRoute isAuth={authStatus} path='/sales-analytics' component={SalesAnalytics} />
+            <ProtectedRoute isAuth={authStatus && analyticPrivilege} path='/sales-analytics' component={SalesAnalytics} />
 
             <ProtectedRoute isAuth={authStatus && designation === "Distributor"} path='/distributor/dashboard' component={DistributorDashboard} />
             <ProtectedRoute isAuth={authStatus && designation === "Distributor"} path='/distributor/manage-purchase-orders' component={ManagePurchaseOrder} />
