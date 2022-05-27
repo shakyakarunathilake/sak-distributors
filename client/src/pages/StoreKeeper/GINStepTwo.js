@@ -72,7 +72,7 @@ export default function GINStepTwo(props) {
         orderNumbers
     } = props;
 
-    const designation = JSON.parse(sessionStorage.getItem("Auth")).designation;
+    const employeedetails = JSON.parse(sessionStorage.getItem("Auth"));
 
     const handleChipClick = (ordernumber) => {
         axios
@@ -83,7 +83,7 @@ export default function GINStepTwo(props) {
             })
             .then(res => {
                 localStorage.setItem(ordernumber, JSON.stringify(res.data.order));
-                window.open(`http://localhost:3000/store-keeper/view-order-details/${ordernumber}`, "_blank");
+                window.open(`http://localhost:3000/${employeedetails.pathname}/view-order-details/${ordernumber}`, "_blank");
             })
             .catch(err => {
                 console.log(err);
@@ -119,7 +119,7 @@ export default function GINStepTwo(props) {
 
             </div>
 
-            <div className={designation !== "Delivery Representative" && action === "View" ? style.fivebody : style.threebody}>
+            <div className={employeedetails.designation !== "Delivery Representative" && action === "View" ? style.fivebody : style.threebody}>
 
                 <div className={style.orderDetails}>
 
@@ -171,7 +171,7 @@ export default function GINStepTwo(props) {
                             </tr>
 
                             {
-                                designation !== "Delivery Representative" && action === "View" &&
+                                employeedetails.designation !== "Delivery Representative" && action === "View" &&
                                 <tr>
                                     <th align="left">In Charge</th>
                                     <td align="left">
@@ -189,7 +189,7 @@ export default function GINStepTwo(props) {
                             }
 
                             {
-                                designation !== "Delivery Representative" && action === "View" &&
+                                employeedetails.designation !== "Delivery Representative" && action === "View" &&
                                 <tr>
                                     <th align="left">Vehicle</th>
                                     <td align="left">
@@ -213,9 +213,9 @@ export default function GINStepTwo(props) {
 
                         <tbody>
                             <tr>
-                                <th rowSpan={designation === "Delivery Representative" ? 3 : 5} className={style.thAlign}>Order Numbers</th>
-                                <td rowSpan={designation === "Delivery Representative" ? 3 : 5} className={style.tdAlign}>
-                                    <div className={designation !== "Delivery Representative" && action === "View" ? style.five : style.three}>
+                                <th rowSpan={employeedetails.designation === "Delivery Representative" ? 3 : 5} className={style.thAlign}>Order Numbers</th>
+                                <td rowSpan={employeedetails.designation === "Delivery Representative" ? 3 : 5} className={style.tdAlign}>
+                                    <div className={employeedetails.designation !== "Delivery Representative" && action === "View" ? style.five : style.three}>
 
                                         {
                                             orderNumbers.map(x =>
@@ -239,7 +239,16 @@ export default function GINStepTwo(props) {
 
                 <AutoSizer>
                     {({ height, width }) => {
-                        const pageSize = Math.floor((height - 199.27) / 48);
+                        let value = 0;
+
+                        if (employeedetails.designation === 'Delivery Representative') {
+                            value = (height - 199.28) / 60;
+                        } else {
+                            value = (height - 199.28) / 48;
+                        }
+
+                        const pageSize = Math.floor(value);
+
                         return (
                             <div style={{ height: `${height}px`, width: `${width}px` }}>
 
