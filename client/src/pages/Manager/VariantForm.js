@@ -163,7 +163,7 @@ export default function CreateVariantForm(props) {
                     if (getValues("type") === "Promotion (Discounts)") {
                         setValue(
                             "offercaption",
-                            `Buy ${getValues("eligibleqty")} ${getValues("eligibleqtytype").toLowerCase()} and get ${getValues("discount")}% off of ${getValues("freeproductname")}`
+                            `Buy ${getValues("eligibleqty")} ${getValues("eligibleqtytype").toLowerCase()} and get ${getValues("discount")}% off of ${getValues("name.productid")}${getValues("name.variantid")}-${getValues("name.name")}`
                         )
                     }
                     setFormStep(x => x + 1);
@@ -179,7 +179,7 @@ export default function CreateVariantForm(props) {
                     if (getValues("type") === "Promotion (Discounts)") {
                         setValue(
                             "offercaption",
-                            `Buy ${getValues("eligibleqty")} ${getValues("eligibleqtytype").toLowerCase()} and get ${getValues("discount")}% off of ${getValues("freeproductname")}`
+                            `Buy ${getValues("eligibleqty")} ${getValues("eligibleqtytype").toLowerCase()} and get ${getValues("discount")}% off of ${getValues("name.productid")}${getValues("name.variantid")}-${getValues("name.name")}`
                         )
                     }
                     setFormStep(x => x + 1);
@@ -202,7 +202,6 @@ export default function CreateVariantForm(props) {
         if (option) {
             setFile(`http://${option.productimage}`);
             setValue("productid", option.productid);
-            // setValue("name", option.name);
             setValue("supplier", option.supplier);
             setValue("productimage", option.productimage);
             setValue("addeddate", option.addeddate);
@@ -275,7 +274,7 @@ export default function CreateVariantForm(props) {
                 productFormData.append("eligibleqty", getValues('eligibleqty'));
                 productFormData.append("eligibleqtytype", getValues('eligibleqtytype'));
                 productFormData.append("discount", getValues('discount'));
-                productFormData.append("freeproductname", getValues('freeproductname'));
+                productFormData.append("freeproductname", `${getValues("name.productid")}${getValues("name.variantid")}-${getValues("name.name")}`);
                 productFormData.append("offercaption", getValues('offercaption'));
             }
 
@@ -305,7 +304,7 @@ export default function CreateVariantForm(props) {
                 productFormData.append("eligibleqty", getValues('eligibleqty'));
                 productFormData.append("eligibleqtytype", getValues('eligibleqtytype'));
                 productFormData.append("discount", getValues('discount'));
-                productFormData.append("freeproductname", getValues('freeproductname'));
+                productFormData.append("freeproductname", `${getValues("name.productid")}${getValues("name.variantid")}-${getValues("name.name")}`);
                 productFormData.append("offercaption", getValues('offercaption'));
             }
 
