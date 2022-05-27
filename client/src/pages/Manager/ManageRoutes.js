@@ -62,7 +62,6 @@ export default function ManageRoute() {
                 }
             })
             .then(res => {
-                sessionStorage.setItem("RouteTableData", JSON.stringify(res.data));
                 setRecords(res.data.tbody);
                 setReRender(null);
             })

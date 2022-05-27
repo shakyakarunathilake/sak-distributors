@@ -87,7 +87,6 @@ export default function ManageProduct() {
                 }
             })
             .then(res => {
-                sessionStorage.setItem("ProductsTableData", JSON.stringify(res.data));
                 setRecords(res.data.tbody);
                 setReRender(null);
             })

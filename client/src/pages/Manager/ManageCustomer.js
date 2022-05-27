@@ -66,7 +66,6 @@ export default function ManageCustomer() {
                 }
             })
             .then(res => {
-                sessionStorage.setItem("CustomerTableData", JSON.stringify(res.data));
                 setRecords(res.data.tbody);
                 setReRender(null);
             })

@@ -63,7 +63,6 @@ export default function ManageEmployee() {
                 }
             })
             .then(res => {
-                sessionStorage.setItem("EmployeesTableData", JSON.stringify(res.data));
                 setRecords(res.data.tbody);
                 setReRender(null);
             })

@@ -82,7 +82,6 @@ export default function SalesAndInvoice() {
                     }
                 })
                 .then(res => {
-                    sessionStorage.setItem("SalesAndInvoiceTableData", JSON.stringify(res.data));
                     setRecords(res.data.tbody);
                     setReRender(null);
                 })
@@ -99,7 +98,6 @@ export default function SalesAndInvoice() {
                     }
                 })
                 .then(res => {
-                    sessionStorage.setItem("SalesAndInvoiceTableData", JSON.stringify(res.data));
                     setRecords(res.data.tbody);
                     setReRender(null);
                 })
@@ -116,7 +114,6 @@ export default function SalesAndInvoice() {
                     }
                 })
                 .then(res => {
-                    sessionStorage.setItem("SalesAndInvoiceTableData", JSON.stringify(res.data));
                     setRecords(res.data.tbody);
                     setReRender(null);
                 })

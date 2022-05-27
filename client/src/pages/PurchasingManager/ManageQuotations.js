@@ -65,7 +65,6 @@ export default function ManageQuotation() {
                 }
             })
             .then(res => {
-                sessionStorage.setItem("QuotationTableData", JSON.stringify(res.data));
                 setRecords(res.data.tbody);
                 setReRender(null);
             })

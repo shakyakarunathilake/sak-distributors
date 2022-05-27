@@ -63,7 +63,6 @@ export default function ManageSupplier() {
                 }
             })
             .then(res => {
-                sessionStorage.setItem("SupplierTableData", JSON.stringify(res.data));
                 setRecords(res.data.tbody);
                 setReRender(null);
             })

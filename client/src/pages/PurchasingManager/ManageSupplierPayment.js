@@ -59,7 +59,6 @@ export default function ManageSupplierPayment() {
                 }
             })
             .then(res => {
-                sessionStorage.setItem("SupplierPaymentsTableData", JSON.stringify(res.data));
                 setRecords(res.data.tbody);
                 setReRender(null);
             })

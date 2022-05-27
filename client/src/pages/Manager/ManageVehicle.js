@@ -62,7 +62,6 @@ export default function ManageVehicle() {
                 }
             })
             .then(res => {
-                sessionStorage.setItem("VehicleTableData", JSON.stringify(res.data));
                 setRecords(res.data.tbody);
                 setReRender(null);
             })
