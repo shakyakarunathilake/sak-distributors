@@ -52,7 +52,8 @@ export default function ViewOrderDetails() {
             eligibilityforcredit: JSON.parse(localStorage.getItem(ordernumber)).eligibilityforcredit ? JSON.parse(localStorage.getItem(ordernumber)).eligibilityforcredit : 'No',
             maximumcreditamount: JSON.parse(localStorage.getItem(ordernumber)).maximumcreditamount ? parseInt(JSON.parse(localStorage.getItem(ordernumber)).maximumcreditamount).toFixed(2) : '0.00',
             currentinvoicecreditamount: JSON.parse(localStorage.getItem(ordernumber)).currentinvoicecreditamount,
-            invoicesettlementvalue: JSON.parse(localStorage.getItem(ordernumber)).invoicesettlementvalue
+            invoicesettlementvalue: JSON.parse(localStorage.getItem(ordernumber)).invoicesettlementvalue,
+            loyaltypointsincash: JSON.parse(localStorage.getItem(ordernumber)).loyaltypointsincash ? JSON.parse(localStorage.getItem(ordernumber)).loyaltypointsincash : '0.00',
         }
     });
 

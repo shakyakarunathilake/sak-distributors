@@ -251,7 +251,7 @@ export default function ViewOrderDetailsTabletStepOne(props) {
                                 control={control}
                                 render={({ field: { value } }) => (
                                     <Typography className={style.input}>
-                                        Rs {value ? value : "0.00"}
+                                        Rs {NumberWithCommas(value)}
                                     </Typography>
                                 )}
                             />
