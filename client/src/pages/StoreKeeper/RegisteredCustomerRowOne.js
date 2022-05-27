@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 import { Controller } from 'react-hook-form';
 
 //Material UI Components
@@ -168,21 +169,11 @@ export default function RegisteredCustomerRowOne(props) {
                             </th>
                             <td align="left">
                                 <Controller
-                                    name={"ordercreatedby"}
+                                    name={"ordercreatedbyat"}
                                     control={control}
                                     render={({ field: { value } }) => (
                                         <Typography className={style.input}>
                                             {value}
-                                        </Typography>
-                                    )}
-                                />
-                                &nbsp;
-                                <Controller
-                                    name={"orderplacedat"}
-                                    control={control}
-                                    render={({ field: { value } }) => (
-                                        <Typography className={style.input}>
-                                            : {value}
                                         </Typography>
                                     )}
                                 />
@@ -195,21 +186,11 @@ export default function RegisteredCustomerRowOne(props) {
                             </th>
                             <td align="left">
                                 <Controller
-                                    name={"deliveredby"}
+                                    name={"deliveredbyat"}
                                     control={control}
                                     render={({ field: { value } }) => (
                                         <Typography className={style.input}>
                                             {value}
-                                        </Typography>
-                                    )}
-                                />
-                                &nbsp;
-                                <Controller
-                                    name={"deliveredat"}
-                                    control={control}
-                                    render={({ field: { value } }) => (
-                                        <Typography className={style.input}>
-                                            : {value}
                                         </Typography>
                                     )}
                                 />
