@@ -134,6 +134,8 @@ function App() {
             <ProtectedRoute isAuth={authStatus && designation === "Delivery Representative"} path='/delivery-representative/manage-gin' component={ManageGIN} />
             <ProtectedRoute isAuth={authStatus && designation === "Delivery Representative"} path='/delivery-representative/sales-and-invoice' component={SalesAndInvoice} />
             <ProtectedRoute isAuth={authStatus && designation === "Delivery Representative"} path='/delivery-representative/manage-customers' component={ManageCustomer} />
+            <ProtectedRoute isAuth={authStatus && designation === "Delivery Representative"} path='/delivery-representative/view-order-details/:ordernumber' component={ViewOrderDetails} />
+
 
             <ProtectedRoute isAuth={authStatus} path='' component={NotFound} />
 

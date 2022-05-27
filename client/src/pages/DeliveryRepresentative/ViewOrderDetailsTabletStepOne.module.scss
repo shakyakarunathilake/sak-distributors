@@ -1,0 +1,45 @@
+@import "../../styles/variables";
+
+.container {
+    display: grid;
+    grid-template-rows: auto min-content;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+
+    .body {
+        margin: auto;
+
+        .row {
+            display: grid;
+            grid-template-columns: 300px calc(100% - 300px);
+            padding: 8px;
+
+            .boldText {
+                font-size: 1em;
+                font-weight: 700;
+            }
+
+            .input {
+                display: inline;
+            }
+        }
+
+        .dividerDiv {
+            margin: 10px 0;
+        }
+    }
+
+    .footer {
+        padding: 20px;
+        text-align: right;
+
+        Button {
+            font-size: 1em;
+            height: 40px;
+            padding: $formButtonPadding2;
+            background-color: $primaryMain;
+            color: $inverseFontColor;
+        }
+    }
+}

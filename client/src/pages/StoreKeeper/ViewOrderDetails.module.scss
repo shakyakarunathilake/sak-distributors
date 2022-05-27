@@ -7,26 +7,44 @@
     box-sizing: border-box;
 
     .header {
-        display: grid;
-        grid-template-columns: auto min-content;
-        font-size: 1.55em;
-        font-weight: 600;
         padding: 20px;
 
-        .blue {
-            color: $primaryMain;
+        .title {
+            display: grid;
+            grid-template-columns: auto min-content;
+            font-size: 1.55em;
+            font-weight: 600;
+
+            .blue {
+                color: $primaryMain;
+            }
+
+            .icon {
+                color: red;
+                &:hover {
+                    transform: scale(1.1);
+                }
+            }
         }
 
-        .icon {
-            color: red;
-            &:hover {
-                transform: scale(1.1);
-            }
+        .step {
+            margin: 5px 0 0 0;
+            color: $primaryLight;
+            font-size: 0.75em;
         }
     }
 
     .body {
         display: grid;
         grid-template-rows: min-content auto;
+
+        .hidden {
+            display: none;
+        }
+
+        .visible {
+            width: 100vw;
+            height: calc(100vh - 96px);
+        }
     }
 }

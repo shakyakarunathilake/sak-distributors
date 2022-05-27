@@ -13,17 +13,23 @@ import RegisteredCustomerRowOne from './RegisteredCustomerRowOne';
 import RegisteredCustomerRowTwo from './RegisteredCustomerRowTwo';
 import UnregisteredCustomerRowOne from './UnregisteredCustomerRowOne';
 import UnregisteredCustomerRowTwo from './UnregisteredCustomerRowTwo';
+import ViewOrderDetailsTabletStepOne from '../DeliveryRepresentative/ViewOrderDetailsTabletStepOne';
+import ViewOrderDetailsTabletStepTwo from '../DeliveryRepresentative/ViewOrderDetailsTabletStepTwo';
+
 
 export default function ViewOrderDetails() {
 
     const { ordernumber } = useParams();
     const [data, setData] = useState([]);
+    const [formStep, setFormStep] = useState(0);
 
     useEffect(() => {
         if (JSON.parse(localStorage.getItem(ordernumber)) != null) {
             setData(JSON.parse(localStorage.getItem(ordernumber)).items);
         }
     }, [ordernumber])
+
+    const employeedetails = JSON.parse(sessionStorage.getItem("Auth"));
 
     const { control, watch } = useForm({
         defaultValues: {
@@ -32,13 +38,11 @@ export default function ViewOrderDetails() {
             customertype: JSON.parse(localStorage.getItem(ordernumber)).customertype,
             customerid: JSON.parse(localStorage.getItem(ordernumber)).customerid,
             storename: JSON.parse(localStorage.getItem(ordernumber)).storename,
-            deliveredat: JSON.parse(localStorage.getItem(ordernumber)).deliveredat,
-            deliveredby: JSON.parse(localStorage.getItem(ordernumber)).deliveredby,
+            deliveredbyat: `${JSON.parse(localStorage.getItem(ordernumber)).deliveredby} : ${JSON.parse(localStorage.getItem(ordernumber)).deliveredat}`,
             status: JSON.parse(localStorage.getItem(ordernumber)).status,
             deliverydate: JSON.parse(localStorage.getItem(ordernumber)).deliverydate,
-            orderplacedat: JSON.parse(localStorage.getItem(ordernumber)).orderplacedat,
             route: JSON.parse(localStorage.getItem(ordernumber)).route,
-            ordercreatedby: JSON.parse(localStorage.getItem(ordernumber)).ordercreatedby,
+            ordercreatedbyat: `${JSON.parse(localStorage.getItem(ordernumber)).ordercreatedby} : ${JSON.parse(localStorage.getItem(ordernumber)).orderplacedat}`,
             shippingaddress: JSON.parse(localStorage.getItem(ordernumber)).shippingaddress,
             total: JSON.parse(localStorage.getItem(ordernumber)).total,
             loyaltypoints: JSON.parse(localStorage.getItem(ordernumber)).loyaltypoints,
@@ -52,6 +56,14 @@ export default function ViewOrderDetails() {
         }
     });
 
+    const completeFormStep = () => {
+        setFormStep(x => x + 1);
+    }
+
+    const backFormStep = () => {
+        setFormStep(x => x - 1);
+    }
+
     const handleClose = () => {
         window.localStorage.removeItem(ordernumber);
         window.close();
@@ -62,59 +74,109 @@ export default function ViewOrderDetails() {
 
             <div className={style.header}>
 
-                <div>
-                    Order Number: <span className={style.blue}>{ordernumber}</span>
+                <div className={style.title}>
+                    <div>
+                        Order Number: <span className={style.blue}>{ordernumber}</span>
+                    </div>
+                    <div>
+                        <HighlightOffIcon
+                            className={style.icon}
+                            onClick={() => { handleClose() }}
+                        />
+                    </div>
                 </div>
-                <div>
-                    <HighlightOffIcon
-                        className={style.icon}
-                        onClick={() => { handleClose() }}
-                    />
-                </div>
+
+                {
+                    employeedetails.designation === "Delivery Representative" &&
+                    <div className={style.step}>
+                        Step {formStep + 1} of 2
+                    </div>
+                }
 
             </div>
 
-            <div className={style.body}>
+            {
+                employeedetails.designation !== "Delivery Representative" &&
 
-                <div className={style.rowOne}>
+                <div className={style.body}>
+
+                    <div className={style.rowOne}>
+
+                        {
+                            watch("customertype") === "Registered Customer" &&
+                            <RegisteredCustomerRowOne
+                                control={control}
+                            />
+                        }
+
+                        {
+                            watch("customertype") === "Unregistered Customer" &&
+                            <UnregisteredCustomerRowOne
+                                control={control}
+                            />
+                        }
+
+                    </div>
+
+                    <div className={style.rowTwo}>
+
+                        {
+                            watch("customertype") === "Registered Customer" &&
+                            <RegisteredCustomerRowTwo
+                                data={data}
+                                watch={watch}
+                            />
+                        }
+
+                        {
+                            watch("customertype") === "Unregistered Customer" &&
+                            <UnregisteredCustomerRowTwo
+                                watch={watch}
+                                data={data}
+                            />
+                        }
+
+                    </div>
+
+                </div >
+            }
+
+            {
+                employeedetails.designation === "Delivery Representative" &&
+
+                <div className={style.body}>
 
                     {
-                        watch("customertype") === "Registered Customer" &&
-                        <RegisteredCustomerRowOne
-                            control={control}
-                        />
+                        formStep >= 0 &&
+                        <section className={formStep === 0 ? style.visible : style.hidden}>
+
+                            <ViewOrderDetailsTabletStepOne
+                                control={control}
+                                watch={watch}
+                                completeFormStep={completeFormStep}
+                            />
+
+                        </section>
                     }
 
                     {
-                        watch("customertype") === "Unregistered Customer" &&
-                        <UnregisteredCustomerRowOne
-                            control={control}
-                        />
+                        formStep >= 1 &&
+                        <section className={formStep === 1 ? style.visible : style.hidden}>
+
+                            <ViewOrderDetailsTabletStepTwo
+                                data={data}
+                                watch={watch}
+                                backFormStep={backFormStep}
+                                handleClose={handleClose}
+                            />
+
+
+                        </section>
                     }
 
-                </div>
+                </div >
 
-                <div className={style.rowTwo}>
-
-                    {
-                        watch("customertype") === "Registered Customer" &&
-                        <RegisteredCustomerRowTwo
-                            data={data}
-                            watch={watch}
-                        />
-                    }
-
-                    {
-                        watch("customertype") === "Unregistered Customer" &&
-                        <UnregisteredCustomerRowTwo
-                            watch={watch}
-                            data={data}
-                        />
-                    }
-
-                </div>
-
-            </div >
+            }
 
         </div >
     )
