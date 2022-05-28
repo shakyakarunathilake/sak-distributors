@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import PageTwo from '../../shared/PageTwo/PageTwo';
 import Profile from '../../shared/PageTwo/Profile';
 import SupplierPayments from '../DashboardPaper/SupplierPayments';
+import MissingProducts from '../DashboardPaper/MissingProducts';
 
 //SCSS Styles
 import style from './PurchasingManagerDashboard.module.scss';
@@ -19,9 +20,11 @@ export default function PurchasingManagerDashboard(props) {
 
     let endpoints = [
         "http://localhost:8080/metadata/supplier-payments-meta-data",
+        "http://localhost:8080/store/get-all-missing-product-details",
     ]
 
     const [supplierPayments, setSupplierPayments] = useState([]);
+    const [missingProducts, setMissingProducts] = useState([]);
 
     useEffect(() => {
         axios
@@ -29,6 +32,7 @@ export default function PurchasingManagerDashboard(props) {
             .then(
                 axios.spread((...responses) => {
                     setSupplierPayments(responses[0].data.supplierPaymentsMetaData)
+                    setMissingProducts(responses[1].data.missingProducts);
                 })
             )
             .catch(error => {
@@ -44,6 +48,14 @@ export default function PurchasingManagerDashboard(props) {
 
                 <div className={style.columnA}>
                     <Profile />
+
+                    {
+                        missingProducts.length > 0 &&
+                        <MissingProducts
+                            missingProducts={missingProducts}
+                        />
+                    }
+                    
                 </div>
 
                 <div className={style.columnB}>
