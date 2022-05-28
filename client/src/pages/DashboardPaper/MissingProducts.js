@@ -49,6 +49,7 @@ export default function MissingProducts(props) {
                         disabled={formStep === 0}
                     >
                         <ArrowLeftIcon
+                            className={style.icon}
                         />
                     </IconButton>
                 </div>
@@ -86,7 +87,7 @@ export default function MissingProducts(props) {
                         onClick={nextProduct}
                     >
                         <ArrowRightIcon
-                            className={style.arrow}
+                            className={style.icon}
                         />
                     </IconButton>
                 </div>
