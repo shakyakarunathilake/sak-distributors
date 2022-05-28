@@ -67,11 +67,11 @@ export default function PurchaseOrderAnalytics(props) {
                     </div>
                     <div className={style.redText}>
                         {getMissingProductItemList[formStep].storecasequantity} &nbsp;
-                        {getMissingProductItemList[formStep].storecasequantity <= 1 && getMissingProductItemList[formStep].storecasequantity >= -1 ? "CASE" : "CASES"}
+                        {getMissingProductItemList[formStep].storecasequantity === 1 && getMissingProductItemList[formStep].storecasequantity === -1 ? "CASE" : "CASES"}
                     </div>
                     <div className={style.redText}>
                         {getMissingProductItemList[formStep].storepiecesquantity} &nbsp;
-                        {getMissingProductItemList[formStep].storepiecesquantity <= 1 && getMissingProductItemList[formStep].storepiecesquantity >= -1 ? "PIECE" : "PIECES"}
+                        {getMissingProductItemList[formStep].storepiecesquantity === 1 && getMissingProductItemList[formStep].storepiecesquantity === -1 ? "PIECE" : "PIECES"}
                     </div>
                 </div>
 

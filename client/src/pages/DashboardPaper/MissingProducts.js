@@ -102,12 +102,12 @@ export default function MissingProducts(props) {
 
                 <div className={redBackgroud ? style.whiteText : style.redText}>
                     {missingProducts[formStep].storecasequantity} &nbsp;
-                    {missingProducts[formStep].storecasequantity <= 1 && missingProducts[formStep].storecasequantity >= -1 ? "CASE" : "CASES"}
+                    {missingProducts[formStep].storecasequantity === 1 && missingProducts[formStep].storecasequantity === -1 ? "CASE" : "CASES"}
                 </div>
 
                 <div className={redBackgroud ? style.whiteText : style.redText}>
                     {missingProducts[formStep].storepiecesquantity} &nbsp;
-                    {missingProducts[formStep].storepiecesquantity <= 1 && missingProducts[formStep].storepiecesquantity >= -1 ? "PIECE" : "PIECES"}
+                    {missingProducts[formStep].storepiecesquantity === 1 && missingProducts[formStep].storepiecesquantity === -1 ? "PIECE" : "PIECES"}
                 </div>
 
             </div>
