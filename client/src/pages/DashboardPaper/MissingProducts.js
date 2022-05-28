@@ -39,9 +39,9 @@ export default function MissingProducts(props) {
 
     return (
 
-        <div className={style.containerWrapper}>
+        <div className={redBackgroud ? style.redContainerWrapper : style.containerWrapper}>
 
-            <div className={redBackgroud ? style.redContainer : style.container}>
+            <div className={style.container}>
 
 
                 <IconButton
