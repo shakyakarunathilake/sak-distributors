@@ -237,13 +237,7 @@ export default function AdvancePaymentFormStepOne(props) {
               Advance Payment  <span className={style.red}>*</span>
             </div>
 
-            <div className={style.customerDataTextField} dir="rtl">
-
-              <CalculateIcon
-                className={style.icon}
-                onClick={() => calculatePayments()}
-                disabled={getValues('status') === 'Advance Payment To Be Paid'}
-              />
+            <div className={style.customerDataTextField}>
 
               <Controller
                 render={({ field }) => (
@@ -257,8 +251,8 @@ export default function AdvancePaymentFormStepOne(props) {
                     placeholder="999.99"
                     margin="dense"
                     InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
+                      startAdornment: (
+                        <InputAdornment position="start">
                           Rs
                         </InputAdornment>
                       ),
@@ -271,6 +265,12 @@ export default function AdvancePaymentFormStepOne(props) {
                   required: { value: true, message: "Required *" },
                   pattern: { value: /^[0-9]+\.[0-9]{2}$/, message: "Invalid" }
                 }}
+              />
+
+              <CalculateIcon
+                className={style.icon}
+                onClick={() => calculatePayments()}
+                disabled={getValues('status') === 'Advance Payment To Be Paid'}
               />
 
             </div>

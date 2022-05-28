@@ -99,8 +99,10 @@
 
             .customerDataTextField {
                 display: grid;
-                grid-template-columns: min-content 200px;
+                grid-template-columns: auto min-content;
                 text-align: right;
+                margin-left: 20%;
+
                 .icon {
                     margin: 11.045px 0 auto 10px;
                     font-size: 1.7em;
