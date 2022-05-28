@@ -295,6 +295,26 @@ export default function CustomerFormStepTwo(props) {
                     </div>
                 </div>
 
+                {
+                    action === "View" &&
+                    <div className={style.row}>
+                        <div className={style.boldText}>
+                            Loyalty Points
+                        </div>
+                        <div className={style.customerData}>
+                            <Controller
+                                render={({ field: { value } }) => (
+                                    <Typography className={classnames(style.input, style.green)}>
+                                        {value}
+                                    </Typography>
+                                )}
+                                name={"loyaltypoints"}
+                                control={control}
+                            />
+                        </div>
+                    </div>
+                }
+
             </div>
 
             <div className={style.footer}>

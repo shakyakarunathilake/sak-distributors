@@ -25,6 +25,7 @@ export default function ViewCustomer(props) {
             storecontactnumber: customerRecords.storecontactnumber,
             email: customerRecords.email,
             registeredby: customerRecords.registeredby,
+            loyaltypoints: customerRecords.loyaltypoints
         }
     });
 
