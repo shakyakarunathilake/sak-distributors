@@ -1,19 +1,37 @@
 @import "../../styles/variables";
 
-.container {
-    background-color: $paperColor;
-    border-radius: 8px;
-    height: calc(100vh - 690px);
-    width: calc(100% - 40px);
-    padding: 20px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+.containerWrapper {
     display: grid;
-    grid-template-columns: min-content auto min-content;
-    align-items: center;
+    grid-template-rows: auto min-content;
+    
+    .container {
+        background-color: $paperColor;
+        border-radius: 8px;
+        height: calc(100vh - 690px);
+        width: calc(100% - 40px);
+        padding: 20px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        display: grid;
+        grid-template-columns: min-content auto min-content;
+        align-items: center;
+    }
+
+    .redContainer {
+        background-color: green;
+        background-image: linear-gradient(to top, rgba(0, 0, 0, 0) 20%, orange 20%);
+        border-radius: 8px;
+        height: calc(100vh - 690px);
+        width: calc(100% - 40px);
+        padding: 20px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        display: grid;
+        grid-template-columns: min-content auto min-content;
+        align-items: center;
+    }
 
     .arrow {
         color: $secondaryMain;
-        font-size: 2em;
+        font-size: 1.5em;
 
         & :hover {
             cursor: pointer;
@@ -23,15 +41,19 @@
 
     .card {
         display: grid;
-        grid-template-rows: min-content auto min-content;
+        grid-template-rows: min-content auto;
         grid-row-gap: 10px;
         height: 100%;
 
         .imageDiv {
-            text-align: center;
+            height: 120px;
+            width: 120px;
+            margin: 0 auto;
 
             img {
-                height: 120px;
+                object-fit: cover;
+                height: 100%;
+                width: 100%;
                 border-radius: 100%;
             }
         }
@@ -52,18 +74,23 @@
                 color: $secondaryDark;
             }
         }
+    }
 
-        .statistics {
-            display: grid;
-            grid-template-columns: auto auto auto;
-            grid-column-gap: 6px;
-            text-align: center;
-            font-weight: 700;
-            color: red;
-        }
+    .statistics {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        grid-column-gap: 6px;
+        text-align: center;
+        font-weight: 700;
 
         .redText {
             font-size: 0.8em;
+            color: red;
+        }
+
+        .whiteText {
+            font-size: 0.8em;
+            color: white;
         }
     }
 }

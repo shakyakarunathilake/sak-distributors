@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import classnames from 'classnames';
 
 //Material UI Icons
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
@@ -18,6 +19,15 @@ export default function MissingProducts(props) {
 
 
     const [formStep, setFormStep] = useState(0);
+    const [redBackgroud, setRedBackground] = useState(false);
+
+    useEffect(() => {
+        if (missingProducts[formStep].storecasequantity <= 0) {
+            setRedBackground(true)
+        } else {
+            setRedBackground(false)
+        }
+    }, [formStep])
 
     const nextProduct = () => {
         setFormStep(x => x + 1);
@@ -29,68 +39,75 @@ export default function MissingProducts(props) {
 
     return (
 
-        <div className={style.container}>
+        <div className={style.containerWrapper}>
 
-            <IconButton
-                onClick={previousProduct}
-                disabled={formStep === 0}
-            >
-                <ArrowLeftIcon
-                    className={style.arrow}
-                />
-            </IconButton>
+            <div className={redBackgroud ? style.redContainer : style.container}>
 
-            <div className={style.card}>
 
-                <div className={style.imageDiv}>
-                    <img src={`http://${missingProducts[formStep].productimage}`} alt={missingProducts[formStep].productid} />
+                <IconButton
+                    onClick={previousProduct}
+                    disabled={formStep === 0}
+                >
+                    <ArrowLeftIcon
+                        className={style.arrow}
+                    />
+                </IconButton>
+
+                <div className={style.card}>
+
+                    <div className={style.imageDiv}>
+                        <img src={`http://${missingProducts[formStep].productimage}`} alt={missingProducts[formStep].productid} />
+                    </div>
+
+                    <div className={style.itemDetails}>
+
+                        <div className={style.productid}>
+                            {missingProducts[formStep].productid}
+                        </div>
+
+                        <div className={style.text}>
+                            {missingProducts[formStep].name}
+                        </div>
+
+                        <div className={style.text}>
+                            {missingProducts[formStep].supplier}
+                        </div>
+
+                    </div>
+
                 </div>
 
-                <div className={style.itemDetails}>
+                <IconButton
+                    disabled={formStep === missingProducts.length - 1}
+                    onClick={nextProduct}
+                >
+                    <ArrowRightIcon
+                        className={style.arrow}
+                    />
+                </IconButton>
 
-                    <div className={style.productid}>
-                        {missingProducts[formStep].productid}
-                    </div>
+            </div >
 
-                    <div className={style.text}>
-                        {missingProducts[formStep].name}
-                    </div>
+            <div className={style.statistics}>
 
-                    <div className={style.text}>
-                        {missingProducts[formStep].supplier}
-                    </div>
-
+                <div className={redBackgroud ? style.whiteText : style.redText}>
+                    IN STOCK
                 </div>
-                
-                <div className={style.statistics}>
 
-                    <div className={style.redText}>
-                        IN STOCK
-                    </div>
 
-                    <div className={style.redText}>
-                        {missingProducts[formStep].storecasequantity} &nbsp;
-                        {missingProducts[formStep].storecasequantity <= 1 && missingProducts[formStep].storecasequantity >= -1 ? "CASE" : "CASES"}
-                    </div>
+                <div className={redBackgroud ? style.whiteText : style.redText}>
+                    {missingProducts[formStep].storecasequantity} &nbsp;
+                    {missingProducts[formStep].storecasequantity <= 1 && missingProducts[formStep].storecasequantity >= -1 ? "CASE" : "CASES"}
+                </div>
 
-                    <div className={style.redText}>
-                        {missingProducts[formStep].storepiecesquantity} &nbsp;
-                        {missingProducts[formStep].storepiecesquantity <= 1 && missingProducts[formStep].storepiecesquantity >= -1 ? "PIECE" : "PIECES"}
-                    </div>
-
+                <div className={redBackgroud ? style.whiteText : style.redText}>
+                    {missingProducts[formStep].storepiecesquantity} &nbsp;
+                    {missingProducts[formStep].storepiecesquantity <= 1 && missingProducts[formStep].storepiecesquantity >= -1 ? "PIECE" : "PIECES"}
                 </div>
 
             </div>
 
-            <IconButton
-                disabled={formStep === missingProducts.length - 1}
-                onClick={nextProduct}
-            >
-                <ArrowRightIcon
-                    className={style.arrow}
-                />
-            </IconButton>
-
         </div>
+
     )
 }
