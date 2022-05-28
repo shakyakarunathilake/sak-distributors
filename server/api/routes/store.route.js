@@ -96,7 +96,7 @@ router.get("/get-all-missing-product-details", (req, res, next) => {
         },
         {
             $match: {
-                storecasequantity: { $lte: 6 },
+                storecasequantity: { $lte: 10 },
             }
         },
         {
@@ -116,8 +116,14 @@ router.get("/get-all-missing-product-details", (req, res, next) => {
                 supplier: { $arrayElemAt: ['$productdetails.supplier', 0] },
                 productimage: { $arrayElemAt: ['$productdetails.productimage', 0] }
             }
+        },
+        {
+            $sort: {
+                storecasequantity: 1
+            }
         }
     ]
+
 
     const doc = db.collection('stores').aggregate(pipeline);
 
@@ -127,11 +133,14 @@ router.get("/get-all-missing-product-details", (req, res, next) => {
             return res.status(500).send(error);
 
         } else {
+
+            console.log(result)
+
             res.status(201).json({
                 message: "Handeling GET requests to /get-all-missing-product-details",
                 missingProducts: result
             })
-            
+
         }
 
     });
