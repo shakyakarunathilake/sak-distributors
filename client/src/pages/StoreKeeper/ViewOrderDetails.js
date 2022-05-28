@@ -15,6 +15,7 @@ import UnregisteredCustomerRowOne from './UnregisteredCustomerRowOne';
 import UnregisteredCustomerRowTwo from './UnregisteredCustomerRowTwo';
 import ViewOrderDetailsTabletStepOne from '../DeliveryRepresentative/ViewOrderDetailsTabletStepOne';
 import ViewOrderDetailsTabletStepTwo from '../DeliveryRepresentative/ViewOrderDetailsTabletStepTwo';
+import ViewOrderDetailsTabletStepThree from '../DeliveryRepresentative/ViewOrderDetailsTabletStepThree';
 
 
 export default function ViewOrderDetails() {
@@ -31,7 +32,7 @@ export default function ViewOrderDetails() {
 
     const employeedetails = JSON.parse(sessionStorage.getItem("Auth"));
 
-    const { control, watch } = useForm({
+    const { control, watch, getValues } = useForm({
         defaultValues: {
             orderno: JSON.parse(localStorage.getItem(ordernumber)).orderno,
             contactnumber: JSON.parse(localStorage.getItem(ordernumber)).contactnumber,
@@ -90,7 +91,7 @@ export default function ViewOrderDetails() {
                 {
                     employeedetails.designation === "Delivery Representative" &&
                     <div className={style.step}>
-                        Step {formStep + 1} of 2
+                        Step {formStep + 1} of 3
                     </div>
                 }
 
@@ -168,9 +169,23 @@ export default function ViewOrderDetails() {
                                 data={data}
                                 watch={watch}
                                 backFormStep={backFormStep}
-                                handleClose={handleClose}
+                                completeFormStep={completeFormStep}
                             />
 
+
+                        </section>
+                    }
+
+                    {
+                        formStep >= 2 &&
+                        <section className={formStep === 2 ? style.visible : style.hidden}>
+
+                            <ViewOrderDetailsTabletStepThree
+                                getValues={getValues}
+                                watch={watch}
+                                backFormStep={backFormStep}
+                                handleClose={handleClose}
+                            />
 
                         </section>
                     }

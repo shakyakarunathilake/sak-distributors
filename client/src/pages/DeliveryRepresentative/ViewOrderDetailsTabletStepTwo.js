@@ -51,7 +51,7 @@ const useStyles = makeStyles({
 
 export default function ViewOrderDetailsTabletStepTwo(props) {
 
-    const { data, watch, backFormStep, handleClose } = props;
+    const { data, watch, backFormStep, completeFormStep } = props;
 
     const classes = useStyles();
 
@@ -271,10 +271,10 @@ export default function ViewOrderDetailsTabletStepTwo(props) {
 
                 <div className={style.doneBtn}>
                     <Button
-                        onClick={handleClose}
+                        onClick={completeFormStep}
                         variant="contained"
                     >
-                        Done
+                        Next
                     </Button>
                 </div>
 
