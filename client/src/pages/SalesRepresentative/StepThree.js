@@ -507,7 +507,11 @@ export default function StepThree(props) {
 
                                                 setTimeout(() => {
 
-                                                    if (newData.offercaption) {
+                                                    if (newData.salesqtycases === "0" && newData.salesqtypieces === "0") {
+
+                                                        resolve();
+
+                                                    } else if (newData.offercaption) {
 
                                                         let noofcases = parseInt(newData.salesqtycases);
                                                         let noofpieces = parseInt(newData.salesqtypieces) + noofcases * newData.piecespercase;
@@ -641,7 +645,34 @@ export default function StepThree(props) {
                                             new Promise((resolve, reject) => {
                                                 setTimeout(() => {
 
-                                                    if (newData.offercaption) {
+                                                    if (newData.salesqtycases === "0" && newData.salesqtypieces === "0") {
+
+                                                        let oldOfferData = data.filter(x => x.promotiondescription === newData.description);
+
+                                                        if (oldOfferData.length !== 0) {
+                                                            const dataUpdate = [...data];
+                                                            let promotionIndex = oldOfferData[0].tableData.id;
+                                                            const index = oldData.tableData.id;
+
+                                                            for (var i = dataUpdate.length - 1; i >= 0; i--) {
+                                                                if (dataUpdate[i].tableData.id === index || dataUpdate[i].tableData.id === promotionIndex) {
+                                                                    dataUpdate.splice(i, 1);
+                                                                }
+                                                            }
+
+                                                            setData([...dataUpdate]);
+                                                            resolve();
+
+                                                        } else {
+
+                                                            const dataUpdate = [...data];
+                                                            const index = oldData.tableData.id;
+                                                            dataUpdate.splice(index, 1)
+                                                            setData([...dataUpdate]);
+                                                            resolve();
+                                                        }
+
+                                                    } else if (newData.offercaption) {
 
                                                         let noofcases = parseInt(newData.salesqtycases);
                                                         let noofpieces = parseInt(newData.salesqtypieces) + noofcases * newData.piecespercase;
@@ -916,6 +947,7 @@ export default function StepThree(props) {
                                                         }
 
                                                     } else {
+
                                                         const dataUpdate = [...data];
                                                         const index = oldData.tableData.id;
                                                         dataUpdate[index] = newData;
