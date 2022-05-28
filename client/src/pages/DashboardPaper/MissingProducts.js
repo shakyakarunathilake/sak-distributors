@@ -39,24 +39,27 @@ export default function MissingProducts(props) {
 
     return (
 
-        <div className={redBackgroud ? style.redContainerWrapper : style.containerWrapper}>
+        <div className={style.wrapper}>
 
-            <div className={style.container}>
+            <div className={style.info}>
 
-
-                <IconButton
-                    onClick={previousProduct}
-                    disabled={formStep === 0}
-                >
-                    <ArrowLeftIcon
-                        className={style.arrow}
-                    />
-                </IconButton>
+                <div className={style.arrow}>
+                    <IconButton
+                        onClick={previousProduct}
+                        disabled={formStep === 0}
+                    >
+                        <ArrowLeftIcon
+                        />
+                    </IconButton>
+                </div>
 
                 <div className={style.card}>
 
                     <div className={style.imageDiv}>
-                        <img src={`http://${missingProducts[formStep].productimage}`} alt={missingProducts[formStep].productid} />
+                        <img
+                            src={`http://${missingProducts[formStep].productimage}`}
+                            alt={missingProducts[formStep].productid}
+                        />
                     </div>
 
                     <div className={style.itemDetails}>
@@ -77,18 +80,20 @@ export default function MissingProducts(props) {
 
                 </div>
 
-                <IconButton
-                    disabled={formStep === missingProducts.length - 1}
-                    onClick={nextProduct}
-                >
-                    <ArrowRightIcon
-                        className={style.arrow}
-                    />
-                </IconButton>
+                <div className={style.arrow}>
+                    <IconButton
+                        disabled={formStep === missingProducts.length - 1}
+                        onClick={nextProduct}
+                    >
+                        <ArrowRightIcon
+                            className={style.arrow}
+                        />
+                    </IconButton>
+                </div>
 
-            </div >
+            </div>
 
-            <div className={style.statistics}>
+            <div className={redBackgroud ? style.redStatistics : style.statistics}>
 
                 <div className={redBackgroud ? style.whiteText : style.redText}>
                     IN STOCK

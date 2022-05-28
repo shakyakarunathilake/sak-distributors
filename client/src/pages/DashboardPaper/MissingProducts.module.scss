@@ -1,86 +1,64 @@
 @import "../../styles/variables";
 
-.containerWrapper {
+.wrapper {
     display: grid;
     grid-template-rows: auto min-content;
-    height: calc(100vh - 690px);
-    width: calc(100% - 40px);
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    width: 100%;
+    height: calc(100vh - 650px);
     background-color: $paperColor;
-}
-
-.redContainerWrapper {
-    display: grid;
-    grid-template-rows: auto min-content;
-    height: calc(100vh - 690px);
-    width: calc(100% - 40px);
     border-radius: 8px;
-    padding: 20px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-    background-color: red;
-    background-image: linear-gradient(to top, rgba(0, 0, 0, 0) 20%, orange 20%);
-}
-
-.container {
-    display: grid;
-    grid-template-columns: min-content auto min-content;
-    align-items: center;
-
-    .arrow {
-        color: $secondaryMain;
-        font-size: 1.5em;
-
-        & :hover {
-            cursor: pointer;
-            color: $primaryMain;
-        }
-    }
-
-    .card {
+    
+    .info {
         display: grid;
-        grid-template-rows: min-content auto;
-        grid-row-gap: 10px;
+        grid-template-columns: min-content auto min-content;
+        align-items: center;
 
-        .imageDiv {
-            height: 120px;
-            width: 120px;
-            margin: 0 auto;
+        .arrow {
+            color: $secondaryMain;
 
-            img {
-                object-fit: cover;
-                height: 100%;
-                width: 100%;
-                border-radius: 100%;
-            }
-        }
-
-        .itemDetails {
-            display: grid;
-            grid-template-rows: min-content min-content min-content;
-            grid-row-gap: 6px;
-            font-weight: 700;
-            font-size: 0.9em;
-            text-align: center;
-
-            .productid {
+            & :hover {
+                cursor: pointer;
                 color: $primaryMain;
             }
+        }
 
-            .name {
-                color: $secondaryDark;
+        .card {
+            display: grid;
+            grid-template-rows: min-content auto;
+            grid-row-gap: 10px;
+
+            .imageDiv {
+                height: 120px;
+                width: 120px;
+                margin: 0 auto;
+
+                img {
+                    object-fit: cover;
+                    height: 100%;
+                    width: 100%;
+                    border-radius: 100%;
+                }
+            }
+
+            .itemDetails {
+                display: grid;
+                grid-template-rows: min-content min-content min-content;
+                grid-row-gap: 6px;
+                font-weight: 700;
+                font-size: 0.9em;
+                text-align: center;
+
+                .productid {
+                    color: $primaryMain;
+                }
+
+                .name {
+                    color: $secondaryDark;
+                }
             }
         }
     }
-}
-
-.statistics {
-    display: grid;
-    grid-template-columns: auto auto auto;
-    grid-column-gap: 6px;
-    text-align: center;
-    font-weight: 700;
 
     .redText {
         font-size: 0.8em;
@@ -90,5 +68,25 @@
     .whiteText {
         font-size: 0.8em;
         color: white;
+    }
+
+    .statistics {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        grid-column-gap: 6px;
+        text-align: center;
+        font-weight: 700;
+        padding: 18px;
+    }
+
+    .redStatistics {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        grid-column-gap: 6px;
+        text-align: center;
+        font-weight: 700;
+        background-color: red;
+        padding: 18px;
+        border-radius: 0 0 8px 8px;
     }
 }
