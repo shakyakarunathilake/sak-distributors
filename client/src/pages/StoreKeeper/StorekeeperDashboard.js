@@ -6,6 +6,7 @@ import Profile from '../../shared/PageTwo/Profile';
 import CustomerOrders from '../DashboardPaper/CustomerOrders';
 import AwaitingGRN from '../DashboardPaper/AwaitingGRN';
 import ProcessingGIN from '../DashboardPaper/ProcessingGIN';
+import MissingProducts from '../DashboardPaper/MissingProducts';
 
 //SCSS Styles
 import style from './StorekeeperDashboard.module.scss';
@@ -25,11 +26,13 @@ export default function StorekeeperDashboard() {
         "http://localhost:8080/metadata/grn-meta-data",
         "http://localhost:8080/metadata/pending-customer-orders-meta-data",
         "http://localhost:8080/metadata/processing-gin-meta-data",
+        "http://localhost:8080/store/get-all-missing-product-details"
     ]
 
     const [customerOrders, setCustomerOrders] = useState([]);
     const [grn, setGrn] = useState([]);
     const [gin, setGin] = useState([]);
+    const [missingProducts, setMissingProducts] = useState([]);
 
     useEffect(() => {
         axios
@@ -39,6 +42,7 @@ export default function StorekeeperDashboard() {
                     setGrn(responses[0].data.grnMetaData)
                     setCustomerOrders(responses[1].data.customerOrdersMetaData)
                     setGin(responses[2].data.ginMetaData)
+                    setMissingProducts(responses[3].data.missingProducts);
                 })
             )
             .catch(error => {
@@ -54,6 +58,14 @@ export default function StorekeeperDashboard() {
 
                 <div className={style.columnA}>
                     <Profile />
+
+                    {
+                        missingProducts.length > 0 &&
+                        <MissingProducts
+                            missingProducts={missingProducts}
+                        />
+                    }
+
                 </div>
 
                 <div className={style.columnB}>

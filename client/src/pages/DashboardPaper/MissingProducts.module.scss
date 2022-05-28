@@ -1,0 +1,69 @@
+@import "../../styles/variables";
+
+.container {
+    background-color: $paperColor;
+    border-radius: 8px;
+    height: calc(100vh - 690px);
+    width: calc(100% - 40px);
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    display: grid;
+    grid-template-columns: min-content auto min-content;
+    align-items: center;
+
+    .arrow {
+        color: $secondaryMain;
+        font-size: 2em;
+
+        & :hover {
+            cursor: pointer;
+            color: $primaryMain;
+        }
+    }
+
+    .card {
+        display: grid;
+        grid-template-rows: min-content auto min-content;
+        grid-row-gap: 10px;
+        height: 100%;
+
+        .imageDiv {
+            text-align: center;
+
+            img {
+                height: 120px;
+                border-radius: 100%;
+            }
+        }
+
+        .itemDetails {
+            display: grid;
+            grid-template-rows: min-content min-content min-content;
+            grid-row-gap: 6px;
+            font-weight: 700;
+            font-size: 0.9em;
+            text-align: center;
+
+            .productid {
+                color: $primaryMain;
+            }
+
+            .name {
+                color: $secondaryDark;
+            }
+        }
+
+        .statistics {
+            display: grid;
+            grid-template-columns: auto auto auto;
+            grid-column-gap: 6px;
+            text-align: center;
+            font-weight: 700;
+            color: red;
+        }
+
+        .redText {
+            font-size: 0.8em;
+        }
+    }
+}

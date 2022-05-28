@@ -7,6 +7,14 @@
     padding: 20px;
     height: calc(100% - 40px);
 
+    .columnA {
+        display: grid;
+        grid-template-rows: min-content min-content;
+        grid-row-gap: 20px;
+        height: calc(100vh - 126px);
+        overflow: hidden;
+    }
+
     .columnB {
         display: flex;
         flex-direction: column;
