@@ -18,10 +18,12 @@ import MuiAlert from '@mui/material/Alert';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import ApprovalIcon from '@mui/icons-material/Approval';
+import PrintIcon from '@mui/icons-material/Print';
 
 //Form
 import ViewPurchaseOrder from './ViewPurchaseOrder';
 import CreatePurchaseOrder from './CreatePurchaseOrder';
+import PrintPurchaseOrder from './PrintPurchaseOrder'
 
 //Connecting to Backend
 import axios from 'axios';
@@ -352,6 +354,16 @@ export default function ManagePurchaseOrder() {
                                                     openInPopup(rowData.ponumber);
                                                 },
                                                 disabled: rowData.status !== 'Waiting For Approval' || designation !== 'Distributor'
+                                            }),
+                                            rowData => ({
+                                                icon: PrintIcon,
+                                                tooltip: 'Print',
+                                                onClick: (event, rowData) => {
+                                                    setAction('Print');
+                                                    getOptions();
+                                                    openInPopup(rowData.ponumber);
+                                                },
+                                                disabled: rowData.status === 'Waiting For Approval'
                                             })
                                         ]}
                                     />
@@ -390,6 +402,14 @@ export default function ManagePurchaseOrder() {
                         action={action}
                         quotationOptions={quotationOptions}
                         missingProducts={missingProducts}
+                    />
+                }
+
+                {
+                    action === 'Print' &&
+                    <PrintPurchaseOrder
+                        handleClosePopUp={handleClosePopUp}
+                        poRecords={poRecords}
                     />
                 }
 
