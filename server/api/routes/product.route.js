@@ -44,7 +44,8 @@ router.get("/get-all-product-table-data", (req, res, next) => {
                     name: main.name,
                     productid: main.productid,
                     status: main.status,
-                    supplier: main.supplier
+                    supplier: main.supplier,
+                    reorderlevel: main.reorderlevel ? main.reorderlevel : 10,
                 });
 
                 let parentid = rowid;
@@ -130,6 +131,7 @@ router.post("/create-product", uploads.single("productimage"), (req, res, next) 
         status: req.body.status,
         addeddate: addeddate,
         addedby: req.body.addedby,
+        reorderlevel: req.body.reordelevel
     })
 
     product
@@ -282,6 +284,7 @@ router.get("/:productid", (req, res, next) => {
                 "addeddate": doc.addeddate,
                 "addedby": doc.addedby,
                 "status": doc.status,
+                "reorderlevel": 0,
             };
 
             res.status(200).json({
@@ -313,7 +316,7 @@ router.get("/:productid/:variantid", (req, res, next) => {
                 "addeddate": doc.addeddate,
                 "addedby": doc.addedby,
                 "status": doc.status,
-
+                "reorderlevel": doc.reordelevel ? doc.reordelevel : 10,
             };
 
             let variant = doc.variants.filter(obj => {
@@ -368,6 +371,7 @@ router.post("/update-by-id/:productid", uploads.single("productimage"), (req, re
                     'status': req.body.status,
                     'supplier': req.body.supplier,
                     'productimage': `localhost:8080/${req.params.productid}.jpg`,
+                    'reorderlevel': req.body.reorderlevel,
                 }
             },
             { new: true, upsert: true }

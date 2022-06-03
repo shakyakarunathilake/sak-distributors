@@ -107,6 +107,23 @@ export default function ProductFormStepTwo(props) {
 
                     <div className={style.row}>
                         <div className={style.boldText}>
+                            Reorder Level
+                        </div>
+                        <div className={style.productData}>
+                            <Controller
+                                render={({ field: { value } }) => (
+                                    <Typography className={style.input}>
+                                        {value}
+                                    </Typography>
+                                )}
+                                name={"reorderlevel"}
+                                control={control}
+                            />
+                        </div>
+                    </div>
+
+                    <div className={style.row}>
+                        <div className={style.boldText}>
                             Supplier
                         </div>
                         <div className={style.productData}>

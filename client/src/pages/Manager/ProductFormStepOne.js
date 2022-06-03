@@ -163,25 +163,51 @@ export default function ProductFormStepOne(props) {
                         />
                     </div>
 
-                    <div className={style.row}>
+                    <div className={style.gridrow}>
 
-                        <Controller
-                            render={({ field }) => (
-                                <Select
-                                    {...field}
-                                    options={supplierOptions || []}
-                                    error={errors.supplier ? true : false}
-                                    helperText={errors.supplier && errors.supplier.message}
-                                    size="small"
-                                    label="Supplier *"
-                                />
-                            )}
-                            control={control}
-                            name={"supplier"}
-                            rules={{
-                                required: { value: true, message: "Required *" },
-                            }}
-                        />
+
+                        <div>
+                            <Controller
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth={true}
+                                        error={errors.reorderlevel ? true : false}
+                                        helperText={errors.reorderlevel && errors.reorderlevel.message}
+                                        placeholder="Ex: 20"
+                                        size="small"
+                                        label="Reorder Level *"
+                                    />
+                                )}
+                                control={control}
+                                name={"reorderlevel"}
+                                rules={{
+                                    required: { value: true, message: "Required *" },
+                                    pattern: { value: /^[0-9]*$/, message: "Invalid" }
+                                }}
+                            />
+                        </div>
+
+                        <div>
+                            <Controller
+                                render={({ field }) => (
+                                    <Select
+                                        {...field}
+                                        options={supplierOptions || []}
+                                        error={errors.supplier ? true : false}
+                                        helperText={errors.supplier && errors.supplier.message}
+                                        size="small"
+                                        label="Supplier *"
+                                    />
+                                )}
+                                control={control}
+                                name={"supplier"}
+                                rules={{
+                                    required: { value: true, message: "Required *" },
+                                }}
+                            />
+
+                        </div>
 
                     </div>
 

@@ -9,6 +9,7 @@ const productSchema = mongoose.Schema({
     addeddate: { type: String, required: true },
     addedby: { type: String, required: true },
     status: { type: String, required: true },
+    reorderlevel: { type: Number, required: true },
     variants: [{
         variantid: { type: String, required: true },
         type: { type: String, required: true },

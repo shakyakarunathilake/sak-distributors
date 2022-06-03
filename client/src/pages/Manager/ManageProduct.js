@@ -79,6 +79,19 @@ export default function ManageProduct() {
         setOpen(false);
     };
 
+    const sortData = (tbody) => {
+
+        const product = tbody.filter(x => !(x.parentid));
+
+        const variants = tbody.filter(x => x.parentid);
+
+        const sortedProducts = product.sort((a, b) => b.reorderlevel - a.reorderlevel);
+
+        const finalTableData = [...sortedProducts, ...variants];
+
+        return finalTableData
+    }
+
     useEffect(() => {
         axios
             .get("http://localhost:8080/products/get-all-product-table-data", {
@@ -87,7 +100,10 @@ export default function ManageProduct() {
                 }
             })
             .then(res => {
-                setRecords(res.data.tbody);
+
+            
+                setRecords(sortData(res.data.tbody));
+
                 setReRender(null);
             })
             .catch(error => {
@@ -327,7 +343,7 @@ export default function ManageProduct() {
                                     )
                                 },
                                 cellStyle: {
-                                    width: "8%",
+                                    width: "6%",
                                     textAlign: 'left'
                                 }
                             },
@@ -340,7 +356,7 @@ export default function ManageProduct() {
                                     )
                                 },
                                 cellStyle: {
-                                    width: "8%",
+                                    width: "6%",
                                     textAlign: 'left'
                                 }
                             },
@@ -349,6 +365,14 @@ export default function ManageProduct() {
                                 field: "name",
                                 cellStyle: {
                                     width: "22%",
+                                    textAlign: 'left'
+                                }
+                            },
+                            {
+                                title: "Reorder Level",
+                                field: "reorderlevel",
+                                cellStyle: {
+                                    width: "4%",
                                     textAlign: 'left'
                                 }
                             },

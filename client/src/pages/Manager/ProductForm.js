@@ -37,6 +37,7 @@ export default function ProductsForm(props) {
             productimage: productRecords ? productRecords.productimage : '',
             status: productRecords ? productRecords.status : '',
             supplier: productRecords ? productRecords.supplier : '',
+            reorderlevel: productRecords ? (productRecords.reorderlevel ? productRecords.reorderlevel : null) : null,
         }
     });
 
@@ -83,6 +84,7 @@ export default function ProductsForm(props) {
             productFormData.append('addeddate', getValues('addeddate'));
             productFormData.append("addedby", getValues('addedby'));
             productFormData.append("status", getValues('status'));
+            productFormData.append("reorderlevel", getValues('reorderlevel'));
         }
 
         if (action === 'Edit') {
@@ -90,6 +92,7 @@ export default function ProductsForm(props) {
             productFormData.append('name', getValues('name'));
             productFormData.append('supplier', getValues('supplier'));
             productFormData.append("status", getValues('status'));
+            productFormData.append("reorderlevel", getValues('reorderlevel'));
         }
 
         addOrEdit(productFormData, getValues('productid'));
